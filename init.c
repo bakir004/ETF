@@ -5,4 +5,5 @@ int main() {
     printf("replaces");
     scanf("%d", &a);
     printf("%d", a*a);
+    printf("%d", a*a*a);
 }
