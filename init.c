@@ -5,5 +5,4 @@ int main() {
     printf("replaces");
     scanf("%d", &a);
     printf("%d", a*a);
-    printf("NIGGA");
 }
