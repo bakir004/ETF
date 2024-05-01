@@ -7,16 +7,33 @@ struct Distrikt {
 };
 
 std::vector<int> Razbrajanje(int N, int M) {
-    Distrikt *prosli = new Distrikt;
-    prosli->broj_distrikta = 1;
+    Distrikt *pocetak= nullptr;
+    try {
+        pocetak = new Distrikt;
+    } catch(...) {
+        throw;
+    }
+    pocetak->broj_distrikta = 1;
 
-    Distrikt *pocetak = prosli;
+    Distrikt *prosli = pocetak;
 
-    for(int i = 2; i <= N; i++) {
-        Distrikt *novi = new Distrikt;
-        novi->broj_distrikta = i;
-        prosli->sljedeci = novi;
-        prosli = novi;
+    int brojAlociranih = 1;
+    try {
+        for(int i = 2; i <= N; i++) {
+            Distrikt *novi = new Distrikt;
+            novi->broj_distrikta = i;
+            prosli->sljedeci = novi;
+            novi->sljedeci = nullptr;
+            prosli = novi;
+            brojAlociranih++;
+        }
+    } catch(...) {
+        for(int i = 0; i < brojAlociranih; i++) {
+            auto trenutni = pocetak;
+            pocetak = pocetak->sljedeci;
+            delete trenutni;
+        }
+        throw;
     }
     prosli->sljedeci = pocetak;
     std::vector<int> redoslijed;
@@ -43,16 +60,17 @@ std::vector<int> Razbrajanje(int N, int M) {
 }
 
 int OdabirKoraka(int N, int K) {
-    for(int i = 1; i <= N; i++) {
-        std::vector<int> redoslijed = Razbrajanje(N, i);
+    int teoretskiMaksimalanM = N*N; // koja je zapravo granica?
+    for(int M = 1; M <= teoretskiMaksimalanM; M++) {
+        std::vector<int> redoslijed = Razbrajanje(N, M);
         if(redoslijed[N-1] == K)
-            return i;
+            return M;
     }
     return 0;
 }
 
 int main() {
-    int N = 10, K = 2;
+    int N = 10, K = 5;
     int M = OdabirKoraka(N, K);
     std::cout << "M: " << M << "\n";
     for(auto e : Razbrajanje(N, M))

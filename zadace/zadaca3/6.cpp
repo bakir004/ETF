@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <vector>
 
 struct Distrikt {
@@ -8,17 +9,34 @@ struct Distrikt {
 };
 
 std::vector<int> Razbrajanje(int N, int M) {
-    std::shared_ptr<Distrikt> prosli(new Distrikt);
-    prosli->broj_distrikta = 1;
+    std::shared_ptr<Distrikt> pocetak = nullptr;
+    try {
+        pocetak = std::shared_ptr<Distrikt>(new Distrikt, [](Distrikt *p){
+                p->sljedeci = nullptr;
+                delete p;
+            });
+    } catch(...) {
+        throw;
+    }
+    pocetak->broj_distrikta = 1;
 
-    std::shared_ptr<Distrikt> pocetak = prosli;
+    std::shared_ptr<Distrikt> prosli = pocetak;
 
-    for(int i = 2; i <= N; i++) {
-        auto noviPtr = new Distrikt;
-        std::shared_ptr<Distrikt> novi(new Distrikt);
-        novi->broj_distrikta = i;
-        prosli->sljedeci = novi;
-        prosli = novi;
+    try {
+        for(int i = 2; i <= N; i++) {
+            std::shared_ptr<Distrikt> novi(new Distrikt, [](Distrikt *p){
+                p->sljedeci = nullptr;
+                delete p;
+            });
+            novi->broj_distrikta = i;
+            prosli->sljedeci = novi;
+            novi->sljedeci = nullptr;
+            prosli = novi;
+        }
+    } catch(...) {
+        prosli = nullptr;
+        pocetak = nullptr;
+        throw std::domain_error("GRESKA");
     }
     prosli->sljedeci = pocetak;
     std::vector<int> redoslijed;
@@ -26,6 +44,7 @@ std::vector<int> Razbrajanje(int N, int M) {
     std::shared_ptr<Distrikt> trenutni = pocetak;
     std::shared_ptr<Distrikt> prijeTrenutnog = pocetak;
     for(int i = 0; i < N-1; i++) prijeTrenutnog = prijeTrenutnog->sljedeci;
+    pocetak = nullptr;
     while(N > 0) {
         // akcija izbacivanja iz liste i dodavanja u vektor
         redoslijed.push_back(trenutni->broj_distrikta);
@@ -55,7 +74,7 @@ int OdabirKoraka(int N, int K) {
 }
 
 int main() {
-    int N = 11, K = 2;
+    int N = 10, K = 2;
     int M = OdabirKoraka(N, K);
     std::cout << "M: " << M << "\n";
     for(auto e : Razbrajanje(N, M))
