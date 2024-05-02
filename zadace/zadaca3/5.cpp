@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include <vector>
 
 struct Distrikt {
@@ -11,7 +12,7 @@ std::vector<int> Razbrajanje(int N, int M) {
     try {
         pocetak = new Distrikt;
     } catch(...) {
-        throw;
+        throw std::domain_error("Nema memorije!");
     }
     pocetak->broj_distrikta = 1;
 

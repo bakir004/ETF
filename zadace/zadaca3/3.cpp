@@ -73,17 +73,11 @@ Matrica<int> ProsiriPremaFunkcijama(Matrica<int> mat, MapaPreslikavanja m, int n
     mat = novaMatrica;
 
     if(n < 1) throw std::domain_error("Besmislen parametar");
-    else if(n == 1) {
-        Matrica<int> novaMatrica = StvoriMatricu<int>(mat.br_redova, mat.br_kolona);
-        for(int i = 0; i < mat.br_redova; i++) 
-            for(int j = 0; j < mat.br_kolona; j++) 
-                novaMatrica.elementi[i][j] = mat.elementi[i][j];
-        return novaMatrica;
-    }
+    else if(n == 1) { return mat; }
     while(n > 1) {
         Matrica<int> prosirenaMatrica;
         if (!m[Smjer::Desno] && !m[Smjer::Dolje] && !m[Smjer::Dijagonalno]){
-            prosirenaMatrica = StvoriMatricu<int>(mat.br_redova, mat.br_kolona);
+            return mat;
         } else if(m[Smjer::Desno] && !m[Smjer::Dolje] && !m[Smjer::Dijagonalno]) {
             prosirenaMatrica = StvoriMatricu<int>(mat.br_redova, mat.br_kolona*2);
             for(int i = 0; i < mat.br_redova; i++) 
