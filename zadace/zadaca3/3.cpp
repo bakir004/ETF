@@ -45,7 +45,7 @@ void UnesiMatricu(Matrica<TipElemenata> &mat) {
         }
 }
 template <typename TipElemenata>
-void IspisiMatricu(Matrica<TipElemenata> mat, int sirina_ispisa, int sirina = 4, bool treba_brisati = false) {
+void IspisiMatricu(Matrica<TipElemenata> mat, int sirina = 4, bool treba_brisati = false) {
     for(int i = 0; i < mat.br_redova; i++) {
         for(int j = 0; j < mat.br_kolona; j++)
             std::cout << std::setw(sirina) << mat.elementi[i][j];

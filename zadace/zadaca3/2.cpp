@@ -26,7 +26,7 @@ IndeksPojmova KreirajIndeksPojmova(Knjiga knjiga) {
             for(int i = 0; i < trenutnaStranica.length(); i++) {
                 if(std::isalnum(trenutnaStranica[i])) {
                     if(trenutnaRijec.length() == 0)
-                        pozicijaRijeci = i;
+                        pozicijaRijeci = i+1;
                     trenutnaRijec += trenutnaStranica[i];
                 } else if(trenutnaRijec.length() != 0) {
                     Lokacija lokacija{trenutnoPoglavlje, brojStranice, pozicijaRijeci};
