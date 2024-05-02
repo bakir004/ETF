@@ -66,39 +66,44 @@ Matrica<TipElemenata> ZbirMatrica(const Matrica<TipElemenata> &m1, const Matrica
 }
 
 Matrica<int> ProsiriPremaFunkcijama(Matrica<int> mat, MapaPreslikavanja m, int n) {
+    if(n < 1) throw std::domain_error("Besmislen parametar");
     Matrica<int> novaMatrica = StvoriMatricu<int>(mat.br_redova, mat.br_kolona);
     for(int i = 0; i < mat.br_redova; i++) 
         for(int j = 0; j < mat.br_kolona; j++) 
             novaMatrica.elementi[i][j] = mat.elementi[i][j];
     mat = novaMatrica;
 
-    if(n < 1) throw std::domain_error("Besmislen parametar");
-    else if(n == 1) { return mat; }
+    if(n == 1) { return mat; }
     while(n > 1) {
         Matrica<int> prosirenaMatrica;
-        if (!m[Smjer::Desno] && !m[Smjer::Dolje] && !m[Smjer::Dijagonalno]){
-            return mat;
-        } else if(m[Smjer::Desno] && !m[Smjer::Dolje] && !m[Smjer::Dijagonalno]) {
-            prosirenaMatrica = StvoriMatricu<int>(mat.br_redova, mat.br_kolona*2);
-            for(int i = 0; i < mat.br_redova; i++) 
-                for(int j = 0; j < mat.br_kolona; j++) 
-                    prosirenaMatrica.elementi[i][j+mat.br_kolona] = m[Smjer::Desno](mat.elementi[i][j]);
-        } else if(m[Smjer::Dolje] && !m[Smjer::Desno] && !m[Smjer::Dijagonalno]) {
-            prosirenaMatrica = StvoriMatricu<int>(mat.br_redova*2, mat.br_kolona);
-            for(int i = 0; i < mat.br_redova; i++) 
-                for(int j = 0; j < mat.br_kolona; j++) 
-                    prosirenaMatrica.elementi[i+mat.br_redova][j] = m[Smjer::Dolje](mat.elementi[i][j]);
-        } else { // prosirujemo na sve strane
-            if(!m[Smjer::Desno]) m[Smjer::Desno] = [](int x){return x;};
-            if(!m[Smjer::Dolje]) m[Smjer::Dolje] = [](int x){return x;};
-            if(!m[Smjer::Dijagonalno]) m[Smjer::Dijagonalno] = [](int x){return x;};
-            prosirenaMatrica = StvoriMatricu<int>(mat.br_redova*2, mat.br_kolona*2);
-            for(int i = 0; i < mat.br_redova; i++) 
-                for(int j = 0; j < mat.br_kolona; j++) {
-                    prosirenaMatrica.elementi[i][j+mat.br_kolona] = m[Smjer::Desno](mat.elementi[i][j]);
-                    prosirenaMatrica.elementi[i+mat.br_redova][j] = m[Smjer::Dolje](mat.elementi[i][j]);
-                    prosirenaMatrica.elementi[i+mat.br_redova][j+mat.br_kolona] = m[Smjer::Dijagonalno](mat.elementi[i][j]);
-                }
+        try {
+            if (!m[Smjer::Desno] && !m[Smjer::Dolje] && !m[Smjer::Dijagonalno]){
+                return mat;
+            } else if(m[Smjer::Desno] && !m[Smjer::Dolje] && !m[Smjer::Dijagonalno]) {
+                prosirenaMatrica = StvoriMatricu<int>(mat.br_redova, mat.br_kolona*2);
+                for(int i = 0; i < mat.br_redova; i++) 
+                    for(int j = 0; j < mat.br_kolona; j++) 
+                        prosirenaMatrica.elementi[i][j+mat.br_kolona] = m[Smjer::Desno](mat.elementi[i][j]);
+            } else if(m[Smjer::Dolje] && !m[Smjer::Desno] && !m[Smjer::Dijagonalno]) {
+                prosirenaMatrica = StvoriMatricu<int>(mat.br_redova*2, mat.br_kolona);
+                for(int i = 0; i < mat.br_redova; i++) 
+                    for(int j = 0; j < mat.br_kolona; j++) 
+                        prosirenaMatrica.elementi[i+mat.br_redova][j] = m[Smjer::Dolje](mat.elementi[i][j]);
+            } else { // prosirujemo na sve strane
+                if(!m[Smjer::Desno]) m[Smjer::Desno] = [](int x){return x;};
+                if(!m[Smjer::Dolje]) m[Smjer::Dolje] = [](int x){return x;};
+                if(!m[Smjer::Dijagonalno]) m[Smjer::Dijagonalno] = [](int x){return x;};
+                prosirenaMatrica = StvoriMatricu<int>(mat.br_redova*2, mat.br_kolona*2);
+                for(int i = 0; i < mat.br_redova; i++) 
+                    for(int j = 0; j < mat.br_kolona; j++) {
+                        prosirenaMatrica.elementi[i][j+mat.br_kolona] = m[Smjer::Desno](mat.elementi[i][j]);
+                        prosirenaMatrica.elementi[i+mat.br_redova][j] = m[Smjer::Dolje](mat.elementi[i][j]);
+                        prosirenaMatrica.elementi[i+mat.br_redova][j+mat.br_kolona] = m[Smjer::Dijagonalno](mat.elementi[i][j]);
+                    }
+            }
+        } catch(...) {
+            UnistiMatricu(mat);
+            throw;
         }
 
         // prepisivanje u originalni dio
