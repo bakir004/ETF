@@ -67,10 +67,11 @@ std::vector<int> Razbrajanje(int N, int M) {
 }
 
 int OdabirKoraka(int N, int K) {
-    for (int i = 1; i <= N; i++) {
-        std::vector<int> redoslijed = Razbrajanje(N, i);
+    int teoretskiMaksimalanM = N * N; // koja je zapravo granica?
+    for (int M = 1; M <= teoretskiMaksimalanM; M++) {
+        std::vector<int> redoslijed = Razbrajanje(N, M);
         if (redoslijed[N - 1] == K)
-            return i;
+            return M;
     }
     return 0;
 }
