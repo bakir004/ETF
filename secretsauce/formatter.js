@@ -48,6 +48,6 @@ fs.readFile('input.txt', 'utf8', (err, data) => {
         output += "########################################################################\n\n"
     })
     console.log("Formatirani testovi!")
-    fs.writeFileSync('cetvrti.txt', output);
+    fs.writeFileSync('output.txt', output);
 });
 
