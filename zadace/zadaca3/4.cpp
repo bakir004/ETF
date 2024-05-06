@@ -10,8 +10,10 @@ std::vector<int> Razbrajanje(int N, int M) {
     auto it = lista.begin();
     while (!lista.empty()) {
         redoslijed.push_back(*it);
-        lista.erase(it);
-        for (int i = 0; i < M; i++) {
+        it = lista.erase(it);
+        if (it == lista.end())
+            it = lista.begin();
+        for (int i = 0; i < M - 1; i++) {
             it++;
             if (it == lista.end())
                 it = lista.begin();
@@ -21,7 +23,7 @@ std::vector<int> Razbrajanje(int N, int M) {
 }
 
 int OdabirKoraka(int N, int K) {
-    for (int i = 1; i <= N; i++) {
+    for (int i = 1; i <= N * N; i++) {
         std::vector<int> redoslijed = Razbrajanje(N, i);
         if (redoslijed[N - 1] == K)
             return i;
