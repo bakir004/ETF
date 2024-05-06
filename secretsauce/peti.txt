@@ -36,9 +36,9 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 //---------------------------------------------------------------------------------------------------------------
 // Tehnike programiranja - Akademska 2023/2024 godina
-// Zadaća 3 - Zadatak 4
+// Zadaća 3 - Zadatak 5
 // Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
-// Za sva tehnička pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
 //---------------------------------------------------------------------------------------------------------------
 
 void IspisiRedoslijedIskljucivanja(std::vector<int> v)
@@ -81,9 +81,9 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 //---------------------------------------------------------------------------------------------------------------
 // Tehnike programiranja - Akademska 2023/2024 godina
-// Zadaća 3 - Zadatak 4
+// Zadaća 3 - Zadatak 5
 // Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
-// Za sva tehnička pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
 //---------------------------------------------------------------------------------------------------------------
 
 void IspisiRedoslijedIskljucivanja(std::vector<int> v)
@@ -126,9 +126,9 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 //---------------------------------------------------------------------------------------------------------------
 // Tehnike programiranja - Akademska 2023/2024 godina
-// Zadaća 3 - Zadatak 4
+// Zadaća 3 - Zadatak 5
 // Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
-// Za sva tehnička pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
 //---------------------------------------------------------------------------------------------------------------
 
 void IspisiRedoslijedIskljucivanja(std::vector<int> v)
@@ -171,9 +171,9 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 //---------------------------------------------------------------------------------------------------------------
 // Tehnike programiranja - Akademska 2023/2024 godina
-// Zadaća 3 - Zadatak 4
+// Zadaća 3 - Zadatak 5
 // Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
-// Za sva tehnička pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
 //---------------------------------------------------------------------------------------------------------------
 
 int main() {
@@ -205,9 +205,9 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 //---------------------------------------------------------------------------------------------------------------
 // Tehnike programiranja - Akademska 2023/2024 godina
-// Zadaća 3 - Zadatak 4
+// Zadaća 3 - Zadatak 5
 // Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
-// Za sva tehnička pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
 //---------------------------------------------------------------------------------------------------------------
 
 int main() {
@@ -239,9 +239,9 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 //---------------------------------------------------------------------------------------------------------------
 // Tehnike programiranja - Akademska 2023/2024 godina
-// Zadaća 3 - Zadatak 4
+// Zadaća 3 - Zadatak 5
 // Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
-// Za sva tehnička pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
 //---------------------------------------------------------------------------------------------------------------
 
 int main() {
@@ -260,6 +260,7 @@ int main() {
             std::cout << "Neispravan izuzetak!";
         }
     }
+
 
     return 0;
 }
@@ -290,9 +291,9 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 //---------------------------------------------------------------------------------------------------------------
 // Tehnike programiranja - Akademska 2023/2024 godina
-// Zadaća 3 - Zadatak 4
+// Zadaća 3 - Zadatak 5
 // Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
-// Za sva tehnička pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
 //---------------------------------------------------------------------------------------------------------------
 
 int main() {
@@ -341,9 +342,9 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 //---------------------------------------------------------------------------------------------------------------
 // Tehnike programiranja - Akademska 2023/2024 godina
-// Zadaća 3 - Zadatak 4
+// Zadaća 3 - Zadatak 5
 // Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
-// Za sva tehnička pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
 //---------------------------------------------------------------------------------------------------------------
 
 int main() {
@@ -392,9 +393,9 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 //---------------------------------------------------------------------------------------------------------------
 // Tehnike programiranja - Akademska 2023/2024 godina
-// Zadaća 3 - Zadatak 4
+// Zadaća 3 - Zadatak 5
 // Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
-// Za sva tehnička pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
 //---------------------------------------------------------------------------------------------------------------
 
 int main() {
@@ -429,9 +430,9 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 //---------------------------------------------------------------------------------------------------------------
 // Tehnike programiranja - Akademska 2023/2024 godina
-// Zadaća 3 - Zadatak 4
+// Zadaća 3 - Zadatak 5
 // Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
-// Za sva tehnička pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
 //---------------------------------------------------------------------------------------------------------------
 
 void IspisiRedoslijedIskljucivanja(std::vector<int> v)
@@ -477,9 +478,9 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 //---------------------------------------------------------------------------------------------------------------
 // Tehnike programiranja - Akademska 2023/2024 godina
-// Zadaća 3 - Zadatak 4
+// Zadaća 3 - Zadatak 5
 // Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
-// Za sva tehnička pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
 //---------------------------------------------------------------------------------------------------------------
 
 void IspisiRedoslijedIskljucivanja(std::vector<int> v)
@@ -525,9 +526,9 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 //---------------------------------------------------------------------------------------------------------------
 // Tehnike programiranja - Akademska 2023/2024 godina
-// Zadaća 3 - Zadatak 4
+// Zadaća 3 - Zadatak 5
 // Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
-// Za sva tehnička pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
 //---------------------------------------------------------------------------------------------------------------
 
 void IspisiRedoslijedIskljucivanja(std::vector<int> v)
@@ -593,9 +594,121 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 //---------------------------------------------------------------------------------------------------------------
 // Tehnike programiranja - Akademska 2023/2024 godina
-// Zadaća 3 - Zadatak 4
+// Zadaća 3 - Zadatak 5
 // Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
-// Za sva tehnička pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+static size_t alocirano(0);
+const size_t RAM = 10 * sizeof(Distrikt);
+
+void* operator new(size_t vel)
+{
+    if (RAM < alocirano + vel) throw std::bad_alloc();
+    alocirano += vel;
+    return std::malloc(vel);
+}
+
+void operator delete (void* ptr) noexcept {
+    free(ptr);
+}
+void operator delete(void* ptr, unsigned long var) {
+    free(ptr);
+}
+
+void operator delete[] (void* ptr) noexcept {
+    free(ptr);
+}
+
+int main() {
+// AT 16: Test u slucaju nedovoljne kolicine memorije
+    {
+        int k = 0;
+        try
+        {
+            k = OdabirKoraka(13, 3);
+            std::cout << "Ovo se ne smije ispisati!" << std::endl;
+        }
+        catch (std::bad_alloc)
+        {
+            std::cout << "Nema dovoljno memorije - OK!" << std::endl;
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka!" << std::endl;
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+Izlaz:
+
+Nema dovoljno memorije - OK!
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 17: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 3 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+#include <typeinfo>
+
+int main() {
+// AT 17: Test da li struct Blok ima ocekivane elemente
+    // Napomena: Autotest je eliminatoran, ako on padne, gube se svi AT za ovaj zadatak!
+    {
+        Distrikt b;
+        std::cout << sizeof(b) << " " << typeid(b.sljedeci).name() << std::endl;
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Ovaj autotest ima vise validnih izlaza!
+Izlaz 1:
+
+8 P8Distrikt
+
+Izlaz 2:
+
+16 P8Distrikt
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 18: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 3 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
 //---------------------------------------------------------------------------------------------------------------
 
 #include <iostream>
@@ -616,7 +729,7 @@ public:
 #define list MojaLista
 
 int main() {
-// AT 16: Test da li se koristi std::list klasa
+// AT 18: Test da li se koristi std::list klasa - ne smije se koristiti!
     // Napomena: Autotest je eliminatoran, ako on padne, gube se svi AT za ovaj zadatak!
     {
         auto v = Razbrajanje(10, 4);
@@ -631,7 +744,6 @@ int main() {
 
 Izlaz:
 
-Pozvana moja lista
 Kraj!
 
 ########################################################################
