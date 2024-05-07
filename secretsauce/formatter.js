@@ -8,7 +8,7 @@ function extractSubstring(inputString) {
     return '';
 }
 
-fs.readFile('at.txt', 'utf8', (err, data) => {
+fs.readFile('input.txt', 'utf8', (err, data) => {
     if (err) { console.error(err); return; }
     data = extractSubstring(data);
     data = data.replaceAll('&quot;', '"');
