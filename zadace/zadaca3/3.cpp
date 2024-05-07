@@ -130,7 +130,7 @@ int main() {
     mapa[Smjer::Dolje] = [](int x){ return x+2; };
     mapa[Smjer::Dijagonalno] = [](int x){ return x+3; };
     Matrica<int> prosirena1 = ProsiriPremaFunkcijama(matrica, mapa, 3);
-    IspisiMatricu(matrica, 10, 5, true);
-    IspisiMatricu(prosirena1, 10, 5, true);
+    IspisiMatricu(matrica, 5, true);
+    IspisiMatricu(prosirena1, 5, true);
     return 0;
 }

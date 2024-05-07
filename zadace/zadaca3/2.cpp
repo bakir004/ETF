@@ -1,65 +1,75 @@
 #include <algorithm>
 #include <cctype>
-#include <map>
 #include <iostream>
+#include <map>
+#include <set>
 #include <stdexcept>
-#include <vector>
 #include <string>
+#include <vector>
 
 typedef std::tuple<std::string, int, int> Lokacija;
 typedef std::map<std::string, std::vector<std::string>> Knjiga;
-typedef std::map<std::string, std::vector<Lokacija>> IndeksPojmova;
+typedef std::map<std::string, std::set<Lokacija>> IndeksPojmova;
 
-void ToUpperStr(std::string &s) { std::transform(s.begin(), s.end(), s.begin(), [](char c){ return std::toupper(c); }); }
+void ToUpperStr(std::string &s) {
+    std::transform(s.begin(), s.end(), s.begin(),
+            [](char c) { return std::toupper(c); });
+}
 
 IndeksPojmova KreirajIndeksPojmova(Knjiga knjiga) {
     IndeksPojmova indeksPojmova;
-    for(auto par : knjiga) {
+    for (auto par : knjiga) {
         std::string trenutnoPoglavlje = par.first;
         std::vector<std::string> stranice = par.second;
-        for(int j = 0; j < stranice.size(); j++) {
+        for (int j = 0; j < stranice.size(); j++) {
             std::string trenutnaStranica = stranice[j];
-            int brojStranice = j+1;
+            int brojStranice = j + 1;
             ToUpperStr(trenutnaStranica);
             std::string trenutnaRijec = "";
             int pozicijaRijeci = -1;
-            for(int i = 0; i < trenutnaStranica.length(); i++) {
-                if(std::isalnum(trenutnaStranica[i])) {
-                    if(trenutnaRijec.length() == 0)
-                        pozicijaRijeci = i+1;
+            for (int i = 0; i < trenutnaStranica.length(); i++) {
+                if (std::isalnum(trenutnaStranica[i])) {
+                    if (trenutnaRijec.length() == 0)
+                        pozicijaRijeci = i + 1;
                     trenutnaRijec += trenutnaStranica[i];
-                } else if(trenutnaRijec.length() != 0) {
+                } else if (trenutnaRijec.length() != 0) {
                     Lokacija lokacija{trenutnoPoglavlje, brojStranice, pozicijaRijeci};
-                    indeksPojmova[trenutnaRijec].push_back(lokacija);
+                    indeksPojmova[trenutnaRijec].insert(lokacija);
                     trenutnaRijec = "";
                 }
             }
-            if(trenutnaRijec.length() != 0) {
+            if (trenutnaRijec.length() != 0) {
                 Lokacija lokacija{trenutnoPoglavlje, brojStranice, pozicijaRijeci};
-                indeksPojmova[trenutnaRijec].push_back(lokacija);
+                indeksPojmova[trenutnaRijec].insert(lokacija);
             }
         }
     }
     return indeksPojmova;
 }
 
-std::vector<Lokacija> PretraziIndeksPojmova(IndeksPojmova indeksPojmova, std::string rijec) {
-    for(int i = 0; i < rijec.length(); i++)
-        if(!std::isalnum(rijec[i]))
-            throw std::domain_error("Neispravna rijec!");
+std::set<Lokacija> PretraziIndeksPojmova(std::string rijec, IndeksPojmova indeksPojmova) {
+    for (int i = 0; i < rijec.length(); i++)
+        if (!std::isalnum(rijec[i]))
+            throw std::domain_error("Neispravna rijec");
 
+    ToUpperStr(rijec);
     return indeksPojmova[rijec];
 }
 
 void IspisiIndeksPojmova(IndeksPojmova indeksPojmova) {
     std::cout << "\nKreirani indeks pojmova:\n";
-    for(auto par : indeksPojmova) {
+    for (auto par : indeksPojmova) {
         std::string rijec = par.first;
         std::cout << rijec << ": ";
-        std::vector<Lokacija> lokacije = par.second;
-        for(int i = 0; i < lokacije.size(); i++) {
-            if(i != 0) std::cout << ", ";
-            std::cout << std::get<0>(lokacije[i]) << "/" << std::get<1>(lokacije[i]) << "/" << std::get<2>(lokacije[i]);
+        std::set<Lokacija> lokacije = par.second;
+        bool prviPut = true;
+        for (auto &e : lokacije) {
+            if (!prviPut)
+                std::cout << ", ";
+
+            std::cout << std::get<0>(e) << "/" << std::get<1>(e) << "/"
+                << std::get<2>(e);
+            prviPut = false;
         }
         std::cout << "\n";
     }
@@ -69,16 +79,18 @@ void IspisiIndeksPojmova(IndeksPojmova indeksPojmova) {
 int main() {
     Knjiga knjiga;
     std::string poglavlje;
-    while(true) {
+    while (true) {
         std::cout << "Unesite naziv poglavlja: ";
         std::getline(std::cin, poglavlje);
-        if(poglavlje.length() == 0) break;
+        if (poglavlje.length() == 0)
+            break;
         int brojStranice = 1;
         std::string stranica;
-        while(true) {
+        while (true) {
             std::cout << "Unesite sadrzaj stranice " << brojStranice << ": ";
             std::getline(std::cin, stranica);
-            if(stranica.length() == 0) break;
+            if (stranica.length() == 0)
+                break;
             knjiga[poglavlje].push_back(stranica);
             brojStranice++;
         }
@@ -86,28 +98,30 @@ int main() {
     IndeksPojmova indeksPojmova = KreirajIndeksPojmova(knjiga);
     IspisiIndeksPojmova(indeksPojmova);
     std::string rijec;
-    while(true) {
+    while (true) {
         std::cout << "Unesite rijec: ";
         std::getline(std::cin, rijec);
-        if(rijec.length() == 0) break;
+        if (rijec.length() == 0)
+            break;
         bool ispravno = true;
-        for(int i = 0; i < rijec.length(); i++)
-            if(!std::isalnum(rijec[i]))
+        for (int i = 0; i < rijec.length(); i++)
+            if (!std::isalnum(rijec[i]))
                 ispravno = false;
-        
-        if(!ispravno) {
+
+        if (!ispravno) {
             std::cout << "Neispravna rijec!\n";
             continue;
         }
         ToUpperStr(rijec);
-        std::vector<Lokacija> lokacije = PretraziIndeksPojmova(indeksPojmova, rijec);
-        if(lokacije.size() == 0) {
+        std::set<Lokacija> lokacije = PretraziIndeksPojmova(rijec, indeksPojmova);
+        if (lokacije.size() == 0) {
             std::cout << "Rijec nije nadjena!\n";
             continue;
         }
         std::cout << "Rijec nadjena na pozicijama: ";
-        for(Lokacija lok : lokacije)
-            std::cout << std::get<0>(lok) << "/" << std::get<1>(lok) << "/" << std::get<2>(lok) << " ";
+        for (Lokacija lok : lokacije)
+            std::cout << std::get<0>(lok) << "/" << std::get<1>(lok) << "/"
+                << std::get<2>(lok) << " ";
         std::cout << "\n";
     }
     std::cout << "Dovidjenja!";
