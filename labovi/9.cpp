@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
+// dodo komentar
 class Datum {
     int dan, mjesec, godina;
     std::vector<std::string> naziviMjeseci{"Januar", "Februar", "Mart", "April", "Maj", "Juni", "Juli", "August", "Septembar", "Oktobar", "Novembar", "Decembar"};
