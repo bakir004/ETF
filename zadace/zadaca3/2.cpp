@@ -47,8 +47,7 @@ IndeksPojmova KreirajIndeksPojmova(Knjiga knjiga) {
     return indeksPojmova;
 }
 
-std::set<Lokacija> PretraziIndeksPojmova(std::string rijec,
-        IndeksPojmova indeksPojmova) {
+std::set<Lokacija> PretraziIndeksPojmova(std::string rijec, IndeksPojmova indeksPojmova) {
     for (int i = 0; i < rijec.length(); i++)
         if (!std::isalnum(rijec[i]))
             throw std::domain_error("Neispravna rijec");
