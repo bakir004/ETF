@@ -1,3 +1,4 @@
+#include <exception>
 #include <iostream>
 #include <list>
 #include <vector>
@@ -31,6 +32,7 @@ int OdabirKoraka(int N, int K) {
         throw std::domain_error(
                 "Broj blokova i redni broj bloka su pozitivni cijeli brojevi i redni "
                 "broj bloka ne moze biti veci od broja blokova");
+
     int teoretskiMaksimalanM = N * N; // koja je zapravo granica?
     for (int M = 1; M <= teoretskiMaksimalanM; M++) {
         std::vector<int> redoslijed = Razbrajanje(N, M);
@@ -46,7 +48,11 @@ int main() {
     std::cin >> N;
     std::cout << "Unesite redni broj distrikta u kojem se nalazi restoran: ";
     std::cin >> K;
-    int M = OdabirKoraka(N, K);
-    std::cout << "Trazeni korak: " << M;
+    try {
+        int M = OdabirKoraka(N, K);
+        std::cout << "Trazeni korak: " << M;
+    } catch (std::exception &err) {
+        std::cout << err.what();
+    }
     return 0;
 }
