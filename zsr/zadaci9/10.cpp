@@ -14,8 +14,8 @@ public:
     int DajBrojPolozenih() { return brojPolozenihIspita; }
     double DajProsjek() { return prosjek; }
     void PostaviIndeks(int noviIndeks) {
-        if(noviIndeks < 0) throw std::domain_error("Indeks mora biti pozitivan broj!");
-        indeks = noviIndeks;
+    if(noviIndeks < 0) throw std::domain_error("Indeks mora biti pozitivan broj!");
+    indeks = noviIndeks;
     }
     void RegistrirajOcjenu(int ocjena) {
         if(ocjena == 5)

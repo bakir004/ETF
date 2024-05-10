@@ -31,7 +31,6 @@ int OdabirKoraka(int N, int K) {
         throw std::domain_error(
                 "Broj blokova i redni broj bloka su pozitivni cijeli brojevi i redni "
                 "broj bloka ne moze biti veci od broja blokova");
-
     int teoretskiMaksimalanM = N * N; // koja je zapravo granica?
     for (int M = 1; M <= teoretskiMaksimalanM; M++) {
         std::vector<int> redoslijed = Razbrajanje(N, M);

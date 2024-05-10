@@ -90,7 +90,11 @@ int main() {
     std::cin >> N;
     std::cout << "Unesite redni broj distrikta u kojem se nalazi restoran: ";
     std::cin >> K;
-    int M = OdabirKoraka(N, K);
-    std::cout << "Trazeni korak: " << M;
+    try {
+        int M = OdabirKoraka(N, K);
+        std::cout << "Trazeni korak: " << M;
+    } catch (std::exception &err) {
+        std::cout << err.what();
+    }
     return 0;
 }

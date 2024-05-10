@@ -19,8 +19,7 @@ auto KubnaInterpolacija(std::vector<std::pair<double, double>> tacke) {
     double x1 = tacke[0].first;
     double xn = tacke[velicina-1].first;
     return [=](double x) -> double {
-        if(x < x1 || x > xn)
-            throw std::range_error("Argument izvan opsega!");
+        if(x < x1 || x > xn) throw std::range_error("Argument izvan opsega!");
         if(x == xn) return tacke[velicina-1].second;
 
         int indexI = 2;
