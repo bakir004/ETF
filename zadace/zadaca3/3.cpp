@@ -95,11 +95,14 @@ Matrica<int> ProsiriPremaFunkcijama(Matrica<int> mat, MapaPreslikavanja m, int n
                         prosirenaMatrica.elementi[i + mat.br_redova][j] = m[Smjer::Dolje](mat.elementi[i][j]);
             } else { 
                 prosirenaMatrica = StvoriMatricu<int>(mat.br_redova * 2, mat.br_kolona * 2);
+                if(!m[Smjer::Desno]) m[Smjer::Desno] = [](int x){return x;};
+                if(!m[Smjer::Dolje]) m[Smjer::Dolje] = [](int x){return x;};
+                if(!m[Smjer::Dijagonalno]) m[Smjer::Dijagonalno] = [](int x){return x;};
                 for (int i = 0; i < mat.br_redova; i++)
                     for (int j = 0; j < mat.br_kolona; j++) {
-                        if(m[Smjer::Desno]) prosirenaMatrica.elementi[i][j + mat.br_kolona] = m[Smjer::Desno](mat.elementi[i][j]);
-                        if(m[Smjer::Dolje]) prosirenaMatrica.elementi[i + mat.br_redova][j] = m[Smjer::Dolje](mat.elementi[i][j]);
-                        if(m[Smjer::Dijagonalno]) prosirenaMatrica.elementi[i + mat.br_redova][j + mat.br_kolona] = m[Smjer::Dijagonalno](mat.elementi[i][j]);
+                        prosirenaMatrica.elementi[i][j + mat.br_kolona] = m[Smjer::Desno](mat.elementi[i][j]);
+                        prosirenaMatrica.elementi[i + mat.br_redova][j] = m[Smjer::Dolje](mat.elementi[i][j]);
+                        prosirenaMatrica.elementi[i + mat.br_redova][j + mat.br_kolona] = m[Smjer::Dijagonalno](mat.elementi[i][j]);
                     }
             }
         } catch (...) {

@@ -83,15 +83,16 @@ int OdabirKoraka(int N, int K) {
 
 int main() {
     int N = 10, K = 3;
-    std::cout << "Unesite broj distrikta u gradu: ";
-    std::cin >> N;
-    std::cout << "Unesite redni broj distrikta u kojem se nalazi restoran: ";
-    std::cin >> K;
-    try {
-        int M = OdabirKoraka(N, K);
-        std::cout << "Trazeni korak: " << M;
-    } catch (std::exception &err) {
-        std::cout << err.what();
-    }
+    Razbrajanje(8, 3);
+    // std::cout << "Unesite broj distrikta u gradu: ";
+    // std::cin >> N;
+    // std::cout << "Unesite redni broj distrikta u kojem se nalazi restoran: ";
+    // std::cin >> K;
+    // try {
+    //     int M = OdabirKoraka(N, K);
+    //     std::cout << "Trazeni korak: " << M;
+    // } catch (std::exception &err) {
+    //     std::cout << err.what();
+    // }
     return 0;
 }
