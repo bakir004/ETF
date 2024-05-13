@@ -11,11 +11,11 @@ class Student {
     int indeks;
     int godinaStudija;
 public:
-    Student(): ime(""), prezime(""), ocjene({0,0,0,0,0,0,0,0,0,0}), indeks(0), godinaStudija(0) {}
     std::string DajPrezime() const { return prezime; }
     std::string DajIme() const { return ime; }
     int DajGodinaStudija() const { return godinaStudija; }
     int DajIndeks() const { return indeks; }
+    Student(): ime(""), prezime(""), ocjene({0,0,0,0,0,0,0,0,0,0}), indeks(0), godinaStudija(0) {}
     int DajOcjenu(int redniBrojKursa) const {
         if(redniBrojKursa < 1 || redniBrojKursa > brojOcjena)
             throw std::domain_error("Nekorektni parametri");
