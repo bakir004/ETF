@@ -11,10 +11,11 @@ class Student {
     int indeks;
     int godinaStudija;
 public:
-    std::string DajPrezime() const { return prezime; }
-    std::string DajIme() const { return ime; }
-    int DajGodinaStudija() const { return godinaStudija; }
-    int DajIndeks() const { return indeks; }
+    int DajGodinaStudija() { return godinaStudija; }
+    int DajIndeks() { return indeks; }
+    std::array<int,brojOcjena> DajOcjene() { return ocjene; }
+    std::string DajPrezime() { return prezime; }
+    std::string DajIme() { return ime; }
     Student(): ime(""), prezime(""), ocjene({0,0,0,0,0,0,0,0,0,0}), indeks(0), godinaStudija(0) {}
     int DajOcjenu(int redniBrojKursa) const {
         if(redniBrojKursa < 1 || redniBrojKursa > brojOcjena)
