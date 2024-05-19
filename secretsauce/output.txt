@@ -2,244 +2,145 @@ Test 1: Nije skriven - Koristi vasu main() funkciju i stdin ulaz
 
 Ulaz:
 
+1
+5
+1 3
+2 5
+4 4
+5 2
+7 1
+1.5
+2.5
+4.5
+0.3
+7
+6
+kraj
+Izlaz:
+
+Odaberite opciju (1 - unos cvorova, 2 - aproksimacija): 
+Unesite broj cvorova: 
+Unesite cvorove kao parove x y: 
+Unesite argument (ili "kraj" za kraj): 
+f(1.5) = 4.26042
+Unesite argument (ili "kraj" za kraj): 
+f(2.5) = 5.28125
+Unesite argument (ili "kraj" za kraj): 
+f(4.5) = 3
+Unesite argument (ili "kraj" za kraj): 
+Argument izvan opsega!
+Unesite argument (ili "kraj" za kraj): 
+f(7) = 1
+Unesite argument (ili "kraj" za kraj): 
+f(6) = 0.6
+Unesite argument (ili "kraj" za kraj):
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 2: Nije skriven - Koristi vasu main() funkciju i stdin ulaz
+
+Ulaz:
+
+2
+0 1 0.2
+0.9
+1.5
+0.3
+kraj
+Izlaz:
+
+Odaberite opciju (1 - unos cvorova, 2 - aproksimacija): 
+Unesite krajeve intervala i korak: 
+Unesite argument (ili "kraj" za kraj): 
+f(0.9) = 2.23518 fapprox(0.9) = 2.23518
+Unesite argument (ili "kraj" za kraj): 
+Argument izvan opsega!
+Unesite argument (ili "kraj" za kraj): 
+f(0.3) = 0.647884 fapprox(0.3) = 0.647955
+Unesite argument (ili "kraj" za kraj): 
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 3: Nije skriven - Koristi vasu main() funkciju i stdin ulaz
+
+Ulaz:
+
+1
+3
+0 0
+1 1
 2 2
-3 -1 0 5
-2 3
-4 3 15 0 -5 2
-
-Ovaj autotest ima vise validnih izlaza!
-Izlaz 1:
-
-Unesite dimenzije prve matrice: Unesite elemente prve matrice: Unesite dimenzije druge matrice: Unesite elemente druge matrice: Njihov Kroneckerov proizvod glasi:
- 12   9  45  -4  -3 -15 
-  0 -15   6   0   5  -2 
-  0   0   0  20  15  75 
-  0   0   0   0 -25  10
-
-Izlaz 2:
-
-Unesite dimenzije prve matrice: Unesite elemente prve matrice: Unesite dimenzije druge matrice: Unesite elemente druge matrice: Njihov Kroneckerov proizvod glasi:
- 12   9  45  -4  -3 -15 
-  0 -15   6  -0   5  -2 
-  0   0   0  20  15  75 
-  0  -0   0   0 -25  10
-
-########################################################################
-########################################################################
-########################################################################
-
-Test 2: Skriven
-Koristi svoju main() funckiju
-
-Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
-========================================================================
-
-// Vas kod ide ovdje
-
-int main() {
-    std::vector<std::vector<int>> mat1 = {{1, 2}, {3}};
-    std::vector<std::vector<int>> mat2 = {{4, 5}, {6, 7}};
-    try
-    {
-        auto result = GeneraliziraniKroneckerovProizvod(mat1, mat2, [](int x, int y)
-                                                        { return x * y; });
-    }
-    catch (std::domain_error &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-
-    mat1 = std::vector<std::vector<int>> {{1, 2}, {3, 4}};
-    mat2 = std::vector<std::vector<int>>{{5}, {6, 7}};
-    try
-    {
-        auto result = GeneraliziraniKroneckerovProizvod(mat1, mat2, [](int x, int y)
-                                                        { return x * y; });
-    }
-    catch (std::domain_error &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-
-    mat1 = std::vector<std::vector<int>> {};
-    mat2 = std::vector<std::vector<int>>{};
-    try
-    {
-        auto result = GeneraliziraniKroneckerovProizvod(mat1, mat2, [](int x, int y)
-                                                        { return x * y; });
-    }
-    catch (std::domain_error &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-
-    return 0;
-}
-
-========================================================================
-
+2
 Izlaz:
 
-Prvi parametar nema formu matrice
-Drugi parametar nema formu matrice
-Parametri nemaju formu matrice
+Odaberite opciju (1 - unos cvorova, 2 - aproksimacija): 
+Unesite broj cvorova: 
+Unesite cvorove kao parove x y: 
+Unesite argument (ili "kraj" za kraj): 
+Nedovoljan broj cvorova
 
 ########################################################################
 ########################################################################
 ########################################################################
 
-Test 3: Skriven
-Koristi svoju main() funckiju
+Test 4: Nije skriven - Koristi vasu main() funkciju i stdin ulaz
 
-Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
-========================================================================
+Ulaz:
 
-// Vas kod ide ovdje
-
-int main() {
-    std::vector<int> m1[3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-    std::vector<int> m2[3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-
-    auto result = GeneraliziraniKroneckerovProizvod(m1, m2, [](int x, int y)
-                                                    { return x * y; });
-    for (const auto &row : result)
-    {
-        for (const auto &elem : row)
-            std::cout << elem << ' ';
-        std::cout << '\n';
-    }
-
-    return 0;
-}
-
-========================================================================
-
+1
+4
+1 1
+0 2
+3 3
+0 4
+5
 Izlaz:
 
-1 2 3 2 4 6 3 6 9
-4 5 6 8 10 12 12 15 18
-7 8 9 14 16 18 21 24 27
-4 8 12 5 10 15 6 12 18
-16 20 24 20 25 30 24 30 36
-28 32 36 35 40 45 42 48 54 
-7 14 21 8 16 24 9 18 27
-28 35 42 32 40 48 36 45 54
-49 56 63 56 64 72 63 72 81
+Odaberite opciju (1 - unos cvorova, 2 - aproksimacija): 
+Unesite broj cvorova: 
+Unesite cvorove kao parove x y: 
+Unesite argument (ili "kraj" za kraj): 
+Neispravni cvorovi
 
 ########################################################################
 ########################################################################
 ########################################################################
 
-Test 4: Skriven
-Koristi svoju main() funckiju
+Test 5: Nije skriven - Koristi vasu main() funkciju i stdin ulaz
 
-Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
-========================================================================
+Ulaz:
 
-// Vas kod ide ovdje
-
-int main() {
-    std::vector<std::vector<int>> mat1 = {{3, -1}, {0, 5}};
-    std::vector<std::vector<int>> mat2 = {{4, 3, 15}, {0, -5, 2}};
-    try
-    {
-        auto result = GeneraliziraniKroneckerovProizvod(mat1, mat2, [](int x, int y)
-                                                        { if (y == 0) throw std::runtime_error("Dijeljenje s nulom");
-                                                            return x / y; });
-    }
-    catch (std::runtime_error &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-
-    return 0;
-}
-
-========================================================================
-
+2
+2 1 0.5
+3 
 Izlaz:
 
-Neocekivani problemi pri racunanju
+Odaberite opciju (1 - unos cvorova, 2 - aproksimacija): 
+Unesite krajeve intervala i korak: 
+Unesite argument (ili "kraj" za kraj): 
+Nekorektni parametri
 
 ########################################################################
 ########################################################################
 ########################################################################
 
-Test 5: Skriven
-Koristi svoju main() funckiju
+Test 6: Nije skriven - Koristi vasu main() funkciju i stdin ulaz
 
-Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
-========================================================================
+Ulaz:
 
-// Vas kod ide ovdje
-
-int main() {
-    int m = 2, n = 3;
-    int p = 3, q = 4;
-    int mat1[2][3] = {{3, 5, 2}, {4, 0, -1}};
-    int mat2[3][4] = {{1, 4, -2, 3}, {0, 5, 4, 1}, {2, 0, 0, 3}};
-
-    std::vector<std::vector<int>> kronekerovProizvod = GeneraliziraniKroneckerovProizvod(mat1, mat2, [](int x, int y)
-                                                                                         { return x * y; });
-
-    for (int i = 0; i < m * p; i++)
-    {
-        for (int j = 0; j < n * q; j++)
-        {
-            std::cout << kronekerovProizvod[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-
-    return 0;
-}
-
-========================================================================
-
+2
+1 2 0
+3
 Izlaz:
 
-3 12 -6 9 5 20 -10 15 2 8 -4 6
-0 15 12 3 0 25 20 5 0 10 8 2
-6 0 0 9 10 0 0 15 4 0 0 6
-4 16 -8 12 0 0 0 0 -1 -4 2 -3
-0 20 16 4 0 0 0 0 0 -5 -4 -1
-8 0 0 12 0 0 0 0 -2 0 0 -3
-
-########################################################################
-########################################################################
-########################################################################
-
-Test 6: Nije skriven
-Koristi svoju main() funckiju
-
-Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
-========================================================================
-
-// Vas kod ide ovdje
-
-int main() {
-    std::deque<std::deque<int>> mat1 = {{3, -1}, {1, 5}};
-    std::deque<std::deque<double>> mat2 = {{4.2, 3.1, 15.4}, {1.02, -5.8, 2.6}};
-    auto result = GeneraliziraniKroneckerovProizvod(mat1, mat2, [](int x, double y)
-                                                    { return x + y; });
-    for (const auto &row : result)
-    {
-        for (const auto &elem : row)
-            std::cout << elem << ' ';
-        std::cout << '\n';
-    }
-
-    return 0;
-}
-
-========================================================================
-
-Izlaz:
-
-7.2 6.1 18.4 3.2 2.1 14.4
-4.02 -2.8 5.6 0.02 -6.8 1.6
-5.2 4.1 16.4 9.2 8.1 20.4
-2.02 -4.8 3.6 6.02 -0.8 7.6
+Odaberite opciju (1 - unos cvorova, 2 - aproksimacija): 
+Unesite krajeve intervala i korak: 
+Unesite argument (ili "kraj" za kraj): 
+Nekorektni parametri
 
 ########################################################################
 ########################################################################
@@ -253,17 +154,28 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 // Vas kod ide ovdje
 
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
 int main() {
-    int mat1[2][2] = {{3, -1}, {4, 5}};
-    std::deque<std::deque<double>> mat2 = {{4.5, 3.5, 15.5}, {0.5, -5.5, 2.5}};
-    auto result = GeneraliziraniKroneckerovProizvod(mat1, mat2, [](int x, double y)
-                                                    { return x * y; });
-    for (const auto &row : result)
+{
+    std::vector<std::pair<double,double>> v = {{-1,1},{0,0},{1,1},{2,16},{3,81},{4,256}};
+    try
     {
-        for (const auto &elem : row)
-            std::cout << elem << ' ';
-        std::cout << '\n';
+        auto f = KubnaInterpolacija(v);
+        double fx = f(2.5);
+        std::cout<<"f(2.5) = " << fx<<std::endl;
     }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
 
     return 0;
 }
@@ -272,10 +184,8 @@ int main() {
 
 Izlaz:
 
-13.5 10.5 46.5 -4.5 -3.5 -15.5 
-1.5 -16.5 7.5 -0.5 5.5 -2.5
-18 14 62 22.5 17.5 77.5
-2 -22 10 2.5 -27.5 12.5
+f(2.5) = 38.5
+
 
 ########################################################################
 ########################################################################
@@ -289,53 +199,28 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 // Vas kod ide ovdje
 
-#include <list>
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
 
-template <typename TipElemenata>
-class Pristupnik
-{
-    std::list<TipElemenata> &red;
-
-public:
-    Pristupnik(std::list<TipElemenata> &red) : red(red) {}
-    TipElemenata &operator[](int j) { return *std::next(red.begin(), j); }
-    TipElemenata operator[](int j) const { return *std::next(red.begin(), j); }
-    auto begin() const { return red.begin(); }
-    auto end() const { return red.end(); }
-};
-
-template <typename TipElemenata>
-class SugavaMatrica
-{
-    std::list<std::list<TipElemenata>> mat;
-
-public:
-    SugavaMatrica(int m = 0, int n = 0) : mat(m, std::list<TipElemenata>(n)) {}
-    Pristupnik<TipElemenata> operator[](int i) { return Pristupnik<TipElemenata>(*std::next(mat.begin(), i)); }
-    const Pristupnik<TipElemenata> operator[](int i) const { return Pristupnik<TipElemenata>(*std::next(mat.begin(), i)); }
-    auto begin() const { return mat.begin(); }
-    auto end() const { return mat.end(); }
-};
 
 int main() {
-    SugavaMatrica<int> m1(3, 3);
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            m1[i][j] = (i + 1) * (j + 1);
-
-    SugavaMatrica<int> m2(3, 3);
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            m2[i][j] = (i + 1) + (j + 1);
-
-    auto result = GeneraliziraniKroneckerovProizvod(m1, m2, [](int x, int y)
-                                                    { return x * y; });
-    for (const auto &row : result)
+{
+    std::vector<std::pair<double,double>> v = {{-1,1},{0,0},{1,1},{2,16},{3,81},{4,256}};
+    try
     {
-        for (const auto &elem : row)
-            std::cout << elem << ' ';
-        std::cout << '\n';
+        auto f = KubnaInterpolacija(v);
+        double fx = f(-0.5);
+        std::cout<<"f(-0.5) = " << fx<<std::endl;
     }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
 
     return 0;
 }
@@ -344,15 +229,8 @@ int main() {
 
 Izlaz:
 
-2 3 4 4 6 8 6 9 12
-3 4 5 6 8 10 9 12 15
-4 5 6 8 10 12 12 15 18
-4 6 8 8 12 16 12 18 24
-6 8 10 12 16 20 18 24 30
-8 10 12 16 20 24 24 30 36
-6 9 12 12 18 24 18 27 36
-9 12 15 18 24 30 27 36 45
-12 15 18 24 30 36 36 45 54
+f(-0.5) = 1
+
 
 ########################################################################
 ########################################################################
@@ -366,53 +244,28 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 // Vas kod ide ovdje
 
-#include <list>
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
 
-template <typename TipElemenata>
-class Pristupnik
-{
-    std::list<TipElemenata> &red;
-
-public:
-    Pristupnik(std::list<TipElemenata> &red) : red(red) {}
-    TipElemenata &operator[](int j) { return *std::next(red.begin(), j); }
-    TipElemenata operator[](int j) const { return *std::next(red.begin(), j); }
-    auto begin() const { return red.begin(); }
-    auto end() const { return red.end(); }
-};
-
-template <typename TipElemenata>
-class SugavaMatrica
-{
-    std::list<std::list<TipElemenata>> mat;
-
-public:
-    SugavaMatrica(int m = 0, int n = 0) : mat(m, std::list<TipElemenata>(n)) {}
-    Pristupnik<TipElemenata> operator[](int i) { return Pristupnik<TipElemenata>(*std::next(mat.begin(), i)); }
-    const Pristupnik<TipElemenata> operator[](int i) const { return Pristupnik<TipElemenata>(*std::next(mat.begin(), i)); }
-    auto begin() const { return mat.begin(); }
-    auto end() const { return mat.end(); }
-};
 
 int main() {
-    SugavaMatrica<int> m1(3, 3);
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            m1[i][j] = (i + 1) * (j + 1);
-
-    SugavaMatrica<double> m2(3, 3);
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            m2[i][j] = (i + 2.5) + (j + 1);
-
-    auto result = GeneraliziraniKroneckerovProizvod(m1, m2, [](int x, double y)
-                                                    { return x + y; });
-    for (const auto &row : result)
+{
+    std::vector<std::pair<double,double>> v = {{0,3},{-1,-3.5},{5,2},{3,16},{4,8},{-3,15}};
+    try
     {
-        for (const auto &elem : row)
-            std::cout << elem << ' ';
-        std::cout << '\n';
+        auto f = KubnaInterpolacija(v);
+        double fx = f(3.4);
+        std::cout<<"f(3.4) = " << fx<<std::endl;
     }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
 
     return 0;
 }
@@ -421,15 +274,526 @@ int main() {
 
 Izlaz:
 
-4.5 5.5 6.5 5.5 6.5 7.5 6.5 7.5 8.5
-5.5 6.5 7.5 6.5 7.5 8.5 7.5 8.5 9.5
-6.5 7.5 8.5 7.5 8.5 9.5 8.5 9.5 10.5
-5.5 6.5 7.5 7.5 8.5 9.5 9.5 10.5 11.5
-6.5 7.5 8.5 8.5 9.5 10.5 10.5 11.5 12.5
-7.5 8.5 9.5 9.5 10.5 11.5 11.5 12.5 13.5
-6.5 7.5 8.5 9.5 10.5 11.5 12.5 13.5 14.5
-7.5 8.5 9.5 10.5 11.5 12.5 13.5 14.5 15.5
-8.5 9.5 10.5 11.5 12.5 13.5 14.5 15.5 16.5
+f(3.4) = 12.8736
+
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 10: Skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+{
+    std::vector<std::pair<double,double>> v = {{0,3},{-1,-3.5},{5,2},{3,16},{4,8},{-3,15}};
+    try
+    {
+        auto f = KubnaInterpolacija(v);
+        double fx = f(5);
+        std::cout<<"f(5) = " << fx<<", f(4.4) = "<<f(4.4)<<std::endl;
+    }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
+
+    return 0;
+}
+
+========================================================================
+
+Izlaz:
+
+f(5) = 2, f(4.4) = 5.0856
+
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 11: Skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+{
+    std::vector<std::pair<double,double>> v = {{0,3},{-1,-3.5},{5,2}};
+    try
+    {
+        auto f = KubnaInterpolacija(v);
+        double fx = f(5);
+        std::cout<<"f(5) = " << fx<<std::endl;
+    }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
+
+    return 0;
+}
+
+========================================================================
+
+Izlaz:
+
+Nedovoljan broj cvorova!
+
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 12: Skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+{
+    std::vector<std::pair<double,double>> v = {{0,3},{-1,-3.5},{0,2},{3,4}};
+    try
+    {
+        auto f = KubnaInterpolacija(v);
+        double fx = f(5);
+        std::cout<<"f(5) = " << fx<<std::endl;
+    }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
+
+    return 0;
+}
+
+========================================================================
+
+Izlaz:
+
+Neispravni cvorovi!
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 13: Skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+{
+    std::vector<std::pair<double,double>> v = {{0,3},{-1,-3.5},{1,2},{3,4}};
+    try
+    {
+        auto f = KubnaInterpolacija(v);
+        double fx = f(-5);
+        std::cout<<"f(-5) = " << fx<<std::endl;
+    }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
+
+    return 0;
+}
+
+========================================================================
+
+Izlaz:
+
+Argument izvan opsega!
+
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 14: Skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+{
+    try
+    {
+        std::cout<<"funkcija: x*x, u tacki 1.5"<<std::endl;
+        auto f = KubnaInterpolacija([](double x){return x*x;},-0.5,1.73,0.1);
+        double fx = f(1.5);
+        std::cout<<"stvarna vrijednost: "<<1.5*1.5<<", aproksimirana: " << fx<<std::endl;
+    }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
+
+    return 0;
+}
+
+========================================================================
+
+Izlaz:
+
+funkcija: x*x, u tacki 1.5
+stvarna vrijednost: 2.25, aproksimirana: 2.25
+
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 15: Skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+{
+    try
+    {
+        std::cout<<"funkcija: x^4, u tacki 1.45"<<std::endl;
+        auto f = KubnaInterpolacija([](double x){return x*x*x*x;},0,1.5,0.1);
+        double fx = f(1.45);
+        std::cout<<"stvarna vrijednost: "<<1.45*1.45*1.45*1.45<<", aproksimirana: " << fx<<std::endl;
+        std::cout<<"funkcija: x^4, u tacki 1.5"<<std::endl;
+        auto f1 = KubnaInterpolacija([](double x){return x*x*x*x;},0,1.5,0.1);
+        double fx1 = f1(1.5);
+        std::cout<<"stvarna vrijednost: "<<1.5*1.5*1.5*1.5<<", aproksimirana: " << fx1<<std::endl;
+    }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
+
+    return 0;
+}
+
+========================================================================
+
+Izlaz:
+
+funkcija: x^4, u tacki 1.45
+stvarna vrijednost: 4.42051, aproksimirana: 4.4206
+funkcija: x^4, u tacki 1.5
+stvarna vrijednost: 5.0625, aproksimirana: 5.0625
+
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 16: Skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+{
+    try
+    {
+
+        auto f = KubnaInterpolacija([](double x){return x*x;},1,0,-0.1);
+        double fx = f(1.5);
+        std::cout<<"funkcija: x*x, u tacki 1.5"<<std::endl;
+        std::cout<<"stvarna vrijednost: "<<1.5*1.5<<", aproksimirana: " << fx<<std::endl;
+    }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
+
+    return 0;
+}
+
+========================================================================
+
+Izlaz:
+
+Nekorektni parametri!
+
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 17: Skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+{
+    try
+    {
+        auto f = KubnaInterpolacija([](double x){return x*x;},-0.5,1.73,0.1);
+        double fx = f(-1.5);
+        std::cout<<"funkcija: x*x, u tacki -1.5"<<std::endl;
+        std::cout<<"stvarna vrijednost: "<<(-1.5)*(-1.5)<<", aproksimirana: " << fx<<std::endl;
+    }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
+
+    return 0;
+}
+
+========================================================================
+
+Izlaz:
+
+Argument izvan opsega!
+
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 18: Skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+{
+    try
+    {
+        auto f = KubnaInterpolacija([](double x){return 1/x+3;},-3,6.4,0.4);
+        double fx = f(-1.5);
+        std::cout<<"funkcija: 3+1/x, u tacki -1.5"<<std::endl;
+        std::cout<<"stvarna vrijednost: "<<3+1/(-1.5)<<", aproksimirana: " << fx<<std::endl;
+    }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
+
+    return 0;
+}
+
+========================================================================
+
+Izlaz:
+
+funkcija: 3+1/x, u tacki -1.5
+stvarna vrijednost: 2.33333, aproksimirana: 2.3346
+
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 19: Skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+{
+    try
+    {
+        double a=3;
+        auto f = KubnaInterpolacija([a](double x){return 1/x+a;},-3,6.4,0.4);
+        double fx = f(-1.5);
+        std::cout<<"funkcija: 3+1/x, u tacki -1.5"<<std::endl;
+        std::cout<<"stvarna vrijednost: "<<a+1/(-1.5)<<", aproksimirana: " << fx<<std::endl;
+    }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
+
+    return 0;
+}
+
+========================================================================
+
+Izlaz:
+
+funkcija: 3+1/x, u tacki -1.5
+stvarna vrijednost: 2.33333, aproksimirana: 2.3346
+
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 20: Skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 3 - Zadatak 1
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 1, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+{
+    try
+    {
+        auto f = KubnaInterpolacija(sqrt,0,25,0.5);
+        double fx = f(9);
+        std::cout<<"funkcija: sqrt(x), u tacki 9"<<std::endl;
+        std::cout<<"stvarna vrijednost: "<<sqrt(9)<<", aproksimirana: " << fx<<std::endl;
+        auto f1 = KubnaInterpolacija(udvostruci,0,25,0.5);
+        double fx1 = f1(9);
+        std::cout<<"funkcija: 2x, u tacki 9"<<std::endl;
+        std::cout<<"stvarna vrijednost: "<<2*9<<", aproksimirana: " << fx1<<std::endl;
+    }
+    catch(std::exception &e)
+    {
+        std::cout << e.what()<<"!"<<std::endl;
+    }
+}
+
+    return 0;
+}
+
+double udvostruci (double x)
+{
+    return 2*x;
+}
+
+========================================================================
+
+Izlaz:
+
+funkcija: sqrt(x), u tacki 9
+stvarna vrijednost: 3, aproksimirana: 3
+funkcija: 2x, u tacki 9
+stvarna vrijednost: 18, aproksimirana: 18
+
 
 ########################################################################
 ########################################################################
