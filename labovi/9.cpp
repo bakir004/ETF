@@ -1,5 +1,6 @@
 #include <iomanip>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 // dodo komentar
@@ -24,6 +25,37 @@ class Datum {
         return dani;
     }
 public:
+    // konstruktori
+    Datum(): dan(1), mjesec(1), godina(1) {}
+    Datum(int dan, int mjesec, int godina) {
+        try {
+            PostaviDatum(dan, mjesec, godina);
+        } catch(std::domain_error) {
+            throw std::logic_error("Parametri nisu u dozvoljenom opsegu!\n");
+        }
+    }
+    explicit Datum(int brojDana) {
+        if(brojDana < 0) throw std::logic_error("Parametar ne smije biti negativan!\n");
+        dan = 1;
+        mjesec = 1;
+        godina = 1;
+        this->PomjeriDatumZa(brojDana);
+    }
+    Datum(int brojDana, int godina) {
+        if(brojDana < 0 || brojDana >= 365 + this->PrestupnaGodina(godina))
+            throw std::logic_error("Broj dana mora biti u opsegu 0-365 (366 ako prestupna)!\n");
+        dan = 1;
+        mjesec = 1;
+        this->godina = godina;
+        this->PomjeriDatumZa(brojDana);
+    }
+    Datum(const Datum &drugi) {
+        dan = drugi.DajDan();
+        mjesec = drugi.DajMjesec();
+        godina = drugi.DajGodinu();
+    }
+    // end konstruktori
+
     void PostaviDatum(int dan, int mjesec, int godina) {
         if(godina % 4 == 0 && godina % 100 != 0 || godina % 400 == 0)
             broj_dana[1]++;
@@ -82,23 +114,23 @@ public:
         std::cout << std::setw(2) << std::setfill('0') << dan << ". " << DajNazivMjeseca() << " " << std::setw(4) << std::setfill('0') << godina << ".\n";
     }
     bool VeciOd(const Datum &drugi) const {
-        if(godina == drugi.godina) {
-            if(mjesec == drugi.mjesec)
-                return dan > drugi.dan;
-            return mjesec > drugi.mjesec;
+        if(godina == drugi.DajGodinu()) {
+            if(mjesec == drugi.DajMjesec())
+                return dan > drugi.DajDan();
+            return mjesec > drugi.DajMjesec();
         }
-        return godina > drugi.godina;
+        return godina > drugi.DajGodinu();
     }
     bool ManjiOd(const Datum &drugi) const {
-        if(godina == drugi.godina) {
-            if(mjesec == drugi.mjesec)
-                return dan < drugi.dan;
-            return mjesec < drugi.mjesec;
+        if(godina == drugi.DajGodinu()) {
+            if(mjesec == drugi.DajMjesec())
+                return dan < drugi.DajDan();
+            return mjesec < drugi.DajMjesec();
         }
-        return godina < drugi.godina;
+        return godina < drugi.DajGodinu();
     }
     bool JednakSa(const Datum &drugi) const {
-        return dan == drugi.dan && mjesec == drugi.mjesec && godina == drugi.godina;
+        return dan == drugi.DajDan() && mjesec == drugi.DajMjesec() && godina == drugi.DajGodinu();
     }
     void SaberiSa(const Datum &d) {
         dan += d.dan;
@@ -156,19 +188,42 @@ void SaberiDatume(Datum &d, int brojDana) {
 }
 
 int main() {
-    Datum d1, d2;
-    d1.PostaviDatum(9, 5, 2024);
-    d2.PostaviDatum(9, 5, 2024);
-
-    d1.IspisiDatumSNazivom();
-    d2.IspisiDatumSNazivom();
-    std::cout << "\nDan u sedmici datuma ";
-    d2.IspisiDatumSNazivom();
-    std::cout << "je " << d2.DajDanUSedmici() << "\n\n";
-    std::cout << "Jednaki d1 i d2 - " << std::boolalpha << JednakiDatumi(d1, d2) << "\n";
-    d2.PomjeriDatumZa(5);
-    std::cout << "Pomjeramo za 5 dana: ";
-    d2.IspisiDatumSNazivom();
-    std::cout << "Njihova razlika je: " << ProtekloDana(d1, d2) << "\n";
+    // Datum d1, d2;
+    // d1.PostaviDatum(9, 5, 2024);
+    // d2.PostaviDatum(9, 5, 2024);
+    //
+    // d1.IspisiDatumSNazivom();
+    // d2.IspisiDatumSNazivom();
+    // std::cout << "\nDan u sedmici datuma ";
+    // d2.IspisiDatumSNazivom();
+    // std::cout << "je " << d2.DajDanUSedmici() << "\n\n";
+    // std::cout << "Jednaki d1 i d2 - " << std::boolalpha << JednakiDatumi(d1, d2) << "\n";
+    // d2.PomjeriDatumZa(5);
+    // std::cout << "Pomjeramo za 5 dana: ";
+    // d2.IspisiDatumSNazivom();
+    // std::cout << "Njihova razlika je: " << ProtekloDana(d1, d2) << "\n";
+    Datum d1;
+    d1.IspisiDatum();
+    Datum d2(27,2,2004);
+    d2.IspisiDatum();
+    try {
+        Datum d3(29,2,1900);
+    } catch(std::logic_error err) {
+        std::cout << err.what();
+    }
+    Datum d4(60);
+    d4.IspisiDatum();
+    Datum d5(60, 2000);
+    d5.IspisiDatum();
+    try {
+        Datum d5(367, 2000);
+        d5.IspisiDatum();
+    } catch(std::logic_error err) {
+        std::cout << err.what();
+    }
+    Datum d6(d2);
+    Datum d7 = d6;
+    d6.IspisiDatum();
+    d7.IspisiDatum();
     return 0;
 }
