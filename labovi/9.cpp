@@ -205,6 +205,7 @@ public:
             for(int i = 0; i < ukupno; i++)
                 delete this->datumi[i];
             delete[] this->datumi;
+            std::fill(std::begin(poMjesecima), std::end(poMjesecima), 0);
             throw;
         }
     }
