@@ -1,9 +1,10 @@
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 #include <vector>
-// dodo komentar
+
 class Datum {
     int dan, mjesec, godina;
     std::vector<std::string> naziviMjeseci{"Januar", "Februar", "Mart", "April", "Maj", "Juni", "Juli", "August", "Septembar", "Oktobar", "Novembar", "Decembar"};
@@ -108,7 +109,7 @@ public:
         return naziviMjeseci[mjesec-1];
     }
     void IspisiDatum() const {
-        std::cout << std::setw(2) << std::setfill('0') << dan << "." << std::setw(2) << std::setfill('0') << mjesec << "." << std::setw(4) << std::setfill('0') << godina << ".\n";
+        std::cout << std::setw(2) << std::setfill('0') << dan << "." << std::setw(2) << std::setfill('0') << mjesec << "." << std::setw(4) << std::setfill('0') << godina;
     }
     void IspisiDatumSNazivom() const {
         std::cout << std::setw(2) << std::setfill('0') << dan << ". " << DajNazivMjeseca() << " " << std::setw(4) << std::setfill('0') << godina << ".\n";
@@ -187,7 +188,160 @@ void SaberiDatume(Datum &d, int brojDana) {
     }
 }
 
+class Praznici {
+    int ukupno, poMjesecima[12]{};
+    Datum **datumi;
+public:
+    explicit Praznici(int maks): ukupno(maks), datumi(new Datum*[ukupno]{}) {
+        std::fill(std::begin(poMjesecima), std::end(poMjesecima), 0);
+    };
+    Praznici(std::vector<Datum> datumi): ukupno(datumi.size()), datumi(new Datum*[ukupno]{}) {
+        try {
+            for(int i = 0; i < ukupno; i++) {
+                this->datumi[i] = new Datum(datumi[i]);
+                this->poMjesecima[datumi[i].DajMjesec()-1]++;
+            }
+        } catch(...) {
+            for(int i = 0; i < ukupno; i++)
+                delete this->datumi[i];
+            delete[] this->datumi;
+            throw;
+        }
+    }
+    Praznici(const Praznici &p) {
+        ukupno = p.ukupno;
+        std::copy(std::begin(p.poMjesecima), std::end(p.poMjesecima), std::begin(poMjesecima));
+        Datum **noviDatumi = new Datum*[ukupno]{};
+        try {
+            for(int i = 0; i < ukupno; i++) {
+                if(p.datumi[i] == nullptr)
+                    noviDatumi[i] = nullptr;
+                else
+                    noviDatumi[i] = new Datum(*(p.datumi[i]));
+            }
+        } catch(...) {
+            for(int i = 0; i < ukupno; i++)
+                delete noviDatumi[i];
+            delete[] noviDatumi;
+            throw;
+        }
+        datumi = noviDatumi;
+    }
+    Praznici(Praznici &&p) {
+        if(ukupno != p.ukupno) throw std::domain_error("Nesaglasne dimenzije");
+        std::copy(std::begin(p.poMjesecima), std::end(p.poMjesecima), std::begin(poMjesecima));
+        datumi = p.datumi;
+        p.datumi = nullptr;
+        p.ukupno = 0;
+    }
+    Praznici &operator =(const Praznici &p) {
+        if(ukupno != p.ukupno) throw std::domain_error("Nasaglasne dimenzije");
+        // brisanje postojeceg
+        for(int i = 0; i < ukupno; i++)
+            delete datumi[i];
+        delete[] datumi;
+
+        // duboko kopiranje iz novog
+        ukupno = p.ukupno;
+        std::copy(std::begin(p.poMjesecima), std::end(p.poMjesecima), std::begin(poMjesecima));
+        Datum **noviDatumi = new Datum*[ukupno]{};
+        try {
+            for(int i = 0; i < ukupno; i++)
+                noviDatumi[i] = new Datum(*(p.datumi[i]));
+        } catch(...) {
+            for(int i = 0; i < ukupno; i++)
+                delete noviDatumi[i];
+            delete[] noviDatumi;
+            throw;
+        }
+        datumi = noviDatumi;
+        return *this;
+    }
+    Praznici &operator =(Praznici &&p) {
+        if(ukupno != p.ukupno) throw std::domain_error("Nesaglasne dimenzije");
+        // brisanje postojeceg
+        for(int i = 0; i < ukupno; i++)
+            delete datumi[i];
+        delete[] datumi;
+
+        // kradja
+        ukupno = p.ukupno;
+        std::copy(std::begin(p.poMjesecima), std::end(p.poMjesecima), std::begin(poMjesecima));
+        datumi = p.datumi;
+        p.datumi = nullptr;
+        return *this;
+    }
+    void DodajPraznik(Datum d) {
+        if(Praznik(d)) throw std::logic_error("Postoji praznik");
+        int brojPraznika = 0;
+        for(int i = 0; i < 12; i++)
+            brojPraznika+=poMjesecima[i];
+        if(ukupno == brojPraznika) throw std::logic_error("Nema dovoljno mjesta");
+
+        for(int i = 0; i < ukupno; i++)
+            if(datumi[i] == nullptr) {
+                datumi[i] = new Datum(d);
+                break;
+            }
+        poMjesecima[d.DajMjesec()-1]++;
+    }
+    bool Praznik(Datum d) {
+        for(int i = 0; i < ukupno; i++)
+            if(datumi[i] != nullptr && JednakiDatumi(d, *(datumi[i])))
+                return true;
+        return false;
+    }
+    void IspisiPraznike();
+    void IspisiPraznikeMjeseca(int m);
+    ~Praznici() {
+        for(int i = 0; i < ukupno; i++)
+            delete datumi[i];
+        delete[] datumi;
+    };
+};
+
+void Praznici::IspisiPraznike() {
+    std::vector<Datum*> vektorDatuma;
+    for(int i = 0; i < ukupno; i++)
+        if(datumi[i] != nullptr)
+            vektorDatuma.push_back(datumi[i]);
+    sort(vektorDatuma.begin(), vektorDatuma.end(), [](Datum* d1, Datum* d2){
+            return !VeciDatum(*d1, *d2);
+            });
+    for(int i = 0; i < vektorDatuma.size(); i++) {
+        vektorDatuma[i]->IspisiDatum();
+        std::cout << ", " << vektorDatuma[i]->DajDanUSedmici() << "\n";
+    }
+    std::cout << "\n";
+}
+void Praznici::IspisiPraznikeMjeseca(int m) {
+    std::vector<Datum*> vektorDatuma;
+    for(int i = 0; i < ukupno; i++)
+        if(datumi[i] != nullptr && datumi[i]->DajMjesec() == m)
+            vektorDatuma.push_back(datumi[i]);
+
+    sort(vektorDatuma.begin(), vektorDatuma.end(), [](Datum* d1, Datum* d2){
+            return !VeciDatum(*d1, *d2);
+            });
+    for(int i = 0; i < vektorDatuma.size(); i++) {
+        vektorDatuma[i]->IspisiDatum();
+        std::cout << ", " << vektorDatuma[i]->DajDanUSedmici() << "\n";
+    }
+    std::cout << "\n";
+}
+
 int main() {
+    // Praznici p1({Datum(1,1,2004), Datum(3,3,2024), Datum(5,3,2004)});
+    // p1.DodajPraznik(Datum(1,2,2004));
+    // p.IspisiPraznike();
+    // p1.IspisiPraznikeMjeseca(3);
+    Praznici p2(3);
+    p2.DodajPraznik(Datum(27,2,2004));
+    p2.DodajPraznik(Datum(29,3,2004));
+    p2.IspisiPraznikeMjeseca(2);
+    Praznici p3 = p2; // kopirajuci konstruktor
+    p3.DodajPraznik(Datum(23,5,2024));
+    p3.IspisiPraznike();
     // Datum d1, d2;
     // d1.PostaviDatum(9, 5, 2024);
     // d2.PostaviDatum(9, 5, 2024);
@@ -202,28 +356,28 @@ int main() {
     // std::cout << "Pomjeramo za 5 dana: ";
     // d2.IspisiDatumSNazivom();
     // std::cout << "Njihova razlika je: " << ProtekloDana(d1, d2) << "\n";
-    Datum d1;
-    d1.IspisiDatum();
-    Datum d2(27,2,2004);
-    d2.IspisiDatum();
-    try {
-        Datum d3(29,2,1900);
-    } catch(std::logic_error err) {
-        std::cout << err.what();
-    }
-    Datum d4(60);
-    d4.IspisiDatum();
-    Datum d5(60, 2000);
-    d5.IspisiDatum();
-    try {
-        Datum d5(367, 2000);
-        d5.IspisiDatum();
-    } catch(std::logic_error err) {
-        std::cout << err.what();
-    }
-    Datum d6(d2);
-    Datum d7 = d6;
-    d6.IspisiDatum();
-    d7.IspisiDatum();
+    // Datum d1;
+    // d1.IspisiDatum();
+    // Datum d2(27,2,2004);
+    // d2.IspisiDatum();
+    // try {
+    //     Datum d3(29,2,1900);
+    // } catch(std::logic_error err) {
+    //     std::cout << err.what();
+    // }
+    // Datum d4(60);
+    // d4.IspisiDatum();
+    // Datum d5(60, 2000);
+    // d5.IspisiDatum();
+    // try {
+    //     Datum d5(367, 2000);
+    //     d5.IspisiDatum();
+    // } catch(std::logic_error err) {
+    //     std::cout << err.what();
+    // }
+    // Datum d6(d2);
+    // Datum d7 = d6;
+    // d6.IspisiDatum();
+    // d7.IspisiDatum();
     return 0;
 }
