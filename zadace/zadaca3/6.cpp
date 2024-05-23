@@ -13,34 +13,16 @@ std::vector<int> Razbrajanje(int N, int M) {
         throw std::domain_error(
                 "Broj blokova i redni broj bloka su pozitivni cijeli brojevi i redni "
                 "broj bloka ne moze biti veci od broja blokova");
-    std::shared_ptr<Distrikt> pocetak = nullptr;
-    try {
-        pocetak = std::shared_ptr<Distrikt>(new Distrikt, [](Distrikt *p) {
-                p->sljedeci = nullptr;
-                delete p;
-                });
-    } catch (...) {
-        throw;
-    }
+    std::shared_ptr<Distrikt> pocetak = std::make_shared<Distrikt>();
+    std::shared_ptr<Distrikt> prosli = pocetak;
     pocetak->broj_distrikta = 1;
 
-    std::shared_ptr<Distrikt> prosli = pocetak;
-
-    try {
-        for (int i = 2; i <= N; i++) {
-            std::shared_ptr<Distrikt> novi(new Distrikt, [](Distrikt *p) {
-                    p->sljedeci = nullptr;
-                    delete p;
-                    });
-            novi->broj_distrikta = i;
-            prosli->sljedeci = novi;
-            novi->sljedeci = nullptr;
-            prosli = novi;
-        }
-    } catch (...) {
-        prosli = nullptr;
-        pocetak = nullptr;
-        throw std::domain_error("GRESKA");
+    for (int i = 2; i <= N; i++) {
+        std::shared_ptr<Distrikt> novi = std::make_shared<Distrikt>();
+        novi->broj_distrikta = i;
+        prosli->sljedeci = novi;
+        novi->sljedeci = nullptr;
+        prosli = novi;
     }
     prosli->sljedeci = pocetak;
     std::vector<int> redoslijed;
@@ -49,21 +31,18 @@ std::vector<int> Razbrajanje(int N, int M) {
     std::shared_ptr<Distrikt> prijeTrenutnog = pocetak;
     for (int i = 0; i < N - 1; i++)
         prijeTrenutnog = prijeTrenutnog->sljedeci;
-    pocetak = nullptr;
     while (N > 0) {
-        // akcija izbacivanja iz liste i dodavanja u vektor
         redoslijed.push_back(trenutni->broj_distrikta);
         trenutni = trenutni->sljedeci;
         prijeTrenutnog->sljedeci = trenutni;
         N--;
-        // end akcija
 
         for (int i = 0; i < M - 1; i++) { // M-1 jer smo vec pomjerili pokazivace
-                                          // izbacivanjem elementa iz liste
             prijeTrenutnog = prijeTrenutnog->sljedeci;
             trenutni = trenutni->sljedeci;
         }
     }
+    pocetak = nullptr;
     trenutni->sljedeci = nullptr;
     trenutni = nullptr;
     prijeTrenutnog = nullptr;
