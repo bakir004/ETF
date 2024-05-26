@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <iomanip>
+#include <memory>
 #include <stdexcept>
 #include <tuple>
 #include <utility>
@@ -30,7 +31,7 @@ public:
 class Vrijeme {
     int sati, minute;
     void TestVremena(int sati, int minute) const {
-        if(sati < 1 || sati > 23 || minute < 1 || minute > 60)
+        if(sati < 0 || sati > 23 || minute < 0 || minute > 60)
             throw std::domain_error("Neispravno vrijeme");
     }
 public:
@@ -41,7 +42,7 @@ public:
         this->minute = minute;
     }
     std::pair<int,int> Ocitaj() const { return std::make_pair(sati, minute); }
-    void Ispisi() const { std::cout << std::setw(2) << std::setfill('0') << sati << ":" << std::setw(2) << std::setfill('0') << minute; }
+    void Ispisi() const { std::cout << std::right << std::setw(2) << std::setfill('0') << sati << ":" << std::setw(2) << std::setfill('0') << minute; }
 };
 
 class Pregled {
@@ -121,23 +122,22 @@ void Pregled::PomjeriDanUnaprijed()  {
     datum = Datum(dan, mjesec, godina);
 }
 
+typedef std::vector<std::shared_ptr<Pregled>> VektorPametnihPregleda; 
+
 class Pregledi {
-    int brojPregleda;
-    Pregled **pregledi;
-    void ObrisiMe();
+    VektorPametnihPregleda pregledi;
     void ProvjeraProstora() const;
     void ProvjeraImaLiPregleda() const;
 public:
-    explicit Pregledi(int max): brojPregleda(max), pregledi(new Pregled*[max]{}) {}
+    explicit Pregledi(): pregledi(VektorPametnihPregleda()) {}
     Pregledi(std::initializer_list<Pregled> lista);
     Pregledi(const Pregledi& p);
     Pregledi(Pregledi&& p);
     Pregledi &operator=(const Pregledi& p);
     Pregledi &operator=(Pregledi&& p);
-    ~Pregledi();
     void RegistrirajPregled(std::string ime, Datum d, Vrijeme v);
     void RegistrirajPregled(std::string ime, int dan, int mjesec, int godina, int sati, int minute);
-    void RegistrirajPregled(Pregled *p);
+    void RegistrirajPregled(std::shared_ptr<Pregled> p);
     int DajBrojPregleda() const;
     int DajBrojPregledaNaDatum(Datum d) const;
     Pregled DajNajranijiPregled() const;
@@ -150,28 +150,28 @@ public:
 };
 
 void Pregledi::IspisiSvePreglede() const {
-    std::vector<Pregled*> vektorPregleda;
-    for(int i = 0; i < brojPregleda; i++) 
-        if(pregledi[i] != nullptr)
-            vektorPregleda.push_back(pregledi[i]);
-    sort(vektorPregleda.begin(), vektorPregleda.end(), [](Pregled* p1, Pregled* p2){
+    VektorPametnihPregleda vektorPregleda;
+    for(int i = 0; i < pregledi.size(); i++)
+        vektorPregleda.push_back(pregledi[i]);
+
+    sort(vektorPregleda.begin(), vektorPregleda.end(), [](std::shared_ptr<Pregled> p1, std::shared_ptr<Pregled> p2){
             return Pregled::DolaziPrije(*p1, *p2);
             });
-    for(int i = 0; i < brojPregleda; i++)
-        if(pregledi[i] != nullptr)
-            (*pregledi[i]).Ispisi();
+    std::cout << "Pregledi:\n";
+    for(int i = 0; i < pregledi.size(); i++)
+        (*pregledi[i]).Ispisi();
     std::cout << '\n';
 }
 void Pregledi::IspisiPregledeNaDatum(Datum d) const {
-    std::vector<Pregled*> vektorPregleda;
-    std::for_each(pregledi, pregledi + brojPregleda, [d, &vektorPregleda](Pregled* p){
+    VektorPametnihPregleda vektorPregleda;
+    std::for_each(pregledi.begin(), pregledi.end(), [d, &vektorPregleda](std::shared_ptr<Pregled> p){
             if(p == nullptr) return;
             std::tuple<int,int,int> ocitanDatum = p->DajDatumPregleda().Ocitaj();
             std::tuple<int,int,int> ocitanD = d.Ocitaj();
             if(ocitanD == ocitanDatum)
                 vektorPregleda.push_back(p); 
             });
-    sort(vektorPregleda.begin(), vektorPregleda.end(), [](Pregled* p1, Pregled* p2){
+    sort(vektorPregleda.begin(), vektorPregleda.end(), [](std::shared_ptr<Pregled> p1, std::shared_ptr<Pregled> p2){
             return Pregled::DolaziPrije(*p1, *p2);
             });
     std::cout << "Na datum ";
@@ -182,39 +182,30 @@ void Pregledi::IspisiPregledeNaDatum(Datum d) const {
     std::cout << '\n';
 }
 void Pregledi::ObrisiPregledePacijenta(std::string ime) {
-    std::for_each(pregledi, pregledi + brojPregleda, [ime](Pregled *p){
-            if(p->DajImePacijenta() == ime) {
-                delete p;
-                p = nullptr;
-            }
-            });
+    for(int i = 0; i < pregledi.size(); i++)
+        if(pregledi[i]->DajImePacijenta() == ime)
+            pregledi.erase(pregledi.begin()+i), i--;
 }
 void Pregledi::ObrisiNajranijiPregled() {
-    int broj = std::count(pregledi, pregledi+brojPregleda, nullptr);   
-    if(broj == brojPregleda) throw std::range_error("Prazna kolekcija");
+    if(pregledi.size() == 0) throw std::range_error("Prazna kolekcija");
 
-    Pregled **najraniji = std::min_element(pregledi, pregledi + brojPregleda, [](Pregled *p1, Pregled *p2){
-            if(p1 == nullptr) return false;
-            if(p2 == nullptr) return true;
-            return Pregled::DolaziPrije(*p1, *p2);
-            });
-    delete *najraniji;
-    *najraniji = nullptr;
+    std::shared_ptr<Pregled> najraniji = pregledi[0];
+    int indexNajranijeg = 0;
+    for(int i = 1; i < pregledi.size(); i++) {
+        if(Pregled::DolaziPrije(*pregledi[i], *najraniji)) {
+            najraniji = pregledi[i];
+            indexNajranijeg = i;
+        }
+    }
+    pregledi.erase(pregledi.begin() + indexNajranijeg);
 }
 
 void Pregledi::IsprazniKolekciju() {
-    for(int i = 0; i < brojPregleda; i++) {
-        delete pregledi[i];
-        pregledi[i] = nullptr;
-    }
-}
-void Pregledi::ProvjeraImaLiPregleda() const {
-    int broj = std::count(pregledi, pregledi+brojPregleda, nullptr);   
-    if(broj == brojPregleda) throw std::domain_error("Nema registriranih pregleda");
+    pregledi.clear();
 }
 
 Pregled Pregledi::DajNajranijiPregled() const {
-    Pregled najraniji = **std::min_element(pregledi, pregledi + brojPregleda, [](Pregled *p1, Pregled *p2){
+    Pregled najraniji = **std::min_element(pregledi.begin(), pregledi.end(), [](std::shared_ptr<Pregled> p1, std::shared_ptr<Pregled> p2){
             if(p1 == nullptr) return false;
             if(p2 == nullptr) return true;
             return Pregled::DolaziPrije(*p1, *p2);
@@ -222,7 +213,7 @@ Pregled Pregledi::DajNajranijiPregled() const {
     return najraniji;
 }
 Pregled& Pregledi::DajNajranijiPregled() {
-    Pregled& najraniji = **std::min_element(pregledi, pregledi + brojPregleda, [](Pregled *p1, Pregled *p2){
+    Pregled &najraniji = **std::min_element(pregledi.begin(), pregledi.end(), [](std::shared_ptr<Pregled> p1, std::shared_ptr<Pregled> p2){
             if(p1 == nullptr) return false;
             if(p2 == nullptr) return true;
             return Pregled::DolaziPrije(*p1, *p2);
@@ -230,112 +221,57 @@ Pregled& Pregledi::DajNajranijiPregled() {
     return najraniji;
 }
 
-int Pregledi::DajBrojPregleda() const {
-    return brojPregleda - std::count(pregledi, pregledi+brojPregleda, nullptr);
-}
 int Pregledi::DajBrojPregledaNaDatum(Datum d) const {
-    return std::count_if(pregledi, pregledi+brojPregleda, [d](Pregled *p){
+    return std::count_if(pregledi.begin(), pregledi.end(), [d](std::shared_ptr<Pregled> p){
             std::tuple<int,int,int> razlozenDatum = p->DajDatumPregleda().Ocitaj();
             std::tuple<int,int,int> razlozenD = d.Ocitaj();
             return razlozenDatum == razlozenD;
             });
 }
 
-void Pregledi::ProvjeraProstora() const {
-    int brojNealociranih = std::count(pregledi, pregledi+brojPregleda, nullptr);   
-    if(brojNealociranih == 0) throw std::range_error("Dostignut maksimalni broj pregleda");
-}
 
-void Pregledi::RegistrirajPregled(Pregled *p) {
-    ProvjeraProstora();
-    for(int i = 0; i < brojPregleda; i++) {
-        if(pregledi[i] == nullptr) {
-            // p mora biti dinamicki alociran
-            pregledi[i] = p;
-            break;
-        }
-    }
-}
+void Pregledi::RegistrirajPregled(std::shared_ptr<Pregled> p) { pregledi.push_back(p); }
 
 void Pregledi::RegistrirajPregled(std::string ime, int dan, int mjesec, int godina, int sati, int minute) {
-    ProvjeraProstora();
-    for(int i = 0; i < brojPregleda; i++) {
-        if(pregledi[i] == nullptr) {
-            pregledi[i] = new Pregled(ime,dan,mjesec,godina,sati,minute);
-            break;
-        }
-    }
+    Pregled p(ime,dan,mjesec,godina,sati,minute);
+    pregledi.push_back(std::make_shared<Pregled>(p));
 }
 void Pregledi::RegistrirajPregled(std::string ime, Datum d, Vrijeme v) {
-    ProvjeraProstora();
-    for(int i = 0; i < brojPregleda; i++) {
-        if(pregledi[i] == nullptr) {
-            pregledi[i] = new Pregled(ime,d,v);
-            break;
-        }
-    }
+    Pregled p(ime,d,v);
+    pregledi.push_back(std::make_shared<Pregled>(p));
 }
 
-void Pregledi::ObrisiMe() {
-    for(int i = 0; i < brojPregleda; i++)
-        delete pregledi[i];
-    delete[] pregledi;
-    brojPregleda = 0;
-    std::cout << "Obriso!\n";
-}
-
-Pregledi::Pregledi(const Pregledi& p): brojPregleda(p.brojPregleda), pregledi(new Pregled*[brojPregleda]{}) {
-    try {
-        for(int i = 0; i < brojPregleda; i++)
-            pregledi[i] = new Pregled(*(p.pregledi[i]));
-    } catch(...) {
-        ObrisiMe();
-        throw;
-    }
-}
+Pregledi::Pregledi(const Pregledi& p): pregledi(p.pregledi) {}
 
 Pregledi& Pregledi::operator=(const Pregledi& p) {
-    brojPregleda = p.brojPregleda;
-    ObrisiMe();
-    try {
-        for(int i = 0; i < brojPregleda; i++)
-            pregledi[i] = new Pregled(*(p.pregledi[i]));
-    } catch(...) {
-        ObrisiMe();
-        throw;
-    }
+    pregledi = p.pregledi;
     return *this;
 }
 Pregledi& Pregledi::operator=(Pregledi&& p) {
-    ObrisiMe();
-    brojPregleda = p.brojPregleda;
     pregledi = p.pregledi;
-    p.pregledi = nullptr;
     return *this;
 }
 
-Pregledi::Pregledi(Pregledi&& p): brojPregleda(p.brojPregleda), pregledi(p.pregledi) { p.pregledi = nullptr; }
+Pregledi::Pregledi(Pregledi&& p) { pregledi = p.pregledi; }
 
-Pregledi::Pregledi(std::initializer_list<Pregled> lista): brojPregleda(lista.size()), pregledi(new Pregled*[brojPregleda]{}) {
-    try {
-        int i = 0;
-        for(auto it = lista.begin(); it != lista.end(); i++, it++)
-            pregledi[i] = new Pregled(*it);
-    } catch(...) {
-        ObrisiMe();
-        throw;
-    }
+Pregledi::Pregledi(std::initializer_list<Pregled> lista) {
+    pregledi = VektorPametnihPregleda(lista.size());
+    int i = 0;
+    for(auto it = lista.begin(); it != lista.end(); i++, it++)
+        pregledi[i] = std::make_shared<Pregled>(*it);
 }
 
-Pregledi::~Pregledi() { ObrisiMe(); }
-
 int main() {
-    Pregledi pregledi(5);
+    Pregledi pregledi;
     pregledi.RegistrirajPregled("Bakir Cinjarevic", 26,5,2024,11,30);
     pregledi.RegistrirajPregled("Zakir Cinjarevic", 26,5,2024,12,30);
+    Pregled p("Zakir Cinjarevic",{26,5,2024},{9,0});
+    pregledi.RegistrirajPregled(std::make_shared<Pregled>(p));
     pregledi.RegistrirajPregled("Azra Cinjarevic", 26,5,2024,10,30);
     pregledi.RegistrirajPregled("Zakira Cinjarevic", 27,5,2024,11,30);
     pregledi.IspisiPregledeNaDatum({27,5,2024});
-    pregledi.DajNajranijiPregled().Ispisi();
+    pregledi.IspisiSvePreglede();
+    pregledi.ObrisiPregledePacijenta("Zakir Cinjarevic");
+    pregledi.IspisiSvePreglede();
     return 0;
 }
