@@ -13,6 +13,7 @@ class Pravougaonik {
     Tacka t1, t2;
 public:
     Pravougaonik(const Tacka &t1, const Tacka &t2) { Postavi(t1, t2); }
+    bool JeTacka() const;
     void Postavi(const Tacka &t1, const Tacka &t2);
     void Postavi(Pozicija p, const Tacka &t);
     void Centriraj(const Tacka &t);
@@ -25,21 +26,30 @@ public:
     static Pravougaonik Presjek(const Pravougaonik &p1, const Pravougaonik &p2);
     void Transliraj(double delta_x, double delta_y);
     void Rotiraj(const Tacka &t, Smjer s);
-    void Ispisi() const;
+    char Ispisi() const;
     friend bool DaLiSePoklapaju(const Pravougaonik &p1, const Pravougaonik &p2);
     friend bool DaLiSuPodudarni(const Pravougaonik &p1, const Pravougaonik &p2);
     friend bool DaLiSuSlicni(const Pravougaonik &p1, const Pravougaonik &p2);
 };
+
+bool Pravougaonik::JeTacka() const { return t1 == t2; }
 
 bool DaLiSuSlicni(const Pravougaonik &p1, const Pravougaonik &p2) {
     double p1h = p1.DajHorizontalnu();
     double p1v = p1.DajVertikalnu();
     double p2h = p2.DajHorizontalnu();
     double p2v = p2.DajVertikalnu();
-    if(p1h == 0 && p2h == 0) return true;
-    if(p1v == 0 && p2v == 0) return true;
     if(p1h == 0 && p2v == 0 && p2h == 0 && p2v == 0) return true;
-    return std::abs(p1h/p2h - p1v/p2v) < EPSILON || std::abs(p1h/p2v - p1v/p2h) < EPSILON;
+    if(p1.JeTacka() && !p2.JeTacka()) return false;
+    if(p2.JeTacka() && !p1.JeTacka()) return false;
+    if((p1h == 0 || p1v == 0) && (p2h == 0 || p2v == 0) && !p1.JeTacka() && !p2.JeTacka()) return true;
+    if(std::abs(p1h/p2h - p1v/p2v) < EPSILON)
+        return true;
+    Pravougaonik kopijaJednog = p2;
+    kopijaJednog.Rotiraj(kopijaJednog.DajCentar(), Smjer::Nalijevo);
+    p2h = kopijaJednog.DajHorizontalnu();
+    p2v = kopijaJednog.DajVertikalnu();
+    return std::abs(p1h/p2h - p1v/p2v) < EPSILON;
 }
 
 bool DaLiSuPodudarni(const Pravougaonik &p1, const Pravougaonik &p2) {
@@ -123,8 +133,9 @@ void Pravougaonik::Postavi(const Tacka &t1, const Tacka &t2) {
     this->t2.second = std::min(t1Kopija.second, t2Kopija.second);
 }
 
-void Pravougaonik::Ispisi() const {
+char Pravougaonik::Ispisi() const {
     std::cout << "{{" << t1.first << "," << t1.second << "},{" << t2.first << "," << t2.second << "}}";
+    return ' ';
 }
 
 int main() {
@@ -171,6 +182,20 @@ int main() {
     Pravougaonik r{{1, 1}, {1, 1}}; //tacka, mogucnost dijljenja s nulom!
     Pravougaonik w{{1, 1}, {1, 11}}, z{{0, 0}, {10, 0}}; //duz, horizontalna i vertikalna
     Pravougaonik s{{6, 10}, {5, 6}}, t {{6, 10}, {6, 5}}; //samo rotirani
+    // std::cout << std::boolalpha
+    //     << "DaLiSuSlicni (p, q): " << p.Ispisi() << ", " << q.Ispisi() << ":" << DaLiSuSlicni(p, q) << std::endl
+    //     << "DaLiSuSlicni (r, r): " << r.Ispisi() << ", " << r.Ispisi() << ":" << DaLiSuSlicni(r, r) << std::endl
+    //     << "DaLiSuSlicni (s, t): " << s.Ispisi() << ", " << t.Ispisi() << ":" << DaLiSuSlicni(s, t) << std::endl
+    //     << "DaLiSuSlicni (t, s): " << t.Ispisi() << ", " << s.Ispisi() << ":" << DaLiSuSlicni(t, s) << std::endl
+    //     << "DaLiSuSlicni (r, s): " << r.Ispisi() << ", " << s.Ispisi() << ":" << DaLiSuSlicni(r, s) << std::endl
+    //     << "DaLiSuSlicni (r, p): " << r.Ispisi() << ", " << p.Ispisi() << ":" << DaLiSuSlicni(r, p) << std::endl
+    //     << "DaLiSuSlicni (p, s): " << p.Ispisi() << ", " << s.Ispisi() << ":" << DaLiSuSlicni(p, s) << std::endl
+    //     << "DaLiSuSlicni (q, p): " << q.Ispisi() << ", " << p.Ispisi() << ":" << DaLiSuSlicni(q, p) << std::endl
+    //     << "DaLiSuSlicni (p, r): " << p.Ispisi() << ", " << r.Ispisi() << ":" << DaLiSuSlicni(p, r) << std::endl
+    //     << "DaLiSuSlicni (w, w): " << w.Ispisi() << ", " << w.Ispisi() << ":" << DaLiSuSlicni(w, w) << std::endl
+    //     << "DaLiSuSlicni (z, w): " << z.Ispisi() << ", " << w.Ispisi() << ":" << DaLiSuSlicni(z, w) << std::endl
+    //     << "DaLiSuSlicni (w, z): " << w.Ispisi() << ", " << z.Ispisi() << ":" << DaLiSuSlicni(w, z) << std::endl
+    //     << "DaLiSuSlicni (w, x): " << w.Ispisi() << ":" << DaLiSuSlicni(w, {{1, 1}, {1, 1000}}); //dvije vert duzi razlicitih duzina
     std::cout << std::boolalpha
         << "DaLiSuSlicni (p, q): " << DaLiSuSlicni(p, q) << std::endl
         << "DaLiSuSlicni (r, r): " << DaLiSuSlicni(r, r) << std::endl
