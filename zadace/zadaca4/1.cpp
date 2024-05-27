@@ -32,7 +32,14 @@ public:
 };
 
 bool DaLiSuSlicni(const Pravougaonik &p1, const Pravougaonik &p2) {
-    return std::abs(p1.DajHorizontalnu()/p2.DajHorizontalnu() - p1.DajVertikalnu()/p2.DajVertikalnu()) < EPSILON;
+    double p1h = p1.DajHorizontalnu();
+    double p1v = p1.DajVertikalnu();
+    double p2h = p2.DajHorizontalnu();
+    double p2v = p2.DajVertikalnu();
+    if(p1h == 0 && p2h == 0) return true;
+    if(p1v == 0 && p2v == 0) return true;
+    if(p1h == 0 && p2v == 0 && p2h == 0 && p2v == 0) return true;
+    return std::abs(p1h/p2h - p1v/p2v) < EPSILON || std::abs(p1h/p2v - p1v/p2h) < EPSILON;
 }
 
 bool DaLiSuPodudarni(const Pravougaonik &p1, const Pravougaonik &p2) {
@@ -121,42 +128,61 @@ void Pravougaonik::Ispisi() const {
 }
 
 int main() {
-    int n;
-    std::cout << "Unesite broj pravougaonika: ";
-    std::cin >> n;
-    Pravougaonik **pravougaonici = nullptr;
-    try {
-        pravougaonici = new Pravougaonik*[n]{};
-        Tacka t1,t2;
-        for(int i = 0; i < n; i++) {
-            std::cout << "Unesite prvu tacku pravougaonika u obliku x y: ";
-            std::cin >> t1.first >> t1.second;
-            std::cout << "Unesite drugu tacku pravougaonika u obliku x y: ";
-            std::cin >> t2.first >> t2.second;
-            pravougaonici[i] = new Pravougaonik(t1,t2);
-        }
-        std::cout << "Unesite delta_x delta_y: ";
-        double deltaX, deltaY;
-        std::cin >> deltaX >> deltaY;
-        std::transform(pravougaonici, pravougaonici+n, pravougaonici, [deltaX, deltaY](Pravougaonik* p){
-                p->Transliraj(deltaX, deltaY);
-                p->Rotiraj(p->DajCentar(), Smjer::Nalijevo);
-                return p;
-                });
-        std::for_each(pravougaonici, pravougaonici+n, [](Pravougaonik* p){
-                std::cout << "Pravougaonik:\n  Obim: " << p->DajObim() << "\n  Povrsina: " << p->DajPovrsinu() << "\n";
-                p->Ispisi();
-                std::cout << "\n";
-                });
-        Pravougaonik najveci = **std::max_element(pravougaonici, pravougaonici+n, [](Pravougaonik* p1, Pravougaonik* p2){
-                return p1->DajPovrsinu() < p2->DajPovrsinu();
-                });
-        std::cout << "Najveci pravougaonik ima povrsinu: " << najveci.DajPovrsinu();
-    } catch(...) {
-        for(int i = 0; i < n; i++)
-            delete pravougaonici[i];
-        delete pravougaonici;
-        std::cout << "Problemi s memorijom";
-    }
-    return 0;
+    // int n;
+    // std::cout << "Unesite n: ";
+    // std::cin >> n;
+    // Pravougaonik **pravougaonici = nullptr;
+    // try {
+    //     pravougaonici = new Pravougaonik*[n]{};
+    //     Tacka t1,t2;
+    //     for(int i = 0; i < n; i++) {
+    //         std::cout << "Unesite 1. tjeme pravougaonika " << i+1 << ": ";
+    //         std::cin >> t1.first >> t1.second;
+    //         std::cout << "Unesite 2. tjeme pravougaonika " << i+1 << ": ";
+    //         std::cin >> t2.first >> t2.second;
+    //         pravougaonici[i] = new Pravougaonik(t1,t2);
+    //     }
+    //     std::cout << "Unesite podatke za transliranje (dx dy): ";
+    //     double deltaX, deltaY;
+    //     std::cin >> deltaX >> deltaY;
+    //     std::transform(pravougaonici, pravougaonici+n, pravougaonici, [deltaX, deltaY](Pravougaonik* p){
+    //             p->Transliraj(deltaX, deltaY);
+    //             p->Rotiraj(p->DajCentar(), Smjer::Nalijevo);
+    //             return p;
+    //             });
+    //     std::cout << "Pravougaonici, nakon transformacija: \n";
+    //     std::for_each(pravougaonici, pravougaonici+n, [](Pravougaonik* p){
+    //             p->Ispisi();
+    //             std::cout << "\n";
+    //             });
+    //     Pravougaonik najveci = **std::max_element(pravougaonici, pravougaonici+n, [](Pravougaonik* p1, Pravougaonik* p2){
+    //             return p1->DajPovrsinu() < p2->DajPovrsinu();
+    //             });
+    //     std::cout << "Pravougaonik s najvecom povrsinom: ";
+    //     najveci.Ispisi();
+    // } catch(...) {
+    //     std::cout << "Problemi s memorijom";
+    // }
+    // for(int i = 0; i < n; i++)
+    //     delete pravougaonici[i];
+    // delete[] pravougaonici;
+    // return 0;
+    Pravougaonik p{{0, 10}, {5, 0}}, q {{100, 0}, {0, 50}}; //slicni su i ako su drugacije rotirani
+    Pravougaonik r{{1, 1}, {1, 1}}; //tacka, mogucnost dijljenja s nulom!
+    Pravougaonik w{{1, 1}, {1, 11}}, z{{0, 0}, {10, 0}}; //duz, horizontalna i vertikalna
+    Pravougaonik s{{6, 10}, {5, 6}}, t {{6, 10}, {6, 5}}; //samo rotirani
+    std::cout << std::boolalpha
+        << "DaLiSuSlicni (p, q): " << DaLiSuSlicni(p, q) << std::endl
+        << "DaLiSuSlicni (r, r): " << DaLiSuSlicni(r, r) << std::endl
+        << "DaLiSuSlicni (s, t): " << DaLiSuSlicni(s, t) << std::endl
+        << "DaLiSuSlicni (t, s): " << DaLiSuSlicni(t, s) << std::endl
+        << "DaLiSuSlicni (r, s): " << DaLiSuSlicni(r, s) << std::endl
+        << "DaLiSuSlicni (r, p): " << DaLiSuSlicni(r, p) << std::endl
+        << "DaLiSuSlicni (p, s): " << DaLiSuSlicni(p, s) << std::endl
+        << "DaLiSuSlicni (q, p): " << DaLiSuSlicni(q, p) << std::endl
+        << "DaLiSuSlicni (p, r): " << DaLiSuSlicni(p, r) << std::endl
+        << "DaLiSuSlicni (w, w): " << DaLiSuSlicni(w, w) << std::endl
+        << "DaLiSuSlicni (z, w): " << DaLiSuSlicni(z, w) << std::endl
+        << "DaLiSuSlicni (w, z): " << DaLiSuSlicni(w, z) << std::endl
+        << "DaLiSuSlicni (w, x): " << DaLiSuSlicni(w, {{1, 1}, {1, 1000}}); //dvije vert duzi razlicitih duzina
 }
