@@ -41,8 +41,7 @@ bool DaLiSuSlicni(const Pravougaonik &p1, const Pravougaonik &p2) {
     double p2v = p2.DajVertikalnu();
     if(p1.JeTacka() || p2.JeTacka()) return true;
     if((p1h == 0 || p1v == 0) && (p2h == 0 || p2v == 0) && !p1.JeTacka() && !p2.JeTacka()) return true;
-    if(std::abs(p1h/p2h - p1v/p2v) < EPSILON)
-        return true;
+    if(std::abs(p1h/p2h - p1v/p2v) < EPSILON) return true;
     Pravougaonik kopijaJednog = p2;
     kopijaJednog.Rotiraj(kopijaJednog.DajCentar(), Smjer::Nalijevo);
     p2h = kopijaJednog.DajHorizontalnu();
