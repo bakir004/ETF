@@ -6,7 +6,8 @@ class VektorNd {
     int dimenzija;
     double* koordinate;
 public:
-    int DajDimenzija() { return dimenzija; }
+    int DajDimenzija() const { return dimenzija; }
+
     explicit VektorNd(int dimenzija) : dimenzija(dimenzija), koordinate(new double[dimenzija]{}) {
         std::cout << "Konstruktor 1arg\n";
     }
