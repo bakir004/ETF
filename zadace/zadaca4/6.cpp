@@ -7,17 +7,17 @@
 #include <vector>
 #include <string>
 
+std::vector<std::string> validneGodine{"1","2","3","1/B","2/B","3/B","1/M","2/M","1/D","2/D","3/D"};
+std::map<std::string, std::string> mapaGodina{{"1", "1/B"},{"2","2/B"},{"3","3/B"}};
 class Student {
     int brojIndeksa;
     std::string ime, adresa, godina, brojTelefona;
-    std::vector<std::string> validneGodine{"1","2","3","1/B","2/B","3/B","1/M","2/M","1/D","2/D","3/D"};
-    std::map<std::string, std::string> mapaGodina{{"1", "1/B"},{"2","2/B"},{"3","3/B"}};
     void TestIndexa(int brojIndeksa) const;
     void TestGodine(std::string godina) const;
     void TestBrojaTelefona(std::string brojTelefona) const;
     void OcistiIme(std::string &ime) const;
 public:
-    Student(int brojIndeksa, std::string ime, std::string adresa, std::string godina, std::string brojTelefona);
+    Student(int brojIndeksa, std::string godina, std::string ime, std::string adresa, std::string brojTelefona);
     int DajIndeks() { return brojIndeksa; }
     std::string DajGodinuStudija() { 
         if(mapaGodina.find(godina) != mapaGodina.end()) return mapaGodina[godina];
@@ -51,7 +51,7 @@ void Student::Ispisi() {
     std::cout << "Adresa: " << adresa << "\n";
     std::cout << "Broj telefona: " << brojTelefona << "\n";
 }
-Student::Student(int brojIndeksa, std::string ime, std::string adresa, std::string godina, std::string brojTelefona): adresa(adresa)  {
+Student::Student(int brojIndeksa, std::string godina, std::string ime, std::string adresa, std::string brojTelefona): adresa(adresa)  {
     OcistiIme(ime);
     TestIndexa(brojIndeksa);
     TestGodine(godina);
@@ -94,8 +94,6 @@ void Student::TestBrojaTelefona(std::string brojTelefona) const {
         throw std::domain_error("Neispravni parametri");
 }
 
-// noexcept
-
 class Laptop {
     int ev_broj;
     std::string naziv, karakteristike;
@@ -106,6 +104,7 @@ public:
     std::string DajKarakteristike() const { return karakteristike; }
     Laptop(int broj, std::string naziv, std::string karakteristike): naziv(naziv), karakteristike(karakteristike) {
         if(broj < 0) throw std::domain_error("Neispravni parametri");
+        ev_broj = broj;
         kod_koga_je = nullptr;
     }
     void Zaduzi(Student &s);
@@ -216,7 +215,6 @@ Administracija::~Administracija() {
         par.second = nullptr; 
         counter++;
     }
-    std::cout << "Uspjesno obrisano " << counter << " objekata!\n";
 }
 void Administracija::PrikaziZaduzenja() const {
     bool imaMakarJedanZaduzen = false;
@@ -308,20 +306,116 @@ void Administracija::RegistrirajNovogStudenta(int brojIndeksa, std::string ime, 
     studenti[brojIndeksa] = std::make_shared<Student>(brojIndeksa, ime, adresa, godina, brojTelefona);
 }
 
+static size_t alocirano(0);
+
+void* operator new(size_t vel)
+{
+    alocirano += vel;
+    return std::malloc(vel);
+}
+
+void operator delete (void* ptr) noexcept
+{
+    free(ptr);
+}
+void operator delete(void* ptr, unsigned long var)
+{
+    free(ptr);
+}
+
+void operator delete[] (void* ptr) noexcept
+{
+    free(ptr);
+}
+
 int main() {
-    Administracija admin1;
-    admin1.RegistrirajNovogStudenta(19705, "Bakir Cinjarevic", "Celjigovici 47", "3/D", "061/670-705");
-    admin1.RegistrirajNovogStudenta(19706, "    Zakir   Cinjarevic   ", "Celjigovici 47", "2/D", "062/290-305");
-    admin1.RegistrirajNoviLaptop(69, "ASUS", "100 na sat");
-    admin1.RegistrirajNoviLaptop(70, "HP", "VRMMMMMMMMMMM");
-    admin1.ZaduziLaptop(19705, 69);
-    admin1.ZaduziLaptop(19706, 70);
-    admin1.PrikaziZaduzenja();
-    Administracija admin2 = admin1;
-    admin2.RegistrirajNovogStudenta(19707, "    Nigga Cinjarevic   ", "Celjigovici 47", "1", "062/290-305");
-    admin2.RazduziLaptop(69);
-    admin2.ZaduziLaptop(19707, 69);
-    admin2.RazduziLaptop(70);
-    admin2.PrikaziZaduzenja();
-    return 0;
+    alocirano = 0;
+    Student s(14212, "1","Benjamin", "Francuska revolucija 23", "12/34-56");
+
+    std::cout << "Student: " << alocirano << std::endl;
+
+    alocirano = 0;
+    Laptop l(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
+
+    std::cout << "Laptop: " << alocirano << std::endl;
+
+    alocirano = 0;
+    Administracija etf;
+
+    std::cout << "Prazna administracija: " << alocirano << std::endl;
+
+    etf.RegistrirajNoviLaptop(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
+    etf.RegistrirajNoviLaptop(331, "ASUS", "CPU 3.5 GHz, 2 GB RAM");
+    etf.RegistrirajNoviLaptop(122, "Dell 2", "CPU 3.2 GHz, 6 GB RAM");
+
+    std::cout << "Sa laptopima: " << alocirano << std::endl;
+
+    etf.RegistrirajNovogStudenta(14212, "1","Benjamin", "Francuska revolucija 23", "12/34-56");
+    etf.RegistrirajNovogStudenta(17528, "2","Ivan", "Trg vjecnih studenata 12", "048/597-585");
+    etf.RegistrirajNovogStudenta(17525, "3", "Ante","Trg vjecnih studenata 11", "062/582-757");
+
+    std::cout << "Sa studentima: " << alocirano << std::endl;
+
+    etf.ZaduziLaptop(14212, 122);
+    etf.ZaduziLaptop(17525,331);
+
+    std::cout << "Nakon zaduzenja: " << alocirano << std::endl;
+
+    // Administracija admin;
+    // while(true) {
+    //     std::cout << "Odaberite jednu od sljedecih opcija: \n1 - RegistrirajNovogStudenta \n2 - RegistrirajNoviLaptop \n3 - IzlistajStudente \n4 - IzlistajLaptope \n5 - NadjiSlobodniLaptop \n6 - ZaduziLaptop \n7 - RazduziLaptop \n8 - PrikaziZaduzenja \nK - Kraj programa\n";
+    //     int opcija;
+    //     std::cin >> opcija;
+    //     if(!std::cin) break;
+    //
+    //     if(opcija == 1) {
+    //         int brojIndeksa;
+    //         std::string ime, adresa, godina, brojTelefona;
+    //         std::cout << "Unesite broj indeksa:\n";
+    //         std::cin >> brojIndeksa;
+    //         std::cout << "Unesite godinu studija (formata A/X, gdje je A godina studija, a X prima vrijednosti B,M,D, zavisno od studija):\n";
+    //         std::cin.clear();
+    //         std::cin.ignore(10000, '\n');
+    //         std::getline(std::cin, godina);
+    //         std::cout << "Unesite ime i prezime studenta:\n";
+    //         std::cin.clear();
+    //         std::cin.ignore(10000, '\n');
+    //         std::getline(std::cin, ime);
+    //         std::cout << "Unesite adresu studenta:\n";
+    //         std::cin.clear();
+    //         std::cin.ignore(10000, '\n');
+    //         std::getline(std::cin, adresa);
+    //         std::cout << "Unesite broj telefona (formata x/x-x):\n";
+    //         std::cin.clear();
+    //         std::cin.ignore(10000, '\n');
+    //         std::getline(std::cin, brojTelefona);
+    //         try {
+    //             admin.RegistrirajNovogStudenta(brojIndeksa, ime, adresa, godina, brojTelefona);
+    //         } catch(std::exception &err) {
+    //             std::cout << "Izuzetak: " << err.what() << "!\n";
+    //         }
+    //     } else if(opcija == 2) {
+    //         int evBroj;
+    //         std::string naziv, karakteristike;
+    //         std::cout << "Unesite evidencijski broj laptopa\n";
+    //         std::cin >> evBroj;
+    //
+    //         std::cout << "Unesite naziv laptopa\n";
+    //         std::cin.clear();
+    //         std::cin.ignore(10000, '\n');
+    //         std::getline(std::cin, naziv);
+    //
+    //         std::cout << "Unesite karakteristike laptopa:\n";
+    //         std::getline(std::cin, karakteristike);
+    //         try {
+    //             admin.RegistrirajNoviLaptop(evBroj, naziv, karakteristike);
+    //             std::cout << "Laptop uspjesno registrovan!\n";
+    //         } catch(std::exception &err) {
+    //             std::cout << "Izuzetak: " << err.what() << "!\n";
+    //         }
+    //     } else if(opcija == 4) {
+    //         admin.IzlistajLaptope();
+    //     }
+    // }
+    // return 0;
 }

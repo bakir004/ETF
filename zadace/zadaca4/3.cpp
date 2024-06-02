@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <algorithm>
 #include <iomanip>
 #include <stdexcept>
@@ -30,7 +31,7 @@ public:
 class Vrijeme {
     int sati, minute;
     void TestVremena(int sati, int minute) const {
-        if(sati < 1 || sati > 23 || minute < 1 || minute > 60)
+        if(sati < 1 || sati > 23 || minute < 0 || minute > 60)
             throw std::domain_error("Neispravno vrijeme");
     }
 public:
@@ -160,7 +161,6 @@ void Pregledi::IspisiSvePreglede() const {
     for(int i = 0; i < brojPregleda; i++)
         if(pregledi[i] != nullptr)
             (*pregledi[i]).Ispisi();
-    std::cout << '\n';
 }
 void Pregledi::IspisiPregledeNaDatum(Datum d) const {
     std::vector<Pregled*> vektorPregleda;
@@ -174,20 +174,17 @@ void Pregledi::IspisiPregledeNaDatum(Datum d) const {
     sort(vektorPregleda.begin(), vektorPregleda.end(), [](Pregled* p1, Pregled* p2){
             return Pregled::DolaziPrije(*p1, *p2);
             });
-    std::cout << "Na datum ";
-    d.Ispisi();
-    std::cout << ":\n";
     for(int i = 0; i < vektorPregleda.size(); i++)
         (*vektorPregleda[i]).Ispisi();
-    std::cout << '\n';
 }
 void Pregledi::ObrisiPregledePacijenta(std::string ime) {
-    std::for_each(pregledi, pregledi + brojPregleda, [ime](Pregled *p){
-            if(p->DajImePacijenta() == ime) {
-                delete p;
-                p = nullptr;
-            }
-            });
+    for(int i = 0; i < brojPregleda; i++) {
+        auto p = pregledi[i];
+        if(p != nullptr && p->DajImePacijenta() == ime) {
+            delete p;
+            pregledi[i] = nullptr;
+        }
+    }
 }
 void Pregledi::ObrisiNajranijiPregled() {
     int broj = std::count(pregledi, pregledi+brojPregleda, nullptr);   
@@ -214,6 +211,7 @@ void Pregledi::ProvjeraImaLiPregleda() const {
 }
 
 Pregled Pregledi::DajNajranijiPregled() const {
+    ProvjeraImaLiPregleda();
     Pregled najraniji = **std::min_element(pregledi, pregledi + brojPregleda, [](Pregled *p1, Pregled *p2){
             if(p1 == nullptr) return false;
             if(p2 == nullptr) return true;
@@ -222,6 +220,7 @@ Pregled Pregledi::DajNajranijiPregled() const {
     return najraniji;
 }
 Pregled& Pregledi::DajNajranijiPregled() {
+    ProvjeraImaLiPregleda();
     Pregled& najraniji = **std::min_element(pregledi, pregledi + brojPregleda, [](Pregled *p1, Pregled *p2){
             if(p1 == nullptr) return false;
             if(p2 == nullptr) return true;
@@ -281,7 +280,6 @@ void Pregledi::ObrisiMe() {
         delete pregledi[i];
     delete[] pregledi;
     brojPregleda = 0;
-    std::cout << "Obriso!\n";
 }
 
 Pregledi::Pregledi(const Pregledi& p): brojPregleda(p.brojPregleda), pregledi(new Pregled*[brojPregleda]{}) {
@@ -330,12 +328,62 @@ Pregledi::Pregledi(std::initializer_list<Pregled> lista): brojPregleda(lista.siz
 Pregledi::~Pregledi() { ObrisiMe(); }
 
 int main() {
-    Pregledi pregledi(5);
-    pregledi.RegistrirajPregled("Bakir Cinjarevic", 26,5,2024,11,30);
-    pregledi.RegistrirajPregled("Zakir Cinjarevic", 26,5,2024,12,30);
-    pregledi.RegistrirajPregled("Azra Cinjarevic", 26,5,2024,10,30);
-    pregledi.RegistrirajPregled("Zakira Cinjarevic", 27,5,2024,11,30);
-    pregledi.IspisiPregledeNaDatum({27,5,2024});
-    pregledi.DajNajranijiPregled().Ispisi();
+    std::cout << "Unesite maksimalni broj pregleda: ";
+    int n; std::cin >> n;
+    Pregledi pregledi(n);
+    while(true) {
+        std::cout << "1. Registriraj Pregled\n2. Daj Broj Pregleda\n3. Daj Broj Pregleda Na Datum\n4. Daj Najraniji Pregled\n5. Obrisi Najraniji Pregled\n6. Obrisi Preglede Pacijenta\n7. Ispisi Preglede Na Datum\n8. Ispisi Sve Preglede\n9. Isprazni Kolekciju\n10. Izlaz\nUnesite izbor: ";
+        int input; std::cin >> input;
+        if(input == 10) break;
+        if(input == 1) {
+            std::cout << "Unesite ime pacijenta: ";
+            std::string ime;
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::getline(std::cin, ime);
+            std::cout << "Unesite datum i vrijeme pregleda (dan mjesec godina sati minute): ";
+            int d,m,y,h,min;
+            std::cin >> d >> m >> y >> h >> min;
+            try {
+                pregledi.RegistrirajPregled(ime,d,m,y,h,min);
+            } catch(std::range_error& err) {
+                std::cout << err.what() << "\n";
+            }
+        } else if(input == 2) {
+            std::cout << "Ukupan broj pregleda: " << pregledi.DajBrojPregleda() << "\n";
+        } else if(input == 3) {
+            std::cout << "Unesite datum (dan mjesec godina): ";
+            int d,m,y;
+            std::cin >> d >> m >> y;
+            std::cout << "Broj pregleda na datum: " << pregledi.DajBrojPregledaNaDatum({d,m,y}) << "\n";
+        } else if(input == 4) {
+            pregledi.DajNajranijiPregled().Ispisi();
+        } else if(input == 5) {
+            pregledi.ObrisiNajranijiPregled();
+            std::cout << "Najraniji pregled je obrisan.\n";
+        } else if(input == 6) {
+            std::cout << "Unesite ime pacijenta: ";
+            std::string ime;
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::getline(std::cin, ime);
+            pregledi.ObrisiPregledePacijenta(ime);
+            std::cout << "Pregledi za pacijenta " << ime << " su obrisani.\n";
+        } else if(input == 7) {
+            std::cout << "Unesite datum: ";
+            int d,m,y;
+            std::cin >> d >> m >> y;
+            pregledi.IspisiPregledeNaDatum({d,m,y});
+        } else if(input == 8) {
+            std::cout << "Svi pregledi:\n";
+            pregledi.IspisiSvePreglede();
+        } else if(input == 9) {
+            pregledi.IsprazniKolekciju();
+            std::cout << "Kolekcija ispraznjena.\n";
+        } else {
+            std::cout << "\n\nPANIKA\n\n";
+        }
+    }
+    std::cout << "Kraj programa.";
     return 0;
 }

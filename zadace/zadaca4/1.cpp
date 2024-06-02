@@ -26,7 +26,7 @@ public:
     static Pravougaonik Presjek(const Pravougaonik &p1, const Pravougaonik &p2);
     void Transliraj(double delta_x, double delta_y);
     void Rotiraj(const Tacka &t, Smjer s);
-    char Ispisi() const;
+    void Ispisi() const;
     friend bool DaLiSePoklapaju(const Pravougaonik &p1, const Pravougaonik &p2);
     friend bool DaLiSuPodudarni(const Pravougaonik &p1, const Pravougaonik &p2);
     friend bool DaLiSuSlicni(const Pravougaonik &p1, const Pravougaonik &p2);
@@ -40,8 +40,7 @@ bool DaLiSuSlicni(const Pravougaonik &p1, const Pravougaonik &p2) {
     double p2h = p2.DajHorizontalnu();
     double p2v = p2.DajVertikalnu();
     if(p1h == 0 && p2v == 0 && p2h == 0 && p2v == 0) return true;
-    if(p1.JeTacka() && !p2.JeTacka()) return false;
-    if(p2.JeTacka() && !p1.JeTacka()) return false;
+    if(p1.JeTacka() || p2.JeTacka()) return true;
     if((p1h == 0 || p1v == 0) && (p2h == 0 || p2v == 0) && !p1.JeTacka() && !p2.JeTacka()) return true;
     if(std::abs(p1h/p2h - p1v/p2v) < EPSILON)
         return true;
@@ -133,55 +132,54 @@ void Pravougaonik::Postavi(const Tacka &t1, const Tacka &t2) {
     this->t2.second = std::min(t1Kopija.second, t2Kopija.second);
 }
 
-char Pravougaonik::Ispisi() const {
+void Pravougaonik::Ispisi() const {
     std::cout << "{{" << t1.first << "," << t1.second << "},{" << t2.first << "," << t2.second << "}}";
-    return ' ';
 }
 
 int main() {
-    // int n;
-    // std::cout << "Unesite n: ";
-    // std::cin >> n;
-    // Pravougaonik **pravougaonici = nullptr;
-    // try {
-    //     pravougaonici = new Pravougaonik*[n]{};
-    //     Tacka t1,t2;
-    //     for(int i = 0; i < n; i++) {
-    //         std::cout << "Unesite 1. tjeme pravougaonika " << i+1 << ": ";
-    //         std::cin >> t1.first >> t1.second;
-    //         std::cout << "Unesite 2. tjeme pravougaonika " << i+1 << ": ";
-    //         std::cin >> t2.first >> t2.second;
-    //         pravougaonici[i] = new Pravougaonik(t1,t2);
-    //     }
-    //     std::cout << "Unesite podatke za transliranje (dx dy): ";
-    //     double deltaX, deltaY;
-    //     std::cin >> deltaX >> deltaY;
-    //     std::transform(pravougaonici, pravougaonici+n, pravougaonici, [deltaX, deltaY](Pravougaonik* p){
-    //             p->Transliraj(deltaX, deltaY);
-    //             p->Rotiraj(p->DajCentar(), Smjer::Nalijevo);
-    //             return p;
-    //             });
-    //     std::cout << "Pravougaonici, nakon transformacija: \n";
-    //     std::for_each(pravougaonici, pravougaonici+n, [](Pravougaonik* p){
-    //             p->Ispisi();
-    //             std::cout << "\n";
-    //             });
-    //     Pravougaonik najveci = **std::max_element(pravougaonici, pravougaonici+n, [](Pravougaonik* p1, Pravougaonik* p2){
-    //             return p1->DajPovrsinu() < p2->DajPovrsinu();
-    //             });
-    //     std::cout << "Pravougaonik s najvecom povrsinom: ";
-    //     najveci.Ispisi();
-    // } catch(...) {
-    //     std::cout << "Problemi s memorijom";
-    // }
-    // for(int i = 0; i < n; i++)
-    //     delete pravougaonici[i];
-    // delete[] pravougaonici;
-    // return 0;
-    Pravougaonik p{{0, 10}, {5, 0}}, q {{100, 0}, {0, 50}}; //slicni su i ako su drugacije rotirani
-    Pravougaonik r{{1, 1}, {1, 1}}; //tacka, mogucnost dijljenja s nulom!
-    Pravougaonik w{{1, 1}, {1, 11}}, z{{0, 0}, {10, 0}}; //duz, horizontalna i vertikalna
-    Pravougaonik s{{6, 10}, {5, 6}}, t {{6, 10}, {6, 5}}; //samo rotirani
+    int n;
+    std::cout << "Unesite n: ";
+    std::cin >> n;
+    Pravougaonik **pravougaonici = nullptr;
+    try {
+        pravougaonici = new Pravougaonik*[n]{};
+        Tacka t1,t2;
+        for(int i = 0; i < n; i++) {
+            std::cout << "Unesite 1. tjeme pravougaonika " << i+1 << ": ";
+            std::cin >> t1.first >> t1.second;
+            std::cout << "Unesite 2. tjeme pravougaonika " << i+1 << ": ";
+            std::cin >> t2.first >> t2.second;
+            pravougaonici[i] = new Pravougaonik(t1,t2);
+        }
+        std::cout << "Unesite podatke za transliranje (dx dy): ";
+        double deltaX, deltaY;
+        std::cin >> deltaX >> deltaY;
+        std::transform(pravougaonici, pravougaonici+n, pravougaonici, [deltaX, deltaY](Pravougaonik* p){
+                p->Transliraj(deltaX, deltaY);
+                p->Rotiraj(p->DajCentar(), Smjer::Nalijevo);
+                return p;
+                });
+        std::cout << "Pravougaonici, nakon transformacija: \n";
+        std::for_each(pravougaonici, pravougaonici+n, [](Pravougaonik* p){
+                p->Ispisi();
+                std::cout << "\n";
+                });
+        Pravougaonik najveci = **std::max_element(pravougaonici, pravougaonici+n, [](Pravougaonik* p1, Pravougaonik* p2){
+                return p1->DajPovrsinu() < p2->DajPovrsinu();
+                });
+        std::cout << "Pravougaonik s najvecom povrsinom: ";
+        najveci.Ispisi();
+    } catch(...) {
+        std::cout << "Problemi s memorijom";
+    }
+    for(int i = 0; i < n; i++)
+        delete pravougaonici[i];
+    delete[] pravougaonici;
+    return 0;
+    // Pravougaonik p{{0, 10}, {5, 0}}, q {{100, 0}, {0, 50}}; //slicni su i ako su drugacije rotirani
+    // Pravougaonik r{{1, 1}, {1, 1}}; //tacka, mogucnost dijljenja s nulom!
+    // Pravougaonik w{{1, 1}, {1, 11}}, z{{0, 0}, {10, 0}}; //duz, horizontalna i vertikalna
+    // Pravougaonik s{{6, 10}, {5, 6}}, t {{6, 10}, {6, 5}}; //samo rotirani
     // std::cout << std::boolalpha
     //     << "DaLiSuSlicni (p, q): " << p.Ispisi() << ", " << q.Ispisi() << ":" << DaLiSuSlicni(p, q) << std::endl
     //     << "DaLiSuSlicni (r, r): " << r.Ispisi() << ", " << r.Ispisi() << ":" << DaLiSuSlicni(r, r) << std::endl
@@ -196,18 +194,18 @@ int main() {
     //     << "DaLiSuSlicni (z, w): " << z.Ispisi() << ", " << w.Ispisi() << ":" << DaLiSuSlicni(z, w) << std::endl
     //     << "DaLiSuSlicni (w, z): " << w.Ispisi() << ", " << z.Ispisi() << ":" << DaLiSuSlicni(w, z) << std::endl
     //     << "DaLiSuSlicni (w, x): " << w.Ispisi() << ":" << DaLiSuSlicni(w, {{1, 1}, {1, 1000}}); //dvije vert duzi razlicitih duzina
-    std::cout << std::boolalpha
-        << "DaLiSuSlicni (p, q): " << DaLiSuSlicni(p, q) << std::endl
-        << "DaLiSuSlicni (r, r): " << DaLiSuSlicni(r, r) << std::endl
-        << "DaLiSuSlicni (s, t): " << DaLiSuSlicni(s, t) << std::endl
-        << "DaLiSuSlicni (t, s): " << DaLiSuSlicni(t, s) << std::endl
-        << "DaLiSuSlicni (r, s): " << DaLiSuSlicni(r, s) << std::endl
-        << "DaLiSuSlicni (r, p): " << DaLiSuSlicni(r, p) << std::endl
-        << "DaLiSuSlicni (p, s): " << DaLiSuSlicni(p, s) << std::endl
-        << "DaLiSuSlicni (q, p): " << DaLiSuSlicni(q, p) << std::endl
-        << "DaLiSuSlicni (p, r): " << DaLiSuSlicni(p, r) << std::endl
-        << "DaLiSuSlicni (w, w): " << DaLiSuSlicni(w, w) << std::endl
-        << "DaLiSuSlicni (z, w): " << DaLiSuSlicni(z, w) << std::endl
-        << "DaLiSuSlicni (w, z): " << DaLiSuSlicni(w, z) << std::endl
-        << "DaLiSuSlicni (w, x): " << DaLiSuSlicni(w, {{1, 1}, {1, 1000}}); //dvije vert duzi razlicitih duzina
+    // std::cout << std::boolalpha
+    //     << "DaLiSuSlicni (p, q): " << DaLiSuSlicni(p, q) << std::endl
+    //     << "DaLiSuSlicni (r, r): " << DaLiSuSlicni(r, r) << std::endl
+    //     << "DaLiSuSlicni (s, t): " << DaLiSuSlicni(s, t) << std::endl
+    //     << "DaLiSuSlicni (t, s): " << DaLiSuSlicni(t, s) << std::endl
+    //     << "DaLiSuSlicni (r, s): " << DaLiSuSlicni(r, s) << std::endl
+    //     << "DaLiSuSlicni (r, p): " << DaLiSuSlicni(r, p) << std::endl
+    //     << "DaLiSuSlicni (p, s): " << DaLiSuSlicni(p, s) << std::endl
+    //     << "DaLiSuSlicni (q, p): " << DaLiSuSlicni(q, p) << std::endl
+    //     << "DaLiSuSlicni (p, r): " << DaLiSuSlicni(p, r) << std::endl
+    //     << "DaLiSuSlicni (w, w): " << DaLiSuSlicni(w, w) << std::endl
+    //     << "DaLiSuSlicni (z, w): " << DaLiSuSlicni(z, w) << std::endl
+    //     << "DaLiSuSlicni (w, z): " << DaLiSuSlicni(w, z) << std::endl
+    //     << "DaLiSuSlicni (w, x): " << DaLiSuSlicni(w, {{1, 1}, {1, 1000}}); //dvije vert duzi razlicitih duzina
 }
