@@ -306,116 +306,116 @@ void Administracija::RegistrirajNovogStudenta(int brojIndeksa, std::string ime, 
     studenti[brojIndeksa] = std::make_shared<Student>(brojIndeksa, ime, adresa, godina, brojTelefona);
 }
 
-static size_t alocirano(0);
-
-void* operator new(size_t vel)
-{
-    alocirano += vel;
-    return std::malloc(vel);
-}
-
-void operator delete (void* ptr) noexcept
-{
-    free(ptr);
-}
-void operator delete(void* ptr, unsigned long var)
-{
-    free(ptr);
-}
-
-void operator delete[] (void* ptr) noexcept
-{
-    free(ptr);
-}
+// static size_t alocirano(0);
+//
+// void* operator new(size_t vel)
+// {
+//     alocirano += vel;
+//     return std::malloc(vel);
+// }
+//
+// void operator delete (void* ptr) noexcept
+// {
+//     free(ptr);
+// }
+// void operator delete(void* ptr, unsigned long var)
+// {
+//     free(ptr);
+// }
+//
+// void operator delete[] (void* ptr) noexcept
+// {
+//     free(ptr);
+// }
 
 int main() {
-    alocirano = 0;
-    Student s(14212, "1","Benjamin", "Francuska revolucija 23", "12/34-56");
-
-    std::cout << "Student: " << alocirano << std::endl;
-
-    alocirano = 0;
-    Laptop l(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
-
-    std::cout << "Laptop: " << alocirano << std::endl;
-
-    alocirano = 0;
-    Administracija etf;
-
-    std::cout << "Prazna administracija: " << alocirano << std::endl;
-
-    etf.RegistrirajNoviLaptop(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
-    etf.RegistrirajNoviLaptop(331, "ASUS", "CPU 3.5 GHz, 2 GB RAM");
-    etf.RegistrirajNoviLaptop(122, "Dell 2", "CPU 3.2 GHz, 6 GB RAM");
-
-    std::cout << "Sa laptopima: " << alocirano << std::endl;
-
-    etf.RegistrirajNovogStudenta(14212, "1","Benjamin", "Francuska revolucija 23", "12/34-56");
-    etf.RegistrirajNovogStudenta(17528, "2","Ivan", "Trg vjecnih studenata 12", "048/597-585");
-    etf.RegistrirajNovogStudenta(17525, "3", "Ante","Trg vjecnih studenata 11", "062/582-757");
-
-    std::cout << "Sa studentima: " << alocirano << std::endl;
-
-    etf.ZaduziLaptop(14212, 122);
-    etf.ZaduziLaptop(17525,331);
-
-    std::cout << "Nakon zaduzenja: " << alocirano << std::endl;
-
-    // Administracija admin;
-    // while(true) {
-    //     std::cout << "Odaberite jednu od sljedecih opcija: \n1 - RegistrirajNovogStudenta \n2 - RegistrirajNoviLaptop \n3 - IzlistajStudente \n4 - IzlistajLaptope \n5 - NadjiSlobodniLaptop \n6 - ZaduziLaptop \n7 - RazduziLaptop \n8 - PrikaziZaduzenja \nK - Kraj programa\n";
-    //     int opcija;
-    //     std::cin >> opcija;
-    //     if(!std::cin) break;
+    // alocirano = 0;
+    // Student s(14212, "1","Benjamin", "Francuska revolucija 23", "12/34-56");
     //
-    //     if(opcija == 1) {
-    //         int brojIndeksa;
-    //         std::string ime, adresa, godina, brojTelefona;
-    //         std::cout << "Unesite broj indeksa:\n";
-    //         std::cin >> brojIndeksa;
-    //         std::cout << "Unesite godinu studija (formata A/X, gdje je A godina studija, a X prima vrijednosti B,M,D, zavisno od studija):\n";
-    //         std::cin.clear();
-    //         std::cin.ignore(10000, '\n');
-    //         std::getline(std::cin, godina);
-    //         std::cout << "Unesite ime i prezime studenta:\n";
-    //         std::cin.clear();
-    //         std::cin.ignore(10000, '\n');
-    //         std::getline(std::cin, ime);
-    //         std::cout << "Unesite adresu studenta:\n";
-    //         std::cin.clear();
-    //         std::cin.ignore(10000, '\n');
-    //         std::getline(std::cin, adresa);
-    //         std::cout << "Unesite broj telefona (formata x/x-x):\n";
-    //         std::cin.clear();
-    //         std::cin.ignore(10000, '\n');
-    //         std::getline(std::cin, brojTelefona);
-    //         try {
-    //             admin.RegistrirajNovogStudenta(brojIndeksa, ime, adresa, godina, brojTelefona);
-    //         } catch(std::exception &err) {
-    //             std::cout << "Izuzetak: " << err.what() << "!\n";
-    //         }
-    //     } else if(opcija == 2) {
-    //         int evBroj;
-    //         std::string naziv, karakteristike;
-    //         std::cout << "Unesite evidencijski broj laptopa\n";
-    //         std::cin >> evBroj;
+    // std::cout << "Student: " << alocirano << std::endl;
     //
-    //         std::cout << "Unesite naziv laptopa\n";
-    //         std::cin.clear();
-    //         std::cin.ignore(10000, '\n');
-    //         std::getline(std::cin, naziv);
+    // alocirano = 0;
+    // Laptop l(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
     //
-    //         std::cout << "Unesite karakteristike laptopa:\n";
-    //         std::getline(std::cin, karakteristike);
-    //         try {
-    //             admin.RegistrirajNoviLaptop(evBroj, naziv, karakteristike);
-    //             std::cout << "Laptop uspjesno registrovan!\n";
-    //         } catch(std::exception &err) {
-    //             std::cout << "Izuzetak: " << err.what() << "!\n";
-    //         }
-    //     } else if(opcija == 4) {
-    //         admin.IzlistajLaptope();
-    //     }
-    // }
-    // return 0;
+    // std::cout << "Laptop: " << alocirano << std::endl;
+    //
+    // alocirano = 0;
+    // Administracija etf;
+    //
+    // std::cout << "Prazna administracija: " << alocirano << std::endl;
+    //
+    // etf.RegistrirajNoviLaptop(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
+    // etf.RegistrirajNoviLaptop(331, "ASUS", "CPU 3.5 GHz, 2 GB RAM");
+    // etf.RegistrirajNoviLaptop(122, "Dell 2", "CPU 3.2 GHz, 6 GB RAM");
+    //
+    // std::cout << "Sa laptopima: " << alocirano << std::endl;
+    //
+    // etf.RegistrirajNovogStudenta(14212, "1","Benjamin", "Francuska revolucija 23", "12/34-56");
+    // etf.RegistrirajNovogStudenta(17528, "2","Ivan", "Trg vjecnih studenata 12", "048/597-585");
+    // etf.RegistrirajNovogStudenta(17525, "3", "Ante","Trg vjecnih studenata 11", "062/582-757");
+    //
+    // std::cout << "Sa studentima: " << alocirano << std::endl;
+    //
+    // etf.ZaduziLaptop(14212, 122);
+    // etf.ZaduziLaptop(17525,331);
+    //
+    // std::cout << "Nakon zaduzenja: " << alocirano << std::endl;
+
+    Administracija admin;
+    while(true) {
+        std::cout << "Odaberite jednu od sljedecih opcija: \n1 - RegistrirajNovogStudenta \n2 - RegistrirajNoviLaptop \n3 - IzlistajStudente \n4 - IzlistajLaptope \n5 - NadjiSlobodniLaptop \n6 - ZaduziLaptop \n7 - RazduziLaptop \n8 - PrikaziZaduzenja \nK - Kraj programa\n";
+        int opcija;
+        std::cin >> opcija;
+        if(!std::cin) break;
+
+        if(opcija == 1) {
+            int brojIndeksa;
+            std::string ime, adresa, godina, brojTelefona;
+            std::cout << "Unesite broj indeksa:\n";
+            std::cin >> brojIndeksa;
+            std::cout << "Unesite godinu studija (formata A/X, gdje je A godina studija, a X prima vrijednosti B,M,D, zavisno od studija):\n";
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::getline(std::cin, godina);
+            std::cout << "Unesite ime i prezime studenta:\n";
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::getline(std::cin, ime);
+            std::cout << "Unesite adresu studenta:\n";
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::getline(std::cin, adresa);
+            std::cout << "Unesite broj telefona (formata x/x-x):\n";
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::getline(std::cin, brojTelefona);
+            try {
+                admin.RegistrirajNovogStudenta(brojIndeksa, ime, adresa, godina, brojTelefona);
+            } catch(std::exception &err) {
+                std::cout << "Izuzetak: " << err.what() << "!\n";
+            }
+        } else if(opcija == 2) {
+            int evBroj;
+            std::string naziv, karakteristike;
+            std::cout << "Unesite evidencijski broj laptopa\n";
+            std::cin >> evBroj;
+
+            std::cout << "Unesite naziv laptopa\n";
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::getline(std::cin, naziv);
+
+            std::cout << "Unesite karakteristike laptopa:\n";
+            std::getline(std::cin, karakteristike);
+            try {
+                admin.RegistrirajNoviLaptop(evBroj, naziv, karakteristike);
+                std::cout << "Laptop uspjesno registrovan!\n";
+            } catch(std::exception &err) {
+                std::cout << "Izuzetak: " << err.what() << "!\n";
+            }
+        } else if(opcija == 4) {
+            admin.IzlistajLaptope();
+        }
+    }
+    return 0;
 }
