@@ -18,12 +18,15 @@ fs.readFile('input.txt', 'utf8', (err, data) => {
     const dataJson = JSON.parse(data);
     const tests = dataJson.tests
     let output = ""
+    console.log(tests[0].tools[2].execute)
     tests.forEach(test => {
-        if(test.tools[2].execute.environment) {
+        if(!test.tools[2].execute) return;
+        if(test.tools[2].execute && test.tools[2].execute.environment) {
             output += test.name + (test.options ? ": Skriven" : ": Nije skriven") + " - Koristi vasu main() funkciju i stdin ulaz\n\nUlaz:\n\n"
             let stdin = test.tools[2].execute.environment.stdin;
             output += stdin;
-        } else {
+        } 
+        else {
             output += test.name + (test.options ? ": Skriven" : ": Nije skriven") + "\n";
             output += 'Koristi svoju main() funckiju\n\nEvo kako izgleda program nakon spajanja njihovog i vaseg koda:\n'
             output += '========================================================================\n\n'
@@ -48,6 +51,6 @@ fs.readFile('input.txt', 'utf8', (err, data) => {
         output += "########################################################################\n\n"
     })
     console.log("Formatirani testovi!")
-    fs.writeFileSync('output2.txt', output);
+    fs.writeFileSync('treci.txt', output);
 });
 
