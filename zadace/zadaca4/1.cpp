@@ -26,7 +26,7 @@ public:
     static Pravougaonik Presjek(const Pravougaonik &p1, const Pravougaonik &p2);
     void Transliraj(double delta_x, double delta_y);
     void Rotiraj(const Tacka &t, Smjer s);
-    char Ispisi() const;
+    void Ispisi() const;
     friend bool DaLiSePoklapaju(const Pravougaonik &p1, const Pravougaonik &p2);
     friend bool DaLiSuPodudarni(const Pravougaonik &p1, const Pravougaonik &p2);
     friend bool DaLiSuSlicni(const Pravougaonik &p1, const Pravougaonik &p2);
@@ -130,9 +130,8 @@ void Pravougaonik::Postavi(const Tacka &t1, const Tacka &t2) {
     this->t2.second = std::min(t1Kopija.second, t2Kopija.second);
 }
 
-char Pravougaonik::Ispisi() const {
+void Pravougaonik::Ispisi() const {
     std::cout << "{{" << t1.first << "," << t1.second << "},{" << t2.first << "," << t2.second << "}}";
-    return ' ';
 }
 
 int main() {
