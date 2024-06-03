@@ -90,7 +90,7 @@ bool Pregled::DolaziPrije(Pregled p1, Pregled p2) {
 }
 
 void Pregled::Ispisi()  { 
-    std::cout << std::left << std::setw(30) << std::setfill(' ') << ime;
+    std::cout << std::left << std::setw(30) << std::setfill(' ') << ime << std::right;
     datum.Ispisi(); 
     std::cout << " "; 
     vrijeme.Ispisi(); 
@@ -232,7 +232,6 @@ int Pregledi::DajBrojPregledaNaDatum(Datum d) const {
             });
 }
 
-
 void Pregledi::RegistrirajPregled(std::shared_ptr<Pregled> p) { pregledi.push_back(p); }
 
 void Pregledi::RegistrirajPregled(std::string ime, int dan, int mjesec, int godina, int sati, int minute) {
@@ -265,88 +264,60 @@ Pregledi::Pregledi(std::initializer_list<Pregled> lista) {
 }
 
 int main() {
-Pregledi pregledi;
-        std::cout << sizeof(pregledi) << std::endl; // 8+4+4=16
-
-        Pregledi pregledi2 = {
-            {"John Doe", {31, 12, 2024}, {11, 30}},
-            {"Jane Smith", {28, 2, 2024}, {23, 59}},
-            {"John Doe", {1, 1, 2024}, {15, 30}}};
-        pregledi2=pregledi2;
-        pregledi = pregledi2;
-        try {
-            pregledi.RegistrirajPregled("Alice Johnson", 1, 1, 2024, 10, 30);
-        } catch (std::range_error &e) {
-            std::cout << e.what() << std::endl;
+    Pregledi pregledi;
+    while(true) {
+        std::cout << "1. Registriraj Pregled\n2. Daj Broj Pregleda\n3. Daj Broj Pregleda Na Datum\n4. Daj Najraniji Pregled\n5. Obrisi Najraniji Pregled\n6. Obrisi Preglede Pacijenta\n7. Ispisi Preglede Na Datum\n8. Ispisi Sve Preglede\n9. Isprazni Kolekciju\n10. Izlaz\nUnesite izbor: ";
+        int input; std::cin >> input;
+        if(input == 10) break;
+        if(input == 1) {
+            std::cout << "Unesite ime pacijenta: ";
+            std::string ime;
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::getline(std::cin, ime);
+            std::cout << "Unesite datum i vrijeme pregleda (dan mjesec godina sati minute): ";
+            int d,m,y,h,min;
+            std::cin >> d >> m >> y >> h >> min;
+            try {
+                pregledi.RegistrirajPregled(ime,d,m,y,h,min);
+            } catch(std::range_error& err) {
+                std::cout << err.what() << "\n";
+            }
+        } else if(input == 2) {
+            std::cout << "Ukupan broj pregleda: " << pregledi.DajBrojPregleda() << "\n";
+        } else if(input == 3) {
+            std::cout << "Unesite datum (dan mjesec godina): ";
+            int d,m,y;
+            std::cin >> d >> m >> y;
+            std::cout << "Broj pregleda na datum: " << pregledi.DajBrojPregledaNaDatum({d,m,y}) << "\n";
+        } else if(input == 4) {
+            pregledi.DajNajranijiPregled().Ispisi();
+        } else if(input == 5) {
+            pregledi.ObrisiNajranijiPregled();
+            std::cout << "Najraniji pregled je obrisan.\n";
+        } else if(input == 6) {
+            std::cout << "Unesite ime pacijenta: ";
+            std::string ime;
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::getline(std::cin, ime);
+            pregledi.ObrisiPregledePacijenta(ime);
+            std::cout << "Pregledi za pacijenta " << ime << " su obrisani.\n";
+        } else if(input == 7) {
+            std::cout << "Unesite datum: ";
+            int d,m,y;
+            std::cin >> d >> m >> y;
+            pregledi.IspisiPregledeNaDatum({d,m,y});
+        } else if(input == 8) {
+            std::cout << "Svi pregledi:\n";
+            pregledi.IspisiSvePreglede();
+        } else if(input == 9) {
+            pregledi.IsprazniKolekciju();
+            std::cout << "Kolekcija ispraznjena.\n";
+        } else {
+            std::cout << "\n\nPANIKA\n\n";
         }
-
-        Pregledi pregledi3(5);
-        pregledi3.RegistrirajPregled("John Doe", {1, 1, 2022}, {8, 0});
-        pregledi3.RegistrirajPregled("Jane Smith", 1, 1, 2022, 9, 0);
-        pregledi3.RegistrirajPregled("Alice Johnson", {1, 1, 2022}, {10, 0});
-        Pregled *p = new Pregled("John Doe", 1, 1, 2022, 11, 0);
-        pregledi3.RegistrirajPregled(p);
-
-        pregledi3=std::move(pregledi3);
-        pregledi = std::move(pregledi3);
-
-        std::cout<< pregledi.DajBrojPregleda() << std::endl;
-
+    }
+    std::cout << "Kraj programa.";
     return 0;
-    // Pregledi pregledi;
-    // while(true) {
-    //     std::cout << "1. Registriraj Pregled\n2. Daj Broj Pregleda\n3. Daj Broj Pregleda Na Datum\n4. Daj Najraniji Pregled\n5. Obrisi Najraniji Pregled\n6. Obrisi Preglede Pacijenta\n7. Ispisi Preglede Na Datum\n8. Ispisi Sve Preglede\n9. Isprazni Kolekciju\n10. Izlaz\nUnesite izbor: ";
-    //     int input; std::cin >> input;
-    //     if(input == 10) break;
-    //     if(input == 1) {
-    //         std::cout << "Unesite ime pacijenta: ";
-    //         std::string ime;
-    //         std::cin.clear();
-    //         std::cin.ignore(10000, '\n');
-    //         std::getline(std::cin, ime);
-    //         std::cout << "Unesite datum i vrijeme pregleda (dan mjesec godina sati minute): ";
-    //         int d,m,y,h,min;
-    //         std::cin >> d >> m >> y >> h >> min;
-    //         try {
-    //             pregledi.RegistrirajPregled(ime,d,m,y,h,min);
-    //         } catch(std::range_error& err) {
-    //             std::cout << err.what() << "\n";
-    //         }
-    //     } else if(input == 2) {
-    //         std::cout << "Ukupan broj pregleda: " << pregledi.DajBrojPregleda() << "\n";
-    //     } else if(input == 3) {
-    //         std::cout << "Unesite datum (dan mjesec godina): ";
-    //         int d,m,y;
-    //         std::cin >> d >> m >> y;
-    //         std::cout << "Broj pregleda na datum: " << pregledi.DajBrojPregledaNaDatum({d,m,y}) << "\n";
-    //     } else if(input == 4) {
-    //         pregledi.DajNajranijiPregled().Ispisi();
-    //     } else if(input == 5) {
-    //         pregledi.ObrisiNajranijiPregled();
-    //         std::cout << "Najraniji pregled je obrisan.\n";
-    //     } else if(input == 6) {
-    //         std::cout << "Unesite ime pacijenta: ";
-    //         std::string ime;
-    //         std::cin.clear();
-    //         std::cin.ignore(10000, '\n');
-    //         std::getline(std::cin, ime);
-    //         pregledi.ObrisiPregledePacijenta(ime);
-    //         std::cout << "Pregledi za pacijenta " << ime << " su obrisani.\n";
-    //     } else if(input == 7) {
-    //         std::cout << "Unesite datum: ";
-    //         int d,m,y;
-    //         std::cin >> d >> m >> y;
-    //         pregledi.IspisiPregledeNaDatum({d,m,y});
-    //     } else if(input == 8) {
-    //         std::cout << "Svi pregledi:\n";
-    //         pregledi.IspisiSvePreglede();
-    //     } else if(input == 9) {
-    //         pregledi.IsprazniKolekciju();
-    //         std::cout << "Kolekcija ispraznjena.\n";
-    //     } else {
-    //         std::cout << "\n\nPANIKA\n\n";
-    //     }
-    // }
-    // std::cout << "Kraj programa.";
-    // return 0;
 }
