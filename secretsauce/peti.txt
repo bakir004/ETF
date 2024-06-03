@@ -1,0 +1,1742 @@
+Test 2: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 2: Test velicina klasa - Eliminatoran!
+    {
+        std::cout << sizeof(Student) << " " << typeid(Student).name() << std::endl;
+        std::cout << sizeof(Laptop) << " " << typeid(Laptop).name() << std::endl;
+        std::cout << sizeof(Administracija) << " " << typeid(Administracija).name() << std::endl;
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Ovaj autotest ima vise validnih izlaza!
+
+Izlaz 1:
+
+100 7Student
+56 6Laptop
+48 14Administracija
+
+
+Izlaz 2:
+
+136 7Student
+80 6Laptop
+96 14Administracija
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 3: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 3: Test klase Student - Konstruktori, geteri i Ispisi
+    {
+        Student s1(12345, "1/B", "Neko Nekic", "Bascarsija 1", "1/1-1");
+        Student s2(12346, "1/M", "    Neko  Nekic    ", "Bascarsija 2", "1/1-1");
+        Student s3(12347, "1/D", "  Neko   Nekic   ", "Bascarsija 3", "1/1-1");
+        Student s4(12348, "1", "Neko   Nekic", "Bascarsija 4", "1/1-1");
+
+        int i{12349};
+        std::string st1{"3"}, st2{"    Neko Nekic    "}, st3{"Bascarsija 5"}, st4{"1/1-1"};
+        const Student s5(i, st1, st2, st3, st4);
+
+        std::cout << s1.DajIndeks() << " " << s1.DajImePrezime() << " " << s1.DajGodinuStudija() << " " << s1.DajAdresu() << " " << s1.DajTelefon() << std::endl;
+        std::cout << s2.DajIndeks() << " " << s2.DajImePrezime() << " " << s2.DajGodinuStudija() << " " << s2.DajAdresu() << " " << s2.DajTelefon() << std::endl;
+        std::cout << s3.DajIndeks() << " " << s3.DajImePrezime() << " " << s3.DajGodinuStudija() << " " << s3.DajAdresu() << " " << s3.DajTelefon() << std::endl;
+        std::cout << s4.DajIndeks() << " " << s4.DajImePrezime() << " " << s4.DajGodinuStudija() << " " << s4.DajAdresu() << " " << s4.DajTelefon() << std::endl;
+        std::cout << s5.DajIndeks() << " " << s5.DajImePrezime() << " " << s5.DajGodinuStudija() << " " << s5.DajAdresu() << " " << s5.DajTelefon() << std::endl;
+
+        std::cout << std::endl;
+
+        s1.Ispisi();
+        s2.Ispisi();
+        s3.Ispisi();
+        s4.Ispisi();
+        s5.Ispisi();
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+12345 Neko Nekic 1/B Bascarsija 1 1/1-1
+12346 Neko  Nekic     1/M Bascarsija 2 1/1-1
+12347 Neko   Nekic    1/D Bascarsija 3 1/1-1
+12348 Neko   Nekic 1/B Bascarsija 4 1/1-1
+12349 Neko Nekic     3/B Bascarsija 5 1/1-1
+
+Broj indeksa: 12345
+Godina studija: 1/B
+Ime i prezime: Neko Nekic
+Adresa: Bascarsija 1
+Telefon: 1/1-1
+Broj indeksa: 12346
+Godina studija: 1/M
+Ime i prezime: Neko  Nekic
+Adresa: Bascarsija 2
+Telefon: 1/1-1
+Broj indeksa: 12347
+Godina studija: 1/D
+Ime i prezime: Neko   Nekic
+Adresa: Bascarsija 3
+Telefon: 1/1-1
+Broj indeksa: 12348
+Godina studija: 1/B
+Ime i prezime: Neko   Nekic
+Adresa: Bascarsija 4
+Telefon: 1/1-1
+Broj indeksa: 12349
+Godina studija: 3/B
+Ime i prezime: Neko Nekic
+Adresa: Bascarsija 5
+Telefon: 1/1-1
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 4: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 4: Test klase Student - Izuzeci
+    {
+        try
+        {
+            Student s1(1234, "1/D", "Neko Nekic", "Bascarsija 1", "1/1-1");
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what() << std::endl;
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka.";
+        }
+
+        try
+        {
+            Student s1(12345, "1/F", "Neko Nekic", "Bascarsija 1", "1/1-1");
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what() << std::endl;
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka.";
+        }
+
+        try
+        {
+            Student s1(12345, "4", "Neko Nekic", "Bascarsija 1", "1/1-1");
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what() << std::endl;
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka.";
+        }
+
+        try
+        {
+            Student s1(12345, "4/B", "Neko Nekic", "Bascarsija 1", "1/1-1");
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what() << std::endl;
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka.";
+        }
+
+        try
+        {
+            Student s1(12345, "1/B", "Neko Nekic", "Bascarsija 1", "1-1-1");
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what() << std::endl;
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka.";
+        }
+
+        try
+        {
+            Student s1(12345, "1/B", "Neko Nekic", "Bascarsija 1", "1/1/1");
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what() << std::endl;
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka.";
+        }
+
+        try
+        {
+            Student s1(12345, "1/B", "Neko Nekic", "Bascarsija 1", "111");
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what() << std::endl;
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka.";
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Izuzetak: Neispravni parametri
+Izuzetak: Neispravni parametri
+Izuzetak: Neispravni parametri
+Izuzetak: Neispravni parametri
+Izuzetak: Neispravni parametri
+Izuzetak: Neispravni parametri
+Izuzetak: Neispravni parametri
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 5: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 5: Test klase Laptop - Konstruktori
+    {
+        Laptop l1 (123, "ASUS X554L", "Intel CPU 2.4 GHz, 8 GB RAM");
+        int i{234};
+        std::string s1{"DELL XPS 13"}, s2{"Intel CPU 3.5 GHz, 8 GB RAM"};
+        Laptop l2 (i, s1, s2);
+        std::cout << "OK";
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+OK
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 6: Nije skriven - Koristi vasu main() funkciju i stdin ulaz
+
+Ulaz:
+
+1
+12345
+2/M
+Marljivi Student
+Ulica marljivih studenata bb
+061 616 307
+K
+Izlaz:
+
+Odaberite jednu od sljedecih opcija: 
+1 - RegistrirajNovogStudenta
+2 - RegistrirajNoviLaptop
+3 - IzlistajStudente
+4 - IzlistajLaptope
+5 - NadjiSlobodniLaptop
+6 - ZaduziLaptop
+7 - RazduziLaptop
+8 - PrikaziZaduzenja
+K - Kraj programa
+Unesite broj indeksa: 
+Unesite godinu studija (formata A/X, gdje je A godina studija, a X prima vrijednosti B,M,D, zavisno od studija): 
+Unesite ime i prezime studenta: 
+Unesite adresu studenta: 
+Unesite broj telefona (formata x/x-x): 
+Izuzetak: Neispravni parametri!
+Odaberite jednu od sljedecih opcija: 
+1 - RegistrirajNovogStudenta
+2 - RegistrirajNoviLaptop
+3 - IzlistajStudente
+4 - IzlistajLaptope
+5 - NadjiSlobodniLaptop
+6 - ZaduziLaptop
+7 - RazduziLaptop
+8 - PrikaziZaduzenja
+K - Kraj programa
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 7: Nije skriven - Koristi vasu main() funkciju i stdin ulaz
+
+Ulaz:
+
+2
+928912
+Laptop za TP
+Pola laptop - Pola workspace
+4
+K
+Izlaz:
+
+Odaberite jednu od sljedecih opcija: 
+1 - RegistrirajNovogStudenta
+2 - RegistrirajNoviLaptop
+3 - IzlistajStudente
+4 - IzlistajLaptope
+5 - NadjiSlobodniLaptop
+6 - ZaduziLaptop
+7 - RazduziLaptop
+8 - PrikaziZaduzenja
+K - Kraj programa
+Unesite evidencijski broj laptopa 
+Unesite naziv laptopa 
+Unesite karakteristike laptopa: 
+Laptop uspjesno registrovan!
+Odaberite jednu od sljedecih opcija: 
+1 - RegistrirajNovogStudenta
+2 - RegistrirajNoviLaptop
+3 - IzlistajStudente
+4 - IzlistajLaptope
+5 - NadjiSlobodniLaptop
+6 - ZaduziLaptop
+7 - RazduziLaptop
+8 - PrikaziZaduzenja
+K - Kraj programa
+Evidencijski broj: 928912
+Naziv: Laptop za TP
+Karakteristike: Pola laptop - Pola workspace
+
+
+Odaberite jednu od sljedecih opcija: 
+1 - RegistrirajNovogStudenta
+2 - RegistrirajNoviLaptop
+3 - IzlistajStudente
+4 - IzlistajLaptope
+5 - NadjiSlobodniLaptop
+6 - ZaduziLaptop
+7 - RazduziLaptop
+8 - PrikaziZaduzenja
+K - Kraj programa
+
+
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 8: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 8: Test klase Laptop - Geteri
+    {
+        const Laptop l1 (123, "ASUS X554L", "Intel CPU 2.4 GHz, 8 GB RAM");
+        std::cout << l1.DajEvidencijskiBroj() << " " << l1.DajNaziv() << l1.DajKarakteristike();
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+123 ASUS X554LIntel CPU 2.4 GHz, 8 GB RAM
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 9: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 9: Test klase Laptop - Ispisi
+    {
+        const Laptop l1 (123, "ASUS X554L", "Intel CPU 2.4 GHz, 8 GB RAM");
+        l1.Ispisi();
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Evidencijski broj: 123
+Naziv: ASUS X554L
+Karakteristike: Intel CPU 2.4 GHz, 8 GB RAM
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 10: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 10: Test klase Laptop - DaLiJeZaduzen
+    {
+        const Laptop l1 (123, "ASUS X554L", "Intel CPU 2.4 GHz, 8 GB RAM");
+        std::cout << l1.DaLiJeZaduzen();
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+0
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 11: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 11: Test klase Laptop - Izuzeci
+    {
+        try
+        {
+            Laptop l1 (-123, "ASUS X554L", "Intel CPU 2.4 GHz, 8 GB RAM");
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what() << std::endl;
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka.";
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Izuzetak: Neispravni parametri
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 12: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 12: Test klase Laptop - Zaduzi
+    {
+        Laptop l1 (123, "ASUS X554L", "Intel CPU 2.4 GHz, 8 GB RAM");
+        Student s1(12345, "1/B", "Neko Nekic", "Bascarsija 1", "1/1-1");
+
+        if (l1.DaLiJeZaduzen())
+            std::cout<< "Laptop je zaduzen" << std::endl ;
+        else
+            std::cout<< "Laptop nije zaduzen" << std::endl ;
+
+        l1.Zaduzi(s1) ;
+
+        if (l1.DaLiJeZaduzen())
+            std::cout<< "Laptop je zaduzen" << std::endl ;
+        else
+            std::cout<< "Laptop nije zaduzen" << std::endl;
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Laptop nije zaduzen
+Laptop je zaduzen
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 13: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 13: Test klase Laptop - Zaduzi (testiranje izuzetka)
+    {
+        try
+        {
+            Laptop l1 (123, "ASUS X554L", "Intel CPU 2.4 GHz, 8 GB RAM");
+            Student s1(12345, "1/B", "Neko Nekic", "Bascarsija 1", "1/1-1");
+            Student s2(12345, "1/B", "Neko Nekic", "Bascarsija 1", "1/1-1");
+            l1.Zaduzi(s1);
+            std::cout << "OK" << std::endl;
+            l1.Zaduzi(s2);
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what();
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+OK
+Izuzetak: Laptop vec zaduzen
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 14: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 14: Test klase Laptop - Razduzi
+    {
+        Laptop l1 (123, "ASUS X554L", "Intel CPU 2.4 GHz, 8 GB RAM");
+        Student s1(12345, "1/B", "Neko Nekic", "Bascarsija 1", "1/1-1");
+        l1.Zaduzi(s1);
+        if (l1.DaLiJeZaduzen())
+            std::cout<< "Laptop je zaduzen" << std::endl ;
+        else
+            std::cout<< "Laptop nije zaduzen" << std::endl;
+        l1.Razduzi();
+        if (l1.DaLiJeZaduzen())
+            std::cout<< "Laptop je zaduzen" << std::endl ;
+        else
+            std::cout<< "Laptop nije zaduzen" << std::endl;
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Laptop je zaduzen
+Laptop nije zaduzen
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 15: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 15: Test klase Laptop - DajKodKogaJe
+    {
+        Laptop l1 (123, "ASUS X554L", "Intel CPU 2.4 GHz, 8 GB RAM");
+        Student s1(12345, "1/B", "Neko Nekic", "Bascarsija 1", "1/1-1");
+        l1.Zaduzi(s1);
+        l1.DajKodKogaJe().Ispisi();
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Broj indeksa: 12345
+Godina studija: 1/B
+Ime i prezime: Neko Nekic
+Adresa: Bascarsija 1
+Telefon: 1/1-1
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 16: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 16: Test klase Laptop - Razduzi nad laptopom koji nije zaduzen
+    {
+        Laptop l1 (123, "ASUS X554L", "Intel CPU 2.4 GHz, 8 GB RAM");
+        Student s1(12345, "1/B", "Neko Nekic", "Bascarsija 1", "1/1-1");
+        l1.Zaduzi(s1);
+        if (l1.DaLiJeZaduzen())
+            std::cout<< "Laptop je zaduzen" << std::endl ;
+        else
+            std::cout<< "Laptop nije zaduzen" << std::endl;
+        l1.Razduzi();
+        if (l1.DaLiJeZaduzen())
+            std::cout<< "Laptop je zaduzen" << std::endl ;
+        else
+            std::cout<< "Laptop nije zaduzen" << std::endl;
+        l1.Razduzi();
+        if (l1.DaLiJeZaduzen())
+            std::cout<< "Laptop je zaduzen" << std::endl ;
+        else
+            std::cout<< "Laptop nije zaduzen" << std::endl;
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Laptop je zaduzen
+Laptop nije zaduzen
+Laptop nije zaduzen
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 17: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 17: Test klase Laptop - DajKodKogaJe - Izuzetak
+    {
+        Laptop l1 (123, "ASUS X554L", "Intel CPU 2.4 GHz, 8 GB RAM");
+        try
+        {
+            l1.DajKodKogaJe().Ispisi();
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what();
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka!";
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Izuzetak: Laptop nije zaduzen
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 18: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 18: Test klase Administracija - NadjiLaptop (izuzetak)
+    {
+        try
+        {
+            Administracija admin;
+            admin.NadjiLaptop(123);
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what();
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka!";
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Izuzetak: Laptop nije nadjen
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 19: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 19: Test klase Administracija - NadjiStudenta (izuzetak)
+    {
+        try
+        {
+            Administracija admin;
+            admin.NadjiStudenta(123);
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what() << std::endl;
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka!";
+        }
+
+        try
+        {
+            Administracija admin;
+            admin.NadjiStudenta(12345);
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what();
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka!";
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Izuzetak: Student nije nadjen
+Izuzetak: Student nije nadjen
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 20: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 20: Test klase Administracija - IzlistajLaptope i IzlistajStudente (prazno)
+    {
+        Administracija admin;
+        admin.IzlistajLaptope();
+        admin.IzlistajStudente();
+        std::cout << "OK";
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+OK
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 21: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 21: Test klase Administracija - ZaduziLaptop (prazno, izuzetak)
+    {
+        try
+        {
+            Administracija admin;
+            admin.ZaduziLaptop(123, 12345);
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what() << std::endl;
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka!";
+        }
+
+        try
+        {
+            Administracija admin;
+            admin.RegistrirajNovogStudenta(12345, "1/B", "Neko Nekic", "Bascarsija 1", "1/1-1");
+            admin.ZaduziLaptop(12345, 123);
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what() << std::endl;
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka!";
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Izuzetak: Student nije nadjen
+Izuzetak: Laptop nije nadjen
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 22: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 22: Test klase Administracija - Normalna funkcionalnost
+    {
+        Administracija etf ;
+
+        etf.RegistrirajNoviLaptop(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
+        etf.RegistrirajNoviLaptop(331, "ASUS", "CPU 3.5 GHz, 2 GB RAM");
+        etf.RegistrirajNoviLaptop(122, "Dell 2", "CPU 3.2 GHz, 6 GB RAM");
+        etf.RegistrirajNovogStudenta(14212, "1", "Benjamin", "Francuska revolucija 23", "12/34-56");
+        etf.RegistrirajNovogStudenta(17528, "2","Ivan", "Trg vjecnih studenata 12", "048/597-585");
+
+        etf.IzlistajStudente();
+
+        etf.IzlistajLaptope();
+
+        etf.ZaduziLaptop(14212, 123);
+        etf.ZaduziLaptop(17528, 331);
+
+        etf.PrikaziZaduzenja();
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Broj indeksa: 14212
+Godina studija: 1/B
+Ime i prezime: Benjamin
+Adresa: Francuska revolucija 23
+Telefon: 12/34-56
+
+Broj indeksa: 17528
+Godina studija: 2/B
+Ime i prezime: Ivan
+Adresa: Trg vjecnih studenata 12
+Telefon: 048/597-585
+
+Evidencijski broj: 122
+Naziv: Dell 2
+Karakteristike: CPU 3.2 GHz, 6 GB RAM
+
+Evidencijski broj: 123
+Naziv: Dell
+Karakteristike: CPU 3.0 GHz, 4 GB RAM
+
+Evidencijski broj: 331
+Naziv: ASUS
+Karakteristike: CPU 3.5 GHz, 2 GB RAM
+
+Student Benjamin (14212) zaduzio/la laptop broj 123
+Student Ivan (17528) zaduzio/la laptop broj 331
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 23: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 23: Test klase Administracija - Test izuzetka zaduzenja
+    {
+        try
+        {
+            Administracija etf;
+            etf.PrikaziZaduzenja();
+            etf.RegistrirajNovogStudenta(14212, "1", "Benjamin", "Francuska revolucija 23", "12/34-56");
+            etf.RegistrirajNovogStudenta(14212, "2","Ivan", "Trg vjecnih studenata 12", "048/597-585");
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what();
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka!";
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Nema zaduzenja
+Izuzetak: Student s tim indeksom vec postoji
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 24: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 24: Test klase Administracija - RegistrirajNoviLaptop kada vec postoji laptop sa tim ev. brojem
+    {
+        try
+        {
+            Administracija etf;
+            etf.RegistrirajNoviLaptop(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
+            etf.RegistrirajNoviLaptop(123, "ASUS", "CPU 3.5 GHz, 2 GB RAM");
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what();
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka!";
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Izuzetak: Laptop s tim evidencijskim brojem vec postoji
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 25: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 25: Test klase Administracija - RazduziLaptop (prazno)
+    {
+        try
+        {
+            Administracija etf;
+            etf.RazduziLaptop(123);
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what();
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka!";
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Izuzetak: Laptop nije nadjen
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 26: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 26: Test klase Administracija - RazduziLaptop (nije zaduzen)
+    {
+        try
+        {
+            Administracija etf;
+            etf.RegistrirajNoviLaptop(123, "ASUS", "CPU 3.5 GHz, 2 GB RAM");
+            etf.RazduziLaptop(123);
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what();
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka!";
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Izuzetak: Laptop nije zaduzen
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 27: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 27: Test klase Administracija - Student nije nadjen
+    {
+        try
+        {
+            Administracija etf;
+            etf.RegistrirajNovogStudenta(14212, "1", "Benjamin", "Francuska revolucija 23", "12/34-56");
+            etf.RegistrirajNovogStudenta(17528, "2","Ivan", "Trg vjecnih studenata 12", "048/597-585");
+            etf.RegistrirajNovogStudenta(12345, "2","Ivan", "Trg vjecnih studenata 12", "048/597-585");
+
+            etf.NadjiStudenta(66666);
+
+
+            std::cout << "Ovo se ne smije ispisati.";
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what();
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka!";
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Izuzetak: Student nije nadjen
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 28: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 28: Test klase Administracija - NadjiLaptop i NadjiStudenta
+    {
+        Administracija etf;
+        etf.RegistrirajNoviLaptop(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
+        etf.RegistrirajNoviLaptop(331, "ASUS", "CPU 3.5 GHz, 2 GB RAM");
+        etf.RegistrirajNoviLaptop(122, "Dell 2", "CPU 3.2 GHz, 6 GB RAM");
+        etf.NadjiLaptop(123).Ispisi();
+
+        std::cout << std::endl;
+
+        etf.RegistrirajNovogStudenta(14212, "1", "Benjamin", "Francuska revolucija 23", "12/34-56");
+        etf.RegistrirajNovogStudenta(17528, "2","Ivan", "Trg vjecnih studenata 12", "048/597-585");
+        etf.RegistrirajNovogStudenta(12345, "2","Ivan", "Trg vjecnih studenata 12", "048/597-585");
+        etf.NadjiStudenta(14212).Ispisi();
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Evidencijski broj: 123
+Naziv: Dell
+Karakteristike: CPU 3.0 GHz, 4 GB RAM
+
+Broj indeksa: 14212
+Godina studija: 1/B
+Ime i prezime: Benjamin
+Adresa: Francuska revolucija 23
+Telefon: 12/34-56
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 29: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 29: Test klase Administracija - ZaduziLaptop (izuzetak)
+    {
+        try
+        {
+            Administracija etf;
+            etf.RegistrirajNovogStudenta(14212, "1", "Benjamin", "Francuska revolucija 23", "12/34-56");
+            etf.RegistrirajNovogStudenta(17528, "2", "Ivan", "Trg vjecnih studenata 12", "048/597-585");
+            etf.RegistrirajNovogStudenta(12345, "2", "Ivan", "Trg vjecnih studenata 12", "048/597-585");
+            etf.RegistrirajNoviLaptop(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
+            etf.RegistrirajNoviLaptop(331, "ASUS", "CPU 3.5 GHz, 2 GB RAM");
+            etf.RegistrirajNoviLaptop(312, "Dell 2", "CPU 3.2 GHz, 6 GB RAM");
+            etf.ZaduziLaptop(14212, 312);
+            std::cout << etf.NadjiSlobodniLaptop() << std::endl;
+            etf.ZaduziLaptop(14212, 331);
+            std::cout << "Ovo se ne smije ispisati.";
+
+        }
+        catch (const std::domain_error& e)
+        {
+            std::cout << "Izuzetak: " << e.what();
+        }
+        catch (...)
+        {
+            std::cout << "Pogresan tip izuzetka!";
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+123
+Izuzetak: Student je vec zaduzio laptop
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 30: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 30: Test klase Administracija - Test ispravnog Zaduzivanja i Razduzivanja
+    {
+        Administracija etf;
+
+        etf.RegistrirajNoviLaptop(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
+        etf.RegistrirajNoviLaptop(331, "ASUS", "CPU 3.5 GHz, 2 GB RAM");
+        etf.RegistrirajNoviLaptop(312, "Dell 2", "CPU 3.2 GHz, 6 GB RAM");
+
+        etf.RegistrirajNovogStudenta(14212, "1","Benjamin", "Francuska revolucija 23", "12/34-56");
+        etf.RegistrirajNovogStudenta(17528, "2/M","Ivan", "Trg vjecnih studenata 12", "048/597-585");
+        etf.RegistrirajNovogStudenta(17525, "3/D","Ante","Trg vjecnih studenata 11", "062/582-757");
+
+        etf.ZaduziLaptop(14212,123);
+
+        if (etf.NadjiLaptop(123).DaLiJeZaduzen())
+            std::cout<< "OK" << std::endl;
+        else
+            std::cout<<"NOT OK" << std::endl;
+
+        etf.RazduziLaptop(123);
+        etf.ZaduziLaptop(14212,312); // Ne treba da baci izuzetak, posto je laptop razduzen
+
+        if (etf.NadjiLaptop(123).DaLiJeZaduzen())
+            std::cout<<"NOT OK"<< std::endl;
+        else
+            std::cout<<"OK"<< std::endl;
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+OK
+OK
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 31: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 31: Test klase Administracija - Pomjerajuci konstruktor kopije
+    {
+        Administracija etf;
+
+        etf.RegistrirajNoviLaptop(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
+        etf.RegistrirajNoviLaptop(331, "ASUS", "CPU 3.5 GHz, 2 GB RAM");
+        etf.RegistrirajNoviLaptop(122, "Dell 2", "CPU 3.2 GHz, 6 GB RAM");
+
+
+        etf.RegistrirajNovogStudenta(14212, "1","Benjamin", "Francuska revolucija 23", "12/34-56");
+        etf.RegistrirajNovogStudenta(17528, "2","Ivan", "Trg vjecnih studenata 12", "048/597-585");
+        etf.RegistrirajNovogStudenta(17525, "3", "Ante","Trg vjecnih studenata 11", "062/582-757");
+
+        etf.ZaduziLaptop(14212, 122);
+        etf.ZaduziLaptop(17525,331);
+
+        Administracija etf_2 (std::move(etf));
+        
+        std::cout << std::endl << "-------------------------" << std::endl;
+        
+        etf_2.IzlistajStudente();
+        std::cout <<std::endl ;
+        etf_2.IzlistajLaptope();
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+-------------------------
+Broj indeksa: 14212
+Godina studija: 1/B
+Ime i prezime: Benjamin
+Adresa: Francuska revolucija 23
+Telefon: 12/34-56
+
+Broj indeksa: 17525
+Godina studija: 3/B
+Ime i prezime: Ante
+Adresa: Trg vjecnih studenata 11
+Telefon: 062/582-757
+
+Broj indeksa: 17528
+Godina studija: 2/B
+Ime i prezime: Ivan
+Adresa: Trg vjecnih studenata 12
+Telefon: 048/597-585
+
+
+Evidencijski broj: 122
+Naziv: Dell 2
+Karakteristike: CPU 3.2 GHz, 6 GB RAM
+Zaduzio(la): Benjamin (14212)
+
+Evidencijski broj: 123
+Naziv: Dell
+Karakteristike: CPU 3.0 GHz, 4 GB RAM
+
+Evidencijski broj: 331
+Naziv: ASUS
+Karakteristike: CPU 3.5 GHz, 2 GB RAM
+Zaduzio(la): Ante (17525)
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 32: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaća 4 - Zadatak 5
+// Odgovorni viši asistent: Haris Čapelj - hcapelj1@etf.unsa.ba
+// Za sva tehnička pitanja vezana za autotestove za zadatak 5, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+int main() {
+// AT 32: Test klase Administracija - Pomjerajuci operator dodjele
+    {
+        Administracija etf;
+
+        etf.RegistrirajNoviLaptop(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
+        etf.RegistrirajNoviLaptop(331, "ASUS", "CPU 3.5 GHz, 2 GB RAM");
+        etf.RegistrirajNoviLaptop(122, "Dell 2", "CPU 3.2 GHz, 6 GB RAM");
+
+
+        etf.RegistrirajNovogStudenta(14212, "1","Benjamin", "Francuska revolucija 23", "12/34-56");
+        etf.RegistrirajNovogStudenta(17528, "2","Ivan", "Trg vjecnih studenata 12", "048/597-585");
+        etf.RegistrirajNovogStudenta(17525, "3", "Ante","Trg vjecnih studenata 11", "062/582-757");
+
+        etf.ZaduziLaptop(14212, 122);
+        etf.ZaduziLaptop(17525,331);
+
+        Administracija etf_2016;
+
+        etf_2016.RegistrirajNovogStudenta(17531, "3","Bill","Albanska", "063/451-758");
+        etf_2016.RegistrirajNovogStudenta(17648, "2","Johny","Francuska revolucija 54", "024/685-658");
+
+
+        etf_2016.RegistrirajNoviLaptop(432,"Toshiba", "CPU 3.2 GHz, 8 GB RAM");
+        etf_2016.RegistrirajNoviLaptop(132,"Lenovo", "CPU 2.0 GHz, 4 GB RAM");
+
+        etf_2016.ZaduziLaptop(17648,432);
+        etf_2016.ZaduziLaptop(17531,132);
+
+        etf = std::move(etf_2016);
+
+        etf.IzlistajStudente();
+        std::cout<<std::endl;
+        etf.IzlistajLaptope();
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Broj indeksa: 17531
+Godina studija: 3/B
+Ime i prezime: Bill
+Adresa: Albanska
+Telefon: 063/451-758
+
+Broj indeksa: 17648
+Godina studija: 2/B
+Ime i prezime: Johny
+Adresa: Francuska revolucija 54
+Telefon: 024/685-658
+
+
+Evidencijski broj: 132
+Naziv: Lenovo
+Karakteristike: CPU 2.0 GHz, 4 GB RAM
+Zaduzio(la): Bill (17531)
+
+Evidencijski broj: 432
+Naziv: Toshiba
+Karakteristike: CPU 3.2 GHz, 8 GB RAM
+Zaduzio(la): Johny (17648)
+
+########################################################################
+########################################################################
+########################################################################
+

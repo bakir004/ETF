@@ -18,7 +18,6 @@ fs.readFile('input.txt', 'utf8', (err, data) => {
     const dataJson = JSON.parse(data);
     const tests = dataJson.tests
     let output = ""
-    console.log(tests[0].tools[2].execute)
     tests.forEach(test => {
         if(!test.tools[2].execute) return;
         if(test.tools[2].execute && test.tools[2].execute.environment) {
@@ -45,12 +44,12 @@ fs.readFile('input.txt', 'utf8', (err, data) => {
         }
         let expectedOutputArray = test.tools[2].execute.expect;
         if(expectedOutputArray.length > 1) output += '\nOvaj autotest ima vise validnih izlaza!\n'
-        expectedOutputArray.forEach((expectedOutput, i) => output += 'Izlaz' + (expectedOutputArray.length > 1 ? " " + (i+1) : "") + ':\n\n' + expectedOutput + '\n\n')
+        expectedOutputArray.forEach((expectedOutput, i) => output += '\nIzlaz' + (expectedOutputArray.length > 1 ? " " + (i+1) : "") + ':\n\n' + expectedOutput + '\n\n')
         output += "########################################################################\n"
         output += "########################################################################\n"
         output += "########################################################################\n\n"
     })
     console.log("Formatirani testovi!")
-    fs.writeFileSync('treci.txt', output);
+    fs.writeFileSync('sesti.txt', output);
 });
 
