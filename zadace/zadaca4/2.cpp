@@ -11,7 +11,6 @@ class GradjaninBiH {
     bool ValidanJMBG(long long int jmbg);
     bool ValidanDatum(int dan, int mjesec, int godina);
 public:
-    long long DajJMBG() const { return jmbg; }
     static void IspisiLanac();
     enum Pol {Musko, Zensko};
     GradjaninBiH(std::string ime, long long int jmbg);

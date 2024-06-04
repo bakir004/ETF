@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <exception>
 #include <map>
 #include <cctype>
 #include <iostream>
@@ -18,16 +17,16 @@ class Student {
     void TestBrojaTelefona(std::string brojTelefona) const;
     void OcistiIme(std::string &ime) const;
 public:
-    Student(int brojIndeksa, std::string ime, std::string adresa, std::string godina, std::string brojTelefona);
-    int DajIndeks() { return brojIndeksa; }
-    std::string DajGodinuStudija() { 
+    Student(int brojIndeksa, std::string godina, std::string ime, std::string adresa, std::string brojTelefona);
+    int DajIndeks() const { return brojIndeksa; }
+    std::string DajGodinuStudija() const { 
         if(mapaGodina.find(godina) != mapaGodina.end()) return mapaGodina[godina];
         else return godina; 
     }
-    std::string DajImePrezime() { return ime; }
-    std::string DajAdresu() { return adresa; }
-    std::string DajTelefon() { return brojTelefona; }
-    void Ispisi();
+    std::string DajImePrezime() const { return ime; }
+    std::string DajAdresu() const { return adresa; }
+    std::string DajTelefon() const { return brojTelefona; }
+    void Ispisi() const;
 };
 
 void Student::OcistiIme(std::string &ime) const {
@@ -45,14 +44,14 @@ void Student::OcistiIme(std::string &ime) const {
     if(preciscen[preciscen.length()-1] == ' ') preciscen.pop_back();
     ime = preciscen;
 }
-void Student::Ispisi() {
+void Student::Ispisi() const {
     std::cout << "Broj indeksa: " << brojIndeksa << "\n";
     std::cout << "Godina studija: " << DajGodinuStudija() << "\n";
     std::cout << "Ime i prezime: " << ime << "\n";
     std::cout << "Adresa: " << adresa << "\n";
-    std::cout << "Broj telefona: " << brojTelefona << "\n";
+    std::cout << "Telefon: " << brojTelefona << "\n";
 }
-Student::Student(int brojIndeksa, std::string ime, std::string adresa, std::string godina, std::string brojTelefona): adresa(adresa)  {
+Student::Student(int brojIndeksa, std::string godina, std::string ime, std::string adresa, std::string brojTelefona): adresa(adresa)  {
     OcistiIme(ime);
     TestIndexa(brojIndeksa);
     TestGodine(godina);

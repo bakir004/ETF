@@ -19,7 +19,10 @@ fs.readFile('input.txt', 'utf8', (err, data) => {
     const tests = dataJson.tests
     let output = ""
     tests.forEach(test => {
-        if(!test.tools[2].execute) return;
+        if(!test.tools[2].execute) {
+            console.log(test.tools[0].patch[0])
+            return;
+        }
         if(test.tools[2].execute && test.tools[2].execute.environment) {
             output += test.name + (test.options ? ": Skriven" : ": Nije skriven") + " - Koristi vasu main() funkciju i stdin ulaz\n\nUlaz:\n\n"
             let stdin = test.tools[2].execute.environment.stdin;
@@ -50,6 +53,6 @@ fs.readFile('input.txt', 'utf8', (err, data) => {
         output += "########################################################################\n\n"
     })
     console.log("Formatirani testovi!")
-    fs.writeFileSync('cetvrti.txt', output);
+    fs.writeFileSync('treci.txt', output);
 });
 

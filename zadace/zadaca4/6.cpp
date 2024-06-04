@@ -18,15 +18,15 @@ class Student {
     void OcistiIme(std::string &ime) const;
 public:
     Student(int brojIndeksa, std::string godina, std::string ime, std::string adresa, std::string brojTelefona);
-    int DajIndeks() { return brojIndeksa; }
-    std::string DajGodinuStudija() { 
+    int DajIndeks() const { return brojIndeksa; }
+    std::string DajGodinuStudija() const { 
         if(mapaGodina.find(godina) != mapaGodina.end()) return mapaGodina[godina];
         else return godina; 
     }
-    std::string DajImePrezime() { return ime; }
-    std::string DajAdresu() { return adresa; }
-    std::string DajTelefon() { return brojTelefona; }
-    void Ispisi();
+    std::string DajImePrezime() const { return ime; }
+    std::string DajAdresu() const { return adresa; }
+    std::string DajTelefon() const { return brojTelefona; }
+    void Ispisi() const;
 };
 
 void Student::OcistiIme(std::string &ime) const {
@@ -44,12 +44,12 @@ void Student::OcistiIme(std::string &ime) const {
     if(preciscen[preciscen.length()-1] == ' ') preciscen.pop_back();
     ime = preciscen;
 }
-void Student::Ispisi() {
+void Student::Ispisi() const {
     std::cout << "Broj indeksa: " << brojIndeksa << "\n";
     std::cout << "Godina studija: " << DajGodinuStudija() << "\n";
     std::cout << "Ime i prezime: " << ime << "\n";
     std::cout << "Adresa: " << adresa << "\n";
-    std::cout << "Broj telefona: " << brojTelefona << "\n";
+    std::cout << "Telefon: " << brojTelefona << "\n";
 }
 Student::Student(int brojIndeksa, std::string godina, std::string ime, std::string adresa, std::string brojTelefona): adresa(adresa)  {
     OcistiIme(ime);
@@ -97,7 +97,7 @@ void Student::TestBrojaTelefona(std::string brojTelefona) const {
 class Laptop {
     int ev_broj;
     std::string naziv, karakteristike;
-    std::shared_ptr<Student> kod_koga_je;
+    Student* kod_koga_je;
 public:
     int DajEvidencijskiBroj() const { return ev_broj; }
     std::string DajNaziv() const { return naziv; }
@@ -111,7 +111,7 @@ public:
     void Razduzi() { kod_koga_je = nullptr; }
     bool DaLiJeZaduzen() const { return kod_koga_je != nullptr; }
     Student &DajKodKogaJe() const;
-    std::shared_ptr<Student> DajPokKodKogaJe() const noexcept { return kod_koga_je; }
+    Student* DajPokKodKogaJe() const noexcept { return kod_koga_je; }
     void Ispisi() const;
 };
 
@@ -128,7 +128,7 @@ Student& Laptop::DajKodKogaJe() const {
 }
 void Laptop::Zaduzi(Student &s) {
     if(kod_koga_je != nullptr) throw std::domain_error("Laptop vec zaduzen");
-    kod_koga_je = std::make_shared<Student>(s);
+    kod_koga_je = &s;
 }
 
 class Administracija {
@@ -220,7 +220,7 @@ void Administracija::PrikaziZaduzenja() const {
     bool imaMakarJedanZaduzen = false;
     for(auto par : laptopi) {
         std::shared_ptr<Laptop> laptop = par.second;
-        std::shared_ptr<Student> zaduzeniStudent = laptop->DajPokKodKogaJe();
+        Student* zaduzeniStudent = laptop->DajPokKodKogaJe();
         if(zaduzeniStudent == nullptr) continue;
         imaMakarJedanZaduzen = true;
         std::cout << "Student " << zaduzeniStudent->DajImePrezime() << " zaduzio/la laptop broj " << par.first << "\n";
@@ -247,7 +247,7 @@ void Administracija::ZaduziLaptop(int brojIndeksa, int evidencijskiBroj) {
     if(laptopi[evidencijskiBroj]->DaLiJeZaduzen()) throw std::domain_error("Laptop vec zaduzen");
     for(auto par : laptopi) {
         Laptop laptop = *(par.second);
-        std::shared_ptr<Student> studentKodKogaJe = laptop.DajPokKodKogaJe();
+        Student* studentKodKogaJe = laptop.DajPokKodKogaJe();
         if(studentKodKogaJe == nullptr) continue;
         if(studentKodKogaJe->DajIndeks() == brojIndeksa)
             throw std::domain_error("Student je vec zaduzio laptop");
@@ -258,7 +258,7 @@ void Administracija::IzlistajLaptope() const {
     for(auto par : laptopi) {
         par.second->Ispisi();
         if(par.second->DaLiJeZaduzen()) {
-            std::shared_ptr<Student> s = par.second->DajPokKodKogaJe();
+            Student* s = par.second->DajPokKodKogaJe();
             std::cout << "Zaduzio(la): " << s->DajImePrezime() << " (" << s->DajIndeks() << ")";
         }
         std::cout << "\n";
@@ -306,61 +306,7 @@ void Administracija::RegistrirajNovogStudenta(int brojIndeksa, std::string ime, 
     studenti[brojIndeksa] = std::make_shared<Student>(brojIndeksa, ime, adresa, godina, brojTelefona);
 }
 
-// static size_t alocirano(0);
-//
-// void* operator new(size_t vel)
-// {
-//     alocirano += vel;
-//     return std::malloc(vel);
-// }
-//
-// void operator delete (void* ptr) noexcept
-// {
-//     free(ptr);
-// }
-// void operator delete(void* ptr, unsigned long var)
-// {
-//     free(ptr);
-// }
-//
-// void operator delete[] (void* ptr) noexcept
-// {
-//     free(ptr);
-// }
-
 int main() {
-    // alocirano = 0;
-    // Student s(14212, "1","Benjamin", "Francuska revolucija 23", "12/34-56");
-    //
-    // std::cout << "Student: " << alocirano << std::endl;
-    //
-    // alocirano = 0;
-    // Laptop l(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
-    //
-    // std::cout << "Laptop: " << alocirano << std::endl;
-    //
-    // alocirano = 0;
-    // Administracija etf;
-    //
-    // std::cout << "Prazna administracija: " << alocirano << std::endl;
-    //
-    // etf.RegistrirajNoviLaptop(123, "Dell", "CPU 3.0 GHz, 4 GB RAM");
-    // etf.RegistrirajNoviLaptop(331, "ASUS", "CPU 3.5 GHz, 2 GB RAM");
-    // etf.RegistrirajNoviLaptop(122, "Dell 2", "CPU 3.2 GHz, 6 GB RAM");
-    //
-    // std::cout << "Sa laptopima: " << alocirano << std::endl;
-    //
-    // etf.RegistrirajNovogStudenta(14212, "1","Benjamin", "Francuska revolucija 23", "12/34-56");
-    // etf.RegistrirajNovogStudenta(17528, "2","Ivan", "Trg vjecnih studenata 12", "048/597-585");
-    // etf.RegistrirajNovogStudenta(17525, "3", "Ante","Trg vjecnih studenata 11", "062/582-757");
-    //
-    // std::cout << "Sa studentima: " << alocirano << std::endl;
-    //
-    // etf.ZaduziLaptop(14212, 122);
-    // etf.ZaduziLaptop(17525,331);
-    //
-    // std::cout << "Nakon zaduzenja: " << alocirano << std::endl;
-
     Administracija admin;
     while(true) {
         std::cout << "Odaberite jednu od sljedecih opcija: \n1 - RegistrirajNovogStudenta \n2 - RegistrirajNoviLaptop \n3 - IzlistajStudente \n4 - IzlistajLaptope \n5 - NadjiSlobodniLaptop \n6 - ZaduziLaptop \n7 - RazduziLaptop \n8 - PrikaziZaduzenja \nK - Kraj programa\n";

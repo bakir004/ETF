@@ -100,14 +100,21 @@ void Pregled::Ispisi()  {
 void Pregled::PomjeriDanUnazad() {
     int brojDana[12]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     brojDana[1] += datum.Prestupna();
-    std::tuple<int,int,int> ocitanDatum = datum.Ocitaj();
+    std::tuple<int, int, int> ocitanDatum = datum.Ocitaj();
     int dan = std::get<0>(ocitanDatum);
     int mjesec = std::get<1>(ocitanDatum);
     int godina = std::get<2>(ocitanDatum);
     dan--;
-    if(dan < 1) mjesec--;
-    if(mjesec < 1) mjesec = 12, dan = 31, godina--;
-    else dan = brojDana[mjesec-1];
+    if(dan == 0) {
+        mjesec--;
+        if(mjesec == 0) {
+            godina--;
+            mjesec = 12;
+            dan = 31;
+        } else {
+            dan = brojDana[mjesec-1];
+        }
+    } 
     datum = Datum(dan, mjesec, godina);
 }
 void Pregled::PomjeriDanUnaprijed()  {
