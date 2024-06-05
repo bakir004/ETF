@@ -161,9 +161,9 @@ Administracija& Administracija::operator=(Administracija&& admin) {
     studenti = admin.studenti;
     laptopi = admin.laptopi;
     for(auto par : admin.studenti)
-        par.second = nullptr;
+        admin.studenti.erase(par.first);
     for(auto par : admin.laptopi)
-        par.second = nullptr;
+        admin.laptopi.erase(par.first);
     return *this;
 }
 
@@ -189,9 +189,9 @@ Administracija::Administracija(Administracija&& admin) {
     studenti = admin.studenti;
     laptopi = admin.laptopi;
     for(auto par : admin.studenti)
-        par.second = nullptr;
+        admin.studenti.erase(par.first);
     for(auto par : admin.laptopi)
-        par.second = nullptr;
+        admin.laptopi.erase(par.first);
 }
 
 Administracija::Administracija(const Administracija& admin) {
@@ -206,24 +206,20 @@ Administracija::Administracija(const Administracija& admin) {
 }
 
 Administracija::~Administracija() {
-    int counter = 0;
-    for(auto par : studenti) {
+    for(auto par : studenti)
         delete par.second; 
-        counter++;
-    }
-    for(auto par : laptopi) { 
+    for(auto par : laptopi) 
         delete par.second; 
-        counter++;
-    }
 }
 void Administracija::PrikaziZaduzenja() const {
     bool imaMakarJedanZaduzen = false;
     for(auto par : laptopi) {
+        if(par.second == nullptr) continue;
         Laptop* laptop = par.second;
         Student* zaduzeniStudent = laptop->DajPokKodKogaJe();
         if(zaduzeniStudent == nullptr) continue;
         imaMakarJedanZaduzen = true;
-        std::cout << "Student " << zaduzeniStudent->DajImePrezime() << " zaduzio/la laptop broj " << par.first << "\n";
+        std::cout << "Student " << zaduzeniStudent->DajImePrezime() << "(" << zaduzeniStudent->DajIndeks() << ") zaduzio/la laptop broj " << par.first << "\n";
     }
     if(!imaMakarJedanZaduzen)
         std::cout << "Nema zaduzenja\n";
@@ -256,6 +252,7 @@ void Administracija::ZaduziLaptop(int brojIndeksa, int evidencijskiBroj) {
 }
 void Administracija::IzlistajLaptope() const {
     for(auto par : laptopi) {
+        if(par.second == nullptr) continue;
         par.second->Ispisi();
         if(par.second->DaLiJeZaduzen()) {
             Student *s = par.second->DajPokKodKogaJe();
@@ -266,6 +263,7 @@ void Administracija::IzlistajLaptope() const {
 }
 void Administracija::IzlistajStudente() const {
     for(auto par : studenti) {
+        if(par.second == nullptr) continue;
         par.second->Ispisi();
         std::cout << '\n';
     }

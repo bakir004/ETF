@@ -223,7 +223,7 @@ void Administracija::PrikaziZaduzenja() const {
         Student* zaduzeniStudent = laptop->DajPokKodKogaJe();
         if(zaduzeniStudent == nullptr) continue;
         imaMakarJedanZaduzen = true;
-        std::cout << "Student " << zaduzeniStudent->DajImePrezime() << " zaduzio/la laptop broj " << par.first << "\n";
+        std::cout << "Student " << zaduzeniStudent->DajImePrezime() << "(" << zaduzeniStudent->DajIndeks() << ") zaduzio/la laptop broj " << par.first << "\n";
     }
     if(!imaMakarJedanZaduzen)
         std::cout << "Nema zaduzenja\n";
