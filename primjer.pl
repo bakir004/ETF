@@ -11,41 +11,108 @@ cities_coordinates([
     grad(split, 4, 7)
 ]).
 
-distance((_, X1, Y1), (_, X2, Y2), Distance) :-
-    Distance is sqrt((X2 - X1)^2 + (Y2 - Y1)^2).
+udaljenost_izmedju_gradova(Grad1, Grad2, Udaljenost) :-
+    cities_coordinates(Cities),
+    member(grad(Grad1, X1, Y1), Cities),
+    member(grad(Grad2, X2, Y2), Cities),
+    Udaljenost is sqrt((X2 - X1)^2 + (Y2 - Y1)^2).
 
-total_distance([], 0).
-total_distance([_], 0). % Handle single city case
-total_distance([City1, City2 | Rest], TotalDistance) :-
-    distance(City1, City2, Distance),
-    total_distance([City2 | Rest], RestDistance),
-    TotalDistance is Distance + RestDistance.
+uvezi :-
+    cities_coordinates(Cities),
+    findall((Grad1, Grad2), 
+        (member(grad(Grad1, _, _), Cities), member(grad(Grad2, _, _), Cities), Grad1 \= Grad2), 
+        Pairs),
+    create_connections(Pairs).
 
-update_min_distance(Path, Distance) :-
-    ( min_distance(_, MinDist) ->
-        ( Distance < MinDist ->
-            retractall(min_distance(_, _)),
-            assert(min_distance(Path, Distance))
-        ; true
-        )
-    ; assert(min_distance(Path, Distance))
+create_connections([]).
+create_connections([(Grad1, Grad2)|Rest]) :-
+    udaljenost_izmedju_gradova(Grad1, Grad2, Distance),
+    assertz(povezani(Grad1, Grad2, Distance)),
+    create_connections(Rest).
+
+compare_distances(Order, povezani(_, _, Distance1), povezani(_, _, Distance2)) :-
+    compare(Order, Distance1, Distance2).
+sortiraj_veze(Susjedi, SortedSusjedi) :-
+    predsort(compare_distances, Susjedi, SortedSusjedi).
+count_posjecen(CityCount) :-
+    findall(City, posjecen(City), Cities),
+    length(Cities, CityCount).
+
+mst :-
+    cities_coordinates([grad(First,_,_) | _]),
+    assertz(posjecen(First)),
+    findall(povezani(First, Grad, Distance), povezani(First, Grad, Distance), MoguceVeze),
+    length(MoguceVeze, Count),
+    format("Susjedne veze: ~d~n", [Count]),
+    % Pocetak algoritma, imamo veze
+    mst_step(MoguceVeze),
+
+    % findall(mst(Grad1, Grad2, Distance), mst(Grad1, Grad2, Distance), MstVeze),
+
+    % Brisanje najmanje veze
+    % retract(povezani(Grad1, Grad2, Udaljenost)),
+    % retract(povezani(Grad2, Grad1, Udaljenost)),
+
+    % write('Nova lista'), nl,
+    % print_susjedi(MoguceVeze2),
+
+    print_posjeceni.
+
+mst_step(MoguceVeze) :-
+    length(MoguceVeze, Count),
+    format("STEPPER: ~d~n", [Count]),
+
+    % Pronalazak najmanje veze
+    sortiraj_veze(MoguceVeze, SortiraneVeze),
+    nth0(0, SortiraneVeze, NajblizaVeza),
+    NajblizaVeza = povezani(Grad1, Grad2, Udaljenost),
+    write('Najblizi grad: '),
+    write(Grad1), nl,
+
+    % Dodavanje veze u MST
+    assertz(mst(Grad1, Grad2, Udaljenost)),
+    assertz(posjecen(Grad2)),
+    count_posjecen(CityCount),
+    (CityCount >= 10 ->
+        % Base case: Stop recursion if five cities have been visited
+        format("Five cities visited. Stopping recursion.~n");
+        % Recursive step: Continue recursion with updated connections list
+        findall(povezani(Grad2, Nesta, Udaljenost), povezani(Grad2, Nesta, _), MoguceNoveVeze),
+        append(MoguceVeze, MoguceNoveVeze, NovaListaMogucihVeza),
+        delete(NovaListaMogucihVeza, povezani(Grad1, Grad2, _), UpdatedNovaListaMogucihVeza),
+        delete(UpdatedNovaListaMogucihVeza, povezani(Grad2, Grad1, _), UpdatedNovaListaMogucihVeza2),
+
+        findall(Veza, member(Veza, UpdatedNovaListaMogucihVeza2), MoguceVeze2),
+        mst_step(MoguceVeze2)
     ).
 
-tsp_shortest_path(Cities, Path, Distance) :-
-    permutation(Cities, Path),
-    Path = [Start | _],
-    append(Path, [Start], FullPath),
-    total_distance(FullPath, Distance),
-    update_min_distance(Path, Distance),
-    fail.
-tsp_shortest_path(_, Path, Distance) :- % Handle no solution case
-    min_distance(Path, Distance). % Use the best path found so far
 
-solve_tsp :-
-    cities_coordinates(Cities),
-    tsp_shortest_path(Cities, Path, Distance),
-    format('Optimal Path: ~w~n', [Path]),
-    format('Minimal Distance: ~w~n', [Distance]),
-    retractall(min_distance(_, _)).
+print_posjeceni :-
+    findall(X, posjecen(X), Posjeceni),
+    forall(member(X, Posjeceni),
+           format('Posjecen: ~w~n', [X])).
 
-:- solve_tsp.
+print_susjedi([]).
+print_susjedi([Susjed|Rest]) :-
+    write(Susjed), nl,  
+    print_susjedi(Rest).
+
+print_connections :-
+    forall(povezani(Grad1, Grad2, Distance),
+           format('Connection: ~w - ~w, Distance: ~2f~n', [Grad1, Grad2, Distance])).
+
+print_mst_connections :-
+    forall(mst(Grad1, Grad2, Distance),
+           format('Connection: ~w - ~w, Distance: ~2f~n', [Grad1, Grad2, Distance])).
+print_mst_size :-
+    findall(_, posjecen(_), PosjecenList),
+    length(PosjecenList, Count),
+    format("Number: ~d~n", Count).
+
+print_to_screen :-
+    write('\nOK 200'), nl.
+
+?- uvezi.
+?- mst.
+?- print_mst_connections.
+?- print_to_screen.

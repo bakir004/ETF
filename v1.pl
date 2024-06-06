@@ -30,12 +30,9 @@ udaljenost_izmedju_gradova(Grad1, Grad2, Udaljenost) :-
     grad(Grad2, X2, Y2),
     Udaljenost is sqrt((X2 - X1)^2 + (Y2 - Y1)^2).
 
-cena_za_put(autoput, Distance, Cost) :-
-    Cost is 5 * Distance.
-cena_za_put('brza cesta', Distance, Cost) :-
-    Cost is 3 * Distance.
-cena_za_put(makadam, Distance, Cost) :-
-    Cost is 1 * Distance.
+cena_za_put(autoput, Distance, Cost) :- Cost is 5 * Distance.
+cena_za_put('brza cesta', Distance, Cost) :- Cost is 3 * Distance.
+cena_za_put(makadam, Distance, Cost) :- Cost is 1 * Distance.
 
 cena_za_vezu(Grad1, Grad2, Cena) :-
     povezani(Grad1, Grad2, TipPuta),
