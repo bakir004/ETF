@@ -1,4 +1,3 @@
-% Define cities and their coordinates
 cities_coordinates([
     grad(sarajevo, 3, 5),
     grad(mostar, 9, 2),
@@ -12,11 +11,9 @@ cities_coordinates([
     grad(split, 4, 7)
 ]).
 
-% Calculate Euclidean distance between two cities
 distance((_, X1, Y1), (_, X2, Y2), Distance) :-
     Distance is sqrt((X2 - X1)^2 + (Y2 - Y1)^2).
 
-% Calculate total distance of a path
 total_distance([], 0).
 total_distance([_], 0). % Handle single city case
 total_distance([City1, City2 | Rest], TotalDistance) :-
@@ -24,7 +21,6 @@ total_distance([City1, City2 | Rest], TotalDistance) :-
     total_distance([City2 | Rest], RestDistance),
     TotalDistance is Distance + RestDistance.
 
-% Assert minimum distance
 update_min_distance(Path, Distance) :-
     ( min_distance(_, MinDist) ->
         ( Distance < MinDist ->
@@ -35,7 +31,6 @@ update_min_distance(Path, Distance) :-
     ; assert(min_distance(Path, Distance))
     ).
 
-% Find shortest path using brute force
 tsp_shortest_path(Cities, Path, Distance) :-
     permutation(Cities, Path),
     Path = [Start | _],
@@ -46,7 +41,6 @@ tsp_shortest_path(Cities, Path, Distance) :-
 tsp_shortest_path(_, Path, Distance) :- % Handle no solution case
     min_distance(Path, Distance). % Use the best path found so far
 
-% Solve TSP and print result
 solve_tsp :-
     cities_coordinates(Cities),
     tsp_shortest_path(Cities, Path, Distance),
@@ -54,5 +48,4 @@ solve_tsp :-
     format('Minimal Distance: ~w~n', [Distance]),
     retractall(min_distance(_, _)).
 
-% Call solve_tsp when needed
 :- solve_tsp.
