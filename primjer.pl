@@ -1,14 +1,11 @@
 cities_coordinates([
-    grad(sarajevo, 3, 5),
-    grad(mostar, 9, 2),
-    grad(banjaluka, 7, 10),
-    grad(tuzla, 12, 8),
-    grad(zagreb, 5, 15),
-    grad(beograd, 11, 12),
-    grad(podgorica, 6, 3),
-    grad(skopje, 8, 6),
-    grad(zenica, 10, 13),
-    grad(split, 4, 7)
+    grad(a, 1, 1),
+    grad(b, 7, 1),
+    grad(c, 7, 3),
+    grad(d, 10, 6),
+    grad(e, 7, 9),
+    grad(f, 3, 6),
+    grad(g, 1, 11)
 ]).
 
 daj_tezinsku_konstantu(Konstanta) :-
@@ -160,7 +157,8 @@ poziv(Udaljenosti, Varijacije, Reduceri) :-
 print_all_variations :-
     write('Pronalazim najbolje tipove puteva...'), nl,
     findall(D, mst(_, _, D), Udaljenosti),
-    generate_variations(10, Variation),
+    length(Udaljenosti, Count),
+    generate_variations(Count+1, Variation), 
     perform_mapping(Variation, Result),
     poziv(Udaljenosti, Variation, Result).
 
@@ -175,6 +173,10 @@ compare_putevi(Order, putevi(_, Cost1, Throughput1), putevi(_, Cost2, Throughput
     weight_function(Cost2, Throughput2, Weight2),
     compare(Order, Weight1, Weight2).
 
+remove_last_element([_], []).  
+remove_last_element([H|T], [H|NewT]) :- 
+    remove_last_element(T, NewT).
+
 print_paths :-
     findall(putevi(A, B, C), putevi(A, B, C), Putevi),
     predsort(compare_putevi, Putevi, [_|SortedPutevi]),
@@ -183,7 +185,8 @@ print_paths :-
     LastIndex is Len - 1,
     nth0(LastIndex, SortedPutevi, Najbolji),
     Najbolji = putevi(Niz, _, _),
-    write('Najbolji odabir puteva: '), write(Niz), nl.
+    remove_last_element(Niz, KonacniNiz),
+    write('Najbolji odabir puteva: '), write(KonacniNiz), nl.
 
 ?- uvezi.
 ?- mst.
