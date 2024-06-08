@@ -1,8 +1,10 @@
 #include <iostream>
+#include <iomanip>
 #include <algorithm>
 #include <stdexcept>
 #include <string>
 
+enum Pol {Musko, Zensko};
 class GradjaninBiH {
     std::string ime;
     long long int jmbg;
@@ -12,22 +14,34 @@ class GradjaninBiH {
     bool ValidanDatum(int dan, int mjesec, int godina);
 public:
     static void IspisiLanac();
-    enum Pol {Musko, Zensko};
     GradjaninBiH(std::string ime, long long int jmbg);
     GradjaninBiH(std::string ime, int dan, int mjesec, int godina, int sifra, Pol pol);
+    GradjaninBiH(const GradjaninBiH& d) = delete;
+    GradjaninBiH& operator=(const GradjaninBiH& d) = delete;
     std::string DajImeIPrezime() const;
     long long int DajJMBG() const;
     int DajDanRodjenja() const;
+    GradjaninBiH* DajPrethodnog() const;
+    void PostaviPrethodnog(GradjaninBiH* p);
     int DajMjesecRodjenja() const;
     int DajGodinuRodjenja() const;
     int DajSifruRegije() const;
     int DajPol() const;
     int DajKod() const;
-    void PromijeniImeIPrezime(std::string ime) { this->ime = ime; }
+    void PromijeniImeIPrezime(std::string ime) { 
+        if(ime.length() == 0) throw std::logic_error("Ime ne moze biti prazno!");
+        this->ime = ime; 
+    }
     ~GradjaninBiH();
 };
 GradjaninBiH* GradjaninBiH::kraj = nullptr;
 
+void GradjaninBiH::PostaviPrethodnog(GradjaninBiH* p) {
+    prosli = p;
+}
+GradjaninBiH* GradjaninBiH::DajPrethodnog() const {
+    return prosli;
+}
 void GradjaninBiH::IspisiLanac() {
     auto pok = kraj;
     while(pok != nullptr) {
@@ -37,23 +51,23 @@ void GradjaninBiH::IspisiLanac() {
     std::cout << '\n';
 }
 GradjaninBiH::~GradjaninBiH() {
-    // std::cout << "Destruktiramo\n";
-    if(prosli == nullptr) {
-        auto pok = kraj;
-        while(pok->prosli != nullptr && pok->prosli->DajJMBG() != this->DajJMBG())
-            pok = pok->prosli;
-        pok->prosli = nullptr;
-    } else if(kraj->DajJMBG() == this->DajJMBG()) {
-        kraj = prosli;
-    } else {
-        auto pok = kraj;
-        while(pok->prosli->DajJMBG() != this->DajJMBG())
-            pok = pok->prosli;
-        pok->prosli = prosli;
-    }
+    // if(prosli == nullptr) {
+    //     auto pok = kraj;
+    //     while(pok->prosli != nullptr && pok->prosli->DajJMBG() != this->DajJMBG())
+    //         pok = pok->prosli;
+    //     pok->prosli = nullptr;
+    // } else if(kraj->DajJMBG() == this->DajJMBG()) {
+    //     kraj = prosli;
+    // } else {
+    //     auto pok = kraj;
+    //     while(pok->prosli->DajJMBG() != this->DajJMBG())
+    //         pok = pok->prosli;
+    //     pok->prosli = prosli;
+    // }
 }
 
 GradjaninBiH::GradjaninBiH(std::string ime, long long int jmbg) {
+    if(ime.length() == 0) throw std::logic_error("Ime ne moze biti prazno!");
     if(!ValidanJMBG(jmbg)) throw std::logic_error("JMBG nije validan");
 
     if(kraj == nullptr) prosli = nullptr;
@@ -71,9 +85,9 @@ GradjaninBiH::GradjaninBiH(std::string ime, long long int jmbg) {
 }
 
 GradjaninBiH::GradjaninBiH(std::string ime, int dan, int mjesec, int godina, int sifra, Pol pol) {
+    if(ime.length() == 0) throw std::logic_error("Ime ne moze biti prazno!");
     if(!ValidanDatum(dan, mjesec, godina) || sifra < 0 || sifra > 99)
         throw std::logic_error("Neispravni podaci");
-    godina %= 1000;
 
     if(kraj == nullptr) prosli = nullptr;
     else prosli = kraj;
@@ -86,6 +100,8 @@ GradjaninBiH::GradjaninBiH(std::string ime, int dan, int mjesec, int godina, int
     while((pok=pok->prosli) != nullptr)
         if(pok->DajPol() == pol && pok->DajDanRodjenja() == dan && pok->DajMjesecRodjenja() == mjesec && pok->DajGodinuRodjenja() == godina)
             zauzetiBrojevi[pok->DajKod()-offset] = true;
+        
+    
     int kod = 0;
     for(int i = 0; i < 500; i++) {
         if(!zauzetiBrojevi[i]) {
@@ -94,11 +110,16 @@ GradjaninBiH::GradjaninBiH(std::string ime, int dan, int mjesec, int godina, int
         }
     }
     if(pol == Pol::Zensko) kod += 500;
+    godina %= 1000;
 
     long long int jmbg = dan * 10e10 + mjesec * 10e8 + godina * 10e5 + sifra * 10e3 + kod * 10;
     int kontrolna = 11-(7*(dan/10+godina%10)+6*(dan%10+sifra/10)+5*(mjesec/10+sifra%10)+4*(mjesec%10+kod/100)+3*(godina/100+kod/10%10)+2*(godina/10%10+kod%10))%11;
     if(kontrolna == 11) kontrolna = 0;
-    if(kontrolna == 10) std::cout << "\n\nPANIKA!!!!!!!\n\n";
+    if(kontrolna == 10) {
+        kod++;
+        jmbg = dan * 10e10 + mjesec * 10e8 + godina * 10e5 + sifra * 10e3 + kod * 10;
+        kontrolna = 11-(7*(dan/10+godina%10)+6*(dan%10+sifra/10)+5*(mjesec/10+sifra%10)+4*(mjesec%10+kod/100)+3*(godina/100+kod/10%10)+2*(godina/10%10+kod%10))%11;
+    } 
     jmbg += kontrolna;
     
     kraj = this;
@@ -143,12 +164,11 @@ int GradjaninBiH::DajGodinuRodjenja() const {
     return godina;
 }
 int GradjaninBiH::DajPol() const {
-    if(DajKod() <= 499) return GradjaninBiH::Pol::Musko;
-    else return GradjaninBiH::Pol::Zensko;
+    if(DajKod() <= 499) return Pol::Musko;
+    else return Pol::Zensko;
 }
 
 int main() {
-
     std::cout << "Unesite broj gradjana: \n";
     int n;
     std::cin >> n;
@@ -171,7 +191,7 @@ int main() {
             std::cout << "Pol ( 1-Musko, 2-Zensko ): ";
             std::cin >> pol;
             try {
-                gradjani[i] = new GradjaninBiH(ime, d, m, y, sifra, (pol == 1 ? GradjaninBiH::Pol::Musko : GradjaninBiH::Pol::Zensko));
+                gradjani[i] = new GradjaninBiH(ime, d, m, y, sifra, (pol == 1 ? Pol::Musko : Pol::Zensko));
             } catch(std::logic_error& err) {
                 std::cout << err.what() << ". Molimo ponovite unos.\n";
                 i--;
@@ -193,7 +213,7 @@ int main() {
             });
     std::cout << "Gradjani sortirani po starosti:\n";
     for(int i = 0; i < n; i++)
-        std::cout << gradjani[i]->DajImeIPrezime() << " " << gradjani[i]->DajDanRodjenja() << "." << gradjani[i]->DajMjesecRodjenja() << "." << gradjani[i]->DajGodinuRodjenja() << " JMBG: " << gradjani[i]->DajJMBG() << "\n";
+        std::cout << gradjani[i]->DajImeIPrezime() << " " << gradjani[i]->DajDanRodjenja() << "." << gradjani[i]->DajMjesecRodjenja() << "." << gradjani[i]->DajGodinuRodjenja() << " JMBG: " << std::setw(13) << std::setfill('0') << gradjani[i]->DajJMBG() << "\n";
     for(int i = 0; i < n; i++)
         delete gradjani[i];
     delete[] gradjani;
