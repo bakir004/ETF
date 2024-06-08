@@ -1,4 +1,4 @@
-cities_coordinates([
+koordinate_gradova([
     grad(a, 1, 1),
     grad(b, 7, 1),
     grad(c, 7, 3),
@@ -11,67 +11,67 @@ cities_coordinates([
 daj_tezinsku_konstantu(Konstanta) :-
     Konstanta is 40.
 
-generate_variations(0, []).
-generate_variations(N, [X|Rest]) :-
+generisi_varijacije(0, []).
+generisi_varijacije(N, [X|Ostalo]) :-
     N > 0,
     member(X, [1, 3, 5]), 
-    NewN is N - 1,
-    generate_variations(NewN, Rest).
+    NoviN is N - 1,
+    generisi_varijacije(NoviN, Ostalo).
 
-map_values([], [], _). 
-map_values([X|Xs], [Y|Ys], Map) :-
+mapiraj_vrijednosti([], [], _). 
+mapiraj_vrijednosti([X|Xs], [Y|Ys], Map) :-
     member(X-Y, Map), 
-    map_values(Xs, Ys, Map). 
+    mapiraj_vrijednosti(Xs, Ys, Map). 
 
-perform_mapping(InputList, OutputList) :-
-    Mapping = [1-0.1, 3-0.7, 5-1.2], 
-    map_values(InputList, OutputList, Mapping). 
+izvedi_mapiranje(UlaznaLista, IzlaznaLista) :-
+    Preslikavanje = [1-0.1, 3-0.7, 5-1.2], 
+    mapiraj_vrijednosti(UlaznaLista, IzlaznaLista, Preslikavanje). 
 
 udaljenost_izmedju_gradova(Grad1, Grad2, Udaljenost) :-
-    cities_coordinates(Cities),
-    member(grad(Grad1, X1, Y1), Cities),
-    member(grad(Grad2, X2, Y2), Cities),
+    koordinate_gradova(Gradovi),
+    member(grad(Grad1, X1, Y1), Gradovi),
+    member(grad(Grad2, X2, Y2), Gradovi),
     Udaljenost is sqrt((X2 - X1)^2 + (Y2 - Y1)^2).
 
 uvezi :-
-    cities_coordinates(Cities),
+    koordinate_gradova(Gradovi),
     findall((Grad1, Grad2), 
-        (member(grad(Grad1, _, _), Cities), member(grad(Grad2, _, _), Cities), Grad1 \= Grad2), 
-        Pairs),
-    create_connections(Pairs).
+        (member(grad(Grad1, _, _), Gradovi), member(grad(Grad2, _, _), Gradovi), Grad1 \= Grad2), 
+        Parovi),
+    kreiraj_veze(Parovi).
 
-create_connections([]).
-create_connections([(Grad1, Grad2)|Rest]) :-
-    udaljenost_izmedju_gradova(Grad1, Grad2, Distance),
-    assertz(povezani(Grad1, Grad2, Distance)),
-    assertz(povezani(Grad2, Grad1, Distance)),
-    create_connections(Rest).
+kreiraj_veze([]).
+kreiraj_veze([(Grad1, Grad2)|Ostalo]) :-
+    udaljenost_izmedju_gradova(Grad1, Grad2, Udaljenost),
+    assertz(povezani(Grad1, Grad2, Udaljenost)),
+    assertz(povezani(Grad2, Grad1, Udaljenost)),
+    kreiraj_veze(Ostalo).
 
-compare_distances(Order, povezani(_, _, Distance1), povezani(_, _, Distance2)) :-
-    compare(Order, Distance1, Distance2).
-sortiraj_veze(Susjedi, SortedSusjedi) :-
-    predsort(compare_distances, Susjedi, SortedSusjedi).
-count_posjecen(CityCount) :-
-    findall(City, posjecen(City), Cities),
-    length(Cities, CityCount).
+uporedi_udaljenosti(Red, povezani(_, _, Udaljenost1), povezani(_, _, Udaljenost2)) :-
+    compare(Red, Udaljenost1, Udaljenost2).
+sortiraj_veze(Veze, SortiraneVeze) :-
+    predsort(uporedi_udaljenosti, Veze, SortiraneVeze).
+izbroj_posjecene(BrojGradova) :-
+    findall(Grad, posjecen(Grad), Gradovi),
+    length(Gradovi, BrojGradova).
 
 mst :-
-    cities_coordinates([grad(First,_,_) | _]),
+    koordinate_gradova([grad(Prvi,_,_) | _]),
     assertz(tuple(0, 0, 0)),
-    assertz(posjecen(First)),
-    findall(povezani(First, Grad, Distance), povezani(First, Grad, Distance), MoguceVeze),
+    assertz(posjecen(Prvi)),
+    findall(povezani(Prvi, Grad, Udaljenost), povezani(Prvi, Grad, Udaljenost), MoguceVeze),
     % Pocetak algoritma, imamo veze
-    mst_step(MoguceVeze).
+    mst_korak(MoguceVeze).
 
-not_visited(povezani(Grad1, Grad2, _)) :-
+nisu_posjeceni(povezani(Grad1, Grad2, _)) :-
     (\+ posjecen(Grad1) ; \+ posjecen(Grad2)).
 
-mst_step(MoguceVeze) :-
+mst_korak(MoguceVeze) :-
     % Pronalazak najmanje veze
     sortiraj_veze(MoguceVeze, SortiraneVeze),
     findall(Veza, (
        member(Veza, SortiraneVeze),
-       not_visited(Veza)
+       nisu_posjeceni(Veza)
     ), FiltriraneVeze),
     nth0(0, FiltriraneVeze, NajblizaVeza),
 
@@ -80,21 +80,19 @@ mst_step(MoguceVeze) :-
     % Dodavanje veze u MST
     assertz(mst(Grad1, Grad2, Udaljenost)),
     (posjecen(Grad2) ->  true ; assertz(posjecen(Grad2))),
-    cities_coordinates(Cities),
-    count_posjecen(CityCount),
-    length(Cities, Size),
-    (CityCount >= Size ->
+    koordinate_gradova(Gradovi),
+    izbroj_posjecene(BrojPosjecenih),
+    length(Gradovi, Velicina),
+    (BrojPosjecenih >= Velicina ->
         format("Svi gradovi povezani"), nl;
         findall(povezani(Grad2, Nesta, Udaljenost2), povezani(Grad2, Nesta, Udaljenost2), MoguceNoveVeze),
         append(MoguceVeze, MoguceNoveVeze, NovaListaMogucihVeza),
-        % write('Nova lista: '),
-        % print_veze(NovaListaMogucihVeza),
 
         delete(NovaListaMogucihVeza, povezani(Grad1, Grad2, _), UpdatedNovaListaMogucihVeza),
         delete(UpdatedNovaListaMogucihVeza, povezani(Grad2, Grad1, _), UpdatedNovaListaMogucihVeza2),
 
         findall(Veza, member(Veza, UpdatedNovaListaMogucihVeza2), MoguceVeze2),
-        mst_step(MoguceVeze2)
+        mst_korak(MoguceVeze2)
     ).
 
 
@@ -104,94 +102,86 @@ print_posjeceni :-
            format('Posjecen: ~w~n', [X])).
 
 print_veze([]).
-print_veze([Veza|Rest]) :-
+print_veze([Veza|Ostalo]) :-
     write(Veza), nl,
     Veza = putevi(_, Cijena, Propusnost),
-    weight_function(Cijena, Propusnost, Tezina),
+    tezinska_funkcija(Cijena, Propusnost, Tezina),
     write(Tezina), write(' '),
-    print_veze(Rest).
+    print_veze(Ostalo).
 
-print_connections :-
-    forall(povezani(Grad1, Grad2, Distance),
-           format('Connection: ~w - ~w, Distance: ~2f~n', [Grad1, Grad2, Distance])).
+print_mst_veze :-
+    forall(mst(Grad1, Grad2, Udaljenost),
+           format('Veza: ~w - ~w, Udaljenost ~2f~n', [Grad1, Grad2, Udaljenost])).
 
-print_mst_connections :-
-    forall(mst(Grad1, Grad2, Distance),
-           format('Veza: ~w - ~w, Udaljenost ~2f~n', [Grad1, Grad2, Distance])).
-print_mst_size :-
-    findall(_, posjecen(_), PosjecenList),
-    length(PosjecenList, Count),
-    format("Number: ~d~n", Count).
+krajnja_poruka :-
+    write('\nKraj programa'), nl.
 
-print_to_screen :-
-    write('\nOK 200'), nl.
-
-weighted_sum([],[],[]).
-weighted_sum([D1|Distances], [M1|Multipliers], [R1|Reducers]) :-
+tezinska_suma([],[],[]).
+tezinska_suma([D1|Udaljenosti], [M1|MultiplikatoriCijene], [R1|MultiplikatoriPropusnosti]) :-
     assertz(tuple(D1, M1, R1)),
-    weighted_sum(Distances, Multipliers, Reducers).
+    tezinska_suma(Udaljenosti, MultiplikatoriCijene, MultiplikatoriPropusnosti).
 
-product_of_d_and_p(tuple(D, P, _), Product) :-
+proizvod_udaljenosti_cijene(tuple(D, P, _), Product) :-
     Product is D * P.
 
-calculate_sum_of_products(Sum) :-
-    findall(Product, (tuple(D, P, _), product_of_d_and_p(tuple(D, P, _), Product)), Products),
+izmnozi_udaljenosti_cijene(Sum) :-
+    findall(Product, (tuple(D, P, _), proizvod_udaljenosti_cijene(tuple(D, P, _), Product)), Products),
     sumlist(Products, Sum).
 
-product_of_d_and_r(tuple(D, _, R), Product) :-
+proizvod_udaljenosti_propusnosti(tuple(D, _, R), Product) :-
     Faktor is D ** 2,
     Product is Faktor * R.
 
-calculate_sum_of_products2(Sum) :-
-    findall(Product, (tuple(D, _, R), product_of_d_and_r(tuple(D, _, R), Product)), Products),
+izmnozi_udaljenosti_propusnosti(Sum) :-
+    findall(Product, (tuple(D, _, R), proizvod_udaljenosti_propusnosti(tuple(D, _, R), Product)), Products),
     sumlist(Products, Sum).
 
-poziv(Udaljenosti, Varijacije, Reduceri) :-
-    calculate_sum_of_products(Cijena),
-    calculate_sum_of_products2(Prolaznost),
+generisi_puteve(Udaljenosti, Varijacije, FaktoriPropusnosti) :-
+    izmnozi_udaljenosti_cijene(Cijena),
+    izmnozi_udaljenosti_propusnosti(Prolaznost),
     assertz(putevi(Varijacije, Cijena, Prolaznost)),
     retractall(tuple(_,_,_)),
     assertz(tuple(0, 0, 0)),
-    weighted_sum(Udaljenosti, Varijacije, Reduceri).
+    tezinska_suma(Udaljenosti, Varijacije, FaktoriPropusnosti).
 
-print_all_variations :-
+probaj_sve_puteve :-
     write('Pronalazim najbolje tipove puteva...'), nl,
     findall(D, mst(_, _, D), Udaljenosti),
-    length(Udaljenosti, Count),
-    generate_variations(Count+1, Variation), 
-    perform_mapping(Variation, Result),
-    poziv(Udaljenosti, Variation, Result).
+    length(Udaljenosti, Broj),
+    generisi_varijacije(Broj+1, Varijacija), 
+    izvedi_mapiranje(Varijacija, Mapirano),
+    generisi_puteve(Udaljenosti, Varijacija, Mapirano).
 
-weight_function(Cost, Throughput, Weight) :-
-    Cost =\= 0,
+tezinska_funkcija(Cijena, Propusnost, Tezina) :-
+    Cijena =\= 0,
     daj_tezinsku_konstantu(Konstanta),
-    Weight is Konstanta / Cost * Throughput.
-weight_function(0, _, 0).
+    Tezina is Konstanta / Cijena * Propusnost.
+tezinska_funkcija(0, _, 0).
 
-compare_putevi(Order, putevi(_, Cost1, Throughput1), putevi(_, Cost2, Throughput2)) :-
-    weight_function(Cost1, Throughput1, Weight1),
-    weight_function(Cost2, Throughput2, Weight2),
-    compare(Order, Weight1, Weight2).
+uporedi_puteve(Red, putevi(_, Cijena1, Propusnost1), putevi(_, Cijena2, Propusnost2)) :-
+    tezinska_funkcija(Cijena1, Propusnost1, Tezina1),
+    tezinska_funkcija(Cijena2, Propusnost2, Tezina2),
+    compare(Red, Tezina1, Tezina2).
 
-remove_last_element([_], []).  
-remove_last_element([H|T], [H|NewT]) :- 
-    remove_last_element(T, NewT).
+ukloni_zadnji_element([_], []).  
+ukloni_zadnji_element([H|T], [H|NoviT]) :- 
+    ukloni_zadnji_element(T, NoviT).
 
-print_paths :-
+pronadji_najbolji_put :-
     findall(putevi(A, B, C), putevi(A, B, C), Putevi),
-    predsort(compare_putevi, Putevi, [_|SortedPutevi]),
-    % print_veze(SortedPutevi),
-    length(SortedPutevi, Len),
-    LastIndex is Len - 1,
-    nth0(LastIndex, SortedPutevi, Najbolji),
+    predsort(uporedi_puteve, Putevi, [_|SortiraniPutevi]),
+    % print_veze(SortiraniPutevi),
+    length(SortiraniPutevi, Duzina),
+    ZadnjiIndeks is Duzina - 1,
+    nth0(ZadnjiIndeks, SortiraniPutevi, Najbolji),
     Najbolji = putevi(Niz, _, _),
-    remove_last_element(Niz, KonacniNiz),
+    ukloni_zadnji_element(Niz, KonacniNiz),
     write('Najbolji odabir puteva: '), write(KonacniNiz), nl.
 
 ?- uvezi.
 ?- mst.
-?- print_mst_connections.
-?- print_all_variations.
-?- print_paths.
-?- print_to_screen.
+?- print_mst_veze.
+?- probaj_sve_puteve.
+?- pronadji_najbolji_put.
+?- krajnja_poruka.
 
