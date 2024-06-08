@@ -1,12 +1,24 @@
 koordinate_gradova([
-    grad(a, 1, 1),
-    grad(b, 7, 1),
-    grad(c, 7, 3),
-    grad(d, 10, 6),
-    grad(e, 7, 9),
-    grad(f, 3, 6),
-    grad(g, 1, 11)
+    grad(sarajevo, 3, 5),
+    grad(mostar, 9, 2),
+    grad(banjaluka, 7, 10),
+    grad(tuzla, 12, 8),
+    grad(zagreb, 5, 15),
+    grad(beograd, 11, 12),
+    grad(podgorica, 6, 3),
+    grad(skopje, 8, 6),
+    grad(zenica, 10, 13),
+    grad(split, 4, 7)
 ]).
+
+% grad(a, 1, 1),
+% grad(b, 7, 1),
+% grad(c, 7, 3),
+% grad(d, 10, 6),
+% grad(e, 7, 9),
+% grad(f, 3, 6),
+% grad(g, 1, 11)
+
 
 daj_tezinsku_konstantu(Konstanta) :-
     Konstanta is 40.
@@ -106,7 +118,7 @@ print_veze([Veza|Ostalo]) :-
     write(Veza), nl,
     Veza = putevi(_, Cijena, Propusnost),
     tezinska_funkcija(Cijena, Propusnost, Tezina),
-    write(Tezina), write(' '),
+    % write(Tezina), write(' '),
     print_veze(Ostalo).
 
 print_mst_veze :-
@@ -170,7 +182,7 @@ ukloni_zadnji_element([H|T], [H|NoviT]) :-
 pronadji_najbolji_put :-
     findall(putevi(A, B, C), putevi(A, B, C), Putevi),
     predsort(uporedi_puteve, Putevi, [_|SortiraniPutevi]),
-    % print_veze(SortiraniPutevi),
+    print_veze(SortiraniPutevi),
     length(SortiraniPutevi, Duzina),
     ZadnjiIndeks is Duzina - 1,
     nth0(ZadnjiIndeks, SortiraniPutevi, Najbolji),
