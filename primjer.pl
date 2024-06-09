@@ -11,15 +11,6 @@ koordinate_gradova([
     grad(split, 4, 7)
 ]).
 
-% grad(a, 1, 1),
-% grad(b, 7, 1),
-% grad(c, 7, 3),
-% grad(d, 10, 6),
-% grad(e, 7, 9),
-% grad(f, 3, 6),
-% grad(g, 1, 11)
-
-
 daj_tezinsku_konstantu(Konstanta) :-
     Konstanta is 40.
 
@@ -117,7 +108,7 @@ print_veze([]).
 print_veze([Veza|Ostalo]) :-
     write(Veza), nl,
     Veza = putevi(_, Cijena, Propusnost),
-    tezinska_funkcija(Cijena, Propusnost, Tezina),
+    tezinska_funkcija(Cijena, Propusnost, _),
     % write(Tezina), write(' '),
     print_veze(Ostalo).
 
@@ -182,7 +173,7 @@ ukloni_zadnji_element([H|T], [H|NoviT]) :-
 pronadji_najbolji_put :-
     findall(putevi(A, B, C), putevi(A, B, C), Putevi),
     predsort(uporedi_puteve, Putevi, [_|SortiraniPutevi]),
-    print_veze(SortiraniPutevi),
+    % print_veze(SortiraniPutevi),
     length(SortiraniPutevi, Duzina),
     ZadnjiIndeks is Duzina - 1,
     nth0(ZadnjiIndeks, SortiraniPutevi, Najbolji),
