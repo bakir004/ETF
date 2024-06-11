@@ -225,30 +225,8 @@ Skladiste& Skladiste::operator=(const Skladiste& s) {
 }
 
 int main() {
-    // Sanduk* sanduk = new Sanduk(10, "Trofazni kataklingeri za auspuhe", {2,3,1,2,2,4,3,1,3});
-    // {
-        // Vreca vreca(0.2, "Praskaste cincozne za glajfanje", 5);
-        // Bure bure(5, "Rafinirana kalamuta iz Katange", 1300, 150);
-    //     Skladiste skladiste;
-        // skladiste.DodajSanduk(10, "Trofazni kataklingeri za auspuhe", {2,3,1,2,2,4,3,1,3});
-        // skladiste.DodajVrecu(0.2, "Praskaste cincozne za glajfanje", 5);
-        // skladiste.DodajBure(5, "Rafinirana kalamuta iz Katange", 1300, 150);
-    //     skladiste.DodajSpremnik(sanduk, true);
-    //     skladiste.IzlistajSkladiste();
-    // }
-    // sanduk->Ispisi();
-    // skladiste.Ispisi();
     Skladiste s;
-    s.DodajSanduk(10, "Trofazni kataklingeri za auspuhe", {2,3,1,2,2,4,3,1,3});
-    s.DodajVrecu(0.2, "Praskaste cincozne za glajfanje", 5);
-    s.DodajBure(5, "Rafinirana kalamuta iz Katange", 1300, 150);
-    // s.IzlistajSkladiste();
-
-    try {
-        s.UcitajIzDatoteke("skladiste.txt");
-        s.IzlistajSkladiste();
-    } catch(std::exception& err) {
-        std::cout << err.what();
-    }
+    s.UcitajIzDatoteke("ROBA.TXT");
+    s.IzlistajSkladiste();
     return 0;
 }
