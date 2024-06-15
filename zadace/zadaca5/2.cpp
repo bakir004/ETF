@@ -14,7 +14,7 @@ public:
     Berza(int min, int max);
     explicit Berza(int max);
     void RegistrirajCijenu(int cijena);
-    int DajBrojRegistriranihOcjena() const noexcept;
+    int DajBrojRegistriranihCijena() const noexcept;
     void BrisiSve() noexcept;
     int DajMinimalnuCijenu() const;
     int DajMaksimalnuCijenu() const;
@@ -34,7 +34,9 @@ public:
     friend Berza operator-(int, const Berza& b1);
 
     friend Berza operator-(const Berza& b1, const Berza& b2);
+    friend Berza operator+(const Berza& b1, const Berza& b2);
     Berza& operator+=(int x);
+    Berza& operator+=(Berza b);
     Berza& operator-=(const Berza& b);
     Berza& operator-=(int x);
 
@@ -47,7 +49,7 @@ Berza::Berza(int max) {
     this->min = 0;
 }
 Berza::Berza(int min, int max)  {
-    if(min < 0 || max < 0) throw std::range_error("Ilegalne granicne cijene");
+    if(min < 0 || max < 0 || max < min) throw std::range_error("Ilegalne granicne cijene");
     this->min = min;
     this->max = max;
 }
@@ -57,31 +59,49 @@ void Berza::RegistrirajCijenu(int cijena) {
 }
 
 bool operator==(const Berza& b1, const Berza& b2) {
-    return b1.min == b2.min && b1.max == b2.max && std::equal(b1.cijene.begin(), b1.cijene.end(), b2.cijene.begin());
+    return b1.min == b2.min && b1.max == b2.max && b1.cijene.size() == b2.cijene.size() && std::equal(b1.cijene.begin(), b1.cijene.end(), b2.cijene.begin());
 }
 bool operator!=(const Berza& b1, const Berza& b2) {
-    return b1.min != b2.min || b1.max != b2.max || !std::equal(b1.cijene.begin(), b1.cijene.end(), b2.cijene.begin());
+    return b1.min != b2.min || b1.max != b2.max || b1.cijene.size() != b2.cijene.size() || !std::equal(b1.cijene.begin(), b1.cijene.end(), b2.cijene.begin());
+}
+Berza& Berza::operator+=(Berza b) {
+    Berza nova = *this + b;
+    if(nova.DaLiImaPrekoracenja()) throw std::domain_error("Prekoracen dozvoljeni opseg cijena");
+    cijene = nova.cijene;
+    return *this;
 }
 Berza& Berza::operator+=(int x) {
     Berza nova = *this + x;
+    if(nova.DaLiImaPrekoracenja()) throw std::domain_error("Prekoracen dozvoljeni opseg cijena");
     cijene = nova.cijene;
     return *this;
 }
 Berza& Berza::operator-=(const Berza& b) {
     Berza nova = *this - b;
+    if(nova.DaLiImaPrekoracenja()) throw std::domain_error("Prekoracen dozvoljeni opseg cijena");
     cijene = nova.cijene;
     return *this;
 }
 Berza& Berza::operator-=(int x) {
     Berza nova = *this - x;
+    if(nova.DaLiImaPrekoracenja()) throw std::domain_error("Prekoracen dozvoljeni opseg cijena");
     cijene = nova.cijene;
     return *this;
 }
+Berza operator+(const Berza& b1, const Berza& b2) {
+    if(b1.cijene.size() != b2.cijene.size()) throw std::domain_error("Nesaglasni operandi");
+    Berza nova(b1.min, b1.max);
+    nova.cijene = std::vector<int>(b1.cijene.size());
+    std::transform(b1.cijene.begin(), b1.cijene.end(), b2.cijene.begin(), nova.cijene.begin(), std::plus<int>());
+    nova.DaLiImaPrekoracenja();
+    return nova;
+}
 Berza operator-(const Berza& b1, const Berza& b2) {
+    if(b1.cijene.size() != b2.cijene.size()) throw std::domain_error("Nesaglasni operandi");
     Berza nova(b1.min, b1.max);
     nova.cijene = std::vector<int>(b1.cijene.size());
     std::transform(b1.cijene.begin(), b1.cijene.end(), b2.cijene.begin(), nova.cijene.begin(), std::minus<int>());
-    std::transform(nova.cijene.begin(), nova.cijene.end(), nova.cijene.begin(), static_cast<int(*)(int)>(std::abs));
+    if(nova.DaLiImaPrekoracenja()) throw std::domain_error("Prekoracen dozvoljeni opseg cijena");
     return nova;
 }
 Berza operator+(const Berza& b1, int x) {
@@ -162,7 +182,8 @@ Berza Berza::operator--(int) {
     return stara;
 }
 int Berza::operator[](int index) const {
-    if(index < 1 || index > cijene.size() + 1) throw std::range_error("Neispravan indeks");
+    if(index < 1 || index > cijene.size()) throw std::range_error("Neispravan indeks");
+    if(cijene.size() == 0) throw std::range_error("Nema registriranih cijena");
     return cijene[index-1];
 }
 void Berza::Ispisi() const {
@@ -189,18 +210,51 @@ int Berza::DajMinimalnuCijenu() const {
     return *std::min_element(cijene.begin(), cijene.end(), [](int a, int b){ return a < b; });
 }
 void Berza::BrisiSve() noexcept { cijene.clear(); }
-int Berza::DajBrojRegistriranihOcjena() const noexcept { return cijene.size(); }
+int Berza::DajBrojRegistriranihCijena() const noexcept { return cijene.size(); }
 
 int main() {
-    Berza berza1(2000);
-    berza1.RegistrirajCijenu(1000);
-    berza1.RegistrirajCijenu(1800);
-    berza1.RegistrirajCijenu(1500);
-    berza1.RegistrirajCijenu(500);
-    Berza berza2 = berza1;
-    berza1++;
-    Berza berza3 = berza1-berza2;
-    berza3.Ispisi();
+    Berza b1(100, 500);
+    Berza b2(100, 500);
+    Berza b3(200, 600);
+
+    b1.RegistrirajCijenu(300);
+    b1.RegistrirajCijenu(400);
+    b2.RegistrirajCijenu(300);
+    b2.RegistrirajCijenu(400);
+    b3.RegistrirajCijenu(300);
+    b3.RegistrirajCijenu(500);
+
+    if (b1 == b2) {
+        std::cout << "b1 je jednak b2." << std::endl;
+    } else {
+        std::cout << "b1 nije jednak b2." << std::endl;
+    }
+
+    if (b1 == b3) {
+        std::cout << "b1 je jednak b3." << std::endl;
+    } else {
+        std::cout << "b1 nije jednak b3." << std::endl;
+    }
+
+    if (b1 != b3) {
+        std::cout << "b1 nije jednak b3." << std::endl;
+    } else {
+        std::cout << "b1 je jednak b3." << std::endl;
+    }
+
+    if (b1 != b2) {
+        std::cout << "b1 nije jednak b2." << std::endl;
+    } else {
+        std::cout << "b1 je jednak b2." << std::endl;
+    }
+
+    try {
+        std::cout << "Cijena b1 na indeksu 1: " << b1[1] << std::endl;
+        std::cout << "Cijena b2 na indeksu 2: " << b2[2] << std::endl;
+        std::cout << "Cijena b3 na indeksu 3: " << b3[3] << std::endl;
+    } catch (const std::range_error& e) {
+        std::cout << "Izuzetak: " << e.what() << std::endl;
+    }
     return 0;
 }
 
