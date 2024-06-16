@@ -253,9 +253,10 @@ void Matrica<TipEl>::SacuvajUBinarnuDatoteku(std::string ime_datoteke) {
     std::ofstream izlazni_tok(ime_datoteke, std::ios::binary);
     izlazni_tok.write(reinterpret_cast<char*>(this), sizeof *this);
     for(int i = 0; i < br_redova; i++) {
-        if(!izlazni_tok.write(reinterpret_cast<char*>(elementi[i]),
-                    br_kolona * sizeof (TipEl)))
-            throw std::logic_error("Problemi sa upisom u datoteku");
+        for(int j = 0; j < br_kolona; j++) {
+            if(!izlazni_tok.write(reinterpret_cast<char*>(&elementi[i][j]), sizeof (TipEl)))
+                throw std::logic_error("Problemi sa upisom u datoteku");
+        }
     }
 }
 
@@ -296,7 +297,7 @@ void Matrica<TipEl>::ObnoviIzBinarneDatoteke(std::string ime_datoteke) {
     if(!ulazni_tok) throw std::logic_error("Trazena datoteka ne postoji");
     DealocirajMemoriju(elementi, br_redova);
     ulazni_tok.read(reinterpret_cast<char*>(this), sizeof *this);
-    AlocirajMemoriju(br_redova, br_kolona);
+    elementi = AlocirajMemoriju(br_redova, br_kolona);
     TipEl* niz = new TipEl[br_redova * br_kolona];
     if(!ulazni_tok.read(reinterpret_cast<char*>(niz),
                 br_kolona * br_redova * sizeof(TipEl))) {
@@ -306,11 +307,12 @@ void Matrica<TipEl>::ObnoviIzBinarneDatoteke(std::string ime_datoteke) {
     }
     for(int i = 0; i < br_redova; i++)
         for(int j = 0; j < br_kolona; j++)
-            elementi[i][j] = niz[i*br_redova+j];
+            elementi[i][j] = niz[i*br_kolona+j];
+    delete[] niz;
 }
 
 int main() {
-    Matrica<double> matrica(3,4);
+    Matrica<double> matrica(2,3);
     matrica.ObnoviIzBinarneDatoteke("binarnamatrica.dat");
     std::cout << matrica;
     return 0;
