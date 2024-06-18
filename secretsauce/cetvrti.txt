@@ -1,193 +1,3 @@
-Test 1: Nije skriven - Koristi vasu main() funkciju i stdin ulaz
-
-Ulaz:
-
-1 
-Neko Nekić
-15 5 2024 11 15 
-1
-Huso Husić
-20 5 2024 15 00 
-2
-1
-Neko Drugi
-15 1 2024 15 55
-3
-20 5 2024
-7
-20 5 2024
-8
-9
-1
-Neko Nekić
-15 5 2024 11 15
-1
-Huso Husić
-20 5 2024 15 00
-6
-Huso Husić
-5
-2
-10
-Izlaz:
-
-1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Unesite ime pacijenta: Unesite datum i vrijeme pregleda (dan mjesec godina sati minute): 1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Unesite ime pacijenta: Unesite datum i vrijeme pregleda (dan mjesec godina sati minute): 1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Ukupan broj pregleda: 2
-1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Unesite ime pacijenta: Unesite datum i vrijeme pregleda (dan mjesec godina sati minute): 1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Unesite datum (dan mjesec godina): Broj pregleda na datum: 1
-1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Unesite datum: Huso Husić                   20/5/2024 15:00
-1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Svi pregledi:
-Neko Drugi                    15/1/2024 15:55
-Neko Nekić                   15/5/2024 11:15
-Huso Husić                   20/5/2024 15:00
-1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Kolekcija ispraznjena.
-1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Unesite ime pacijenta: Unesite datum i vrijeme pregleda (dan mjesec godina sati minute): 1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Unesite ime pacijenta: Unesite datum i vrijeme pregleda (dan mjesec godina sati minute): 1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Unesite ime pacijenta: Pregledi za pacijenta Huso Husić su obrisani.
-1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Najraniji pregled je obrisan.
-1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Ukupan broj pregleda: 0
-1. Registriraj Pregled
-2. Daj Broj Pregleda
-3. Daj Broj Pregleda Na Datum
-4. Daj Najraniji Pregled
-5. Obrisi Najraniji Pregled
-6. Obrisi Preglede Pacijenta
-7. Ispisi Preglede Na Datum
-8. Ispisi Sve Preglede
-9. Isprazni Kolekciju
-10. Izlaz
-Unesite izbor: Kraj programa.
-
-########################################################################
-########################################################################
-########################################################################
-
 Test 2: Skriven
 Koristi svoju main() funckiju
 
@@ -197,22 +7,27 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 // Vas kod ide ovdje
 
 int main() {
-        Datum d(15, 4, 2021);
-        int day, month, year;
-        std::tie(day, month, year) = d.Ocitaj();
-        std::cout << day << "/" << month << "/" << year << std::endl;
-        d.Postavi(29, 2, 2020);
-        d.Ispisi();
+int br_redova = 2;
+        int br_kolona = 3;
+        Matrica<double> m(br_redova, br_kolona);
+        m(1, 1) = 1.1;
+        m(1, 2) = 2.2;
+        m(1, 3) = 3.3;
+        m(2, 1) = 4.4;
+        m(2, 2) = 5.5;
+        m(2, 3) = 6.6;
 
-        std::cout<<std::endl;
+        std::string filenameText = "test_matrix.txt";
+        m.SacuvajUTekstualnuDatoteku(filenameText);
 
-        try
+        std::ifstream file(filenameText);
+
+        // open file and print all content
+        while (!file.eof())
         {
-            Datum(29, 2, 2021);
-        }
-        catch (std::domain_error &e)
-        {
-            std::cout << e.what() << std::endl;
+            std::string line;
+            std::getline(file, line);
+            std::cout << line << std::endl;
         }
 
     return 0;
@@ -223,9 +38,8 @@ int main() {
 
 Izlaz:
 
-15/4/2021
-29/2/2020
-Neispravan datum
+1.1,2.2,3.3
+4.4,5.5,6.6
 
 ########################################################################
 ########################################################################
@@ -240,23 +54,25 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 // Vas kod ide ovdje
 
 int main() {
-        Vrijeme v(23, 59);
-        int sati, minute;
-        std::tie(sati, minute) = v.Ocitaj();
-        std::cout << sati << ":" << minute << std::endl;
-        v.Postavi(15, 45);
-        v.Ispisi();
+int br_redova = 2;
+        int br_kolona = 3;
+        Matrica<double> m(br_redova, br_kolona);
+        m(1, 1) = 1.1;
+        m(1, 2) = 2.2;
+        m(1, 3) = 3.3;
+        m(2, 1) = 4.4;
+        m(2, 2) = 5.5;
+        m(2, 3) = 6.6;
 
-        std::cout << std::endl;
+        std::string filenameText = "test_matrix.dat";
+        m.SacuvajUBinarnuDatoteku(filenameText);
+    
+        std::ifstream file(filenameText, std::ios::binary);
 
-        try
-        {
-            Vrijeme(24, 0);
-        }
-        catch (std::domain_error &e)
-        {
-            std::cout << e.what() << std::endl;
-        }
+        // open binary file and print all content
+        Matrica<double> m2(br_redova, br_kolona);
+        m2.ObnoviIzBinarneDatoteke(filenameText);
+        std::cout << m2 << std::endl;
 
     return 0;
 }
@@ -266,9 +82,8 @@ int main() {
 
 Izlaz:
 
-23:59
-15:45
-Neispravno vrijeme
+1.12.23.3
+4.45.56.6
 
 ########################################################################
 ########################################################################
@@ -283,31 +98,27 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 // Vas kod ide ovdje
 
 int main() {
-        Pregled pregled1("John Doe", {28, 2, 2020}, {14, 30});
-        Pregled pregled2("Smith James", 1, 1, 2023, 14, 30);
-        Pregled pregled3(pregled1);
+        const std::string filename = "binary_file.dat";
+        Matrica<double> m(3, 4);
+        m(1,1) = 2.5; m(1,2) = -3; m(1,3) = 1.12; m(1,4) = 4;
+        m(2,1) = 0; m(2,2) = 0.25; m(2,3) = 3.16; m(2,4) = 42.3;
+        m(3,1) = -1.7; m(3,2) = 2.5; m(3,3) = 0; m(3,4) = 5;
+        m.SacuvajUBinarnuDatoteku(filename);
 
-        pregled1.PromijeniPacijenta(pregled2.DajImePacijenta());
-        pregled1.PromijeniDatum(pregled2.DajDatumPregleda());
-        pregled1.PromijeniVrijeme(pregled2.DajVrijemePregleda());
-
-        pregled1.PomjeriDanUnazad();
-        pregled1.DajDatumPregleda().Ispisi();
-        std::cout << std::endl;
-
-        pregled1.PomjeriDanUnaprijed();
-        pregled1.DajDatumPregleda().Ispisi();
-        std::cout << std::endl;
-
-        pregled3.PomjeriDanUnaprijed();
-        pregled3.DajDatumPregleda().Ispisi();
-        std::cout << std::endl;
-
-        if (Pregled::DolaziPrije(pregled3, pregled1))
+        try
         {
-            pregled3.PomjeriDanUnazad();
-            pregled3.Ispisi();
+            Matrica<double> m2(0,0);
+            m2.ObnoviIzBinarneDatoteke("nepostojeca.dat");
         }
+        catch(const std::exception& e)
+        {
+            std::cout << e.what() << '\n';
+        }
+
+        Matrica<double> m2(0,0);
+        m2.ObnoviIzBinarneDatoteke(filename);
+
+        std::cout << m2;
 
     return 0;
 }
@@ -317,10 +128,10 @@ int main() {
 
 Izlaz:
 
-31/12/2022
-1/1/2023
-29/2/2020
-John Doe                      28/2/2020 14:30
+Trazena datoteka ne postoji
+2.5-31.124
+00.253.1642.3
+-1.72.505
 
 ########################################################################
 ########################################################################
@@ -335,22 +146,26 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 // Vas kod ide ovdje
 
 int main() {
-        Pregledi pregledi1;
-        std::cout << sizeof(pregledi1) << std::endl;
-        
-        Pregledi pregledi2(
-            {{"John Doe", {31, 12, 2024}, {11, 30}},
-             {"Jane Smith", {28, 2, 2024}, {23, 59}},
-             {"John Doe", {1, 1, 2024}, {15, 30}}});
+        const std::string filename = "file.txt";
+        Matrica<double> m(3, 4);
+        m(1,1) = 2.5; m(1,2) = -3; m(1,3) = 1.12; m(1,4) = 4;
+        m(2,1) = 0; m(2,2) = 0.25; m(2,3) = 3.16; m(2,4) = 42.3;
+        m(3,1) = -1.7; m(3,2) = 2.5; m(3,3) = 0; m(3,4) = 5;
+        m.SacuvajUTekstualnuDatoteku(filename);
 
-        Pregledi pregledi3(pregledi2);
-        pregledi3.IspisiSvePreglede();
+        Matrica<double> m2(0,0);
+        try
+        {
+            m2.ObnoviIzTekstualneDatoteke("nepostojeca.txt");
+        }
+        catch (const std::exception &e)
+        {
+            std::cout << e.what() << '\n';
+        }
 
-        Pregledi pregledi4(std::move(pregledi3));
-        pregledi4.ObrisiNajranijiPregled();
-        pregledi4.RegistrirajPregled("Alice Johnson", 1, 1, 2024, 10, 30);
+        m2.ObnoviIzTekstualneDatoteke(filename);
 
-        pregledi4.IspisiSvePreglede();
+        std::cout << m2;
 
     return 0;
 }
@@ -360,19 +175,16 @@ int main() {
 
 Izlaz:
 
-24
-John Doe                      1/1/2024 15:30
-Jane Smith                    28/2/2024 23:59
-John Doe                      31/12/2024 11:30
-Alice Johnson                 1/1/2024 10:30
-Jane Smith                    28/2/2024 23:59
-John Doe                      31/12/2024 11:30
+Trazena datoteka ne postoji
+2.5-31.124
+00.253.1642.3
+-1.72.505
 
 ########################################################################
 ########################################################################
 ########################################################################
 
-Test 6: Skriven
+Test 6: Nije skriven
 Koristi svoju main() funckiju
 
 Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
@@ -381,31 +193,27 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 // Vas kod ide ovdje
 
 int main() {
-        Pregledi pregledi;
-        std::cout << sizeof(pregledi) << std::endl; 
+        const std::string filename = "file.txt";
+        Matrica<double> m(3, 4);
+        m(1,1) = 2.5; m(1,2) = -3; m(1,3) = 1.12; m(1,4) = 4;
+        m(2,1) = 0; m(2,2) = 0.25; m(2,3) = 3.16; m(2,4) = 42.3;
+        m(3,1) = -1.7; m(3,2) = 2.5; m(3,3) = 0; m(3,4) = 5;
+        m.SacuvajUTekstualnuDatoteku(filename);
 
-        Pregledi pregledi2 = {
-            {"John Doe", {31, 12, 2024}, {11, 30}},
-            {"Jane Smith", {28, 2, 2024}, {23, 59}},
-            {"John Doe", {1, 1, 2024}, {15, 30}}};
-        pregledi2=pregledi2;
-        pregledi = pregledi2;
-        try {
-            pregledi.RegistrirajPregled("Alice Johnson", 1, 1, 2024, 10, 30);
-        } catch (std::range_error &e) {
-            std::cout << e.what() << std::endl;
+        // random text
+        char data[] = "Hello, world!";
+        std::ofstream file(filename, std::ios::app);
+        file.write(reinterpret_cast<const char*>(data), sizeof(data));
+
+        try
+        {
+            Matrica<double> m2(filename, false);
+            std::cout << m2;
         }
-
-        Pregledi pregledi3;
-        pregledi3.RegistrirajPregled("John Doe", {1, 1, 2022}, {8, 0});
-        pregledi3.RegistrirajPregled("Jane Smith", 1, 1, 2022, 9, 0);
-        pregledi3.RegistrirajPregled("Alice Johnson", {1, 1, 2022}, {10, 0});
-        std::shared_ptr<Pregled> p = std::make_shared<Pregled>("John Doe", 1, 1, 2022, 11, 0);
-        pregledi3.RegistrirajPregled(p);
-        pregledi3=std::move(pregledi3);
-        pregledi = std::move(pregledi3);
-
-        std::cout<< pregledi.DajBrojPregleda() << std::endl;
+        catch (const std::exception &e)
+        {
+            std::cout << e.what() << '\n';
+        }
 
     return 0;
 }
@@ -415,8 +223,7 @@ int main() {
 
 Izlaz:
 
-24
-4
+Datoteka sadrzi besmislene podatke
 
 ########################################################################
 ########################################################################
@@ -431,21 +238,16 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 // Vas kod ide ovdje
 
 int main() {
-        const Pregledi pregledi({
-            {"John Doe", {31, 12, 2024}, {11, 30}},
-            {"Jane Smith", {28, 2, 2024}, {23, 59}},
-            {"John Doe", {1, 1, 2024}, {15, 30}},
-            {"Alice Johnson", {1, 1, 2024}, {15, 30}}
-        });
-        std::cout << sizeof(pregledi) << std::endl; 
+const std::string filename = "file.txt";
+        Matrica<double> m(3, 4);
+        m(1,1) = 2.5; m(1,2) = -3; m(1,3) = 1.12; m(1,4) = 4;
+        m(2,1) = 0; m(2,2) = 0.25; m(2,3) = 3.16; m(2,4) = 42.3;
+        m(3,1) = -1.7; m(3,2) = 2.5; m(3,3) = 0; m(3,4) = 5;
+        m.SacuvajUTekstualnuDatoteku(filename);
 
-        std::cout << pregledi.DajBrojPregleda() << pregledi.DajBrojPregledaNaDatum({1, 1, 2024}) << std::endl;
-
-        pregledi.DajNajranijiPregled().Ispisi();
-
-        pregledi.IspisiPregledeNaDatum({1, 1, 2024});
-
-        pregledi.IspisiSvePreglede();
+        Matrica<double> m2(filename, false);
+        
+        std::cout << m2 << std::endl;
 
     return 0;
 }
@@ -455,21 +257,15 @@ int main() {
 
 Izlaz:
 
-24
-42
-John Doe                      1/1/2024 15:30
-John Doe                      1/1/2024 15:30
-Alice Johnson                 1/1/2024 15:30
-John Doe                      1/1/2024 15:30
-Alice Johnson                 1/1/2024 15:30
-Jane Smith                    28/2/2024 23:59
-John Doe                      31/12/2024 11:30
+2.5-31.124
+00.253.1642.3
+-1.72.505
 
 ########################################################################
 ########################################################################
 ########################################################################
 
-Test 8: Skriven
+Test 8: Nije skriven
 Koristi svoju main() funckiju
 
 Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
@@ -478,27 +274,16 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 // Vas kod ide ovdje
 
 int main() {
-Pregledi pregledi;
-        std::cout << sizeof(pregledi) << std::endl; // sizeof vector
+const std::string filename = "file.dat";
+        Matrica<double> m(3, 4);
+        m(1,1) = 2.5; m(1,2) = -3; m(1,3) = 1.12; m(1,4) = 4;
+        m(2,1) = 0; m(2,2) = 0.25; m(2,3) = 3.16; m(2,4) = 42.3;
+        m(3,1) = -1.7; m(3,2) = 2.5; m(3,3) = 0; m(3,4) = 5;
+        m.SacuvajUBinarnuDatoteku(filename);
 
-        pregledi.RegistrirajPregled("John Doe", {1, 1, 2022}, {8, 0});
-        pregledi.RegistrirajPregled("Jane Smith", 1, 1, 2022, 9, 0);
-        pregledi.RegistrirajPregled("Alice Johnson", {1, 1, 2022}, {10, 0});
-        pregledi.RegistrirajPregled("John Doe", 1, 1, 2022, 11, 0);
-        pregledi.RegistrirajPregled("John Doe", {1, 1, 2022}, {12, 0});
+        Matrica<double> m2(filename, true);
 
-        std::cout << pregledi.DajBrojPregleda() <<  pregledi.DajBrojPregledaNaDatum({1, 1, 2022}) << std::endl;
-
-        pregledi.DajNajranijiPregled().Ispisi();
-
-        pregledi.ObrisiNajranijiPregled();
-        pregledi.DajNajranijiPregled().Ispisi();
-
-        std::cout << pregledi.DajBrojPregleda() << std::endl;
-
-        pregledi.ObrisiPregledePacijenta("John Doe");
-
-        pregledi.IspisiSvePreglede();
+        std::cout << m2 << std::endl;
 
     return 0;
 }
@@ -508,129 +293,9 @@ Pregledi pregledi;
 
 Izlaz:
 
-24
-55
-John Doe                      1/1/2022 08:00
-Jane Smith                    1/1/2022 09:00
-4
-Jane Smith                    1/1/2022 09:00
-Alice Johnson                 1/1/2022 10:00
-
-########################################################################
-########################################################################
-########################################################################
-
-Test 9: Skriven
-Koristi svoju main() funckiju
-
-Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
-========================================================================
-
-// Vas kod ide ovdje
-
-int main() {
-        Pregledi pregledi3;
-        std::cout << sizeof(pregledi3) << std::endl;
-
-        pregledi3.RegistrirajPregled("John Doe", {1, 1, 2022}, {8, 0});
-        pregledi3.RegistrirajPregled("Jane Smith", 1, 1, 2022, 9, 0);
-        pregledi3.RegistrirajPregled("Alice Johnson", {1, 1, 2022}, {10, 0});
-        std::shared_ptr<Pregled> p = std::make_shared<Pregled>("John Doe", 1, 1, 2022, 11, 0);
-        pregledi3.RegistrirajPregled(p);
-
-        std::cout << pregledi3.DajBrojPregleda() << std::endl;
-
-        pregledi3.IsprazniKolekciju();
-
-        std::cout << pregledi3.DajBrojPregleda() << std::endl;
-
-    return 0;
-}
-
-========================================================================
-
-
-Izlaz:
-
-24
-4
-0
-
-########################################################################
-########################################################################
-########################################################################
-
-Test 10: Nije skriven
-Koristi svoju main() funckiju
-
-Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
-========================================================================
-
-// Vas kod ide ovdje
-
-int main() {
-        Datum d(15, 4, 2021);
-        Vrijeme v(23, 59);
-
-        d.Ispisi();
-        std::cout << std::endl;
-        v.Ispisi();
-        std::cout << std::endl;
-
-        try
-        {
-            d.Postavi(-1, 2, 2023);
-        }
-        catch (const std::domain_error &e)
-        {
-            std::cout << e.what() << '\n';
-        }
-
-        try
-        {
-            v.Postavi(25, 10);
-        }
-        catch (const std::domain_error &e)
-        {
-            std::cout << e.what() << '\n';
-        }
-
-        Pregled p("Neko Nekić", d, v);
-        p.Ispisi();
-
-        Pregledi pregledi;
-        try
-        {
-            p = pregledi.DajNajranijiPregled();
-        }
-        catch (const std::domain_error &e)
-        {
-            std::cout << e.what() << '\n';
-        }
-        try
-        {
-            pregledi.ObrisiNajranijiPregled();
-        }
-        catch (const std::range_error &e)
-        {
-            std::cout << e.what() << '\n';
-        }
-
-    return 0;
-}
-
-========================================================================
-
-
-Izlaz:
-
-15/4/2021
-23:59
-Neispravan datum
-Neispravno vrijeme
-Neko Nekić                   15/4/2021 23:59
-Nema registriranih pregleda
-Prazna kolekcija
+2.5-31.124
+00.253.1642.3
+-1.72.505
 
 ########################################################################
 ########################################################################

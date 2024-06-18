@@ -20,7 +20,7 @@ fs.readFile('input.txt', 'utf8', (err, data) => {
     let output = ""
     tests.forEach(test => {
         if(!test.tools[2].execute) {
-            console.log(test.tools[0].patch[0])
+            // console.log(test.tools[0].patch[0])
             return;
         }
         if(test.tools[2].execute && test.tools[2].execute.environment) {
@@ -53,6 +53,6 @@ fs.readFile('input.txt', 'utf8', (err, data) => {
         output += "########################################################################\n\n"
     })
     console.log("Formatirani testovi!")
-    fs.writeFileSync('treci.txt', output);
+    fs.writeFileSync('peti.txt', output);
 });
 

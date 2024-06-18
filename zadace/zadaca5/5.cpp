@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <fstream>
@@ -17,6 +17,7 @@ public:
     Matrica(int br_redova, int br_kolona, char ime = 0);
     Matrica(const Matrica &m);
     Matrica(Matrica &&m);
+    Matrica(std::string ime, bool bin);
     ~Matrica() { DealocirajMemoriju(elementi, br_redova); }
     Matrica &operator =(const Matrica &m);
     Matrica &operator =(Matrica &&m);
@@ -48,7 +49,11 @@ public:
     void ObnoviIzTekstualneDatoteke(std::string);
     void ObnoviIzBinarneDatoteke(std::string);
 };
-
+template <typename TipEl>
+Matrica<TipEl>::Matrica(std::string ime, bool bin): elementi(nullptr) {
+    if(!bin) ObnoviIzTekstualneDatoteke(ime);
+    else ObnoviIzBinarneDatoteke(ime);
+}
 template <typename TipEl>
 TipEl ** Matrica<TipEl>::AlocirajMemoriju(int br_redova, int br_kolona) {
     TipEl **elementi = new TipEl*[br_redova]{};
@@ -264,38 +269,57 @@ template <typename TipEl>
 void Matrica<TipEl>::ObnoviIzTekstualneDatoteke(std::string ime_datoteke) {
     std::ifstream ulazni_tok(ime_datoteke);
     if(!ulazni_tok) throw std::logic_error("Trazena datoteka ne postoji");
-    std::vector<std::vector<TipEl>> ucitani_elementi;
-    int i = 0;
-    while(!ulazni_tok.eof()) {
-        if(ulazni_tok.peek() == EOF) break;
-        ucitani_elementi.push_back(std::vector<TipEl>());
-        while(true) {
-            int n; char c;
-            if(!(ulazni_tok >> n)) throw std::logic_error("Datoteka sadrzi besmislene podatke");
-            ucitani_elementi[i].push_back(n);
-            ulazni_tok.get(c);
-            if(c == '\n') break;
-            else if(c != ',') throw std::logic_error("Datoteka sadrzi besmislene podatke");
-            if(ulazni_tok.bad()) throw std::logic_error("Problemi pri citanju iz datoteke");
+    br_redova = 0, br_kolona = -1;
+    int trenutno = 0;
+    while(ulazni_tok) {
+        TipEl n;
+        char c;
+        ulazni_tok >> n;
+        trenutno++;
+        if(ulazni_tok.peek() == '\n') {
+            br_redova++;
+            if(br_kolona != -1 && trenutno != br_kolona) throw std::logic_error("Datoteka sadrzi besmislene podatke");
+            br_kolona = trenutno;
+            trenutno = 0;
+            if(ulazni_tok.peek() == EOF) break;
+            ulazni_tok.ignore();
+            continue;
         }
-        i++;
+        ulazni_tok >> c;
+        if(ulazni_tok.bad()) throw std::logic_error("Problemi pri citanju iz datoteke");
+        if(ulazni_tok.eof()) break;
+        if(c != ',') throw std::logic_error("Datoteka sadrzi besmislene podatke");
     }
-    for(int i = 0; i < ucitani_elementi.size()-1; i++)
-        if(ucitani_elementi[i].size() != ucitani_elementi[i+1].size())
-            throw std::logic_error("Datoteka sadrzi besmislene podatke");
-    DealocirajMemoriju(elementi, br_redova);
-    br_redova = ucitani_elementi.size();
-    br_kolona = ucitani_elementi[0].size();
-    AlocirajMemoriju(br_redova, br_kolona);
-    for(int i = 0; i < ucitani_elementi.size(); i++) 
-        for(int j = 0; j < ucitani_elementi[i].size(); j++)
-            elementi[i][j] = ucitani_elementi[i][j];
+    if(elementi != nullptr)
+        DealocirajMemoriju(elementi, br_redova);
+    elementi = AlocirajMemoriju(br_redova, br_kolona);
+    ulazni_tok.clear();
+    ulazni_tok.seekg(0, std::ios::beg);
+    int i = 0;
+    bool citajC = false;
+    std::string red;
+    while(std::getline(ulazni_tok, red)) {
+        std::istringstream tok(red);
+        char c;
+        TipEl n;
+        while(tok >> n) {
+            elementi[i / br_kolona][i % br_kolona] = n;
+            i++;
+
+            if (tok >> c) {
+                if (c != ',') throw std::logic_error("Datoteka sadrzi besmislene podatke");
+            } else if (!tok.eof())
+                throw std::logic_error("Datoteka sadrzi besmislene podatke");
+        }
+    }
 }
+
 template <typename TipEl>
 void Matrica<TipEl>::ObnoviIzBinarneDatoteke(std::string ime_datoteke) {
     std::ifstream ulazni_tok(ime_datoteke, std::ios::binary);
     if(!ulazni_tok) throw std::logic_error("Trazena datoteka ne postoji");
-    DealocirajMemoriju(elementi, br_redova);
+    if(elementi != nullptr)
+        DealocirajMemoriju(elementi, br_redova);
     ulazni_tok.read(reinterpret_cast<char*>(this), sizeof *this);
     elementi = AlocirajMemoriju(br_redova, br_kolona);
     TipEl* niz = new TipEl[br_redova * br_kolona];
@@ -312,8 +336,47 @@ void Matrica<TipEl>::ObnoviIzBinarneDatoteke(std::string ime_datoteke) {
 }
 
 int main() {
-    Matrica<double> matrica(2,3);
-    matrica.ObnoviIzBinarneDatoteke("binarnamatrica.dat");
-    std::cout << matrica;
-    return 0;
+    const std::string filename = "file.txt";
+    Matrica<double> m(3, 4);
+    m(1,1) = 2.5; m(1,2) = -3; m(1,3) = 1.12; m(1,4) = 4;
+    m(2,1) = 0; m(2,2) = 0.25; m(2,3) = 3.16; m(2,4) = 42.3;
+    m(3,1) = -1.7; m(3,2) = 2.5; m(3,3) = 0; m(3,4) = 4;
+    m.SacuvajUTekstualnuDatoteku(filename);
+
+    char data[] = "Hello, world!";
+    std::ofstream file(filename, std::ios::app);
+    file.write(reinterpret_cast<const char*>(data), sizeof(data));
+
+    try
+    {
+        Matrica<double> m2(filename, false);
+        std::cout << m2;
+    }
+    catch (const std::exception &e)
+    {
+        std::cout << e.what() << '\n';
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
