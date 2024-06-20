@@ -139,7 +139,7 @@ void Skladiste::UcitajIzDatoteke(std::string imeDatoteke) {
             if(ulazniTok.bad()) throw std::logic_error("Problemi pri citanju datoteke");
         } catch(std::exception& err) {
             noviSpremnici.clear();
-            std::cout << err.what();
+            // std::cout << err.what();
             throw;
         }
     }
@@ -167,8 +167,9 @@ Spremnik& Skladiste::DajNajtezi() const {
             });
 }
 void Skladiste::BrisiSpremnik(Spremnik* p) {
-    // ostavice viseci pokazivac?
-    delete p;
+    for(int i = 0; i < spremnici.size(); i++)
+        if(spremnici[i].get() == p)
+            spremnici.erase(spremnici.begin() + i);
 }
 Spremnik* Skladiste::DodajSpremnik(Spremnik* p, bool predajeVlasnistvo) {
     Spremnik* novaAdresa;
@@ -183,8 +184,13 @@ Spremnik* Skladiste::DodajSpremnik(Spremnik* p, bool predajeVlasnistvo) {
     return novaAdresa;
 }
 void Skladiste::IzlistajSkladiste() const noexcept {
+    std::vector<std::shared_ptr<Spremnik>> sortirani;
     for(int i = 0; i < spremnici.size(); i++)
-        spremnici[i]->Ispisi();
+        sortirani.push_back(spremnici[i]);
+    std::sort(sortirani.begin(), sortirani.end(), [](std::shared_ptr<Spremnik> s1, std::shared_ptr<Spremnik> s2){
+            return s1->DajUkupnuTezinu() > s2->DajUkupnuTezinu();
+            });
+    for(auto s : sortirani) s->Ispisi();
 }
 Spremnik* Skladiste::DodajBure(double tezina, std::string naziv, double tezinaTecnosti, double zapremina) {
     std::shared_ptr<Spremnik> s = std::make_shared<Bure>(tezina, naziv, tezinaTecnosti, zapremina);
@@ -225,8 +231,24 @@ Skladiste& Skladiste::operator=(const Skladiste& s) {
 }
 
 int main() {
-    Skladiste s;
-    s.UcitajIzDatoteke("ROBA.TXT");
-    s.IzlistajSkladiste();
-    return 0;
+    try
+    {
+        Skladiste ETF;
+        ETF.DodajSanduk(50, "Voce", {1,3,5,6});
+        ETF.DodajVrecu(0.1, "Brasno", 25.5);
+        ETF.DodajBure(5, "Krv", 1300, 150);
+        ETF.DodajSpremnik(new Vreca(0.5, "Secer", 40), true);
+        Bure *b = new Bure(15, "Voda", 1000, 200);
+        auto p = ETF.DodajSpremnik(b, false);
+        ETF.BrisiSpremnik(p); 
+        delete b;
+        ETF.IzlistajSkladiste();
+        ETF.DajNajlaksi().Ispisi();
+        std::cout << ETF.BrojPreteskih(40) << std::endl;
+        ETF.DajNajtezi().Ispisi();
+    }
+    catch(std::range_error re)
+    {
+        std::cout << re.what();
+    }
 }

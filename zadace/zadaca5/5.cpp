@@ -254,6 +254,7 @@ void Matrica<TipEl>::SacuvajUTekstualnuDatoteku(std::string ime_datoteke) {
         }
         izlazni_tok << '\n';
     }
+    izlazni_tok.close();
 }
 template <typename TipEl>
 void Matrica<TipEl>::SacuvajUBinarnuDatoteku(std::string ime_datoteke) {
@@ -265,6 +266,7 @@ void Matrica<TipEl>::SacuvajUBinarnuDatoteku(std::string ime_datoteke) {
                 throw std::logic_error("Problemi sa upisom u datoteku");
         }
     }
+    izlazni_tok.close();
 }
 
 template <typename TipEl>
@@ -273,10 +275,15 @@ void Matrica<TipEl>::ObnoviIzTekstualneDatoteke(std::string ime_datoteke) {
     if(!ulazni_tok) throw std::logic_error("Trazena datoteka ne postoji");
     int novi_br_redova = 0, novi_br_kolona = -1;
     int trenutno = 0;
+    TipEl n;
+    char c;
+    // ulazni_tok.seekg(0, std::ios::end);
+    // int vel = ulazni_tok.tellg();
+    // std::cout << vel << "\n";
+    // ulazni_tok.seekg(0, std::ios::beg);
     while(ulazni_tok) {
-        TipEl n;
-        char c;
         ulazni_tok >> n;
+        if(!ulazni_tok && !ulazni_tok.eof()) throw std::logic_error("Datoteka sadrzi besmislene podatke");
         trenutno++;
         if(ulazni_tok.peek() == '\n') {
             novi_br_redova++;
@@ -305,13 +312,9 @@ void Matrica<TipEl>::ObnoviIzTekstualneDatoteke(std::string ime_datoteke) {
     int procitano = 0;
     // std::cout << "Redovi: " << br_redova << " " << br_kolona << "\n";
     while(true) {
-        std::getline(ulazni_tok, red);
-        procitano++;
-        if(red == "" && procitano > br_redova) {
-            DealocirajMemoriju(elementi, br_redova);
-            throw std::logic_error("Datoteka sadrzi besmislene podatke");
-        } else if(red == "") break;
-
+        std::streampos pozicija = ulazni_tok.tellg();
+        ulazni_tok >> red;
+        if(ulazni_tok.eof()) break;
         std::istringstream tok(red);
         char c;
         TipEl n;
@@ -330,6 +333,7 @@ void Matrica<TipEl>::ObnoviIzTekstualneDatoteke(std::string ime_datoteke) {
             }
         }
     }
+    ulazni_tok.close();
 }
 
 template <typename TipEl>
@@ -350,42 +354,27 @@ void Matrica<TipEl>::ObnoviIzBinarneDatoteke(std::string ime_datoteke) {
         for(int j = 0; j < br_kolona; j++)
             elementi[i][j] = niz[i*br_kolona+j];
     delete[] niz;
+    ulazni_tok.close();
 }
 
 int main() {
-const std::string filename = "file.dat";
-        Matrica<double> m(3, 4);
-        m(1,1) = 2.5; m(1,2) = -3; m(1,3) = 1.12; m(1,4) = 4;
-        m(2,1) = 0; m(2,2) = 0.25; m(2,3) = 3.16; m(2,4) = 42.3;
-        m(3,1) = -1.7; m(3,2) = 2.5; m(3,3) = 0; m(3,4) = 5;
-        m.SacuvajUBinarnuDatoteku(filename);
-
-        Matrica<double> m2(filename, true);
-
-        std::cout << m2 << std::endl;
-
-    return 0;
+    std::cout << "Unesite broj redova i kolona za matricu: ";
+    int m, n;
+    std::cin >> m >> n;
+    Matrica<double> matrica(m,n);
+    std::cout << "Unesite elemente matrice: ";
+    std::cin >> matrica;
+    std::cout << "Unesite ime tekstualne datoteke: ";
+    std::string tekstualna, binarna;
+    std::cin >> tekstualna;
+    std::cout << "Unesite ime binarne datoteke: ";
+    std::cin >> binarna;
+    matrica.SacuvajUTekstualnuDatoteku(tekstualna);
+    matrica.SacuvajUBinarnuDatoteku(binarna);
+    Matrica<double> tekst(tekstualna, false);
+    std::cout << "Ucitana matrica iz tekstualne datoteke: ";
+    std::cout << tekst;
+    Matrica<double> bin(binarna, true);
+    std::cout << "Ucitana matrica iz binarne datoteke: ";
+    std::cout << bin;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
