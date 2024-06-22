@@ -1,4 +1,4 @@
-Test 2: Skriven
+Test 1: Nije skriven
 Koristi svoju main() funckiju
 
 Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
@@ -6,119 +6,246 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 // Vas kod ide ovdje
 
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 5 - Zadatak 4
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
 int main() {
-int br_redova = 2;
-        int br_kolona = 3;
-        Matrica<double> m(br_redova, br_kolona);
-        m(1, 1) = 1.1;
-        m(1, 2) = 2.2;
-        m(1, 3) = 3.3;
-        m(2, 1) = 4.4;
-        m(2, 2) = 5.5;
-        m(2, 3) = 6.6;
-
-        std::string filenameText = "test_matrix.txt";
-        m.SacuvajUTekstualnuDatoteku(filenameText);
-
-        std::ifstream file(filenameText);
-
-        // open file and print all content
-        while (!file.eof())
+// AT 1: Test iz postavke zadatka
+    {
+        try
         {
-            std::string line;
-            std::getline(file, line);
-            std::cout << line << std::endl;
+
+            PolimorfniSpremnik s1(Bure(5,"Benzin", 930, 70));
+            PolimorfniSpremnik s2, s3, s4;
+            s2 = Sanduk(3, "Tepsije", {0.5, 0.8, 0.6, 0.5});
+            s3 = Vreca(0.1, "Patak", 15.5);
+            std::cout << s1.DajTezinu() << std::endl;
+            std::cout << s2.DajUkupnuTezinu() << std::endl;
+            s3.Ispisi();
+            s1 = s2;
+            s1.Ispisi();
+            s4.DajTezinu();
+        }
+        catch(std::logic_error le)
+        {
+            std::cout << le.what();
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+5
+5.4
+Vrsta spremnika: Vreca
+Sadrzaj: Patak
+Vlastita tezina: 0.1 (kg)
+Tezina pohranjene materije: 15.5 (kg)
+Ukupna tezina: 15.6 (kg)
+Vrsta spremnika: Sanduk
+Sadrzaj: Tepsije
+Tezine predmeta: 0.5 0.8 0.6 0.5 (kg)
+Vlastita tezina: 3 (kg)
+Ukupna tezina: 5.4 (kg)
+Nespecificiran spremnik
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 2: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 5 - Zadatak 4
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+// AT 2: Test da li bacen izuzetak ako je nespecificiran spremnik
+    {
+        try
+        {
+            PolimorfniSpremnik s1;
+            std::cout << s1.DajTezinu() << std::endl;
+        }
+        catch(std::logic_error le)
+        {
+            std::cout << le.what();
+        }
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Nespecificiran spremnik
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 3: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 5 - Zadatak 4
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+// AT 3: Test konstruktora i operatora dodjele sa metodama Ispisi
+    {
+        PolimorfniSpremnik s1(Bure(20,"Red Bull", 800, 150));
+        PolimorfniSpremnik s2;
+        s2 = Vreca(0.5, "Zito", 50);
+        s1.Ispisi();
+        s2.Ispisi();
+
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Vrsta spremnika: Bure
+Sadrzaj: Red Bull
+Vlastita tezina: 20 (kg)
+Specificna tezina tecnosti: 800 (kg/m^3)
+Zapremina tecnosti: 150 (l)
+Ukupna tezina: 140 (kg)
+Vrsta spremnika: Vreca
+Sadrzaj: Zito
+Vlastita tezina: 0.5 (kg)
+Tezina pohranjene materije: 50 (kg)
+Ukupna tezina: 50.5 (kg)
+
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 4: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 5 - Zadatak 4
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+// AT 4: Test konstruktora i operatora dodjele sa metodama Ispisi
+    {
+        PolimorfniSpremnik s1(Bure(20,"Red Bull", 800, 150));
+        PolimorfniSpremnik s2(s1);
+        PolimorfniSpremnik s3;
+        s3=s2;
+        s3.Ispisi();
+    }
+
+    return 0;
+}
+
+========================================================================
+
+
+Izlaz:
+
+Vrsta spremnika: Bure
+Sadrzaj: Red Bull
+Vlastita tezina: 20 (kg)
+Specificna tezina tecnosti: 800 (kg/m^3)
+Zapremina tecnosti: 150 (l)
+Ukupna tezina: 140 (kg)
+
+
+########################################################################
+########################################################################
+########################################################################
+
+Test 5: Nije skriven
+Koristi svoju main() funckiju
+
+Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
+========================================================================
+
+// Vas kod ide ovdje
+
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 5 - Zadatak 4
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+// AT 5: Test izuzetaka na nespecificiran spremnik
+    {
+        try
+        {
+            PolimorfniSpremnik s1;
+            std::cout << s1.DajUkupnuTezinu() << std::endl;
+        }
+        catch(std::logic_error le)
+        {
+            std::cout << le.what();
         }
 
-    return 0;
-}
-
-========================================================================
-
-
-Izlaz:
-
-1.1,2.2,3.3
-4.4,5.5,6.6
-
-########################################################################
-########################################################################
-########################################################################
-
-Test 3: Skriven
-Koristi svoju main() funckiju
-
-Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
-========================================================================
-
-// Vas kod ide ovdje
-
-int main() {
-int br_redova = 2;
-        int br_kolona = 3;
-        Matrica<double> m(br_redova, br_kolona);
-        m(1, 1) = 1.1;
-        m(1, 2) = 2.2;
-        m(1, 3) = 3.3;
-        m(2, 1) = 4.4;
-        m(2, 2) = 5.5;
-        m(2, 3) = 6.6;
-
-        std::string filenameText = "test_matrix.dat";
-        m.SacuvajUBinarnuDatoteku(filenameText);
-    
-        std::ifstream file(filenameText, std::ios::binary);
-
-        // open binary file and print all content
-        Matrica<double> m2(br_redova, br_kolona);
-        m2.ObnoviIzBinarneDatoteke(filenameText);
-        std::cout << m2 << std::endl;
-
-    return 0;
-}
-
-========================================================================
-
-
-Izlaz:
-
-1.12.23.3
-4.45.56.6
-
-########################################################################
-########################################################################
-########################################################################
-
-Test 4: Skriven
-Koristi svoju main() funckiju
-
-Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
-========================================================================
-
-// Vas kod ide ovdje
-
-int main() {
-        const std::string filename = "binary_file.dat";
-        Matrica<double> m(3, 4);
-        m(1,1) = 2.5; m(1,2) = -3; m(1,3) = 1.12; m(1,4) = 4;
-        m(2,1) = 0; m(2,2) = 0.25; m(2,3) = 3.16; m(2,4) = 42.3;
-        m(3,1) = -1.7; m(3,2) = 2.5; m(3,3) = 0; m(3,4) = 5;
-        m.SacuvajUBinarnuDatoteku(filename);
+        std::cout << std::endl << std::endl;
 
         try
         {
-            Matrica<double> m2(0,0);
-            m2.ObnoviIzBinarneDatoteke("nepostojeca.dat");
+            PolimorfniSpremnik s1;
+            s1.Ispisi();
         }
-        catch(const std::exception& e)
+        catch(std::logic_error le)
         {
-            std::cout << e.what() << '\n';
+            std::cout << le.what();
         }
-
-        Matrica<double> m2(0,0);
-        m2.ObnoviIzBinarneDatoteke(filename);
-
-        std::cout << m2;
+    }
 
     return 0;
 }
@@ -128,57 +255,9 @@ int main() {
 
 Izlaz:
 
-Trazena datoteka ne postoji
-2.5-31.124
-00.253.1642.3
--1.72.505
+Nespecificiran spremnik
 
-########################################################################
-########################################################################
-########################################################################
-
-Test 5: Skriven
-Koristi svoju main() funckiju
-
-Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
-========================================================================
-
-// Vas kod ide ovdje
-
-int main() {
-        const std::string filename = "file.txt";
-        Matrica<double> m(3, 4);
-        m(1,1) = 2.5; m(1,2) = -3; m(1,3) = 1.12; m(1,4) = 4;
-        m(2,1) = 0; m(2,2) = 0.25; m(2,3) = 3.16; m(2,4) = 42.3;
-        m(3,1) = -1.7; m(3,2) = 2.5; m(3,3) = 0; m(3,4) = 5;
-        m.SacuvajUTekstualnuDatoteku(filename);
-
-        Matrica<double> m2(0,0);
-        try
-        {
-            m2.ObnoviIzTekstualneDatoteke("nepostojeca.txt");
-        }
-        catch (const std::exception &e)
-        {
-            std::cout << e.what() << '\n';
-        }
-
-        m2.ObnoviIzTekstualneDatoteke(filename);
-
-        std::cout << m2;
-
-    return 0;
-}
-
-========================================================================
-
-
-Izlaz:
-
-Trazena datoteka ne postoji
-2.5-31.124
-00.253.1642.3
--1.72.505
+Nespecificiran spremnik
 
 ########################################################################
 ########################################################################
@@ -192,28 +271,21 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 // Vas kod ide ovdje
 
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 5 - Zadatak 4
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
 int main() {
-        const std::string filename = "file.txt";
-        Matrica<double> m(3, 4);
-        m(1,1) = 2.5; m(1,2) = -3; m(1,3) = 1.12; m(1,4) = 4;
-        m(2,1) = 0; m(2,2) = 0.25; m(2,3) = 3.16; m(2,4) = 42.3;
-        m(3,1) = -1.7; m(3,2) = 2.5; m(3,3) = 0; m(3,4) = 5;
-        m.SacuvajUTekstualnuDatoteku(filename);
-
-        // random text
-        char data[] = "Hello, world!";
-        std::ofstream file(filename, std::ios::app);
-        file.write(reinterpret_cast<const char*>(data), sizeof(data));
-
-        try
-        {
-            Matrica<double> m2(filename, false);
-            std::cout << m2;
-        }
-        catch (const std::exception &e)
-        {
-            std::cout << e.what() << '\n';
-        }
+// AT 6: Test metoda nakon ispravne dodjele
+    {
+        PolimorfniSpremnik s1(Sanduk(3, "Svicevi :D", {5, 2, 3, 1, 7, 8}));
+        std::cout << s1.DajTezinu()  << std::endl << s1.DajUkupnuTezinu() << std::endl;
+        s1.Ispisi();
+    }
 
     return 0;
 }
@@ -223,13 +295,20 @@ int main() {
 
 Izlaz:
 
-Datoteka sadrzi besmislene podatke
+3
+29
+Vrsta spremnika: Sanduk
+Sadrzaj: Svicevi :D
+Tezine predmeta: 5 2 3 1 7 8 (kg)
+Vlastita tezina: 3 (kg)
+Ukupna tezina: 29 (kg)
+
 
 ########################################################################
 ########################################################################
 ########################################################################
 
-Test 7: Skriven
+Test 7: Nije skriven
 Koristi svoju main() funckiju
 
 Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
@@ -237,17 +316,23 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 // Vas kod ide ovdje
 
-int main() {
-const std::string filename = "file.txt";
-        Matrica<double> m(3, 4);
-        m(1,1) = 2.5; m(1,2) = -3; m(1,3) = 1.12; m(1,4) = 4;
-        m(2,1) = 0; m(2,2) = 0.25; m(2,3) = 3.16; m(2,4) = 42.3;
-        m(3,1) = -1.7; m(3,2) = 2.5; m(3,3) = 0; m(3,4) = 5;
-        m.SacuvajUTekstualnuDatoteku(filename);
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 5 - Zadatak 4
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
 
-        Matrica<double> m2(filename, false);
-        
-        std::cout << m2 << std::endl;
+
+int main() {
+// AT 7: Test velicina klasa
+    {
+        std::cout << sizeof(Spremnik) << std::endl;
+        std::cout << sizeof(Sanduk) << std::endl;
+        std::cout << sizeof(Vreca) << std::endl;
+        std::cout << sizeof(Bure) << std::endl;
+        std::cout << sizeof(PolimorfniSpremnik) << std::endl;
+    }
 
     return 0;
 }
@@ -255,11 +340,25 @@ const std::string filename = "file.txt";
 ========================================================================
 
 
-Izlaz:
+Ovaj autotest ima vise validnih izlaza!
 
-2.5-31.124
-00.253.1642.3
--1.72.505
+Izlaz 1:
+
+40
+56
+48
+56
+4
+
+
+
+Izlaz 2:
+
+48
+72
+56
+64
+8
 
 ########################################################################
 ########################################################################
@@ -273,29 +372,58 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 
 // Vas kod ide ovdje
 
+//---------------------------------------------------------------------------------------------------------------
+// Tehnike programiranja - Akademska 2023/2024 godina
+// Zadaca 5 - Zadatak 4
+// Odgovorni asistent: Tarik Pozderac - tpozderac1@etf.unsa.ba
+// Za sva tehnicka pitanja vezana za autotestove za zadatak 4, obratite se na navedeni mail.
+//---------------------------------------------------------------------------------------------------------------
+
+
 int main() {
-const std::string filename = "file.dat";
-        Matrica<double> m(3, 4);
-        m(1,1) = 2.5; m(1,2) = -3; m(1,3) = 1.12; m(1,4) = 4;
-        m(2,1) = 0; m(2,2) = 0.25; m(2,3) = 3.16; m(2,4) = 42.3;
-        m(3,1) = -1.7; m(3,2) = 2.5; m(3,3) = 0; m(3,4) = 5;
-        m.SacuvajUBinarnuDatoteku(filename);
-
-        Matrica<double> m2(filename, true);
-
-        std::cout << m2 << std::endl;
+// AT 8: Test ispravnosti polimorfnog omotaca
+    {
+        PolimorfniSpremnik s = Ruksak();
+        s.DajUkupnuTezinu();
+        s.Ispisi();
+    }
 
     return 0;
 }
+
+class Ruksak : public Spremnik
+{
+    public:
+    Ruksak() : Spremnik(1,"2")
+    {
+        std::cout << "Kreiran ruksak - konstruktor bez parametara!" << std::endl;
+    }
+    double DajUkupnuTezinu() const override
+    {
+        std::cout << "Pozvana ukupna tezina." << std::endl;
+    }
+    void Ispisi() const override
+    {
+        std::cout << "Pozvano ispisivanje." << std::endl;
+    }
+    Ruksak *DajKopiju() const override
+    {
+        std::cout << "Pozvana kopija." << std::endl;
+
+        return new Ruksak(*this);
+    }
+};
 
 ========================================================================
 
 
 Izlaz:
 
-2.5-31.124
-00.253.1642.3
--1.72.505
+Kreiran ruksak - konstruktor bez parametara!
+Pozvana kopija.
+Pozvana ukupna tezina.
+Pozvano ispisivanje.
+
 
 ########################################################################
 ########################################################################

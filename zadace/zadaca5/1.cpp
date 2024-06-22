@@ -1,4 +1,5 @@
 #include <initializer_list>
+#include <sstream>
 #include <iostream>
 #include <limits.h>
 #include <stdexcept>
@@ -48,11 +49,17 @@ Long Razlomak::NZD(Long p, Long q) noexcept {
 void Razlomak::Postavi(Long a = 0, Long b = 1) {
     if(b == 0) throw std::logic_error("Nekorektan razlomak");
     Long nzd = NZD(a, b);
-    // std::cout << "NZD: " << nzd << "\n";
-    brojnik = a / nzd * signum(b);
-    nazivnik = b / nzd * signum(b);
+    // std::cout << "PRIJE POSTAVLJANJA: " << a << '/' << b << '\n';
+    brojnik = a / nzd;
+    nazivnik = b / nzd;
+    if(nazivnik < 0) {
+        brojnik *= -1;
+        nazivnik *= -1;
+    }
+    // std::cout << "POSTAVICU: " << brojnik << '/' << nazivnik << '\n';
 }
 void Razlomak::Postavi(const Razlomak& drugi) {
+    if(drugi.nazivnik == 0) throw std::logic_error("Nekorektan razlomak");
     brojnik = drugi.brojnik;
     nazivnik = drugi.nazivnik;
     if(drugi.nazivnik == 0) std::cout << "PANIKA\n";
@@ -69,7 +76,7 @@ std::istream& operator>>(std::istream& tok, Razlomak& r) {
     Long a, b;
     char c;
     tok >> a;
-    if(tok.peek() == '\n') {
+    if(tok.peek() == EOF || std::isspace(tok.peek())) {
         r.brojnik = a;
         r.nazivnik = 1;
     } else if(tok.peek() == '/') {
@@ -79,6 +86,10 @@ std::istream& operator>>(std::istream& tok, Razlomak& r) {
             return tok;
         }
         tok >> b;
+        if(tok.peek() != EOF && !std::isspace(tok.peek())) {
+            tok.setstate(std::ios::failbit);
+            return tok;
+        }
         Long nzd = Razlomak::NZD(a,b);
         r.brojnik = a/nzd;
         r.nazivnik = b/nzd;
@@ -144,15 +155,14 @@ Razlomak& Razlomak::operator/=(const Razlomak& drugi) {
     Postavi(*this / drugi);
     return *this;
 }
+
 Razlomak operator+(const Razlomak& r) { return r; }
 Razlomak operator-(const Razlomak& r) { return {-r.brojnik, r.nazivnik}; }
 
 void Razlomak::TestirajPrekoracenjeSume(Long a, Long b) {
-    // std::cout << "Testiram sumu " << a << " i " << b << "\n";
     if(LONG_LONG_MAX - std::abs(a) < std::abs(b)) throw std::overflow_error("Nemoguce dobiti tacan rezultat");
 }
 void Razlomak::TestirajPrekoracenjeProizvoda(Long a, Long b) {
-    // std::cout << "Testiram proizvod " << a << " i " << b << "\n";
     if(LONG_LONG_MAX / std::abs(a) < std::abs(b)) throw std::overflow_error("Nemoguce dobiti tacan rezultat");
 }
 Razlomak operator*(const Razlomak& r1, const Razlomak& r2) {
@@ -160,39 +170,39 @@ Razlomak operator*(const Razlomak& r1, const Razlomak& r2) {
     Long t = Razlomak::NZD(r2.brojnik, r1.nazivnik);
     Razlomak::TestirajPrekoracenjeProizvoda(r1.brojnik/s, r2.brojnik/t);
     Razlomak::TestirajPrekoracenjeProizvoda(r1.nazivnik/t, r2.nazivnik/s);
-    return {r1.brojnik/s * r2.brojnik/t, r1.nazivnik/t * r2.nazivnik/s};
+    return {(r1.brojnik/s) * (r2.brojnik/t), (r1.nazivnik/t) * (r2.nazivnik/s)};
 }
 Razlomak operator/(const Razlomak& r1, const Razlomak& r2) {
     Long r = Razlomak::NZD(r1.nazivnik, r2.nazivnik);
     Long u = Razlomak::NZD(r1.brojnik, r2.brojnik);
     Razlomak::TestirajPrekoracenjeProizvoda(r1.brojnik/u, r2.nazivnik/r);
     Razlomak::TestirajPrekoracenjeProizvoda(r1.nazivnik/r, r2.brojnik/u);
-    return {r1.brojnik/u * r2.nazivnik/r, r1.nazivnik/r * r2.brojnik/u};
+    return {(r1.brojnik/u) * (r2.nazivnik/r), (r1.nazivnik/r) * (r2.brojnik/u)};
 }
 Razlomak operator+(const Razlomak& r1, const Razlomak& r2) {
     Long r = Razlomak::NZD(r1.nazivnik, r2.nazivnik);
     Razlomak::TestirajPrekoracenjeProizvoda(r1.brojnik, r2.nazivnik/r);
     Razlomak::TestirajPrekoracenjeProizvoda(r2.brojnik, r1.nazivnik/r);
-    Long prvi = r1.brojnik * r2.nazivnik / r;
-    Long drugi = r2.brojnik * r1.nazivnik / r; 
+    Long prvi = r1.brojnik * (r2.nazivnik / r);
+    Long drugi = r2.brojnik * (r1.nazivnik / r); 
     Razlomak::TestirajPrekoracenjeSume(prvi, drugi);
     Long rezultantniBrojnik = prvi + drugi;
     Razlomak::TestirajPrekoracenjeProizvoda(r1.nazivnik, r2.nazivnik/r);
-    Long rezultantniNazivnik = r1.nazivnik * r2.nazivnik / r;
+    Long rezultantniNazivnik = r1.nazivnik * (r2.nazivnik / r);
     return {rezultantniBrojnik, rezultantniNazivnik};
 }
 Razlomak operator-(const Razlomak& r1, const Razlomak& r2) {
     return r1 + (-r2);
 }
 
-void NR() { std::cout << std::endl; }
-
 int main() {
-    Razlomak r1{2337,3740}, r2(4014,5225);
-    Razlomak r;
-    std::cin >> r;
-    if(std::cin) std::cout << "Ispravno: " << r << '\n';
-    else std::cout << "Neispravno";
-    std::cout << (long double)r;
+    Razlomak r1 (12345432LL, 12234432LL);
+    r1 *= (r1 + Razlomak (1));
+    std::cout << r1 << std::endl;
+    r1 /= (r1 + Razlomak (1542LL));
+    std::cout << r1 << std::endl;
+    r1 = r1 + Razlomak (9939LL, 7);
+    std::cout << r1 << std::endl;
     return 0;
 }
+

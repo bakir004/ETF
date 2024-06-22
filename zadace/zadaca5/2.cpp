@@ -213,48 +213,5 @@ void Berza::BrisiSve() noexcept { cijene.clear(); }
 int Berza::DajBrojRegistriranihCijena() const noexcept { return cijene.size(); }
 
 int main() {
-    Berza b1(100, 500);
-    Berza b2(100, 500);
-    Berza b3(200, 600);
-
-    b1.RegistrirajCijenu(300);
-    b1.RegistrirajCijenu(400);
-    b2.RegistrirajCijenu(300);
-    b2.RegistrirajCijenu(400);
-    b3.RegistrirajCijenu(300);
-    b3.RegistrirajCijenu(500);
-
-    if (b1 == b2) {
-        std::cout << "b1 je jednak b2." << std::endl;
-    } else {
-        std::cout << "b1 nije jednak b2." << std::endl;
-    }
-
-    if (b1 == b3) {
-        std::cout << "b1 je jednak b3." << std::endl;
-    } else {
-        std::cout << "b1 nije jednak b3." << std::endl;
-    }
-
-    if (b1 != b3) {
-        std::cout << "b1 nije jednak b3." << std::endl;
-    } else {
-        std::cout << "b1 je jednak b3." << std::endl;
-    }
-
-    if (b1 != b2) {
-        std::cout << "b1 nije jednak b2." << std::endl;
-    } else {
-        std::cout << "b1 je jednak b2." << std::endl;
-    }
-
-    try {
-        std::cout << "Cijena b1 na indeksu 1: " << b1[1] << std::endl;
-        std::cout << "Cijena b2 na indeksu 2: " << b2[2] << std::endl;
-        std::cout << "Cijena b3 na indeksu 3: " << b3[3] << std::endl;
-    } catch (const std::range_error& e) {
-        std::cout << "Izuzetak: " << e.what() << std::endl;
-    }
-    return 0;
 }
 

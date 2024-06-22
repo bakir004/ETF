@@ -239,8 +239,7 @@ int main() {
         ETF.DodajBure(5, "Krv", 1300, 150);
         ETF.DodajSpremnik(new Vreca(0.5, "Secer", 40), true);
         Bure *b = new Bure(15, "Voda", 1000, 200);
-        auto p = ETF.DodajSpremnik(b, false);
-        ETF.BrisiSpremnik(p); 
+        ETF.DodajSpremnik(b, false);
         delete b;
         ETF.IzlistajSkladiste();
         ETF.DajNajlaksi().Ispisi();
