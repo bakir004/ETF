@@ -92,8 +92,8 @@ public:
     Spremnik* DodajBure(double tezina, std::string naziv, double tezinaTecnosti, double zapremina);
     Spremnik* DodajSpremnik(Spremnik* p, bool predajeVlasnistvo);
     void BrisiSpremnik(Spremnik* p);
-    Spremnik& DajNajlaksi() const;
-    Spremnik& DajNajtezi() const;
+    Spremnik& DajNajlaksi();
+    Spremnik& DajNajtezi();
     int BrojPreteskih(int x) const;
     void IzlistajSkladiste() const noexcept;
     void UcitajIzDatoteke(std::string imeDatoteke);
@@ -152,18 +152,18 @@ int Skladiste::BrojPreteskih(int x) const {
             return s->DajUkupnuTezinu() > x;
         });
 }
-Spremnik& Skladiste::DajNajlaksi() const {
+Spremnik& Skladiste::DajNajlaksi() {
     if(spremnici.empty()) throw std::range_error("Skladiste je prazno");
     return **std::min_element(spremnici.begin(), spremnici.end(), 
         [](const std::shared_ptr<Spremnik>& s1, const std::shared_ptr<Spremnik>& s2){
-            return s1->DajUkupnuTezinu() < s2->DajUkupnuTezinu();
+            return s1->DajTezinu() < s2->DajTezinu();
             });
 }
-Spremnik& Skladiste::DajNajtezi() const {
+Spremnik& Skladiste::DajNajtezi() {
     if(spremnici.empty()) throw std::range_error("Skladiste je prazno");
     return **std::max_element(spremnici.begin(), spremnici.end(), 
         [](const std::shared_ptr<Spremnik>& s1, const std::shared_ptr<Spremnik>& s2){
-            return s1->DajUkupnuTezinu() < s2->DajUkupnuTezinu();
+            return s1->DajTezinu() < s2->DajTezinu();
             });
 }
 void Skladiste::BrisiSpremnik(Spremnik* p) {

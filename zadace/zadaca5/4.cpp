@@ -92,8 +92,8 @@ public:
     Spremnik* DodajBure(double tezina, std::string naziv, double tezinaTecnosti, double zapremina);
     Spremnik* DodajSpremnik(Spremnik* p, bool predajeVlasnistvo);
     void BrisiSpremnik(Spremnik* p);
-    Spremnik& DajNajlaksi() const;
-    Spremnik& DajNajtezi() const;
+    Spremnik& DajNajlaksi();
+    Spremnik& DajNajtezi();
     int BrojPreteskih(int x) const;
     void IzlistajSkladiste() const noexcept;
     void UcitajIzDatoteke(std::string imeDatoteke);
@@ -152,14 +152,14 @@ int Skladiste::BrojPreteskih(int x) const {
             return s->DajUkupnuTezinu() > x;
         });
 }
-Spremnik& Skladiste::DajNajlaksi() const {
+Spremnik& Skladiste::DajNajlaksi() {
     if(spremnici.empty()) throw std::range_error("Skladiste je prazno");
     return **std::min_element(spremnici.begin(), spremnici.end(), 
         [](const std::shared_ptr<Spremnik>& s1, const std::shared_ptr<Spremnik>& s2){
             return s1->DajTezinu() < s2->DajTezinu();
             });
 }
-Spremnik& Skladiste::DajNajtezi() const {
+Spremnik& Skladiste::DajNajtezi() {
     if(spremnici.empty()) throw std::range_error("Skladiste je prazno");
     return **std::max_element(spremnici.begin(), spremnici.end(), 
         [](const std::shared_ptr<Spremnik>& s1, const std::shared_ptr<Spremnik>& s2){
@@ -167,8 +167,9 @@ Spremnik& Skladiste::DajNajtezi() const {
             });
 }
 void Skladiste::BrisiSpremnik(Spremnik* p) {
-    // ostavice viseci pokazivac?
-    delete p;
+    for(int i = 0; i < spremnici.size(); i++)
+        if(spremnici[i].get() == p)
+            spremnici.erase(spremnici.begin() + i);
 }
 Spremnik* Skladiste::DodajSpremnik(Spremnik* p, bool predajeVlasnistvo) {
     Spremnik* novaAdresa;
@@ -229,7 +230,8 @@ class PolimorfniSpremnik {
 public:
     PolimorfniSpremnik(): p(nullptr) {}
     ~PolimorfniSpremnik() { delete p; }
-    PolimorfniSpremnik(const Spremnik& s): p(s.DajKopiju()) {}
+    PolimorfniSpremnik(const Spremnik& s): p(s.DajKopiju()) { }
+    PolimorfniSpremnik(const PolimorfniSpremnik& s) { p = s.p->DajKopiju(); }
     PolimorfniSpremnik& operator=(const Spremnik& s) {
         delete p;
         p = s.DajKopiju();
@@ -256,22 +258,9 @@ public:
 };
 
 int main() {
-    try
-    {
-
-        PolimorfniSpremnik s1(Bure(5,"Benzin", 930, 70));
-        PolimorfniSpremnik s2, s3, s4;
-        s2 = Sanduk(3, "Tepsije", {0.5, 0.8, 0.6, 0.5});
-        s3 = Vreca(0.1, "Patak", 15.5);
-        std::cout << s1.DajTezinu() << std::endl;
-        std::cout << s2.DajUkupnuTezinu() << std::endl;
-        s3.Ispisi();
-        s1 = s2;
-        s1.Ispisi();
-        s4.DajTezinu();
-    }
-    catch(std::logic_error le)
-    {
-        std::cout << le.what();
-    }
+    PolimorfniSpremnik s1(Bure(20,"Red Bull", 800, 150));
+    PolimorfniSpremnik s2(s1);
+    PolimorfniSpremnik s3;
+    s3=s2;
+    s3.Ispisi();
 }
