@@ -1,5 +1,4 @@
 #include <initializer_list>
-#include <sstream>
 #include <iostream>
 #include <limits.h>
 #include <stdexcept>

@@ -1,14 +1,14 @@
 koordinate_gradova([
-    grad(sarajevo, 3, 5),
-    grad(mostar, 9, 2),
-    grad(banjaluka, 7, 10),
-    grad(tuzla, 12, 8),
-    grad(zagreb, 5, 15),
-    grad(beograd, 11, 12),
-    grad(podgorica, 6, 3),
-    grad(skopje, 8, 6),
-    grad(zenica, 10, 13),
-    grad(split, 4, 7)
+    grad(sarajevo, 0, 8),
+    grad(mostar, 10, 10),
+    grad(banjaluka, 0, 15),
+    grad(tuzla, 0, 3),
+    grad(zagreb, 0, 0),
+    grad(beograd, 4, 0),
+    grad(podgorica, 4, 3),
+    grad(skopje, 10, 0),
+    grad(zenica, 10, 8),
+    grad(split, 12, 0)
 ]).
 
 daj_tezinsku_konstantu(Konstanta) :-
@@ -52,8 +52,10 @@ kreiraj_veze([(Grad1, Grad2)|Ostalo]) :-
 
 uporedi_udaljenosti(Red, povezani(_, _, Udaljenost1), povezani(_, _, Udaljenost2)) :-
     compare(Red, Udaljenost1, Udaljenost2).
+
 sortiraj_veze(Veze, SortiraneVeze) :-
     predsort(uporedi_udaljenosti, Veze, SortiraneVeze).
+
 izbroj_posjecene(BrojGradova) :-
     findall(Grad, posjecen(Grad), Gradovi),
     length(Gradovi, BrojGradova).
@@ -119,10 +121,10 @@ print_mst_veze :-
 krajnja_poruka :-
     write('\nKraj programa'), nl.
 
-tezinska_suma([],[],[]).
-tezinska_suma([D1|Udaljenosti], [M1|MultiplikatoriCijene], [R1|MultiplikatoriPropusnosti]) :-
+generisi_tipove_veza([],[],[]).
+generisi_tipove_veza([D1|Udaljenosti], [M1|MultiplikatoriCijene], [R1|MultiplikatoriPropusnosti]) :-
     assertz(tuple(D1, M1, R1)),
-    tezinska_suma(Udaljenosti, MultiplikatoriCijene, MultiplikatoriPropusnosti).
+    generisi_tipove_veza(Udaljenosti, MultiplikatoriCijene, MultiplikatoriPropusnosti).
 
 proizvod_udaljenosti_cijene(tuple(D, P, _), Product) :-
     Product is D * P.
@@ -145,10 +147,11 @@ generisi_puteve(Udaljenosti, Varijacije, FaktoriPropusnosti) :-
     assertz(putevi(Varijacije, Cijena, Prolaznost)),
     retractall(tuple(_,_,_)),
     assertz(tuple(0, 0, 0)),
-    tezinska_suma(Udaljenosti, Varijacije, FaktoriPropusnosti).
+    generisi_tipove_veza(Udaljenosti, Varijacije, FaktoriPropusnosti).
 
 probaj_sve_puteve :-
-    write('Pronalazim najbolje tipove puteva...'), nl,
+    write('Pronalazim najbolje tipove puteva...'), nl, nl,
+    write('Ignorisati error ispod...\n'),
     findall(D, mst(_, _, D), Udaljenosti),
     length(Udaljenosti, Broj),
     generisi_varijacije(Broj+1, Varijacija), 

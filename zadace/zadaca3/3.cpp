@@ -15,8 +15,6 @@ template <typename TipElemenata> struct Matrica {
 };
 template <typename TipElemenata>
 void UnistiMatricu(Matrica<TipElemenata> &mat) {
-    // std::cout << "Brisem matricu dimenzija " << mat.br_redova << "x" <<
-    // mat.br_kolona << "\n";
     if (!mat.elementi)
         return;
     for (int i = 0; i < mat.br_redova; i++)

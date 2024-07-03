@@ -277,10 +277,6 @@ void Matrica<TipEl>::ObnoviIzTekstualneDatoteke(std::string ime_datoteke) {
     int trenutno = 0;
     TipEl n;
     char c;
-    // ulazni_tok.seekg(0, std::ios::end);
-    // int vel = ulazni_tok.tellg();
-    // std::cout << vel << "\n";
-    // ulazni_tok.seekg(0, std::ios::beg);
     while(ulazni_tok) {
         ulazni_tok >> n;
         if(!ulazni_tok && !ulazni_tok.eof()) throw std::logic_error("Datoteka sadrzi besmislene podatke");
@@ -310,7 +306,6 @@ void Matrica<TipEl>::ObnoviIzTekstualneDatoteke(std::string ime_datoteke) {
     bool citajC = false;
     std::string red;
     int procitano = 0;
-    // std::cout << "Redovi: " << br_redova << " " << br_kolona << "\n";
     while(true) {
         std::streampos pozicija = ulazni_tok.tellg();
         ulazni_tok >> red;

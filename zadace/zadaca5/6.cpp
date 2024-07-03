@@ -4,9 +4,7 @@
 #include <stdexcept>
 
 template <typename TipElemenata>
-void SortirajBinarnuDatoteku(const char ime_datoteke[],
-        std::function<bool(TipElemenata, TipElemenata)> kriterij
-        = std::less<TipElemenata>()) {
+void SortirajBinarnuDatoteku(const char ime_datoteke[], std::function<bool(TipElemenata, TipElemenata)> kriterij = std::less<TipElemenata>()) {
     std::fstream tok(ime_datoteke, std::ios::in | std::ios::out | std::ios::binary);
     if(!tok) throw std::logic_error("Datoteka ne postoji");
     tok.seekg(0, std::ios::end);

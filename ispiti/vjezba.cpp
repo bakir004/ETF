@@ -1,13 +1,20 @@
 #include <iostream>
-#include <list>
-#include <queue>
-#include <algorithm>
-#include <cmath>
+
+class A {
+    int a;
+    A(): a(6) {};
+    A(const B& b): a(9) {};
+public:
+    DajA() { return a; }
+}
+class B {
+    int a;
+    B(): a(4) {};
+}
 
 int main() {
-    std::list<double> a{1, 4, 2, 5, 3}; ;
-    auto f = [](double (*g)(int)) { return g(1); };
-    std::cout << f([](int x){ return (double)x; });
-    double *p = std::find(a.begin(), a.end(), 2); std::cout << *p;
-    // for(int x : q) std::cout << x << " "; return 0;
+    B b;
+    A a(b);
+    std::cout << a.DajA();
+    return 0;
 }
