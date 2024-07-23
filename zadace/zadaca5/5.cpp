@@ -353,6 +353,7 @@ void Matrica<TipEl>::ObnoviIzBinarneDatoteke(std::string ime_datoteke) {
 }
 
 int main() {
+    int a = 5;
     std::cout << "Unesite broj redova i kolona za matricu: ";
     int m, n;
     std::cin >> m >> n;
