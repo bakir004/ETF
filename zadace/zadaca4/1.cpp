@@ -5,6 +5,7 @@
 #include <stdexcept>
 #define EPSILON 1e-10
 
+/*promjena*/
 typedef std::pair<double, double> Tacka;
 enum Pozicija {GoreLijevo, GoreDesno, DoljeLijevo, DoljeDesno};
 enum Smjer {Nalijevo, Nadesno};
