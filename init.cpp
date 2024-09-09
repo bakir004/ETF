@@ -1,7 +1,6 @@
-#include <iostream>
-#include <vector>
+#include<iostream>
 
 int main() {
-    std::vector<int> v;
-    std::cout << "nigga";
+    std::cout << "BIMBIMBAMBAM";
+    return 0;
 }
