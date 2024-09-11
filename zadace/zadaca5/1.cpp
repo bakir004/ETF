@@ -202,6 +202,12 @@ int main() {
     std::cout << r1 << std::endl;
     r1 = r1 + Razlomak (9939LL, 7);
     std::cout << r1 << std::endl;
+
+    Razlomak a(1,2), b(3,4);
+    Razlomak c = a+b;
+
+
+
     return 0;
 }
 

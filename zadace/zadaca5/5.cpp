@@ -22,9 +22,9 @@ public:
     Matrica &operator =(const Matrica &m);
     Matrica &operator =(Matrica &&m);
     template <typename Tip2>
-        friend std::istream &operator >>(std::istream &tok, Matrica<Tip2> &m);
+        friend std::istream& operator >>(std::istream &tok, Matrica<Tip2> &m);
     template <typename Tip2>
-        friend std::ostream &operator <<(std::ostream &tok, const Matrica<Tip2> &m);
+        friend std::ostream& operator <<(std::ostream &tok, const Matrica<Tip2> &m);
     template <typename Tip2>
         friend Matrica<Tip2> operator +(const Matrica<Tip2> &m1, const Matrica<Tip2> &m2);
     template <typename Tip2>
@@ -128,8 +128,8 @@ std::ostream &operator <<(std::ostream &tok, const Matrica<TipEl> &m) {
     int sirina_ispisa = tok.width();
     for(int i = 0; i < m.br_redova; i++) {
         for(int j = 0; j < m.br_kolona; j++)
-            std::cout << std::setw(sirina_ispisa) << m.elementi[i][j];
-        std::cout << std::endl;
+            tok << std::setw(sirina_ispisa) << m.elementi[i][j];
+        tok << std::endl;
     }
     return tok;
 }
