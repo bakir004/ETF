@@ -56,7 +56,6 @@ Matrica<TipEl>::Matrica(std::string ime, bool bin): elementi(nullptr) {
 }
 template <typename TipEl>
 TipEl ** Matrica<TipEl>::AlocirajMemoriju(int br_redova, int br_kolona) {
-    // std::cout << "Alociram: " << br_redova  << " " << br_kolona<< "\n";
     TipEl **elementi = new TipEl*[br_redova]{};
     try {
         for(int i = 0; i < br_redova; i++) elementi[i] = new TipEl[br_kolona];
@@ -77,17 +76,20 @@ template <typename TipEl>
 Matrica<TipEl>::Matrica(int br_redova, int br_kolona, char ime) :
     br_redova(br_redova), br_kolona(br_kolona), ime_matrice(ime),
     elementi(AlocirajMemoriju(br_redova, br_kolona)) {}
-    template <typename TipEl>
-    void Matrica<TipEl>::KopirajElemente(TipEl **elementi) {
-        for(int i = 0; i < br_redova; i++)
-            for(int j = 0; j < br_kolona; j++) Matrica::elementi[i][j] = elementi[i][j];
-    }
+
+template <typename TipEl>
+void Matrica<TipEl>::KopirajElemente(TipEl **elementi) {
+    for(int i = 0; i < br_redova; i++)
+        for(int j = 0; j < br_kolona; j++) Matrica::elementi[i][j] = elementi[i][j];
+}
+
 template <typename TipEl>
 Matrica<TipEl>::Matrica(const Matrica &m) : br_redova(m.br_redova),
     br_kolona(m.br_kolona), ime_matrice(m.ime_matrice),
     elementi(AlocirajMemoriju(m.br_redova, m.br_kolona)) {
         KopirajElemente(m.elementi);
     }
+
 template <typename TipEl>
 Matrica<TipEl>::Matrica(Matrica &&m) : br_redova(m.br_redova), br_kolona(m.br_kolona),
     elementi(m.elementi), ime_matrice(m.ime_matrice) {
