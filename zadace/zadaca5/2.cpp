@@ -213,5 +213,6 @@ void Berza::BrisiSve() noexcept { cijene.clear(); }
 int Berza::DajBrojRegistriranihCijena() const noexcept { return cijene.size(); }
 
 int main() {
+
 }
 

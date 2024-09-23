@@ -30,7 +30,6 @@ public:
     explicit Vektor(int x, int y, int z): x(x), y(y), z(z) {
         brojVektora++;
         if(brojVektora > maksimalanBrojVektora) throw std::domain_error("PREVISE VEKTORA");
-        // *this. je ekvivalent this->
     }
     void Ispisi() const { 
         std::cout << "(" << x << "," << y << "," << z << ")\n";
