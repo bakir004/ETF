@@ -6,6 +6,7 @@ public class Main {
         ArrayList<Boolean> primes = new ArrayList<Boolean>(n+1);
         for (int i = 0; i <= n; i++) { primes.add(true); }
         primes.set(0, false);
+        // OVAJ PUT IMA KOMENTAR
         primes.set(1, false);
         for(int i = 2; i*i <= n; i++) {
             if(!primes.get(i)) continue;
