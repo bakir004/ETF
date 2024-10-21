@@ -1,5 +1,6 @@
-using LinearAlgebra;
-a = log(1)
-println(a)
-b = 3*Matrix(I,4,4) 
-println(b)
+import Pkg;
+Pkg.add("Plots")
+using Plots;
+x=range(-pi, pi, length = 101);
+y=sin.(x);
+plot(x,y);
