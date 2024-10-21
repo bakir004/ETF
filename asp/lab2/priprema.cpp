@@ -6,16 +6,18 @@ const float MULTIPLIKATOR_KAPACITETA = 1.5;
 template <typename T>
 class Lista {
 public:
-    int brojElemenata() const;
-    T& trenutni() const;
-    bool sljedeci();
-    bool prethodni();
-    void pocetak();
-    void kraj();
-    void obrisi();
-    void dodajIspred(const T& el);
-    void dodajIza(const T& el);
-    T& operator[](int index);
+    Lista(){}
+    virtual int brojElemenata() const = 0;
+    virtual T& trenutni() const = 0;
+    virtual bool sljedeci() = 0;
+    virtual bool prethodni() = 0;
+    virtual void pocetak() = 0;
+    virtual void kraj() = 0;
+    virtual void obrisi() = 0;
+    virtual void dodajIspred(const T& el) = 0;
+    virtual void dodajIza(const T& el) = 0;
+    virtual T& operator[](int index) const = 0;
+    virtual ~Lista() {}
 };
 
 template <typename T>
@@ -26,14 +28,31 @@ class NizLista : public Lista<T> {
     void pomjeriZaJedan(int); 
     void pomjeriZaJedanUnazad(int); 
     void realociraj();
-    void testPraznine() { if(velicina == 0) throw "Prazan"; };
+    void testPraznine() const { if(velicina == 0) throw "Prazan"; };
 public:
-    NizLista(): kapacitet(NIZ_LISTA_POCETNI_KAPACITET), velicina(0), elementi(new int[kapacitet]), indexTrenutnog(-1) {}
+    NizLista(): kapacitet(NIZ_LISTA_POCETNI_KAPACITET), velicina(0), elementi(new T[kapacitet]), indexTrenutnog(-1) {}
+    NizLista(const NizLista& niz): velicina(niz.velicina), kapacitet(niz.kapacitet) {
+        elementi = new T[kapacitet];
+        for(int i = 0; i < velicina; i++)
+            elementi[i] = niz.elementi[i];
+        indexTrenutnog = niz.indexTrenutnog;
+    }
+    NizLista& operator=(const NizLista& niz) {
+        T* noviElementi = new T[kapacitet];
+        delete[] elementi;
+        elementi = noviElementi;
+        velicina = niz.velicina;
+        kapacitet = niz.kapacitet;
+        for(int i = 0; i < velicina; i++)
+            elementi[i] = niz.elementi[i];
+        indexTrenutnog = niz.indexTrenutnog;
+        return *this;
+    }
     void dodajIspred(const T& el);
     void dodajIza(const T& el);
     void ispisi() const;
     int brojElemenata() const { return velicina; }
-    T& trenutni() { testPraznine(); return elementi[indexTrenutnog]; }
+    T& trenutni() const { testPraznine(); return elementi[indexTrenutnog]; }
     void pocetak() { testPraznine(); indexTrenutnog = 0; }
     void kraj() { testPraznine(); indexTrenutnog = velicina-1; }
     bool sljedeci();
@@ -44,8 +63,8 @@ public:
             pomjeriZaJedanUnazad(indexTrenutnog);
         velicina--;
     }
-    T& operator[](int x) { testPraznine(); return elementi[indexTrenutnog]; }
-    ~NizLista() { delete[] elementi; }
+    T& operator[](int x) const { testPraznine(); return elementi[indexTrenutnog]; }
+    ~NizLista() { delete[] elementi; elementi=nullptr; }
 };
 template <typename T>
 void NizLista<T>::realociraj() {
@@ -55,7 +74,7 @@ void NizLista<T>::realociraj() {
         noviElementi[i] = elementi[i];
     delete[] elementi;
     elementi = noviElementi;
-    std::cout << "REALOCIRAO\n";
+    /*std::cout << "REALOCIRAO\n";*/
 }
 
 template <typename T>
@@ -132,20 +151,56 @@ class JednostrukaLista : public Lista<T> {
     };
     int velicina;
     Cvor *trenutniCvor, *pocetniCvor;
-    void testPraznine() { if(velicina == 0) throw "Prazan"; };
+    void testPraznine() const { if(velicina == 0) throw "Prazan"; };
 public:
     JednostrukaLista(): velicina(0), trenutniCvor(nullptr), pocetniCvor(nullptr) {}
-    int brojElemenata() const { return velicina; }
-    T& trenutni() const { testPraznine(); return trenutniCvor->element; }
-    bool sljedeci();
-    bool prethodni();
-    void pocetak();
-    void kraj();
-    void obrisi();
-    void dodajIspred(const T& el);
-    void dodajIza(const T& el);
-    T& operator[](int index);
+    JednostrukaLista(const JednostrukaLista& lista): velicina(0) {
+        Cvor* pomocni = lista.pocetniCvor;
+        while(pomocni != nullptr) {
+            this->dodajIza(pomocni->element);
+            pomocni = pomocni->sljedeci;
+            if(!sljedeci()) std::cout << "???";
+        }
+        velicina = lista.velicina;
+    }
+    JednostrukaLista& operator=(const JednostrukaLista& lista) {
+        Cvor* pomocni = pocetniCvor;
+        while(pomocni != nullptr) {
+            Cvor* trenutni = pomocni;
+            delete trenutni;
+            pomocni = pomocni->sljedeci;
+        }
+        velicina = 0;
+        pomocni = pocetniCvor;
+        while(pomocni != nullptr) {
+            this->dodajIza(pomocni->element);
+            pomocni = pomocni->sljedeci;
+            if(!sljedeci()) std::cout << "???";
+        }
+        velicina = lista.velicina;
+        return *this;
+    }
+    int brojElemenata() const override { return velicina; }
+    T& trenutni() const override { testPraznine(); return trenutniCvor->element; }
+    bool sljedeci() override;
+    bool prethodni() override;
+    void pocetak() override;
+    void kraj() override;
+    void obrisi() override;
+    void dodajIspred(const T& el) override;
+    void dodajIza(const T& el) override;
+    T& operator[](int index) override;
     void ispisi();
+    ~JednostrukaLista() {
+        Cvor* pomocni = pocetniCvor;
+        while(pomocni != nullptr) {
+            Cvor* trenutni = pomocni;
+            delete trenutni;
+            pomocni = pomocni->sljedeci;
+        }
+        pocetniCvor = nullptr;
+        trenutniCvor = nullptr;
+    }
 };
 
 template <typename T>
@@ -184,11 +239,19 @@ bool JednostrukaLista<T>::sljedeci() {
 
 template <typename T>
 void JednostrukaLista<T>::obrisi() {
+    if(pocetniCvor == trenutniCvor) {
+        delete trenutniCvor;
+        trenutniCvor = nullptr;
+        pocetniCvor = nullptr;
+        velicina--;
+        return;
+    }
     Cvor* pomocni = pocetniCvor;
     while(pomocni->sljedeci != trenutniCvor)
         pomocni = pomocni->sljedeci;
     pomocni->sljedeci = trenutniCvor->sljedeci;
     delete trenutniCvor;
+    trenutniCvor = nullptr;
     velicina--;
 }
 
@@ -249,17 +312,11 @@ void JednostrukaLista<T>::dodajIza(const T& el) {
 }
 
 int main() {
-    JednostrukaLista<int> lista;
-    lista.dodajIspred(5);
-    lista.dodajIspred(6);
-    lista.dodajIspred(7);
-    lista.dodajIza(8);
-    lista.dodajIza(9);
-    lista.dodajIza(10);
-    lista.ispisi();
-    lista.prethodni();
-    lista.obrisi();
-    lista.ispisi();
+    NizLista<int> n;
+    n.dodajIza(5);
+    const int& x(n[0]);
+    n.dodajIspred(10);
+    std::cout << x;
 
     return 0;
 }
