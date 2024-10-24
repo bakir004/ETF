@@ -294,7 +294,7 @@ Evo kako izgleda program nakon spajanja njihovog i vaseg koda:
 // Vas kod ide ovdje
 
 int main() {
-Lista<int>* l;
+    Lista<int>* l;
 l = new NizLista<int>;
 for (int i(1); i<=5; i++)
 	l->dodajIza(i);
@@ -474,7 +474,7 @@ Izlaz:
 ########################################################################
 ########################################################################
 
-undefined: Nije skriven
+TEST PROBLEM: Nije skriven
 Koristi svoju main() funckiju
 
 Evo kako izgleda program nakon spajanja njihovog i vaseg koda:

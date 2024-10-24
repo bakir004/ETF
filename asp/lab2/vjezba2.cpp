@@ -9,10 +9,10 @@ public:
     Lista(){}
     virtual int brojElemenata() const = 0;
     virtual T& trenutni() const = 0;
-    virtual bool sljedeci() = 0;
-    virtual bool prethodni() = 0;
-    virtual void pocetak() = 0;
-    virtual void kraj() = 0;
+    virtual bool sljedeci() const = 0;
+    virtual bool prethodni() const = 0;
+    virtual void pocetak() const = 0;
+    virtual void kraj() const = 0;
     virtual void obrisi() = 0;
     virtual void dodajIspred(const T& el) = 0;
     virtual void dodajIza(const T& el) = 0;
@@ -199,7 +199,7 @@ class JednostrukaLista : public Lista<T> {
         T element;
     };
     int velicina;
-    Cvor *trenutniCvor, *pocetniCvor;
+    mutable Cvor *trenutniCvor, *pocetniCvor;
     void testPraznine() const { if(velicina == 0) throw "Prazan"; };
 public:
     JednostrukaLista(): velicina(0), trenutniCvor(nullptr), pocetniCvor(nullptr) {}
@@ -231,10 +231,10 @@ public:
     }
     int brojElemenata() const override { return velicina; }
     T& trenutni() const override { testPraznine(); return trenutniCvor->element; }
-    bool sljedeci() override;
-    bool prethodni() override;
-    void pocetak() override;
-    void kraj() override;
+    bool sljedeci() const override;
+    bool prethodni() const override;
+    void pocetak() const override;
+    void kraj() const override;
     void obrisi() override;
     void dodajIspred(const T& el) override;
     void dodajIza(const T& el) override;
@@ -251,10 +251,41 @@ public:
         trenutniCvor = nullptr;
         velicina = 0;
     }
+    void izbaciSvakiNTi(int n);
 };
 
 template <typename T>
-void JednostrukaLista<T>::kraj() {
+void JednostrukaLista<T>::izbaciSvakiNTi(int n) {
+    if(n == 1) {
+        while(brojElemenata() > 0)
+            obrisi();
+        return;
+    }
+    Cvor prijePocetnog = Cvor{pocetniCvor, -1}; 
+    Cvor* pomocni = &prijePocetnog;
+    int redniBrojTrenutnog = 1;
+    Cvor* pomocni2 = pocetniCvor;
+    while(pomocni2 != trenutniCvor) {
+        redniBrojTrenutnog++;
+        pomocni2 = pomocni2->sljedeci;
+    } 
+    if(redniBrojTrenutnog % n == 0)
+        prethodni();
+    Cvor* zapamceniTrenutni = trenutniCvor;
+    while(true) {
+        for(int i = 0; i < n; i++) {
+            if(i == 1) prethodni();
+            if(!sljedeci()) {
+                trenutniCvor = zapamceniTrenutni;
+                return;
+            }
+        }
+        obrisi();
+    }
+}
+
+template <typename T>
+void JednostrukaLista<T>::kraj() const {
     Cvor* pomocni = pocetniCvor;
     while(pomocni->sljedeci != nullptr)
         pomocni = pomocni->sljedeci;
@@ -262,13 +293,13 @@ void JednostrukaLista<T>::kraj() {
 }
 
 template <typename T>
-void JednostrukaLista<T>::pocetak() {
+void JednostrukaLista<T>::pocetak() const {
     testPraznine();
     trenutniCvor = pocetniCvor;
 }
 
 template <typename T>
-bool JednostrukaLista<T>::prethodni() {
+bool JednostrukaLista<T>::prethodni() const {
     testPraznine();
     if(trenutniCvor == pocetniCvor)
         return false;
@@ -280,7 +311,7 @@ bool JednostrukaLista<T>::prethodni() {
 }
 
 template <typename T>
-bool JednostrukaLista<T>::sljedeci() {
+bool JednostrukaLista<T>::sljedeci() const {
     testPraznine();
     if(trenutniCvor->sljedeci == nullptr) return false;
     trenutniCvor = trenutniCvor->sljedeci;
@@ -364,14 +395,36 @@ void JednostrukaLista<T>::dodajIza(const T& el) {
     velicina++;
 }
 
-int main() {
-JednostrukaLista<int> lista;
-for (int i(1); i<=10000; i++)
-	lista.dodajIspred(i);
-std::cout << lista.brojElemenata() << " ";
-for (int i(1); i<=10000; i++)
-	lista.obrisi();
-std::cout << lista.brojElemenata();
+template <typename T>
+T dajMaksimum(const NizLista<T>& niz) {
+    T najveci = niz[0];
+    for(int i = 1; i < niz.brojElemenata(); i++)
+        if(niz[i] > najveci)
+            najveci = niz[i];
+    return najveci;
+}
 
+template <typename T>
+T dajMaksimum(const JednostrukaLista<T>& niz) {
+    niz.pocetak();
+    T najveci = niz.trenutni();
+    while(niz.sljedeci()) {
+        if(niz.trenutni() > najveci)
+            najveci = niz.trenutni();
+    }
+    return najveci;
+}
+
+int main() {
+    JednostrukaLista<int> niz;
+    niz.dodajIza(8);
+    niz.dodajIza(2);
+    niz.dodajIza(3);
+    niz.dodajIza(6);
+    niz.dodajIza(8);
+    niz.dodajIza(24);
+    niz.ispisi();
+    niz.izbaciSvakiNTi(3);
+    niz.ispisi();
     return 0;
 }
