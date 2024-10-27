@@ -366,12 +366,10 @@ void JednostrukaLista<T>::dodajIza(const T& el) {
 
 int main() {
 JednostrukaLista<int> lista;
-for (int i(1); i<=10000; i++)
-	lista.dodajIspred(i);
+for (int i(1); i<=5; i++)
+	lista.dodajIza(i);
 std::cout << lista.brojElemenata() << " ";
-for (int i(1); i<=10000; i++)
+for (int i(1); i<=5; i++)
 	lista.obrisi();
 std::cout << lista.brojElemenata();
-
-    return 0;
 }
