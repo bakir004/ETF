@@ -1,5 +1,5 @@
-#include<iostream>
-
+#include <iostream>
+using namespace std;
 template<typename T>
 class Stek {
     struct Cvor {
@@ -10,6 +10,30 @@ class Stek {
     int velicina;
 public:
     Stek() : prvi(nullptr), velicina(0) {}
+    Stek(const Stek& s) : prvi(nullptr), velicina(0) {
+        Stek<T> pomocni;
+        Cvor* pomocniCvor = s.prvi;
+        while(pomocniCvor != nullptr) {
+            pomocni.stavi(pomocniCvor->element);
+            pomocniCvor = pomocniCvor->sljedeci;
+        }
+        while(!pomocni.prazan()) {
+            stavi(pomocni.skini());
+        }
+    }
+    Stek& operator=(const Stek& s) {
+        if(this == &s) return *this;
+        Stek<T> pomocni;
+        Cvor* pomocniCvor = s.prvi;
+        while(pomocniCvor != nullptr) {
+            pomocni.stavi(pomocniCvor->element);
+            pomocniCvor = pomocniCvor->sljedeci;
+        }
+        while(!pomocni.prazan()) {
+            stavi(pomocni.skini());
+        }
+        return *this;
+    }
     void stavi(const T& element) {
         prvi = new Cvor{ element, prvi };
         velicina++;
@@ -18,10 +42,11 @@ public:
         while(!this->prazan())
             skini();
     }
-    T vrh() {
+    T& vrh() {
         return prvi->element;
     }
     T skini() {
+        if(velicina == 0) throw "Stek je prazan!";
         T vratiti = vrh();
         Cvor* prosli = prvi;
         prvi = prvi->sljedeci;
@@ -42,22 +67,12 @@ public:
             delete prosli;
         }
     }
+    void ispis() {
+        Cvor* pomocni = prvi;
+        while(pomocni != nullptr) {
+            cout << pomocni->element << " ";
+            pomocni = pomocni->sljedeci;
+        }
+        cout << endl;
+    }
 };
-
-
-int main() {
-Stek<int> s;
-for (int i(1); i<=5; i++)
-	s.stavi(i);
-std::cout << s.brojElemenata() << " " << s.vrh() << " ";
-s.brisi();
-for (int i(1); i<=5; i++)
-	s.stavi(i);
-std::cout << s.brojElemenata() << " ";
-for (int i(1); i<=5; i++)
-	std::cout << s.skini() << " ";
-std::cout << s.brojElemenata() << " ";
-for (int i(1); i<=5; i++)
-	s.stavi(i);
-std::cout << s.brojElemenata() << " " << s.vrh();
-}
