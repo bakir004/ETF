@@ -363,15 +363,3 @@ void JednostrukaLista<T>::dodajIza(const T& el) {
     trenutniCvor->sljedeci = novi;
     velicina++;
 }
-
-int main() {
-JednostrukaLista<int> lista;
-for (int i(1); i<=10000; i++)
-	lista.dodajIspred(i);
-std::cout << lista.brojElemenata() << " ";
-for (int i(1); i<=10000; i++)
-	lista.obrisi();
-std::cout << lista.brojElemenata();
-
-    return 0;
-}
