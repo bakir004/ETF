@@ -1,84 +1,63 @@
 #include<iostream>
-#include<vector>
 
-// write me a function that takes 2 matrices as vector of vectors and sums them up and write the implementation
-std::vector<std::vector<int>> sumMatrices(std::vector<std::vector<int>> a, std::vector<std::vector<int>> b) {
-    int n = a.size();
-    std::vector<std::vector<int>> c(n, std::vector<int>(n));
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++) {
-            c[i][j] = a[i][j] + b[i][j];
-        }
-    }
-    return c;
-}
-
-
-// function taht prints the matrix
-void printMatrix(std::vector<std::vector<int>> a) {
-    int n = a.size();
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++) {
-            std::cout << a[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-}
-
-// write a class stack<T> that implements a single linked list with functions, push, top, pop, empty, size
 template<typename T>
-class stack {
-    struct Node {
-        T data;
-        Node* next;
-        Node(T data, Node* next) : data(data), next(next) {}
+class Stek {
+    struct Cvor {
+        T element;
+        Cvor* sljedeci;
     };
-    Node* head;
-    int n;
+    Cvor* prvi;
+    int velicina;
 public:
-    stack() : head(nullptr), n(0) {}
-    void push(T data) {
-        head = new Node(data, head);
-        n++;
+    Stek() : prvi(nullptr), velicina(0) {}
+    void stavi(const T& element) {
+        prvi = new Cvor{ element, prvi };
+        velicina++;
     }
-    T top() {
-        return head->data;
+    void brisi() {
+        while(!this->prazan())
+            skini();
     }
-    void pop() {
-        Node* old = head;
-        head = head->next;
-        delete old;
-        n--;
+    T vrh() {
+        return prvi->element;
     }
-    bool empty() {
-        return n == 0;
+    T skini() {
+        T vratiti = vrh();
+        Cvor* prosli = prvi;
+        prvi = prvi->sljedeci;
+        delete prosli;
+        velicina--;
+        return vratiti;
     }
-    int size() {
-        return n;
+    bool prazan() {
+        return velicina == 0;
     }
-    // write destructor
-    ~stack() {
-        while(head != nullptr) {
-            Node* old = head;
-            head = head->next;
-            delete old;
+    int brojElemenata() {
+        return velicina;
+    }
+    ~Stek() {
+        while(prvi != nullptr) {
+            Cvor* prosli = prvi;
+            prvi = prvi->sljedeci;
+            delete prosli;
         }
     }
 };
 
 
 int main() {
-    // use the stack and fill it with numbers from 1 to 10
-    // and test all the methods inside
-    stack<int> s;
-    for(int i = 1; i <= 10; i++) {
-        s.push(i);
-    }
-    while(!s.empty()) {
-        std::cout << s.top() << " ";
-        s.pop();
-    }
-    std::cout << std::endl;
-    
-    return 0;
+Stek<int> s;
+for (int i(1); i<=5; i++)
+	s.stavi(i);
+std::cout << s.brojElemenata() << " " << s.vrh() << " ";
+s.brisi();
+for (int i(1); i<=5; i++)
+	s.stavi(i);
+std::cout << s.brojElemenata() << " ";
+for (int i(1); i<=5; i++)
+	std::cout << s.skini() << " ";
+std::cout << s.brojElemenata() << " ";
+for (int i(1); i<=5; i++)
+	s.stavi(i);
+std::cout << s.brojElemenata() << " " << s.vrh();
 }
