@@ -4,6 +4,7 @@
 #include <iostream>
 #include <limits>
 #include <stdexcept>
+#include <sys/types.h>
 #include <utility>
 #include <vector>
 
@@ -72,6 +73,7 @@ public:
     friend double operator *(const Vector &v1, const Vector &v2);
     friend Vector operator /(const Vector &v, double s);
     Vector &operator /=(double s) {
+        if(s == 0) throw std::domain_error("Division by zero");
         for(int i = 0; i < NElems(); i++)
             elementi[i] /= s;
         return *this;
@@ -133,8 +135,8 @@ void PrintVector(const Vector &v, char separator = '\n', double eps = -1) {
 
 double VectorNorm(const Vector &v) {
     double s = 0;
-    std::for_each(v.elementi.begin(), v.elementi.end(), [&s](double x){s += x;});
-    return s;
+    std::for_each(v.elementi.begin(), v.elementi.end(), [&s](double x){s += x*x;});
+    return std::sqrt(s);
 }
 
 
@@ -151,11 +153,13 @@ public:
         elementi = std::vector<std::vector<double>>(v.NElems(), std::vector<double>(1, 0));
         for(int i = 0; i < v.NElems(); i++) elementi[i][0] = v[i];
     }
-    Matrix(std::initializer_list<std::vector<double>> l) {
+    Matrix(std::initializer_list<std::initializer_list<double>> l) {
+        if(l.size() == 0) throw std::range_error("Bad dimension");
         int vel = l.begin()->size();
-        for(auto v : l)
-            if(v.size() != vel) throw std::logic_error("Bad matrix");
-        for(auto v : l) elementi.push_back(v);
+        if(vel == 0) throw std::range_error("Bad dimension");
+        for(auto v : l) if(v.size() != vel) throw std::logic_error("Bad matrix");
+        elementi = std::vector<std::vector<double>>();
+        for(auto v : l) elementi.push_back(std::vector<double>(v));
     }
     int NRows() const { return elementi.size(); };
     int NCols() const { return elementi[0].size(); };
@@ -258,7 +262,7 @@ Matrix Transpose(const Matrix &m) {
 
 Vector operator *(const Matrix &m, const Vector &v) {
     if(m.NCols() != v.NElems()) throw std::domain_error("Incompatible formats");
-    Vector rezultat(v.NElems());
+    Vector rezultat(m.NRows());
     for(int i = 0; i < m.NRows(); i++) {
         double s = 0;
         for(int j = 0; j < v.NElems(); j++)
@@ -329,17 +333,432 @@ void PrintMatrix(const Matrix &m, int width = 10, double eps = -1) {
 
 void NR() { std::cout << "\n"; }
 
+void TestiranjeKonstruktora() {
+    std::cout << "Testiranje konstruktora" << std::endl;
+    Vector v0(5);
+    try {
+        Vector v1(0);
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Vector v1{};
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    Vector v2{1, 2, 3, 4, 5};
+    try {
+        Vector v4(0);
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Vector v5{1, 2, 3, 4, 5};
+        Vector v6 = v5;
+        v6[0] = 10;
+        std::cout << v5[0] << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Vector v7{1, 2, 3, 4, 5};
+        Vector v8(5);
+        v8 = v7;
+        v8[0] = 10;
+        std::cout << v7[0] << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    Vector v9{1, 2, 3, 4, 5};
+    std::cout << v9.NElems();
+    NR();
+}
+
+void TestiranjeOperatoraUglaste() {
+    std::cout << "Testiranje operator[] i operator()" << std::endl;
+    Vector v1{1, 2, 3, 4, 5};
+    std::cout << v1[0] << std::endl;
+    std::cout << v1(1) << std::endl;
+    try {
+        std::cout << v1[5] << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        std::cout << v1(6) << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        std::cout << v1[0] << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        std::cout << v1(1) << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        std::cout << v1[-1] << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        std::cout << v1(-1) << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        std::cout << v1[200] << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        std::cout << v1(100) << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+}
+
+void TestiranjeNormeVektora() {
+    std::cout << "Testiranje norme i epsilona vektora" << std::endl;
+    Vector v1{1, 2, 3, 4, 5};
+    std::cout << v1.Norm() << std::endl;
+    std::cout << VectorNorm(v1) << std::endl;
+    Vector v2{-8, -7, -1, -1, 13};
+    std::cout << v2.Norm() << std::endl;
+    std::cout << VectorNorm(v2) << std::endl;
+    std::cout << v1.GetEpsilon() << std::endl;
+    std::cout << v2.GetEpsilon() << std::endl;
+}
+
+void TestiranjePrintanjaVektora() {
+    std::cout << "Testiranje printanja vektora" << std::endl;
+    Vector v1{1, 2, 3, 4, 5};
+    v1.Print();
+    NR();
+    v1.Print(' ');
+    NR();
+    v1.Print('s', 2);
+    NR();
+    v1.Print('-', 0.01);
+    NR();
+    PrintVector(v1, '#', 3);
+    NR();
+}
+
+void TestiranjeOperacijaNadVektorima() {
+    std::cout << "Testiranje operacija nad vektorima" << std::endl;
+    Vector v1{1, 2, 3, 4, 5};
+    Vector v2{5, 4, 3, 2, 1};
+    Vector v3 = v1 + v2;
+    v3.Print(' ');
+    NR();
+    v3 = v1 - v2;
+    v3.Print(' ');
+    NR();
+    v3 = 2 * v1;
+    v3.Print(' ');
+    NR();
+    v3 = v1 * 2;
+    v3.Print(' ');
+    NR();
+    v3 = v1 / 2;
+    v3.Print(' ');
+    NR();
+    double s = v1 * v2;
+    std::cout << s << std::endl;
+    try {
+        Vector v4{1, 2, 3, 4, 5};
+        Vector v5{5, 4, 3, 2};
+        Vector v6 = v4 + v5;
+        v6.Print(' ');
+        NR();
+    } catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Vector v4{1, 2, 3, 4, 5};
+        Vector v5{5, 4, 3, 2};
+        Vector v6 = v4 - v5;
+        v6.Print(' ');
+        NR();
+    } catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Vector v4{1, 2, 3, 4, 5};
+        Vector v5{5, 4, 3, 2};
+        double a = v4 * v5;
+    } catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Vector v4{1, 2, 3, 4, 5};
+        Vector v5{5, 4, 3, 2};
+        Vector v6 = v4 / 0;
+        v6.Print(' ');
+        NR();
+    } catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    Vector v4{1, 2, 3, 4, 5};
+    Vector v5{5, 4, 3, 2, 1};
+    v4 += v5;
+    v4.Print(' ');
+    NR();
+    v4 -= v5;
+    v4.Print(' ');
+    NR();
+    v4 *= 2;
+    v4.Print(' ');
+    NR();
+    v4 /= 2;
+    v4.Print(' ');
+    NR();
+}
+
+void TestiranjeKonstruktoraMatrice() {
+    std::cout << "Testiranje konstruktora matrice" << std::endl;
+    Matrix m1(5, 5);
+    try {
+        Matrix m2(0, 0);
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m3(0, 5);
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m4(5, 0);
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m5{};
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m6{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    } catch(std::logic_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m7{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Matrix m8 = m7;
+        m8[0][0] = 10;
+        std::cout << m7[0][0] << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m9{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Matrix m10(3, 3);
+        m10 = m9;
+        m10[0][0] = 10;
+        std::cout << m9[0][0] << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m11{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        std::cout << m11[0][0] << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+}
+
+void TestiranjeOperatoraUglasteZaMatricu() {
+    std::cout << "Testiranje operator[] i operator()" << std::endl;
+    Matrix m{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    try {
+        std::cout << m[2][2] << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        std::cout << m(4, 4) << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        std::cout << m[0][0] << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        std::cout << m(2, 2) << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        std::cout << m(-1, -1) << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        std::cout << m(100, 100) << std::endl;
+    } catch(std::range_error e) {
+        std::cout << e.what() << std::endl;
+    }
+}
+
+void TestiranjeNormeMatrice() {
+    std::cout << "Testiranje norme matrice" << std::endl;
+    Matrix m{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    std::cout << m.Norm() << std::endl;
+    std::cout << MatrixNorm(m) << std::endl;
+    Matrix m1{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    std::cout << m1.GetEpsilon() << std::endl;
+}
+
+void TestiranjePrintanjaMatrice() {
+    std::cout << "Testiranje printanja matrice" << std::endl;
+    Matrix m{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    m.Print();
+    NR();
+    m.Print(5);
+    NR();
+    m.Print(5, 0.01);
+    NR();
+    PrintMatrix(m, 5, 0.01);
+    NR();
+}
+
+void TestiranjeOperacijaNadMatricama() {
+    std::cout << "Testiranje operacija nad matricama" << std::endl;
+    Matrix m1{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    Matrix m2{{9, 8, 7}, {6, 5, 4}, {3, 2, 1}};
+    Matrix m3 = m1 + m2;
+    m3.Print();
+    NR();
+    m3 = m1 - m2;
+    m3.Print();
+    NR();
+    m3 = 2 * m1;
+    m3.Print();
+    NR();
+    m3 = m1 * 2;
+    m3.Print();
+    NR();
+    Matrix s = m1 * m2;
+    s.Print();
+    try {
+        Matrix m4{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Matrix m5{{9, 8, 7}, {6, 5, 4}, {3, 2, 1}};
+        Matrix m6 = m4 + m5;
+        m6.Print();
+        NR();
+    } catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m4{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Matrix m5{{9, 8, 7}, {6, 5, 4}, {3, 2, 1}};
+        Matrix m6 = m4 - m5;
+        m6.Print();
+        NR();
+    } catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m4{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Matrix m5{{9, 8, 7}, {6, 5, 4}, {3, 2, 1}};
+        Matrix a = m4 * m5;
+    }
+    catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m4{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Matrix m5{{9, 8, 7}, {6, 5, 4}};
+        Matrix m6 = m4 + m5;
+        m6.Print();
+        NR();
+    } catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m4{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Matrix m5{{9, 8, 7}, {6, 5, 4}};
+        Matrix m6 = m4 - m5;
+        m6.Print();
+        NR();
+    } catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m4{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Matrix m5{{9, 8, 7}, {6, 5, 4}};
+        Matrix a = m4 * m5;
+    }
+    catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    Matrix m4{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    Matrix m5{{9, 8, 7}, {6, 5, 4}, {3, 2, 1}};
+    m4 += m5;
+    m4.Print();
+    NR();
+    m4 -= m5;
+    m4.Print();
+    NR();
+    m4 *= 2;
+    m4.Print();
+    NR();
+    try {
+        Matrix m4{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Matrix m5{{9, 8, 7}, {6, 5, 4}};
+        m4 += m5;
+        m4.Print();
+        NR();
+    } catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m4{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Matrix m5{{9, 8, 7}, {6, 5, 4}};
+        m4 -= m5;
+        m4.Print();
+        NR();
+    } catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m4{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        m4 *= 0;
+        m4.Print();
+        NR();
+    } catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        Matrix m4{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Matrix m5{{1, 2}, {4, 5, 6}, {7, 8, 9}};
+        m4 *= m5;
+        m4.Print();
+        NR();
+    } catch(std::domain_error e) {
+        std::cout << e.what() << std::endl;
+    } catch(std::logic_error e) {
+        std::cout << e.what() << std::endl;
+    }
+}
+
 int main() {
-    Matrix b = Matrix{{1},{2},{3},{4}};
-    Matrix m{{1,2,3,4},{5,6,7,8},{9,10,11,12}};
-    Matrix a = m * b;
-    m *= b;
-    m.Print(3);
-    a.Print(3);
-    a.Transpose();
-    a.Print(4);
-    Matrix M{{1,2,3},{4,5,6},{7,8,9}};
-    M.Transpose();
-    M.Print(3);
+    TestiranjeKonstruktora();
+    TestiranjeOperatoraUglaste();
+    TestiranjeNormeVektora();
+    TestiranjePrintanjaVektora();
+    TestiranjeOperacijaNadVektorima();
+    TestiranjeKonstruktoraMatrice();
+    TestiranjeOperatoraUglasteZaMatricu();
+    TestiranjeNormeMatrice();
+    TestiranjePrintanjaMatrice();
+    TestiranjeOperacijaNadMatricama();
     return 0;
 }

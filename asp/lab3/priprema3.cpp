@@ -1,4 +1,6 @@
+#include <ios>
 #include <iostream>
+#include <string>
 using namespace std;
 template<typename T>
 class Stek {
@@ -76,3 +78,53 @@ public:
         cout << endl;
     }
 };
+
+bool PravilneZagrade(std::string s) {
+    Stek<char> stek;
+    for(int i = 0; i < s.size(); i++) {
+        if(s[i] == '(' || s[i] == '{' || s[i] == '[') {
+            stek.stavi(s[i]);
+        } else if(s[i] == ')') {
+            if(stek.prazan() || stek.vrh() != '(') return false;
+            stek.skini();
+        } else if(s[i] == '}') {
+            if(stek.prazan() || stek.vrh() != '{') return false;
+            stek.skini();
+        } else if(s[i] == ']') {
+            if(stek.prazan() || stek.vrh() != '[') return false;
+            stek.skini();
+        }
+    }
+    return stek.prazan();
+}
+
+int main() {
+    Stek<int> s;
+    s.stavi(1);
+    s.stavi(2);
+    s.stavi(3);
+    s.ispis();
+    Stek<int> s2(s);
+    s2.ispis();
+    s2.skini();
+    s2.ispis();
+    s.ispis();
+    s2.skini();
+    s2.skini();
+    try {
+        s2.skini();
+    } catch(const char* e) {
+        cout << e << endl;
+    }
+    s2.ispis();
+    s2 = s;
+    s2.ispis();
+    s2.brisi();
+    s2.ispis();
+    // primjena steka
+    std::string str1 = "(({}{}[][]()))";
+    std::cout << std::boolalpha << PravilneZagrade(str1) << std::endl;
+    std::string str2 = "(({}{}[][]())";
+    std::cout << std::boolalpha << PravilneZagrade(str2) << std::endl;
+    return 0;
+}
