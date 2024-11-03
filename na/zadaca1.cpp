@@ -73,7 +73,7 @@ public:
     friend double operator *(const Vector &v1, const Vector &v2);
     friend Vector operator /(const Vector &v, double s);
     Vector &operator /=(double s) {
-        if(s == 0) throw std::domain_error("Division by zero");
+        if(std::fabs(s) <= std::numeric_limits<double>::epsilon()) throw std::domain_error("Division by zero");
         for(int i = 0; i < NElems(); i++)
             elementi[i] /= s;
         return *this;
@@ -115,7 +115,7 @@ double operator *(const Vector &v1, const Vector &v2) {
 }
 
 Vector operator /(const Vector &v, double s) {
-    if(s == 0) throw std::domain_error("Division by zero");
+    if(std::fabs(s) <= std::numeric_limits<double>::epsilon()) throw std::domain_error("Division by zero");
     Vector rezultat(v.NElems());
     for(int i = 0; i < v.NElems(); i++)
         rezultat[i] = v[i];
@@ -164,7 +164,7 @@ public:
     int NRows() const { return elementi.size(); };
     int NCols() const { return elementi[0].size(); };
     double *operator[](int i) { return elementi[i].data(); };
-    const double *operator[](int i) const { return elementi[i].data(); };;
+    const double *operator[](int i) const { return elementi[i].data(); };
     double &operator()(int i, int j) {
         if(i < 1 || i > NRows() || j < 1 || j > NCols()) throw std::range_error("Invalid index");
         return elementi[i-1][j-1];
@@ -331,7 +331,7 @@ void PrintMatrix(const Matrix &m, int width = 10, double eps = -1) {
     }
 }
 
-void NR() { std::cout << "\n"; }
+/*void NR() { std::cout << "\n"; }
 
 void TestiranjeKonstruktora() {
     std::cout << "Testiranje konstruktora" << std::endl;
@@ -761,4 +761,4 @@ int main() {
     TestiranjePrintanjaMatrice();
     TestiranjeOperacijaNadMatricama();
     return 0;
-}
+}*/

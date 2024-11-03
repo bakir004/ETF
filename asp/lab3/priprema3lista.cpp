@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <iostream>
 
 const int NIZ_LISTA_POCETNI_KAPACITET = 16;
@@ -385,6 +384,7 @@ public:
             lista.obrisi();
     }
     T& vrh() {
+        if(lista.brojElemenata() == 0) throw "Stek je prazan!";
         return lista.trenutni();
     }
     T skini() {
@@ -460,17 +460,32 @@ bool Palindrom(const Lista<char>& rijec) {
 
 void Spoji(Stek<int>& s1, Stek<int>& s2, Stek<int>& s3) {
     s3.brisi();
-    Stek<int> sortiranS1;
-    Stek<int> kopijaS1 = s1;
-    kopijaS1.ispis();
-    while(!kopijaS1.prazan()) {
-        int trenutni = kopijaS1.skini();
-        sortiranS1.stavi(trenutni);
-        sortiranS1.ispis();
+    Stek<int> sortiranS2;
+    Stek<int> kopijaS2 = s2;
+    while(!kopijaS2.prazan()) {
+        int trenutni = kopijaS2.skini();
+        sortiranS2.stavi(trenutni);
     }
 
-    sortiranS1.ispis();
-    s2.ispis();
+    while(!sortiranS2.prazan() || !s1.prazan()) {
+        if(sortiranS2.prazan()) {
+            int trenutni = s1.skini();
+            s3.stavi(trenutni);
+            continue;
+        }
+        if(s1.prazan()) {
+            int trenutni = sortiranS2.skini();
+            s3.stavi(trenutni);
+            continue;
+        }
+        if(sortiranS2.vrh() > s1.vrh()) {
+            int trenutni = sortiranS2.skini();
+            s3.stavi(trenutni);
+        } else {
+            int trenutni = s1.skini();
+            s3.stavi(trenutni);
+        }
+    }
 }
 
 int main() {
