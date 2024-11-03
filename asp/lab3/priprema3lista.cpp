@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 
 const int NIZ_LISTA_POCETNI_KAPACITET = 16;
@@ -202,8 +203,7 @@ class JednostrukaLista : public Lista<T> {
     Cvor *trenutniCvor, *pocetniCvor;
     void testPraznine() const { if(velicina == 0) throw "Prazan"; };
 public:
-    JednostrukaLista(): velicina(0), trenutniCvor(nullptr), pocetniCvor(nullptr) {
-    }
+    JednostrukaLista(): velicina(0), trenutniCvor(nullptr), pocetniCvor(nullptr) {}
     JednostrukaLista(const JednostrukaLista& lista): velicina(0) {
         Cvor* pomocni = lista.pocetniCvor;
         while(pomocni != nullptr) {
@@ -363,4 +363,175 @@ void JednostrukaLista<T>::dodajIza(const T& el) {
     novi->sljedeci = trenutniCvor->sljedeci;
     trenutniCvor->sljedeci = novi;
     velicina++;
+}
+
+template <typename T>
+class Stek {
+    JednostrukaLista<T> lista;
+public:
+    Stek() {}
+    Stek(const Stek& s): lista(s.lista) {}
+    Stek& operator=(const Stek& s) {
+        if(this == &s) return *this;
+        lista = s.lista;
+        return *this;
+    }
+    void stavi(const T& element) {
+        lista.dodajIspred(element);
+        lista.prethodni();
+    }
+    void brisi() {
+        while(lista.brojElemenata() > 0)
+            lista.obrisi();
+    }
+    T& vrh() {
+        return lista.trenutni();
+    }
+    T skini() {
+        if(lista.brojElemenata() == 0) throw "Stek je prazan!";
+        lista.pocetak();
+        T vratiti = lista.trenutni();
+        lista.obrisi();
+        return vratiti;
+    }
+    bool prazan() {
+        return lista.brojElemenata() == 0;
+    }
+    void ispis() {
+        lista.ispisi();
+    }
+    int brojElemenata() {
+        return lista.brojElemenata();
+    }
+};
+
+bool PravilneZagrade(std::string s) {
+    Stek<char> stek;
+    for(int i = 0; i < s.size(); i++) {
+        if(s[i] == '(' || s[i] == '{' || s[i] == '[') {
+            stek.stavi(s[i]);
+        } else if(s[i] == ')') {
+            if(stek.prazan() || stek.vrh() != '(') return false;
+            stek.skini();
+        } else if(s[i] == '}') {
+            if(stek.prazan() || stek.vrh() != '{') return false;
+            stek.skini();
+        } else if(s[i] == ']') {
+            if(stek.prazan() || stek.vrh() != '[') return false;
+            stek.skini();
+        }
+    }
+    return stek.prazan();
+}
+
+template <typename T>
+int PresjekStekova(Stek<T>& s1, Stek<T>& s2) {
+    int brojac = 0;
+    Stek<T> pomocni;
+    while(!s1.prazan())    {
+        T trenutni = s1.skini();
+        while(!s2.prazan()) {
+            T trenutni2 = s2.skini();
+            if(trenutni == trenutni2)
+                brojac++; 
+            pomocni.stavi(trenutni2);
+        }
+        while(!pomocni.prazan())
+            s2.stavi(pomocni.skini());
+    }
+    return brojac;
+}
+
+bool Palindrom(const Lista<char>& rijec) {
+    Stek<char> stek;
+    int dodatak = 0;
+    for(int i = 0; i < rijec.brojElemenata()/2; i++)
+        stek.stavi(rijec[i]);
+    if(rijec.brojElemenata()%2==1)
+        dodatak = 1;
+    for(int i = rijec.brojElemenata()/2+dodatak; i < rijec.brojElemenata(); i++) {
+        if(rijec[i] != stek.skini())
+            return false;
+    }
+    if(stek.brojElemenata() != 0)
+        return false;
+    return true;
+}
+
+void Spoji(Stek<int>& s1, Stek<int>& s2, Stek<int>& s3) {
+    s3.brisi();
+    Stek<int> sortiranS1;
+    Stek<int> kopijaS1 = s1;
+    kopijaS1.ispis();
+    while(!kopijaS1.prazan()) {
+        int trenutni = kopijaS1.skini();
+        sortiranS1.stavi(trenutni);
+        sortiranS1.ispis();
+    }
+
+    sortiranS1.ispis();
+    s2.ispis();
+}
+
+int main() {
+    Stek<int> s;
+    s.stavi(1);
+    s.stavi(2);
+    s.stavi(3);
+    s.ispis();
+    s.skini();
+    s.ispis();
+    s.skini();
+    s.ispis();
+    s.skini();
+    s.ispis();
+    try {
+        s.skini();
+    } catch(const char* e) {
+        std::cout << e << std::endl;
+    }
+    std::cout << "\nZadaci:\n";
+    std::cout << PravilneZagrade("({})(){}[]") << std::endl;
+    std::cout << PravilneZagrade("({)(){}[]") << std::endl;
+    Stek<int> s1;
+    Stek<int> s2;
+    s1.stavi(1);
+    s1.stavi(2);
+    s1.stavi(3);
+    s1.stavi(4);
+    s1.stavi(5);
+    s2.stavi(3);
+    s2.stavi(4);
+    s2.stavi(5);
+    std::cout << PresjekStekova(s1, s2) << std::endl;
+    NizLista<char> niz;
+    niz.dodajIza('a');
+    niz.kraj();
+    niz.dodajIza('b');
+    niz.kraj();
+    niz.dodajIza('c');
+    niz.kraj();
+    niz.dodajIza('d');
+    niz.kraj();
+    niz.dodajIza('d');
+    niz.kraj();
+    niz.dodajIza('c');
+    niz.kraj();
+    niz.dodajIza('b');
+    niz.kraj();
+    niz.dodajIza('a');
+    niz.ispisi();
+    std::cout << Palindrom(niz)<< std::endl;
+    Stek<int> s3;
+    s3.stavi(1);
+    s3.stavi(2);
+    s3.stavi(3);
+    s3.stavi(4);
+    Stek<int> s4;
+    s4.stavi(7);
+    s4.stavi(6);
+    s4.stavi(5);
+    Stek<int> s5;
+    Spoji(s3, s4, s5);
+    s5.ispis();
 }

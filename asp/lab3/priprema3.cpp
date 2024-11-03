@@ -1,8 +1,9 @@
-#include <ios>
-#include <iostream>
 #include <string>
+#include <iostream>
 using namespace std;
+
 template<typename T>
+
 class Stek {
     struct Cvor {
         T element;
@@ -72,10 +73,10 @@ public:
     void ispis() {
         Cvor* pomocni = prvi;
         while(pomocni != nullptr) {
-            cout << pomocni->element << " ";
+            std::cout << pomocni->element << " ";
             pomocni = pomocni->sljedeci;
         }
-        cout << endl;
+        std::cout << std::endl;
     }
 };
 
