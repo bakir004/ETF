@@ -1,0 +1,71 @@
+SELECT first_name, last_name, employees.department_id, department_name
+FROM employees
+LEFT JOIN departments
+ON employees.department_id = departments.department_id;
+
+SELECT DISTINCT employees.job_id FROM employees
+LEFT JOIN jobs
+ON employees.job_id = jobs.job_id
+WHERE employees.department_id = 30
+
+SELECT first_name, last_name, department_name, locations.* FROM employees
+LEFT JOIN departments ON employees.department_id = departments.department_id
+LEFT JOIN locations ON departments.location_id = locations.location_id
+WHERE employees.commission_pct IS NULL
+
+SELECT first_name, department_name FROM employees
+LEFT JOIN departments ON employees.department_id = departments.department_id
+WHERE LOWER(first_name) LIKE '%a%'
+
+SELECT first_name, job_title, employees.department_id, department_name, city FROM employees
+LEFT JOIN jobs ON employees.job_id = jobs.job_id
+LEFT JOIN departments ON employees.department_id = departments.department_id
+LEFT JOIN locations ON departments.location_id = locations.location_id
+WHERE locations.city = 'Dallas'
+
+SELECT a.first_name || ' ' || a.last_name AS "Naziv zaposlenog", 
+a.employee_id AS "Shifra zaposlenog", 
+b.first_name || ' ' || b.last_name AS "Naziv shefa", 
+b.employee_id AS "Shifra shefa",
+city AS "Grad shefa"
+FROM employees a 
+LEFT JOIN employees b ON a.manager_id = b.employee_id
+LEFT JOIN departments ON b.department_id = departments.department_id
+JOIN locations ON departments.location_id = locations.location_id
+
+SELECT a.first_name, a.department_id, b.first_name FROM employees a
+LEFT JOIN departments d ON a.department_id = d.department_id
+LEFT JOIN employees b ON d.department_id = b.department_id
+
+SELECT first_name, job_title, department_name, salary, salary*commission_pct 
+FROM employees e
+LEFT JOIN departments d ON e.department_id = d.department_id
+LEFT JOIN jobs j ON e.job_id = j.job_id
+WHERE 
+
+SELECT a.first_name, a.hire_date, b.first_name, b.hire_date FROM employees a
+LEFT JOIN employees b ON b.first_name = 'Douglas'
+WHERE a.hire_date > b.hire_date
+
+SELECT a.first_name, a.hire_date, b.first_name AS "Shef name", b.hire_date AS "Shef Date" FROM employees a
+LEFT JOIN employees b ON a.manager_id = b.employee_id
+WHERE a.hire_date > b.hire_date
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
