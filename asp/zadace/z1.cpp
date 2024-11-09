@@ -658,5 +658,7 @@ int main() {
     lista.dodajIspred(998);
     lista.dodajIspred(997);
     lista.ispisi();
-    std::cout << dajMaksimum(lista);
+    std::cout << dajMaksimum(lista) << std::endl;
+    for(int i = 0; i < lista.brojElemenata(); i++)
+        std::cout << lista[i] << " ";
 }

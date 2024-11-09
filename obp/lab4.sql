@@ -31,17 +31,17 @@ city AS "Grad shefa"
 FROM employees a 
 LEFT JOIN employees b ON a.manager_id = b.employee_id
 LEFT JOIN departments ON b.department_id = departments.department_id
-JOIN locations ON departments.location_id = locations.location_id
+LEFT JOIN locations ON departments.location_id = locations.location_id
 
 SELECT a.first_name, a.department_id, b.first_name FROM employees a
 LEFT JOIN departments d ON a.department_id = d.department_id
 LEFT JOIN employees b ON d.department_id = b.department_id
 
-SELECT first_name, job_title, department_name, salary, salary*commission_pct 
+SELECT first_name, job_title, department_name, salary, salary*(1+commission_pct), j.min_salary, j.max_salary
 FROM employees e
 LEFT JOIN departments d ON e.department_id = d.department_id
 LEFT JOIN jobs j ON e.job_id = j.job_id
-WHERE 
+WHERE commission_pct IS NOT NULL AND salary*(1+commission_pct) BETWEEN j.min_salary AND j.max_salary
 
 SELECT a.first_name, a.hire_date, b.first_name, b.hire_date FROM employees a
 LEFT JOIN employees b ON b.first_name = 'Douglas'

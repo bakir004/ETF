@@ -74,5 +74,47 @@ public:
     ~Red() { brisi(); }
 };
 
-int main() {
+// implementacija bfs algoritma za pretrazivanje grafa koristeci Red<T>
+void bfs(vector<vector<int>>& graf, int start) {
+    Red<int> r;
+    vector<bool> posjecen(graf.size(), false);
+    r.stavi(start);
+    posjecen[start] = true;
+    while(r.brojElemenata() > 0) {
+        int cvor = r.celo();
+        r.skini(); // radi demonstracije
+        cout << cvor << " ";
+        for(int i = 0; i < graf[cvor].size(); i++) {
+            if(!posjecen[graf[cvor][i]]) {
+                r.stavi(graf[cvor][i]);
+                posjecen[graf[cvor][i]] = true;
+            }
+        }
+    }
 }
+
+int main() {
+    Red<int> r;
+    r.stavi(1);
+    r.stavi(2);
+    r.stavi(3);
+    r.ispisi();
+    Red<int> r2(r);
+    r2.ispisi();
+    r2.skini();
+    r2.ispisi();
+    r2 = r;
+    r2.ispisi();
+    vector<vector<int>> graf = {
+        {1, 2},
+        {0, 3, 4},
+        {0, 5},
+        {1},
+        {1},
+        {2}
+    };
+    std::cout << "BFS: ";
+    bfs(graf, 0);
+    return 0;
+}
+
