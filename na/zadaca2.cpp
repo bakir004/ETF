@@ -307,7 +307,6 @@ Matrix LeftDiv(Matrix m1, Matrix m2) {
     Matrix x(m1.NCols(), m2.NCols());
     int n = m1.NRows();
     int m = m2.NCols();
-    m1.Print(4);
     for(int k = 0; k < n; k++) {
         int p = k;
         for(int i = k+1; i < n; i++)
@@ -325,7 +324,6 @@ Matrix LeftDiv(Matrix m1, Matrix m2) {
                 m2[i][j] -= mi * m2[k][j];
         }
     }   
-    m1.Print(11);
     for(int k = 0; k < m; k++) {
         for(int i = n-1; i >= 0; i--) {
             double s = m2[i][k];
@@ -333,7 +331,6 @@ Matrix LeftDiv(Matrix m1, Matrix m2) {
                 s -= m1[i][j] * x[j][k];
             x[i][k] = s / m1[i][i];
         }
-        x.Print(3);
     }
     return x;
 }
@@ -420,10 +417,10 @@ void PrintMatrix(const Matrix &m, int width = 10, double eps = -1) {
 void NR() { std::cout << "\n"; }
 
 int main() {
-    Matrix a{{7, 8, 9},{4, 5, 6},{1, 2, 4}};
+    Matrix a{{1, 2, 4},{4, 5, 6},{7, 8, 9}};
     Matrix b{{1, 2, 7}, {4, 5, 6}, {7, 8, 9}};
-    a.Print(3);
-    b.Print(3);
+    // a.Print(3);
+    // b.Print(3);
     Matrix rez = LeftDiv(a, b);
     rez.Print(3);
 }
