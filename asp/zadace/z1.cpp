@@ -580,8 +580,6 @@ public:
             trenutniCvorDvostruke = dvostruka->pocetniCvor;
         }
     }
-    /*ListaIterator(const JednostrukaLista<T>& lista): lista(&lista), niz(nullptr), trenutniCvor(nullptr), trenutniIndeks(-1) {}*/
-    /*ListaIterator(const NizLista<T>& lista): niz(&lista), lista(nullptr), trenutniCvor(nullptr), trenutniIndeks(-1) {}*/
     T& trenutni() const {
         if(lista != nullptr) return trenutniCvor->element;
         else if(niz != nullptr) return (*niz)[trenutniIndeks];
