@@ -296,18 +296,61 @@ public:
     friend int Rank(Matrix m);
 };
 
+Matrix operator /(Matrix m1, Matrix m2) {
+    std::swap(m1, m2);
+    if(m1.NCols() != m1.NRows()) throw std::domain_error("Divisor matrix is not square");
+    if(m1.NCols() != m2.NCols()) throw std::domain_error("Incompatible formats");
+    // x ima redova koliko m1 ima redova, a kolona koliko m2 ima redova 
+    // m1 i m2 imaju isto kolona, a m1 ima redova koliko x ima redova
+    Matrix x(m2.NRows(), m1.NRows());
+    int n = m1.NRows();
+    int m = m2.NRows();
+    for(int k = 0; k < n; k++) {
+        int p = k;
+        for(int i = k+1; i < n; i++)
+            if(std::fabs(m1.elementi[k][i]) > std::fabs(m1.elementi[k][p])) p = i;
+        if(std::fabs(m1[k][p]) < m1.GetEpsilon()) throw std::domain_error("Divisor matrix is singular");
+        if(p != k) {
+            for (int i = 0; i < n; i++)
+                std::swap(m1[i][p], m1[i][k]);
+            for (int i = 0; i < m; i++)
+                std::swap(m2[i][p], m2[i][k]);
+        }
+        for(int i = k+1; i < n; i++) {
+            double mi = m1[k][i] / m1[k][k];
+            for(int j = k+1; j < n; j++)
+                m1[j][i] -= mi * m1[j][k];
+            for(int j = 0; j < m; j++)
+                m2[j][i] -= mi * m2[j][k];
+        }
+    }   
+    for(int k = 0; k < m; k++) {
+        for(int i = n-1; i >= 0; i--) {
+            double s = m2[k][i];
+            for(int j = i+1; j < n; j++)
+                s -= m1[j][i] * x[k][j];
+            x[k][i] = s / m1[i][i];
+        }
+    }
+    return x;
+}
 /*Matrix operator/(const Matrix &m, double s) {*/
-/**/
 /*}*/
-/*Vector LeftDiv(Matrix m, Vector v) {*/
-/*}*/
+Vector LeftDiv(Matrix m, Vector v) {
+    Matrix m2 = Matrix(v);
+    Matrix res = LeftDiv(m, m2);
+    for(int i = 0; i < res.NRows(); i++)
+        v[i] = res[i][0];
+    return v;
+}
+
+
 Matrix LeftDiv(Matrix m1, Matrix m2) {
     if(m1.NCols() != m1.NRows()) throw std::domain_error("Divisor matrix is not square");
     if(m1.NRows() != m2.NRows()) throw std::domain_error("Incompatible formats");
     Matrix x(m1.NCols(), m2.NCols());
     int n = m1.NRows();
     int m = m2.NCols();
-    m1.Print(4);
     for(int k = 0; k < n; k++) {
         int p = k;
         for(int i = k+1; i < n; i++)
@@ -325,7 +368,6 @@ Matrix LeftDiv(Matrix m1, Matrix m2) {
                 m2[i][j] -= mi * m2[k][j];
         }
     }   
-    m1.Print(11);
     for(int k = 0; k < m; k++) {
         for(int i = n-1; i >= 0; i--) {
             double s = m2[i][k];
@@ -333,7 +375,6 @@ Matrix LeftDiv(Matrix m1, Matrix m2) {
                 s -= m1[i][j] * x[j][k];
             x[i][k] = s / m1[i][i];
         }
-        x.Print(3);
     }
     return x;
 }
@@ -420,10 +461,13 @@ void PrintMatrix(const Matrix &m, int width = 10, double eps = -1) {
 void NR() { std::cout << "\n"; }
 
 int main() {
-    Matrix a{{7, 8, 9},{4, 5, 6},{1, 2, 4}};
+    Matrix a{{1, 2, 4},{4, 5, 6},{7, 8, 9}};
+    Matrix a2{{7, 8, 9},{4, 5, 6},{1, 2, 4}};
     Matrix b{{1, 2, 7}, {4, 5, 6}, {7, 8, 9}};
-    a.Print(3);
-    b.Print(3);
+    Matrix b2{{7, 8, 9}, {4, 5, 6}, {1, 2, 7}};
+    Vector c{17, 32, 50};
     Matrix rez = LeftDiv(a, b);
-    rez.Print(3);
+    /*rez.Print(3);*/
+    Matrix rez3 = a / b;
+    rez3.Print(6);
 }
