@@ -466,6 +466,8 @@ int main() {
     Matrix b{{1, 2, 7}, {4, 5, 6}, {7, 8, 9}};
     Matrix b2{{7, 8, 9}, {4, 5, 6}, {1, 2, 7}};
     Vector c{17, 32, 50};
+    // a.Print(3);
+    // b.Print(3);
     Matrix rez = LeftDiv(a, b);
     /*rez.Print(3);*/
     Matrix rez3 = a / b;
