@@ -283,25 +283,154 @@ public:
     friend Matrix LeftDiv(Matrix m1, Matrix m2);
     friend Vector LeftDiv(Matrix m, Vector v);
     friend Matrix operator /(const Matrix &m, double s);
-    Matrix &operator /=(double s);
+    Matrix &operator /=(double s) {
+        if(std::fabs(s) == 0) throw std::domain_error("Division by zero");
+        for(int i = 0; i < NRows(); i++)
+            for(int j = 0; j < NCols(); j++)
+                elementi[i][j] /= s;
+        return *this;
+    }
     friend Matrix operator /(Matrix m1, Matrix m2);
-    Matrix &operator /=(Matrix m);
-    double Det() const;
+    Matrix &operator /=(Matrix m) {
+        Matrix res = *this / m;
+        this->elementi = res.elementi;
+        return *this;
+    }
+    double Det() const {
+        if(NCols() != NRows()) throw std::domain_error("Matrix is not square");
+        Matrix m1 = *this;
+        int n = NRows();
+        double det = 1;
+        for(int k = 0; k < n; k++) {
+            int p = k;
+            for(int i = k+1; i < n; i++)
+                if(std::fabs(m1.elementi[i][k]) > std::fabs(m1.elementi[p][k])) p = i;
+            if(std::fabs(m1[p][k]) < m1.GetEpsilon()) return 0;
+            if(p != k) {
+                std::swap(m1.elementi[p], m1.elementi[k]);
+                det = -det;
+            }
+            det *= m1[k][k];
+            for(int i = k+1; i < n; i++) {
+                double mi = m1[i][k] / m1[k][k];
+                for(int j = k+1; j < n; j++)
+                    m1[i][j] -= mi * m1[k][j];
+            }
+        }   
+        return det;
+    }
     friend double Det(Matrix m);
-    void Invert();
+    void Invert() {
+        int n = NRows();
+        if(NCols() != NRows()) throw std::domain_error("Matrix is not square");
+        std::vector<int> w(NRows(), 0);
+        for(int k = 0; k < n; k++) {
+            int p = k;
+            for(int i = k+1; i < n; i++)
+                if(std::fabs(elementi[i][k]) > std::fabs(elementi[p][k])) p = i;
+            if(std::fabs(elementi[p][k]) < GetEpsilon()) throw std::domain_error("Matrix is singular");
+            if(p != k) 
+                std::swap(elementi[p], elementi[k]);
+            w[k] = p;
+            double mi = elementi[k][k];
+            elementi[k][k] = 1;
+            for(int j = 0; j < n; j++)
+                elementi[k][j] /= mi;
+            for(int i = 0; i < n; i++)
+                if(i != k) {
+                    mi = elementi[i][k];
+                    elementi[i][k] = 0;
+                    for(int j = 0; j < n; j++)
+                        elementi[i][j] -= mi * elementi[k][j];
+                }
+        }       
+        for(int j = n-1; j >= 0; j--) {
+            int p = w[j];
+            if(p != j)
+                for(int i = 0; i < n; i++)
+                    std::swap(elementi[i][p], elementi[i][j]);
+        }
+    }
     friend Matrix Inverse(Matrix m);
-    void ReduceToRREF();
+    void ReduceToRREF() {
+        int m = NRows();
+        int n = NCols();
+        std::vector<bool> w(n, false);
+        int k = -1, l = -1, p;
+        while(k < m && l < n) {
+            l++;
+            k++;
+            double v = 0;
+            while(v < GetEpsilon() && l < n) {
+                p = k;
+                for(int i = k; i < m; i++) {
+                    if(std::fabs(elementi[i][l]) > v) {
+                        v = std::fabs(elementi[i][l]);
+                        p = i;
+                    }
+                }
+                if(v < GetEpsilon())
+                    l++;
+            }
+            if(l < n) {
+                w[l] = true;
+                if(p != k)
+                    std::swap(elementi[p], elementi[k]);
+                double mi = elementi[k][l];
+                for(int j = l; j < n; j++)
+                    elementi[k][j] /= mi;
+                for(int i = 0; i < m; i++) {
+                    if(i != k) {
+                        mi = elementi[i][l];
+                        for(int j = l; j < n; j++) {
+                            elementi[i][j] -= mi*elementi[k][j];
+                        }
+                    }
+                }
+            }
+        }
+    }
     friend Matrix RREF(Matrix m);
-    int Rank() const;
+    int Rank() const {
+        Matrix rref = RREF(*this);
+        int rank = 0;
+        for(int i = 0; i < rref.NCols(); i++) {
+            int sum = 0;
+            bool bad = false;
+            for(int j = 0; j < rref.NRows(); j++) {
+                if(rref[j][i] != 0 && rref[j][i] != 1) {
+                    bad = true;
+                    break;
+                }
+                else sum += rref[j][i];
+            }
+            if(bad) continue;
+            if(sum == 1) rank++;
+        }
+        return rank;
+    }
     friend int Rank(Matrix m);
 };
+// svjestan sam duplog kopiranja, draze mi je ovako nego dodavat jos koda
+int Rank(Matrix m) { return m.Rank(); }
+Matrix RREF(Matrix m) { m.ReduceToRREF(); return m; }
+Matrix Inverse(Matrix m) { m.Invert(); return m; }
+double Det(Matrix m) { return m.Det(); }
+
+Matrix operator /(const Matrix &m, double s) {
+    if(std::fabs(s) == 0) throw std::domain_error("Division by zero");
+    Matrix rezultat(m.NRows(), m.NCols());
+    for(int i = 0; i < m.NRows(); i++)
+        for(int j = 0; j < m.NCols(); j++)
+            rezultat[i][j] = m[i][j] / s;
+    return rezultat;
+}
 
 Matrix operator /(Matrix m1, Matrix m2) {
+    // ne pitajte
     std::swap(m1, m2);
     if(m1.NCols() != m1.NRows()) throw std::domain_error("Divisor matrix is not square");
     if(m1.NCols() != m2.NCols()) throw std::domain_error("Incompatible formats");
-    // x ima redova koliko m1 ima redova, a kolona koliko m2 ima redova 
-    // m1 i m2 imaju isto kolona, a m1 ima redova koliko x ima redova
     Matrix x(m2.NRows(), m1.NRows());
     int n = m1.NRows();
     int m = m2.NRows();
@@ -310,6 +439,7 @@ Matrix operator /(Matrix m1, Matrix m2) {
         for(int i = k+1; i < n; i++)
             if(std::fabs(m1.elementi[k][i]) > std::fabs(m1.elementi[k][p])) p = i;
         if(std::fabs(m1[k][p]) < m1.GetEpsilon()) throw std::domain_error("Divisor matrix is singular");
+        // razmjena kolona
         if(p != k) {
             for (int i = 0; i < n; i++)
                 std::swap(m1[i][p], m1[i][k]);
@@ -334,8 +464,6 @@ Matrix operator /(Matrix m1, Matrix m2) {
     }
     return x;
 }
-/*Matrix operator/(const Matrix &m, double s) {*/
-/*}*/
 Vector LeftDiv(Matrix m, Vector v) {
     Matrix m2 = Matrix(v);
     Matrix res = LeftDiv(m, m2);
@@ -356,6 +484,7 @@ Matrix LeftDiv(Matrix m1, Matrix m2) {
         for(int i = k+1; i < n; i++)
             if(std::fabs(m1.elementi[i][k]) > std::fabs(m1.elementi[p][k])) p = i;
         if(std::fabs(m1[p][k]) < m1.GetEpsilon()) throw std::domain_error("Divisor matrix is singular");
+        // razmjena redova
         if(p != k) {
             std::swap(m1.elementi[p], m1.elementi[k]);
             std::swap(m2.elementi[p], m2.elementi[k]);
@@ -458,18 +587,200 @@ void PrintMatrix(const Matrix &m, int width = 10, double eps = -1) {
     }
 }
 
-void NR() { std::cout << "\n"; }
+class LUDecomposer {
+    Matrix LU;
+    Vector w;
+public:
+    LUDecomposer(Matrix m): LU(m.NRows(), m.NRows()), w(m.NRows()) {
+        if(m.NRows() != m.NCols()) throw std::domain_error("Matrix is not square");
+        int n = m.NCols();
+        for(int i = 0; i < n; i++)
+            w[i] = i;
+        for(int j = 0; j < n; j++) {
+            for(int i = 0; i <= j; i++) {
+                double s = m[i][j];
+                for(int k = 0; k < i; k++)
+                    s -= m[i][k]*m[k][j];
+                m[i][j] = s;
+            }
+            int p = j;
+            for(int i = j+1; i < n; i++) {
+                double s = m[i][j];
+                for(int k = 0; k < j; k++)
+                    s -= m[i][k]*m[k][j];
+                m[i][j] = s;
+                if(std::fabs(s) > std::fabs(m[p][j]))
+                    p = i;
+            }
+            if(std::fabs(m[p][j]) < m.GetEpsilon())
+                throw std::domain_error("Matrix is singular");
+            if(p != j) {
+                for(int k = 0; k < n; k++)
+                    std::swap(m[p][k], m[j][k]);
+            }
+            w[j]=p;
+            double mi = m[j][j];
+            for(int i = j+1; i < n; i++)
+                m[i][j] /= mi;
+        }
+        LU = m;
+    }
+    void Solve(const Vector &b, Vector &x) const {
+        if(LU.NCols() != x.NElems() || LU.NRows() != b.NElems()) throw std::domain_error("Incompatible formats");
+        Vector b1 = b;
+        for (int i = 0; i < b1.NElems(); i++) {
+            int p = w[i];
+            double s = b1[p];
+            b1[p] = b1[i];
+            for (int j = 0; j < i; j++)
+                s -= LU[i][j] * x[j];
+            x[i] = s;
+        }
+        for (int i = b1.NElems() - 1; i >= 0; i--) {
+            double s = x[i];
+            for (int j = i + 1; j < b1.NElems(); j++)
+                s -= LU[i][j] * x[j]; 
+            x[i] = s / LU[i][i]; 
+        }
+    }
+    Vector Solve(Vector b) const {
+        if(LU.NRows() != b.NElems()) throw std::domain_error("Incompatible formats");
+        Vector x(b.NElems());
+        for (int i = 0; i < b.NElems(); i++) {
+            int p = w[i];
+            double s = b[p];
+            b[p] = b[i];
+            for (int j = 0; j < i; j++)
+                s -= LU[i][j] * x[j];
+            x[i] = s;
+        }
+        for (int i = b.NElems() - 1; i >= 0; i--) {
+            double s = x[i];
+            for (int j = i + 1; j < b.NElems(); j++)
+                s -= LU[i][j] * x[j]; 
+            x[i] = s / LU[i][i]; 
+        }
+        return x;
+    }
+    void Solve(const Matrix &b, Matrix &x) const {
+        if(x.NCols() != b.NCols()) throw std::domain_error("Incompatible formats");
+        if(x.NRows() != LU.NRows()) throw std::domain_error("Incompatible formats");
+        if(LU.NCols() != x.NCols() || LU.NRows() != b.NRows()) throw std::domain_error("Incompatible formats");
+        for(int i = 0; i < b.NCols(); i++) {
+            Vector bCol(b.NRows());
+            for(int j = 0; j < b.NRows(); j++)
+                bCol[j] = b[j][i];
+            Vector xCol = Solve(bCol);
+            for(int j = 0; j < x.NRows(); j++)
+                x[j][i] = xCol[j];
+        }
+    }
+    Matrix Solve(Matrix b) const {
+        Matrix x(b.NRows(), b.NCols());
+        Solve(b, x);
+        return x;
+    }
+    Matrix GetCompactLU() const { return LU; }
+    Matrix GetL() const {
+        Matrix L(LU.NRows(), LU.NCols());
+        for(int i = 0; i < L.NRows(); i++) {
+            for(int j = 0; j < L.NCols(); j++) {
+                if(j < i)
+                    L[i][j] = LU[i][j];
+                else if(i == j)
+                    L[i][j] = 1;
+                else
+                    L[i][j] = 0;
+            }
+        }
+        return L;
+    }
+    Matrix GetU() const {
+        Matrix U(LU.NRows(), LU.NCols());
+        for(int i = 0; i < U.NRows(); i++) {
+            for(int j = 0; j < U.NCols(); j++) {
+                if(j >= i)
+                    U[i][j] = LU[i][j];
+                else
+                    U[i][j] = 0;
+            }
+        }
+        return U;
+    }
+    Vector GetPermuation() const { return w; }
+};
+
+class QRDecomposer {
+    Matrix V;
+    Matrix R;
+public:
+    QRDecomposer(Matrix m): V(m.NRows(), m.NCols()), R(m.NRows(), m.NCols()) {
+        if(m.NRows() < m.NCols()) throw std::domain_error("Invalid matrix format");
+        Matrix v(m.NRows(), m.NCols());
+        for(int k = 0; k < m.NCols(); k++) {
+            double s = 0;
+            for(int i = k; i < m.NRows(); i++)
+                s += m[i][k] * m[i][k];
+            s = std::sqrt(s);
+            double mi = std::sqrt(s*(s+std::fabs(m[k][k])));
+            if(m[k][k] < 0) s = -s;
+
+            v[k][k] = (m[k][k] + s) / mi;
+            for(int i = k+1; i < m.NRows(); i++)
+                v[i][k] = m[i][k] / mi; 
+            m[k][k] = -s;
+            for(int j = k+1; j < m.NCols(); j++) {
+                s = 0;
+                for(int i = k; i < m.NRows(); i++)
+                    s += m[i][j] * v[i][k];
+                for(int i = k; i < m.NRows(); i++)
+                    m[i][j] -= s * v[i][k];
+            }
+        }
+        V = v;
+        R = m;
+    }
+    void Solve(const Vector &b, Vector &x) const {
+
+    }
+    Vector Solve(Vector b) const;
+    void Solve(Matrix &b, Matrix &x) const;
+    Matrix Solve(Matrix b) const;
+    Vector MulQWith(Vector v) const;
+    Matrix MulQWith(Matrix m) const;
+    Vector MulQTWith(Vector v) const;
+    Matrix MulQTWith(Matrix m) const;
+    Matrix GetQ() const {
+        Matrix Q(V.NRows(), V.NCols());
+        for(int j = 0; j < V.NRows(); j++) {
+            for(int i = 0; i < V.NRows(); i++)
+                Q[i][j] = 0;
+            Q[j][j] = 1;
+            for(int k = V.NCols()-1; k >= 0; k--) {
+                double s = 0;
+                for(int i = k; i < V.NRows(); i++)
+                    s += V[i][k] * Q[i][j];
+                for(int i = k; i < V.NRows(); i++)
+                    Q[i][j] -= s * V[i][k];
+            }
+        }
+        return Q;
+    }
+    Matrix GetR() const { 
+        Matrix r(R);
+        for(int i = 0; i < r.NRows(); i++)
+            for(int j = 0; j < i; j++)
+                r[i][j] = 0;
+        return r; 
+    }
+};
+
 
 int main() {
-    Matrix a{{1, 2, 4},{4, 5, 6},{7, 8, 9}};
-    Matrix a2{{7, 8, 9},{4, 5, 6},{1, 2, 4}};
-    Matrix b{{1, 2, 7}, {4, 5, 6}, {7, 8, 9}};
-    Matrix b2{{7, 8, 9}, {4, 5, 6}, {1, 2, 7}};
-    Vector c{17, 32, 50};
-    // a.Print(3);
-    // b.Print(3);
-    Matrix rez = LeftDiv(a, b);
-    /*rez.Print(3);*/
-    Matrix rez3 = a / b;
-    rez3.Print(6);
+    Matrix a{{1, 2, 4}, {4, 5, 6}, {7, 8, 9}};
+    QRDecomposer qrd(a);
+    Matrix q = qrd.GetQ();
+    Matrix r = qrd.GetR();
+    PrintMatrix(q);
+    PrintMatrix(r);
 }
