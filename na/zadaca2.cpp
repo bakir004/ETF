@@ -832,7 +832,7 @@ public:
     }
     Matrix GetQ() const {
         Matrix Q(V.NRows(), V.NCols());
-        for(int j = 0; j < V.NRows(); j++) {
+        for(int j = 0; j < V.NCols(); j++) {
             for(int i = 0; i < V.NRows(); i++)
                 Q[i][j] = 0;
             Q[j][j] = 1;
@@ -855,12 +855,5 @@ public:
     }
 };
 
-
 int main() {
-    Matrix A{{0,3,2},{4,6,1},{3,1,7}};
-    QRDecomposer qr(A);
-    std::cout<<A.EqualTo(qr.GetQ() * qr.GetR())<<std::endl;
-    Matrix B{{0,3},{4,6},{3,1}};
-    QRDecomposer qr2(B);
-    std::cout<<B.EqualTo(qr2.GetQ() * qr2.GetR());;
 }
