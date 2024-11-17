@@ -577,14 +577,18 @@ double MatrixNorm(const Matrix &m) {
 }
 void PrintMatrix(const Matrix &m, int width = 10, double eps = -1) {
     if(eps < 0) eps = m.GetEpsilon();
+        // std::cout << '[';
     for(int i = 0; i < m.elementi.size(); i++) {
+        // std::cout << '[';
         for(int j = 0; j < m.elementi[i].size(); j++) {
             if(std::fabs(m[i][j]) < eps)
                 std::cout << std::setw(width) << 0;
             else std::cout << std::setw(width) << m[i][j];
+            // else std::cout << m[i][j] << (j != m.NCols()-1 ? ", " : "");
         }
-        std::cout << '\n';
+        std::cout << "\n";
     }
+        // std::cout << "]\n";
 }
 
 class LUDecomposer {
@@ -724,7 +728,7 @@ public:
             s = std::sqrt(s);
             double mi = std::sqrt(s*(s+std::fabs(m[k][k])));
             if(m[k][k] < 0) s = -s;
-
+            if(mi < m.GetEpsilon()) throw std::domain_error("Matrix is singular");
             v[k][k] = (m[k][k] + s) / mi;
             for(int i = k+1; i < m.NRows(); i++)
                 v[i][k] = m[i][k] / mi; 
@@ -741,15 +745,91 @@ public:
         R = m;
     }
     void Solve(const Vector &b, Vector &x) const {
-
+        if(V.NRows() != V.NCols()) throw std::domain_error("Matrix is not square");
+        if(b.NElems() != V.NRows()) throw std::domain_error("Incompatible formats");
+        if(V.NCols() != x.NElems()) throw std::domain_error("Incompatible formats");
+        // backsupstitucija Ry=b
+        Vector b1 = b;
+        Vector QTb = MulQTWith(b1);
+        for(int k = 0; k < R.NRows(); k++) {
+            for(int i = R.NCols()-1; i >= 0; i--) {
+                double s = QTb[i];
+                for(int j = i+1; j < R.NCols(); j++)
+                    s -= R[i][j] * x[j];
+                x[i] = s / R[i][i];
+            }
+        }
     }
-    Vector Solve(Vector b) const;
-    void Solve(Matrix &b, Matrix &x) const;
-    Matrix Solve(Matrix b) const;
-    Vector MulQWith(Vector v) const;
-    Matrix MulQWith(Matrix m) const;
-    Vector MulQTWith(Vector v) const;
-    Matrix MulQTWith(Matrix m) const;
+    Vector Solve(Vector b) const {
+        Vector x(b.NElems());
+        Solve(b, x);
+        return x;
+    }
+    void Solve(Matrix &b, Matrix &x) const {
+        if(V.NRows() != V.NCols()) throw std::domain_error("Matrix is not square");
+        if(b.NRows() != V.NRows()) throw std::domain_error("Incompatible formats");
+        if(b.NCols() != x.NCols()) throw std::domain_error("Incompatible formats");
+        if(x.NRows() != V.NCols()) throw std::domain_error("Incompatible formats");
+        for(int i = 0; i < b.NCols(); i++) {
+            Vector bCol(b.NRows());
+            for(int j = 0; j < b.NRows(); j++)
+                bCol[j] = b[j][i];
+            Vector xCol = Solve(bCol);
+            for(int j = 0; j < x.NRows(); j++)
+                x[j][i] = xCol[j];
+        }
+    }
+    Matrix Solve(Matrix b) const {
+        Matrix x(b.NRows(), b.NCols());
+        Solve(b, x);
+        return x;
+    }
+    Vector MulQWith(Vector v) const {
+        if(v.NElems() != V.NRows()) throw std::domain_error("Incompatible formats");
+        for(int k = V.NCols()-1; k >= 0; k--) {
+            double s = 0;
+            for(int i = k; i < V.NRows(); i++)
+                s += V[i][k] * v[i];
+            for(int i = k; i < V.NRows(); i++)
+                v[i] -= s * V[i][k];
+        }
+        return v;
+    }
+    Matrix MulQWith(Matrix m) const {
+        Matrix x(m);
+        for(int i = 0; i < m.NCols(); i++) {
+            Vector bCol(m.NRows());
+            for(int j = 0; j < m.NRows(); j++)
+                bCol[j] = m[j][i];
+            Vector xCol = MulQWith(bCol);
+            for(int j = 0; j < x.NRows(); j++)
+                x[j][i] = xCol[j];
+        }
+        return x;
+    }
+    Vector MulQTWith(Vector v) const {
+        if(v.NElems() != V.NRows()) throw std::domain_error("Incompatible formats");
+        for(int k = 0; k < V.NCols(); k++) {
+            double s = 0;
+            for(int i = k; i < V.NRows(); i++)
+                s += V[i][k] * v[i];
+            for(int i = k; i < V.NRows(); i++)
+                v[i] -= s * V[i][k];
+        }
+        return v;
+    }
+    Matrix MulQTWith(Matrix m) const {
+        Matrix x(m);
+        for(int i = 0; i < m.NCols(); i++) {
+            Vector bCol(m.NRows());
+            for(int j = 0; j < m.NRows(); j++)
+                bCol[j] = m[j][i];
+            Vector xCol = MulQTWith(bCol);
+            for(int j = 0; j < x.NRows(); j++)
+                x[j][i] = xCol[j];
+        }
+        return x;
+    }
     Matrix GetQ() const {
         Matrix Q(V.NRows(), V.NCols());
         for(int j = 0; j < V.NRows(); j++) {
@@ -767,20 +847,20 @@ public:
         return Q;
     }
     Matrix GetR() const { 
-        Matrix r(R);
-        for(int i = 0; i < r.NRows(); i++)
-            for(int j = 0; j < i; j++)
-                r[i][j] = 0;
+        Matrix r(R.NCols(), R.NCols());
+        for(int i = 0; i < r.NCols(); i++)
+            for(int j = i; j < r.NCols(); j++)
+                r[i][j] = R[i][j];
         return r; 
     }
 };
 
 
 int main() {
-    Matrix a{{1, 2, 4}, {4, 5, 6}, {7, 8, 9}};
-    QRDecomposer qrd(a);
-    Matrix q = qrd.GetQ();
-    Matrix r = qrd.GetR();
-    PrintMatrix(q);
-    PrintMatrix(r);
+    Matrix A{{0,3,2},{4,6,1},{3,1,7}};
+    QRDecomposer qr(A);
+    std::cout<<A.EqualTo(qr.GetQ() * qr.GetR())<<std::endl;
+    Matrix B{{0,3},{4,6},{3,1}};
+    QRDecomposer qr2(B);
+    std::cout<<B.EqualTo(qr2.GetQ() * qr2.GetR());;
 }
