@@ -284,7 +284,7 @@ public:
     friend Vector LeftDiv(Matrix m, Vector v);
     friend Matrix operator /(const Matrix &m, double s);
     Matrix &operator /=(double s) {
-        if(std::fabs(s) == 0) throw std::domain_error("Division by zero");
+        if(std::fabs(s) < GetEpsilon()) throw std::domain_error("Division by zero");
         for(int i = 0; i < NRows(); i++)
             for(int j = 0; j < NCols(); j++)
                 elementi[i][j] /= s;
@@ -356,7 +356,7 @@ public:
         int m = NRows();
         int n = NCols();
         std::vector<bool> w(n, false);
-        int k = -1, l = -1, p;
+        int k = -1, l = -1, p = 0;
         while(k < m && l < n) {
             l++;
             k++;
@@ -398,7 +398,7 @@ public:
             int sum = 0;
             bool bad = false;
             for(int j = 0; j < rref.NRows(); j++) {
-                if(rref[j][i] != 0 && rref[j][i] != 1) {
+                if(std::fabs(rref[j][i]) > GetEpsilon() && std::fabs(rref[j][i] - 1) > GetEpsilon()) {
                     bad = true;
                     break;
                 }
@@ -418,7 +418,7 @@ Matrix Inverse(Matrix m) { m.Invert(); return m; }
 double Det(Matrix m) { return m.Det(); }
 
 Matrix operator /(const Matrix &m, double s) {
-    if(std::fabs(s) == 0) throw std::domain_error("Division by zero");
+    if(std::fabs(s) < m.GetEpsilon()) throw std::domain_error("Division by zero");
     Matrix rezultat(m.NRows(), m.NCols());
     for(int i = 0; i < m.NRows(); i++)
         for(int j = 0; j < m.NCols(); j++)
@@ -715,10 +715,10 @@ public:
 };
 
 class QRDecomposer {
-    Matrix V;
-    Matrix R;
+    Matrix RiV;
+    Vector RDijagonala;
 public:
-    QRDecomposer(Matrix m): V(m.NRows(), m.NCols()), R(m.NRows(), m.NCols()) {
+    QRDecomposer(Matrix m): RDijagonala(m.NRows()), RiV(m.NRows(), m.NCols()) {
         if(m.NRows() < m.NCols()) throw std::domain_error("Invalid matrix format");
         Matrix v(m.NRows(), m.NCols());
         for(int k = 0; k < m.NCols(); k++) {
@@ -741,22 +741,30 @@ public:
                     m[i][j] -= s * v[i][k];
             }
         }
-        V = v;
-        R = m;
+        for(int i = 0; i < RiV.NRows(); i++) {
+            for(int j = 0; j < RiV.NCols(); j++) {
+                if(j <= i)
+                    RiV[i][j] = v[i][j];
+                else
+                    RiV[i][j] = m[i][j];
+            }
+        }
+        for(int i = 0; i < RDijagonala.NElems(); i++)
+            RDijagonala[i] = m[i][i];
     }
     void Solve(const Vector &b, Vector &x) const {
-        if(V.NRows() != V.NCols()) throw std::domain_error("Matrix is not square");
-        if(b.NElems() != V.NRows()) throw std::domain_error("Incompatible formats");
-        if(V.NCols() != x.NElems()) throw std::domain_error("Incompatible formats");
+        if(RiV.NRows() != RiV.NCols()) throw std::domain_error("Matrix is not square");
+        if(b.NElems() != RiV.NRows()) throw std::domain_error("Incompatible formats");
+        if(RiV.NCols() != x.NElems()) throw std::domain_error("Incompatible formats");
         // backsupstitucija Ry=b
         Vector b1 = b;
         Vector QTb = MulQTWith(b1);
-        for(int k = 0; k < R.NRows(); k++) {
-            for(int i = R.NCols()-1; i >= 0; i--) {
+        for(int k = 0; k < RiV.NRows(); k++) {
+            for(int i = RiV.NCols()-1; i >= 0; i--) {
                 double s = QTb[i];
-                for(int j = i+1; j < R.NCols(); j++)
-                    s -= R[i][j] * x[j];
-                x[i] = s / R[i][i];
+                for(int j = i+1; j < RiV.NCols(); j++)
+                    s -= RiV[i][j] * x[j];
+                x[i] = s / RDijagonala[i];
             }
         }
     }
@@ -766,10 +774,10 @@ public:
         return x;
     }
     void Solve(Matrix &b, Matrix &x) const {
-        if(V.NRows() != V.NCols()) throw std::domain_error("Matrix is not square");
-        if(b.NRows() != V.NRows()) throw std::domain_error("Incompatible formats");
+        if(RiV.NRows() != RiV.NCols()) throw std::domain_error("Matrix is not square");
+        if(b.NRows() != RiV.NRows()) throw std::domain_error("Incompatible formats");
         if(b.NCols() != x.NCols()) throw std::domain_error("Incompatible formats");
-        if(x.NRows() != V.NCols()) throw std::domain_error("Incompatible formats");
+        if(x.NRows() != RiV.NCols()) throw std::domain_error("Incompatible formats");
         for(int i = 0; i < b.NCols(); i++) {
             Vector bCol(b.NRows());
             for(int j = 0; j < b.NRows(); j++)
@@ -785,7 +793,13 @@ public:
         return x;
     }
     Vector MulQWith(Vector v) const {
-        if(v.NElems() != V.NRows()) throw std::domain_error("Incompatible formats");
+        if(v.NElems() != RiV.NRows()) throw std::domain_error("Incompatible formats");
+        Matrix V(RiV);
+        for(int i = 0; i < V.NRows(); i++)
+            for(int j = 0; j < V.NCols(); j++)
+                if(j > i)
+                    V[i][j] = V[j][i];
+
         for(int k = V.NCols()-1; k >= 0; k--) {
             double s = 0;
             for(int i = k; i < V.NRows(); i++)
@@ -808,7 +822,12 @@ public:
         return x;
     }
     Vector MulQTWith(Vector v) const {
-        if(v.NElems() != V.NRows()) throw std::domain_error("Incompatible formats");
+        if(v.NElems() != RiV.NRows()) throw std::domain_error("Incompatible formats");
+        Matrix V(RiV);
+        for(int i = 0; i < V.NRows(); i++)
+            for(int j = 0; j < V.NCols(); j++)
+                if(j > i)
+                    V[i][j] = V[j][i];
         for(int k = 0; k < V.NCols(); k++) {
             double s = 0;
             for(int i = k; i < V.NRows(); i++)
@@ -831,7 +850,12 @@ public:
         return x;
     }
     Matrix GetQ() const {
-        Matrix Q(V.NRows(), V.NCols());
+        Matrix V(RiV);
+        Matrix Q(RiV.NRows(), RiV.NCols());
+        for(int i = 0; i < V.NRows(); i++)
+            for(int j = 0; j < V.NCols(); j++)
+                if(j > i)
+                    V[i][j] = V[j][i];
         for(int j = 0; j < V.NCols(); j++) {
             for(int i = 0; i < V.NRows(); i++)
                 Q[i][j] = 0;
@@ -847,10 +871,13 @@ public:
         return Q;
     }
     Matrix GetR() const { 
-        Matrix r(R.NCols(), R.NCols());
+        Matrix r(RiV.NCols(), RiV.NCols());
         for(int i = 0; i < r.NCols(); i++)
             for(int j = i; j < r.NCols(); j++)
-                r[i][j] = R[i][j];
+                if(j > i)
+                    r[i][j] = RiV[i][j];
+        for(int i = 0; i < r.NCols(); i++)
+            r[i][i] = RDijagonala[i];
         return r; 
     }
 };
@@ -989,12 +1016,14 @@ public:
 //     throw "Hiljadu linija koda exception\n";
 // }  
 
-// int main() {
-    // TestiranjeNovihFunkcijaZaMatricu();
-    // TestiranjeLU();
-    // try {
-    //     TestiranjeQR();
-    // }catch(const char* &e) {
-    //     std::cout << e << '\n';
-    // }
-// }
+/*int main() {*/
+/*    TestiranjeNovihFunkcijaZaMatricu();*/
+/*    TestiranjeLU();*/
+/*    try {*/
+/*        TestiranjeQR();*/
+/*    }catch(const char* &e) {*/
+/*        std::cout << e << '\n';*/
+/*    }*/
+/*    return 0;*/
+/**/
+/*}*/
