@@ -398,7 +398,7 @@
       <a name="facing" val="west"/>
       <a name="label" val="decA"/>
       <a name="output" val="true"/>
-      <a name="radix" val="10unsigned"/>
+      <a name="radix" val="10signed"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(250,220)" name="Pin">
@@ -406,7 +406,7 @@
       <a name="facing" val="west"/>
       <a name="label" val="decB"/>
       <a name="output" val="true"/>
-      <a name="radix" val="10unsigned"/>
+      <a name="radix" val="10signed"/>
       <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(470,590)" name="Pin">
@@ -431,37 +431,38 @@
       <a name="radix" val="10unsigned"/>
       <a name="width" val="4"/>
     </comp>
-    <comp lib="0" loc="(730,260)" name="Pin">
-      <a name="appearance" val="NewPins"/>
-      <a name="facing" val="west"/>
-      <a name="label" val="negativno"/>
-      <a name="output" val="true"/>
-    </comp>
-    <comp lib="0" loc="(810,190)" name="Pin">
-      <a name="appearance" val="NewPins"/>
-      <a name="label" val="razlikaAiBdec"/>
-      <a name="output" val="true"/>
-      <a name="radix" val="10unsigned"/>
-      <a name="width" val="4"/>
-    </comp>
-    <comp lib="0" loc="(810,300)" name="Pin">
+    <comp lib="0" loc="(710,300)" name="Pin">
       <a name="appearance" val="NewPins"/>
       <a name="label" val="negiranA"/>
       <a name="output" val="true"/>
       <a name="width" val="4"/>
     </comp>
-    <comp lib="0" loc="(810,380)" name="Pin">
+    <comp lib="0" loc="(710,380)" name="Pin">
       <a name="appearance" val="NewPins"/>
       <a name="label" val="ABnegirano"/>
       <a name="output" val="true"/>
       <a name="width" val="4"/>
     </comp>
-    <comp lib="0" loc="(810,490)" name="Pin">
+    <comp lib="0" loc="(710,490)" name="Pin">
       <a name="appearance" val="NewPins"/>
       <a name="label" val="zbirAiBdec"/>
       <a name="output" val="true"/>
       <a name="radix" val="10unsigned"/>
       <a name="width" val="4"/>
+    </comp>
+    <comp lib="0" loc="(730,250)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="razlikaAiBdec"/>
+      <a name="output" val="true"/>
+      <a name="radix" val="10signed"/>
+      <a name="width" val="4"/>
+    </comp>
+    <comp lib="0" loc="(740,270)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="overflow"/>
+      <a name="output" val="true"/>
     </comp>
     <comp lib="1" loc="(390,320)" name="NOT Gate">
       <a name="width" val="4"/>
@@ -475,17 +476,13 @@
     <comp lib="1" loc="(490,400)" name="NOR Gate">
       <a name="width" val="4"/>
     </comp>
-    <comp lib="1" loc="(570,260)" name="NOT Gate"/>
     <comp lib="1" loc="(570,400)" name="NOR Gate">
       <a name="width" val="4"/>
     </comp>
     <comp lib="2" loc="(430,620)" name="Multiplexer">
       <a name="width" val="4"/>
     </comp>
-    <comp lib="2" loc="(740,230)" name="Multiplexer">
-      <a name="width" val="4"/>
-    </comp>
-    <comp lib="2" loc="(880,350)" name="Multiplexer">
+    <comp lib="2" loc="(780,350)" name="Multiplexer">
       <a name="select" val="2"/>
       <a name="width" val="4"/>
     </comp>
@@ -494,8 +491,7 @@
     <comp loc="(410,260)" name="fourbit2kk"/>
     <comp loc="(460,510)" name="fourbitadderNAND"/>
     <comp loc="(530,250)" name="fourbitadder"/>
-    <comp loc="(680,250)" name="fourbit2kk"/>
-    <wire from="(170,540)" to="(860,540)"/>
+    <wire from="(170,540)" to="(760,540)"/>
     <wire from="(170,620)" to="(180,620)"/>
     <wire from="(170,710)" to="(410,710)"/>
     <wire from="(180,200)" to="(200,200)"/>
@@ -535,7 +531,7 @@
     <wire from="(240,260)" to="(310,260)"/>
     <wire from="(380,610)" to="(400,610)"/>
     <wire from="(380,670)" to="(390,670)"/>
-    <wire from="(390,320)" to="(810,320)"/>
+    <wire from="(390,320)" to="(710,320)"/>
     <wire from="(390,630)" to="(390,670)"/>
     <wire from="(390,630)" to="(400,630)"/>
     <wire from="(410,260)" to="(430,260)"/>
@@ -549,52 +545,39 @@
     <wire from="(420,420)" to="(420,430)"/>
     <wire from="(420,420)" to="(430,420)"/>
     <wire from="(430,620)" to="(470,620)"/>
-    <wire from="(460,510)" to="(810,510)"/>
+    <wire from="(460,510)" to="(710,510)"/>
     <wire from="(470,570)" to="(470,590)"/>
-    <wire from="(470,570)" to="(630,570)"/>
+    <wire from="(470,570)" to="(620,570)"/>
     <wire from="(490,400)" to="(500,400)"/>
     <wire from="(500,380)" to="(500,400)"/>
     <wire from="(500,380)" to="(510,380)"/>
     <wire from="(500,400)" to="(500,420)"/>
     <wire from="(500,420)" to="(510,420)"/>
-    <wire from="(530,250)" to="(570,250)"/>
+    <wire from="(530,250)" to="(730,250)"/>
     <wire from="(530,260)" to="(540,260)"/>
-    <wire from="(570,210)" to="(570,250)"/>
-    <wire from="(570,210)" to="(690,210)"/>
-    <wire from="(570,250)" to="(580,250)"/>
-    <wire from="(570,260)" to="(570,290)"/>
-    <wire from="(570,290)" to="(720,290)"/>
-    <wire from="(570,400)" to="(810,400)"/>
-    <wire from="(630,570)" to="(630,590)"/>
-    <wire from="(630,570)" to="(890,570)"/>
-    <wire from="(680,250)" to="(690,250)"/>
-    <wire from="(690,210)" to="(690,220)"/>
-    <wire from="(690,220)" to="(710,220)"/>
-    <wire from="(690,240)" to="(690,250)"/>
-    <wire from="(690,240)" to="(710,240)"/>
-    <wire from="(720,250)" to="(720,260)"/>
-    <wire from="(720,260)" to="(720,290)"/>
-    <wire from="(720,260)" to="(730,260)"/>
-    <wire from="(740,230)" to="(810,230)"/>
-    <wire from="(810,190)" to="(810,230)"/>
-    <wire from="(810,230)" to="(830,230)"/>
-    <wire from="(810,300)" to="(810,320)"/>
-    <wire from="(810,320)" to="(820,320)"/>
-    <wire from="(810,380)" to="(810,400)"/>
-    <wire from="(810,400)" to="(820,400)"/>
-    <wire from="(810,490)" to="(810,510)"/>
-    <wire from="(810,510)" to="(830,510)"/>
-    <wire from="(820,320)" to="(820,340)"/>
-    <wire from="(820,340)" to="(840,340)"/>
-    <wire from="(820,350)" to="(820,400)"/>
-    <wire from="(820,350)" to="(840,350)"/>
-    <wire from="(830,230)" to="(830,330)"/>
-    <wire from="(830,330)" to="(840,330)"/>
-    <wire from="(830,360)" to="(830,510)"/>
-    <wire from="(830,360)" to="(840,360)"/>
-    <wire from="(860,370)" to="(860,540)"/>
-    <wire from="(880,350)" to="(890,350)"/>
-    <wire from="(890,350)" to="(890,570)"/>
+    <wire from="(540,260)" to="(540,270)"/>
+    <wire from="(540,270)" to="(740,270)"/>
+    <wire from="(570,400)" to="(710,400)"/>
+    <wire from="(620,570)" to="(620,590)"/>
+    <wire from="(620,570)" to="(790,570)"/>
+    <wire from="(620,590)" to="(630,590)"/>
+    <wire from="(710,300)" to="(710,320)"/>
+    <wire from="(710,320)" to="(720,320)"/>
+    <wire from="(710,380)" to="(710,400)"/>
+    <wire from="(710,400)" to="(720,400)"/>
+    <wire from="(710,490)" to="(710,510)"/>
+    <wire from="(710,510)" to="(730,510)"/>
+    <wire from="(720,320)" to="(720,340)"/>
+    <wire from="(720,340)" to="(740,340)"/>
+    <wire from="(720,350)" to="(720,400)"/>
+    <wire from="(720,350)" to="(740,350)"/>
+    <wire from="(730,250)" to="(730,330)"/>
+    <wire from="(730,330)" to="(740,330)"/>
+    <wire from="(730,360)" to="(730,510)"/>
+    <wire from="(730,360)" to="(740,360)"/>
+    <wire from="(760,370)" to="(760,540)"/>
+    <wire from="(780,350)" to="(790,350)"/>
+    <wire from="(790,350)" to="(790,570)"/>
   </circuit>
   <circuit name="fulladder">
     <a name="appearance" val="evolution"/>
@@ -699,12 +682,13 @@
       <a name="incoming" val="4"/>
       <a name="spacing" val="4"/>
     </comp>
-    <comp lib="0" loc="(780,460)" name="Pin">
+    <comp lib="0" loc="(830,480)" name="Pin">
       <a name="appearance" val="NewPins"/>
       <a name="facing" val="west"/>
       <a name="label" val="overflow"/>
       <a name="output" val="true"/>
     </comp>
+    <comp lib="1" loc="(830,480)" name="XOR Gate"/>
     <comp loc="(390,330)" name="fulladder"/>
     <comp loc="(510,370)" name="fulladder"/>
     <comp loc="(630,410)" name="fulladder"/>
@@ -733,9 +717,11 @@
     <wire from="(630,410)" to="(760,410)"/>
     <wire from="(630,420)" to="(640,420)"/>
     <wire from="(640,420)" to="(640,450)"/>
+    <wire from="(640,450)" to="(640,500)"/>
     <wire from="(640,450)" to="(650,450)"/>
+    <wire from="(640,500)" to="(770,500)"/>
     <wire from="(750,450)" to="(760,450)"/>
-    <wire from="(750,460)" to="(780,460)"/>
+    <wire from="(750,460)" to="(770,460)"/>
   </circuit>
   <circuit name="fourbit2kk">
     <a name="appearance" val="evolution"/>
