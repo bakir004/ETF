@@ -855,5 +855,146 @@ public:
     }
 };
 
-int main() {
-}
+// void TestiranjeNovihFunkcijaZaMatricu() {
+//     Matrix c{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+//     Matrix mala{{1e-20, 1e-20}, {1e-20, 1}};
+//     c.Chop(5.5);
+//     c.Print(3);
+//     mala.Chop();
+//     mala.Print(3);
+//     Matrix a{{1, 2, 4}, {4, 5, 6}, {7, 8, 9}};
+//     Matrix B{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+//     std::cout << a.EqualTo(B) << '\n';
+//     B[0][2]=4;
+//     std::cout << a.EqualTo(B) << '\n';
+//     B[0][2]=3;
+//     // Ax=b; preko dijeljenja
+//     Matrix A{{1, 2, 4}, {4, 5, 6}, {7, 8, 9}};
+//     Vector b{17,32,50};
+//     std::cout << "LeftDiv:\n";
+//     Vector x = LeftDiv(a,b); // ocekivano {1,2,3}
+//     x.Print();
+//     Matrix C{{1, 2, 5}, {4, 5, 6}, {7, 8, 9}};
+//     Matrix AkrozC = A/C;
+//     Matrix AkrozC2 = LeftDiv(C, A);
+//     std::cout << "A kroz C:\n";
+//     AkrozC.Print(4);
+//     AkrozC2.Print(4);
+//     std::cout << AkrozC.EqualTo(AkrozC2) << '\n'; // nije naivno implementirano jedno preko drugog
+//     // determinante
+//     std::cout << "Det: " << Det(B) << ", " << a.Det() << '\n';
+//     try {
+//         Matrix c{{1,2,3},{4,5,6}};
+//         Det(c);
+//     } catch(...) {
+//         std::cout << "Greska nije kvadratna\n";
+//     }
+//     // inverzi
+//     std::cout << "A*A-1=\n";
+//     Matrix Aminus = Inverse(A);
+//     (A*Aminus).Print(3);
+//     try {
+//         Matrix c{{1,2,3},{4,5,6}};
+//         c.Invert();
+//     } catch(...) {
+//         std::cout << "Greska nije kvadrat\n";
+//     }
+//     try {
+//         Matrix c{{1,2,3},{4,5,6}, {7,8,9}};
+//         c.Invert();
+//     } catch(...) {
+//         std::cout << "Singularna\n";
+//     }
+//     // rref
+//     std::cout << "RREF:\n";
+//     Matrix d{{1,5,-7,4,78,2}, {1,5,2,4,3,6}, {-2,-45,2,6,3.3,2}};
+//     d.ReduceToRREF();
+//     d.Print();
+//     std::cout << d.EqualTo(RREF(d)) << '\n';
+//     // rang
+//     std::cout << "Rang: " << Rank(d) << " " << Rank(a) << '\n';
+// }
+
+// void TestiranjeLU() {
+//     Matrix A{{1, 2, 4}, {4, 5, 6}, {7, 8, 9}};
+//     LUDecomposer lud(A);
+//     std::cout << "LU kompozicija:\n";
+//     lud.GetCompactLU().Print();
+//     Matrix L = lud.GetL();
+//     Matrix U = lud.GetU();
+//     L.Print();
+//     U.Print();
+//     // IZ JULIJE: L factor:
+//     // 3×3 Matrix{Float64}:
+//     //  1.0       0.0  0.0
+//     //  0.142857  1.0  0.0
+//     //  0.571429  0.5  1.0
+//     // U factor:
+//     // 3×3 Matrix{Float64}:
+//     //  7.0  8.0        9.0
+//     //  0.0  0.857143   2.71429
+//     //  0.0  0.0       -0.5
+//     std::cout << "Permutacije:\n";
+//     lud.GetPermuation().Print();
+//     // rjesavanje
+//     Vector x(3);
+//     Vector b{17,32,50};
+//     lud.Solve(b, x);
+//     std::cout << "Ax=b rjesavanje:\n";
+//     x.Print();
+//     x = lud.Solve(b);
+//     x.Print();
+//     std::cout << "AX=B rjesavanje:\n";
+//     Matrix B{{1,2,5},{4,5,6},{7,8,9}};
+//     Matrix X = lud.Solve(B);
+//     X.Print();
+//     lud.Solve(B,X);
+//     X.Print();
+// } 
+
+// void TestiranjeQR() {
+//     std::cout << "Testiranje QR dekompozicije:\n";
+//     Matrix A{{1, 2, 4}, {4, 5, 6}, {7, 8, 9}};
+//     QRDecomposer qrd(A);
+//     Matrix q = qrd.GetQ();
+//     Matrix r = qrd.GetR();
+//     std::cout << "Q:\n";
+//     q.Print();
+//     std::cout << "R:\n";
+//     r.Print();
+//     (qrd.MulQTWith(q)).Print();
+//     qrd.MulQWith(Transpose(q)).Print();
+//     // rjesavanje
+//     Vector x(3);
+//     Vector b{17,32,50};
+//     qrd.Solve(b, x);
+//     std::cout << "Ax=b rjesavanje:\n";
+//     x.Print();
+//     x = qrd.Solve(b);
+//     x.Print();
+//     std::cout << "AX=B rjesavanje:\n";
+//     Matrix B{{1,2,5},{4,5,6},{7,8,9}};
+//     Matrix X = qrd.Solve(B);
+//     X.Print();
+//     qrd.Solve(B,X);
+//     X.Print();
+//     LUDecomposer lud(A);
+//     Matrix X2 = lud.Solve(B);
+//     X2.Print();
+//     std::cout << X2.EqualTo(X) << '\n';
+//     lud.Solve(B,X2);
+//     X2.Print();
+//     std::cout << X2.EqualTo(X) << '\n';
+
+//     throw "Hiljadu linija koda exception\n";
+// }  
+
+// int main() {
+    // TestiranjeNovihFunkcijaZaMatricu();
+    // TestiranjeLU();
+    // try {
+    //     TestiranjeQR();
+    // }catch(const char* &e) {
+    //     std::cout << e << '\n';
+    // }
+// }

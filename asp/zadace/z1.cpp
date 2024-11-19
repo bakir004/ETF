@@ -631,6 +631,7 @@ T dajMaksimum(const Lista<T>& lista) {
     return max;
 }
 
+<<<<<<< HEAD
 /*int main() {*/
 /*    DvostrukaLista<int> lista;*/
 /*    for (int i = 1; i <= 5; i++)*/
@@ -660,3 +661,32 @@ T dajMaksimum(const Lista<T>& lista) {
 /*    for(int i = 0; i < lista.brojElemenata(); i++)*/
 /*        std::cout << lista[i] << " ";*/
 /*}*/
+// int main() {
+//     DvostrukaLista<int> lista;
+//     for (int i = 1; i <= 5; i++)
+//         lista.dodajIspred(i);
+//     for (int i = 1; i <= 5; i++)
+//         lista.dodajIza(i);
+//     lista.ispisi();
+//     lista.obrisi();
+//     lista.obrisi();
+//     lista.ispisi();
+//     while(lista.sljedeci()) {}
+//     lista.obrisi();
+//     lista.ispisi();
+//     lista.pocetak();
+//     lista.obrisi();
+//     lista.ispisi();
+//     std::cout << lista.brojElemenata() << '\n';
+//     lista.kraj();
+//     lista.prethodni();
+//     lista.obrisi();
+//     lista.ispisi();
+//     lista.dodajIspred(999);
+//     lista.dodajIspred(998);
+//     lista.dodajIspred(997);
+//     lista.ispisi();
+//     std::cout << dajMaksimum(lista) << std::endl;
+//     for(int i = 0; i < lista.brojElemenata(); i++)
+//         std::cout << lista[i] << " ";
+// }
