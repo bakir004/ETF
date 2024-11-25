@@ -51,10 +51,19 @@ SELECT a.first_name, a.hire_date, b.first_name AS "Shef name", b.hire_date AS "S
 LEFT JOIN employees b ON a.manager_id = b.employee_id
 WHERE a.hire_date > b.hire_date
 
+SELECT * FROM employees
+WHERE hire_date > TO_DATE('01.01.2000', 'dd.mm.yyyy') 
 
+SELECT decode(
+	MOD(to_number(to_char(hire_date, 'yyyy')), 2),
+	1, ADD_MONTHS(hire_date, -1),
+	0, ADD_MONTHS(hire_date, 1) 
+), hire_date FROM employees
+WHERE TO_NUMBER(to_char(hire_date, 'yyyy')) > 2005
 
+SELECT sum(salary) FROM employees WHERE employee_id IS NULL
 
-
+SELECT Count(job_id), to_number(to_char(hire_date, 'DD')) FROM employees GROUP BY to_number(to_char(hire_date, 'DD')) HAVING count(*) > 11 ORDER BY count(job_id)
 
 
 
