@@ -1,16 +1,29 @@
 public class Variant {
-    int a,b,c,d;
-    public Variant(int a, int b, int c, int d) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
+    public static class Nigga1 {
+        public int a;
+        public Nigga1 (int a) {
+            this.a = a;
+        }
+        public void print() {
+            System.out.println("1:" + a);
+        }
     }
-    public int sracunaj() {
-        if (this.a < this.b && this.c > this.d) return this.a + this.c;
-        if (this.a > this.b && this.c == this.d && this.c == 0) return this.a + this.b;
-        if (this.a > this.b && this.c <= this.d) return this.a + this.d;
-        if (this.a < this.b) return this.c + this.d;
-        return 0;
+    public static class Nigga2 {
+        public int a;
+        public Nigga2 (int a) {
+            this.a = a;
+        }
+        public void print() {
+            System.out.println("2:" + a);
+        }
+    }
+    public static class Nigga3 {
+        public int a;
+        public Nigga3 (int a) {
+            this.a = a;
+        }
+        public void print() {
+            System.out.println("3:" + a);
+        }
     }
 }
