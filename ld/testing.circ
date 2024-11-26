@@ -58,29 +58,11 @@
     <a name="simulationFrequency" val="1.0"/>
     <comp lib="0" loc="(350,420)" name="Pin">
       <a name="appearance" val="NewPins"/>
+      <a name="width" val="4"/>
     </comp>
     <comp lib="0" loc="(350,460)" name="Pin">
       <a name="appearance" val="NewPins"/>
+      <a name="width" val="4"/>
     </comp>
-    <comp lib="0" loc="(680,400)" name="Pin">
-      <a name="appearance" val="NewPins"/>
-      <a name="facing" val="west"/>
-      <a name="output" val="true"/>
-    </comp>
-    <comp lib="1" loc="(510,350)" name="NOT Gate"/>
-    <comp lib="1" loc="(530,440)" name="AND Gate"/>
-    <comp lib="1" loc="(650,400)" name="OR Gate"/>
-    <wire from="(350,420)" to="(390,420)"/>
-    <wire from="(350,460)" to="(480,460)"/>
-    <wire from="(390,350)" to="(390,420)"/>
-    <wire from="(390,350)" to="(480,350)"/>
-    <wire from="(390,420)" to="(480,420)"/>
-    <wire from="(510,350)" to="(590,350)"/>
-    <wire from="(530,440)" to="(590,440)"/>
-    <wire from="(590,350)" to="(590,380)"/>
-    <wire from="(590,380)" to="(600,380)"/>
-    <wire from="(590,420)" to="(590,440)"/>
-    <wire from="(590,420)" to="(600,420)"/>
-    <wire from="(650,400)" to="(680,400)"/>
   </circuit>
 </project>
