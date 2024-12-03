@@ -40,7 +40,6 @@ SELECT DISTINCT m.employee_id, m.first_name, m.department_id FROM employees e, e
 WHERE e.manager_id = m.employee_id 
 AND e.manager_id IS NOT NULL
 
-
 -- 9
 SELECT count(*), TO_CHAR(e.hire_date, 'yyyy') FROM employees e WHERE TO_CHAR(e.hire_date, 'yyyy') IN ('2003', '2007', '2008', '2004')
 GROUP BY TO_CHAR(e.hire_date, 'yyyy')

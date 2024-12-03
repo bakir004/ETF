@@ -219,14 +219,19 @@ SELECT s.sifra, p.cijena
 FROM sef s, koristenje k, korisnik ko, pretplata p
 WHERE k.S_FK = s.ID AND k.K_FK = ko.ID AND p.ID = ko.P_FK 
 
-SELECT * FROM sef
+SELECT * FROM korisnik
 
 SELECT substr(s.sifra, 4) || LENGTH(s.tip) FROM sef s
 WHERE lower(substr(s.sifra, 2, 1)) = lower(substr(s.tip, 1, 1))
 
+SELECT sum(k.brojgodina), avg(korisnik.prioritet)
+FROM koristenje k, korisnik korisnik, sef sef
+WHERE k.s_fk = sef.id AND k.k_fk = korisnik.id AND sef.tip LIKE ('_itanij') OR sef.tip LIKE ('Aluminij')
+GROUP BY sef.tip
+HAVING avg(korisnik.prioritet) > 1
+ORDER BY avg(korisnik.prioritet) DESC
 
-
-
+SELECT id + p_fk FROM PRETPLATA p
 
 
 
