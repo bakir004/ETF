@@ -106,7 +106,69 @@ FROM ugovor u, ugovor nu, tarifa t
 WHERE u.u_fk = nu.id
 AND t.u_fk = nu.id
 
-CREATE TABLE 
+CREATE TABLE koristenje (
+	id NUMBER PRIMARY KEY,
+	datum DATE DEFAULT sysdate,
+	brojgodina NUMBER,
+	s_fk NUMBER REFERENCES sef(id),
+	k_fk NUMBER REFERENCES korisnik(id)
+);
+
+CREATE TABLE sef (
+	id NUMBER PRIMARY KEY,
+	sifra varchar2(6),
+	tip varchar2(30)
+)
+
+CREATE TABLE pretplata (
+	id NUMBER PRIMARY KEY,
+	cijena NUMBER,
+	p_fk NUMBER REFERENCES pretplata(id)
+)
+
+CREATE TABLE korisnik (
+	id NUMBER PRIMARY KEY,
+	prioritet NUMBER,
+	p_fk NUMBER REFERENCES pretplata(id)
+)
+
+SELECT * FROM sef
+
+INSERT INTO sef VALUES (1, 'GTH773', 'Aluminij');
+INSERT INTO sef VALUES (2, 'ATX823', 'Aluminij');
+INSERT INTO sef VALUES (3, 'FTL256', 'Titanij');
+INSERT INTO sef VALUES (4, 'GRO456', 'Adamantij');
+INSERT INTO sef VALUES (5, 'TEL551', 'Kriptonit');
+INSERT INTO sef VALUES (6, 'RAP734', 'Lego');
+INSERT INTO sef VALUES (7, 'GTT744', 'titanij');
+
+SELECT * FROM pretplata;
+
+INSERT INTO pretplata VALUES (1,30,NULL);
+INSERT INTO pretplata VALUES (2,50,NULL);
+INSERT INTO pretplata VALUES (3,70,2);
+INSERT INTO pretplata VALUES (4,20,2);
+
+SELECT * FROM korisnik;
+
+INSERT INTO korisnik VALUES (1,2,1);
+INSERT INTO korisnik VALUES (2,2,2);
+INSERT INTO korisnik VALUES (3,3,2);
+INSERT INTO korisnik VALUES (4,5,4);
+INSERT INTO korisnik VALUES (5,7,4);
+
+SELECT * FROM koristenje;
+
+INSERT INTO koristenje VALUES (1,to_date('21-nov-08', 'dd-mon-yy'),1,1,1);
+INSERT INTO koristenje VALUES (2,to_date('23-dec-09', 'dd-mon-yy'),1,2,2);
+INSERT INTO koristenje VALUES (3,to_date('19-may-10', 'dd-mon-yy'),1,3,2);
+INSERT INTO koristenje VALUES (4,to_date('27-jun-11', 'dd-mon-yy'),2,4,3);
+INSERT INTO koristenje VALUES (5,to_date('28-jul-12', 'dd-mon-yy'),2,5,3);
+INSERT INTO koristenje VALUES (6,to_date('29-aug-13', 'dd-mon-yy'),3,6,1);
+INSERT INTO koristenje VALUES (7,to_date('30-sep-14', 'dd-mon-yy'),3,7,3);
+INSERT INTO koristenje VALUES (8,to_date('22-oct-15', 'dd-mon-yy'),4,1,4);
+INSERT INTO koristenje VALUES (9,to_date('21-nov-16', 'dd-mon-yy'),5,2,5);
+INSERT INTO koristenje VALUES (10,to_date('21-dec-17', 'dd-mon-yy'),5,3,1);
 
 
 
