@@ -190,11 +190,43 @@ SELECT * FROM pretplata;
 
 SELECT count(brojgodina)
 FROM koristenje
-GROUP BY to_number(
-	to_char(datum, 'DD')
-)
+GROUP BY brojgodina
 HAVING count(*) > 1
 ORDER BY count(brojgodina);
+
+SELECT SUM(k.prioritet), sum(p.cijena)
+FROM korisnik k, pretplata p
+WHERE p.id=k.p_fk
+AND k.p_fk IS NULL;
+
+SELECT sifra FROM sef WHERE sifra NOT LIKE 'T'
+AND tip LIKE 't%'
+ORDER BY sifra;
+
+SELECT RPAD(p.id, p.id, 'A'), LPAD(k.id, k.id, 'B')
+FROM korisnik k, pretplata p WHERE k.p_fk = p.p_fk
+
+SELECT * FROM koristenje WHERE datum < to_date('01.01.2013', 'dd.mm.yyyy');
+
+SELECT datum, decode(
+	MOD(to_number(to_char(datum, 'yyyy')),2),
+	1, ADD_MONTHS(datum, -1),
+	0, ADD_MONTHS(datum, 1) 
+) FROM koristenje
+WHERE datum < to_date('01.01.2013', 'dd.mm.yyyy');
+
+SELECT s.sifra, p.cijena 
+FROM sef s, koristenje k, korisnik ko, pretplata p
+WHERE k.S_FK = s.ID AND k.K_FK = ko.ID AND p.ID = ko.P_FK 
+
+SELECT * FROM sef
+
+SELECT substr(s.sifra, 4) || LENGTH(s.tip) FROM sef s
+WHERE lower(substr(s.sifra, 2, 1)) = lower(substr(s.tip, 1, 1))
+
+
+
+
 
 
 
