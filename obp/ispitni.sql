@@ -138,7 +138,7 @@ INSERT INTO sef VALUES (1, 'GTH773', 'Aluminij');
 INSERT INTO sef VALUES (2, 'ATX823', 'Aluminij');
 INSERT INTO sef VALUES (3, 'FTL256', 'Titanij');
 INSERT INTO sef VALUES (4, 'GRO456', 'Adamantij');
-INSERT INTO sef VALUES (5, 'TEL551', 'Kriptonit');
+INSERT INTO sef VALUES (5, 'TEL511', 'Kriptonit');
 INSERT INTO sef VALUES (6, 'RAP734', 'Lego');
 INSERT INTO sef VALUES (7, 'GTT744', 'titanij');
 
@@ -170,8 +170,31 @@ INSERT INTO koristenje VALUES (8,to_date('22-oct-15', 'dd-mon-yy'),4,1,4);
 INSERT INTO koristenje VALUES (9,to_date('21-nov-16', 'dd-mon-yy'),5,2,5);
 INSERT INTO koristenje VALUES (10,to_date('21-dec-17', 'dd-mon-yy'),5,3,1);
 
+SELECT * FROM koristenje;
 
+SELECT DISTINCT substr(s.sifra,3,3) AS O
+FROM sef s, koristenje k
+WHERE s.id=k.s_fk
+AND k.brojgodina<s.id
+ORDER BY O ASC;
 
+SELECT p1.id AS id1,
+	   p2.id AS id2,
+	   p3.id AS id3
+FROM pretplata p1 
+INNER JOIN pretplata p2 ON p1.p_fk=p2.id
+LEFT OUTER JOIN pretplata p3 ON p2.p_fk=p3.id
+ORDER BY id1 ASC; 
+
+SELECT * FROM pretplata;
+
+SELECT count(brojgodina)
+FROM koristenje
+GROUP BY to_number(
+	to_char(datum, 'DD')
+)
+HAVING count(*) > 1
+ORDER BY count(brojgodina);
 
 
 
