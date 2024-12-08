@@ -1,3 +1,5 @@
+ALTER SESSION SET current_schema = erd;
+
 -- 1
 SELECT k.naziv AS kontinent, nvl(d.naziv, 'Nema drzave') AS drzava, nvl(g.naziv, 'Nema grada') AS grad, count(l.lokacija_id) AS brojlokacija
 FROM kontinent k
