@@ -1,0 +1,20 @@
+<osobe>
+    <osoba>
+        <id>1</id>
+        <ime>John</ime>
+        <prezime>Doe</prezime>
+        <adresa>Some Address</adresa>
+        <datumRodjenja>1995-01-15</datumRodjenja>
+        <maticniBroj>1501995123456</maticniBroj>
+        <uloga>STUDENT</uloga>
+    </osoba>
+    <osoba>
+        <id>2</id>
+        <ime>Alice</ime>
+        <prezime>Alister</prezime>
+        <adresa>Another Address</adresa>
+        <datumRodjenja>1980-05-20</datumRodjenja>
+        <maticniBroj>2005980444444</maticniBroj>
+        <uloga>NASTAVNO_OSOBLJE</uloga>
+    </osoba>
+</osobe>
