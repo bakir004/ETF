@@ -1017,6 +1017,7 @@ public:
 // }  
 
 /*int main() {*/
+/*    int* leak = new int;*/
 /*    TestiranjeNovihFunkcijaZaMatricu();*/
 /*    TestiranjeLU();*/
 /*    try {*/
