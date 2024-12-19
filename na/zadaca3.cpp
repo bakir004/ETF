@@ -160,14 +160,14 @@ public:
 };
 
 class SplineInterpolator : public AbstractInterpolator {
-    VectorDouble r;
+    VectorDouble r, q, s;
     int clamp(int min, int max, int target) const {
         if(target < min) return min;
         if(target > max) return max;
         return target;
     }
 public:
-    SplineInterpolator(const std::vector<std::pair<double, double>> &dataUnsorted): AbstractInterpolator(dataUnsorted), r(data.size()) {
+    SplineInterpolator(const std::vector<std::pair<double, double>> &dataUnsorted): AbstractInterpolator(dataUnsorted), r(data.size()), s(data.size()), q(data.size()) {
         int n = data.size();
         r[0] = 0;
         r[n-1] = 0;
@@ -185,37 +185,50 @@ public:
         r.at(n-2)/=alpha.at(n-2);
         for(int i = n-3; i >= 1; i--)
             r.at(i) = (r.at(i)-(data.at(i+1).first-data.at(i).first)*r.at(i+1))/alpha.at(i);
+
+        for(int i = 0; i < n-1; i++) {
+            double deltaX = data.at(i+1).first - data.at(i).first;
+            s.at(i) = (r.at(i+1)-r.at(i))/(3*deltaX);
+            q.at(i) = (data.at(i+1).second-data.at(i).second)/deltaX - deltaX*(r.at(i+1)+2*r.at(i))/3;
+        }
     }
     double operator()(double x) const override {
         int n = data.size();
         int foundInterval = Locate(x);
         int i = clamp(1, data.size()-1, foundInterval)-1;
-        std::cout << "x: " << x << ", i: " << i << ", found: " << foundInterval <<  "\n";
-        double xn = data.at(n-1).first, yn = data.at(n-1).second;
-        double xi = data.at(i).first, yi = data.at(i).second;
-        double t = x-xi;
-        double deltaX = data.at(i+1).first - xi;
-        double s = (r.at(i+1)-r.at(i))/(3*deltaX);
-        double q = (data.at(i+1).second-yi)/deltaX - deltaX*(r.at(i+1)+2*r.at(i))/3;
-        /*if(foundInterval == n) {*/
-        std::cout << q << "(x-" << xi << ")+" << r[i] << "(x-" << xi << ")^2+" << s << "(x-" << xi << ")^3\n";
-        /*    double k = q*/
-        /*        + 2*r.at(i)*(xn-xi)*/
-        /*        + 3*s*(xn-xi)*(xn-xi);*/
-        /*    double m = yn-k*xn;*/
-        /*    std::cout << "k: " << k << ", m: " << m << "\n";*/
-        /*    return k*x + m;*/
-        /*} else if(foundInterval == 0) {*/
-        /*    double k = q */
-        /*        + 2*r.at(i)*(data.at(0).first-data.at(i).first)*/
-        /*        + 3*s*(data.at(0).first-data.at(i).first)*(data.at(0).first-data.at(i).first);*/
-        /*    double m = data.at(0).second-k*data.at(0).first;*/
-        /*    std::cout << "k: " << k << ", m: " << m << "\n";*/
-        /*    return k*x + m;*/
-        /*}*/
-        return data.at(i).second + t*(q+t*(r.at(i)+t*s));
+
+        /*std::cout << "x: " << x << ", i: " << i << ", found: " << foundInterval <<  "\n";*/
+
+        /*double xn = data.at(n-1).first, yn = data.at(n-1).second;*/
+        /*double xi = data.at(i).first, yi = data.at(i).second;*/
+        /*double t = x-xi;*/
+        /*double deltaX = data.at(i+1).first - xi;*/
+        /*double s = (r.at(i+1)-r.at(i))/(3*deltaX);*/
+        /*double q = (data.at(i+1).second-yi)/deltaX - deltaX*(r.at(i+1)+2*r.at(i))/3;*/
+
+
+        /*return data.at(i).second + t*(q+t*(r.at(i)+t*s));*/
+        double t = x-data[i].first;
+        return data[i].second + t *(q[i] + t*(r[i] + t*s[i]));
     }
 };
+
+/*if(foundInterval == n) {*/
+/*std::cout << q << "(x-" << xi << ")+" << r[i] << "(x-" << xi << ")^2+" << s << "(x-" << xi << ")^3\n";*/
+/*    double k = q*/
+/*        + 2*r.at(i)*(xn-xi)*/
+/*        + 3*s*(xn-xi)*(xn-xi);*/
+/*    double m = yn-k*xn;*/
+/*    std::cout << "k: " << k << ", m: " << m << "\n";*/
+/*    return k*x + m;*/
+/*} else if(foundInterval == 0) {*/
+/*    double k = q */
+/*        + 2*r.at(i)*(data.at(0).first-data.at(i).first)*/
+/*        + 3*s*(data.at(0).first-data.at(i).first)*(data.at(0).first-data.at(i).first);*/
+/*    double m = data.at(0).second-k*data.at(0).first;*/
+/*    std::cout << "k: " << k << ", m: " << m << "\n";*/
+/*    return k*x + m;*/
+/*}*/
 
 class BarycentricInterpolator : public AbstractInterpolator {
     VectorDouble w;
