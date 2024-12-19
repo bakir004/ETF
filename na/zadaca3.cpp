@@ -169,15 +169,15 @@ class SplineInterpolator : public AbstractInterpolator {
 public:
     SplineInterpolator(const std::vector<std::pair<double, double>> &dataUnsorted): AbstractInterpolator(dataUnsorted), r(data.size()), s(data.size()), q(data.size()) {
         int n = data.size();
-        r[0] = 0;
-        r[n-1] = 0;
+        r.at(0) = 0;
+        r.at(n-1) = 0;
         VectorDouble alpha(n);
         for(int i = 1; i <= n-2; i++) {
             alpha[i] = 2*(data.at(i+1).first-data.at(i-1).first);
             r[i] = 3*((data.at(i+1).second-data.at(i).second)/(data.at(i+1).first-data.at(i).first)-
                       (data.at(i).second-data.at(i-1).second)/(data.at(i).first-data.at(i-1).first));
         }
-        for(int i = 1; i <= n-2; i++) {
+        for(int i = 1; i < n-2; i++) {
             double mi = (data.at(i+1).first - data.at(i).first)/alpha.at(i);
             alpha.at(i+1) -= mi*(data.at(i+1).first-data.at(i).first);
             r.at(i+1) -= mi*r.at(i);
@@ -196,39 +196,10 @@ public:
         int n = data.size();
         int foundInterval = Locate(x);
         int i = clamp(1, data.size()-1, foundInterval)-1;
-
-        /*std::cout << "x: " << x << ", i: " << i << ", found: " << foundInterval <<  "\n";*/
-
-        /*double xn = data.at(n-1).first, yn = data.at(n-1).second;*/
-        /*double xi = data.at(i).first, yi = data.at(i).second;*/
-        /*double t = x-xi;*/
-        /*double deltaX = data.at(i+1).first - xi;*/
-        /*double s = (r.at(i+1)-r.at(i))/(3*deltaX);*/
-        /*double q = (data.at(i+1).second-yi)/deltaX - deltaX*(r.at(i+1)+2*r.at(i))/3;*/
-
-
-        /*return data.at(i).second + t*(q+t*(r.at(i)+t*s));*/
         double t = x-data[i].first;
         return data[i].second + t *(q[i] + t*(r[i] + t*s[i]));
     }
 };
-
-/*if(foundInterval == n) {*/
-/*std::cout << q << "(x-" << xi << ")+" << r[i] << "(x-" << xi << ")^2+" << s << "(x-" << xi << ")^3\n";*/
-/*    double k = q*/
-/*        + 2*r.at(i)*(xn-xi)*/
-/*        + 3*s*(xn-xi)*(xn-xi);*/
-/*    double m = yn-k*xn;*/
-/*    std::cout << "k: " << k << ", m: " << m << "\n";*/
-/*    return k*x + m;*/
-/*} else if(foundInterval == 0) {*/
-/*    double k = q */
-/*        + 2*r.at(i)*(data.at(0).first-data.at(i).first)*/
-/*        + 3*s*(data.at(0).first-data.at(i).first)*(data.at(0).first-data.at(i).first);*/
-/*    double m = data.at(0).second-k*data.at(0).first;*/
-/*    std::cout << "k: " << k << ", m: " << m << "\n";*/
-/*    return k*x + m;*/
-/*}*/
 
 class BarycentricInterpolator : public AbstractInterpolator {
     VectorDouble w;
@@ -276,7 +247,6 @@ int main() {
     for(double i=0; i<=2*PI3; i+=PI3/2)
         data3.push_back({i,std::cos(i)});
     SplineInterpolator si3(data3);
-    si3.PrintDataset();
     std::cout<<si3(-0.1)<<" "<<std::cos(-0.1)<<std::endl;
     std::cout<<si3(-0.2)<<" "<<std::cos(-0.2)<<std::endl;
     std::cout<<std::round(si3(PI3/2))<<" "<<std::round(std::cos(PI3/2))<<std::endl;
