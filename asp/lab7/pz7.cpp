@@ -116,25 +116,93 @@ class BinStabloMapa: public Mapa<K,V> {
         Cvor* lijevo;
         Cvor* desno;
         Cvor* roditelj;
-        Cvor(const K& kljuc, const V& vrijednost, Cvor* lijevo, Cvor* desno, Cvor* roditelj) : kljuc(kljuc), vrijednost(vrijednost), lijevo(lijevo), desno(desno), roditelj(roditelj) {}
+        int tezina;
     };
     Cvor* korijen;
     int brojEl;
+    int dajVisinu(Cvor* c) {
+        if(c == nullptr) return -1;
+        return 1 + std::max(dajVisinu(c->lijevo), dajVisinu(c->desno));
+    }
     void brisiOdDatogCvoraNadole(Cvor* c) {
         if(c == nullptr)
             return;
         Cvor* lijevi = c->lijevo;
         Cvor* desni = c->desno;
-        std::cout << "brisem vrijednost: " << c->vrijednost << std::endl;
         delete c;
         brisiOdDatogCvoraNadole(lijevi);
         brisiOdDatogCvoraNadole(desni);
     }
+    void ispisi(Cvor* c) const { 
+        if(c == nullptr) { return; }
+        std::cout << "(" << c->kljuc << ", " << c->vrijednost << ", " << c->tezina << ")\n";
+        if(c->lijevo != nullptr)
+            std::cout << "Lijevo od " << c->kljuc << ": " << c->lijevo->kljuc << "\n";
+        if(c->desno != nullptr)
+            std::cout << "Desno od " << c->kljuc << ": " << c->desno->kljuc << "\n";
+        ispisi(c->lijevo);
+        ispisi(c->desno);
+    }
+    void lijevaRotacija(Cvor* c) {
+        /*std::cout << "ROTIRAM LIJEVO OKO " << c->kljuc << "\n";*/
+        Cvor* babo = c->roditelj;
+        Cvor* dedo = babo->roditelj;
+
+        babo->desno = c->lijevo;
+        if (c->lijevo != nullptr)
+            c->lijevo->roditelj = babo;
+
+        c->lijevo = babo;
+        babo->roditelj = c;
+        c->roditelj = dedo;
+
+        if (dedo != nullptr) {
+            if (dedo->lijevo == babo)
+                dedo->lijevo = c;
+            else
+                dedo->desno = c;
+        } else {
+            korijen = c;
+        }
+
+        babo->tezina = dajVisinu(babo->lijevo) - dajVisinu(babo->desno);
+        c->tezina = dajVisinu(c->lijevo) - dajVisinu(c->desno);
+    }
+
+    void desnaRotacija(Cvor* c) {
+        /*std::cout << "ROTIRAM DESNO OKO " << c->kljuc << "\n";*/
+        Cvor* babo = c->roditelj;
+        Cvor* dedo = babo->roditelj;
+
+        babo->lijevo = c->desno;
+        if (c->desno != nullptr)
+            c->desno->roditelj = babo;
+
+        c->desno = babo;
+        babo->roditelj = c;
+        c->roditelj = dedo;
+
+        if (dedo != nullptr) {
+            if (dedo->lijevo == babo)
+                dedo->lijevo = c;
+            else
+                dedo->desno = c;
+        } else {
+            korijen = c;
+        }
+
+        babo->tezina = dajVisinu(babo->lijevo) - dajVisinu(babo->desno);
+        c->tezina = dajVisinu(c->lijevo) - dajVisinu(c->desno);
+    }
+    void ispisiCvor(Cvor* c) {
+        if(c == nullptr) std::cout << "nullptr\n";
+        std::cout << "Cvor (" << c->kljuc << ", " << c->vrijednost << ", " << c->tezina << ")\n";
+        std::cout << "Lijevo: " << (c->lijevo ? c->lijevo->kljuc : -1) << "\n";
+        std::cout << "Desno: " << (c->desno ? c->desno->kljuc : -1) << "\n";
+    }
 public:
     BinStabloMapa() : korijen(nullptr), brojEl(0) {}
-    ~BinStabloMapa() {
-        obrisi();
-    }
+    ~BinStabloMapa() { obrisi(); }
     V operator[](const K& kljuc) const {
         Cvor* temp = korijen;
         while (temp != nullptr) {
@@ -149,42 +217,67 @@ public:
     }
     V& operator[](const K& kljuc) {
         if(korijen == nullptr) {
-            korijen = new Cvor(kljuc, V(), nullptr, nullptr, nullptr);
+            korijen = new Cvor{kljuc, V(), nullptr, nullptr, nullptr, 0};
             brojEl++;
             return korijen->vrijednost;
         }
         Cvor* temp = korijen;
-        Cvor* roditelj = temp->roditelj;
+        Cvor* roditelj = nullptr;
+        bool stavljamDesno = false;
         while (temp != nullptr) {
             if (kljuc == temp->kljuc)
                 return temp->vrijednost;
             else if (kljuc < temp->kljuc) {
                 roditelj = temp;
+                roditelj->tezina--;
                 temp = temp->lijevo;
-                roditelj->lijevo= temp;
+                stavljamDesno = false;
             } else {
                 roditelj = temp;
+                roditelj->tezina++;
                 temp = temp->desno;
-                roditelj->desno = temp;
+                stavljamDesno = true;
             }
         }
-        temp = new Cvor(kljuc, V(), nullptr, nullptr, roditelj);
-        std::cout << "Cvoru " << temp->kljuc << temp->vrijednost << " je babo " << roditelj->kljuc << ", " << roditelj->desno->vrijednost << std::endl;
+        temp = new Cvor{kljuc, V(), nullptr, nullptr, roditelj, 0};
+        if(!stavljamDesno) roditelj->lijevo = temp;
+        else roditelj->desno = temp;
         brojEl++;
+        Cvor* c = temp->roditelj;
+        while(c != nullptr) {
+            if(c->tezina >= 2) {
+                if(c->desno->tezina == -1)
+                    desnaRotacija(c->desno->lijevo);
+                lijevaRotacija(c->desno);
+                break;
+            } else if(c->tezina <= -2) {
+                if(c->lijevo->tezina == 1)
+                    lijevaRotacija(c->lijevo->desno);
+                desnaRotacija(c->lijevo);
+                break;
+            }
+            c = c->roditelj;
+        }
         return temp->vrijednost;
     }
     void obrisi() {brisiOdDatogCvoraNadole(korijen); korijen = nullptr; brojEl = 0;}
     void obrisi(const K& kljuc) {}
     int brojElemenata() const { return brojEl; }
-    void ispisi() const {}
+    void ispisi() const { ispisi(korijen); }
 };
 
 int main() {
     BinStabloMapa<int, int> m1;
     m1[1] = 2;
-    std::cout << m1[1] << std::endl;
-    m1[5] = 13;
-    std::cout << m1[5] << std::endl;
+    m1[5] = 22;
+    m1[6] = -3;
+    m1[4] = 6;
+    m1[3] = 2;
+    m1[2] = 5;
+    m1[8] = 1;
+    m1[0] = 1;
+    m1[7] = 1;
+    m1.ispisi();
 
     return 0;
 }
