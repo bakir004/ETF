@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <vector>
 #include <algorithm>
+#define EPSILON 0.00000001
 
 typedef std::pair<double, double> Par;
 typedef std::vector<Par> Dataset;
@@ -241,17 +242,76 @@ public:
     std::vector<double> GetWeights() const { return w; }
 };
 
+class TrigonometricInterpolator : public AbstractInterpolator {
+public:
+    TrigonometricInterpolator(const std::vector<std::pair<double, double>> &data): AbstractInterpolator(data) {
+        if(std::abs(data[0].second - data[data.size()-1].second) >= EPSILON) throw std::domain_error("Function is not periodic");
+    }
+    double operator()(double x) const override {
+        double PI = std::atan(1)*4;
+        int n = data.size();
+        double T = data[n-1].first - data[0].first;
+        double omega = 2*PI/T;
+        double s = 0;
+        if(n % 2 == 0) {
+            int m = (n-2)/2;
+            for(int k = 0; k < 2*m+1; k++) {
+                double p = data[k].second;
+                for(int j = 0; j < 2*m+1; j++) {
+                    if(j == k) continue;
+                    p *= (std::sin(omega/2)*(x-data[j].first))/(std::sin(omega/2)*(data[k].first-data[j].first));
+                }
+                s += p;
+            }
+        } else {
+            int m = (n-1)/2;
+            for(int k = 0; k < 2*m; k++) {
+                double p = data[k].second;
+                double alpha = 0;
+                for(int j = 0; j < 2*m; j++) {
+                    if(j == k) continue;
+                    alpha -= data[j].first;
+                    p *= (std::sin(omega/2)*(x-data[j].first))/(std::sin(omega/2)*(data[k].first-data[j].first));
+                }
+                p *= (std::sin(omega/2)*(x-alpha))/(std::sin(omega/2)*(data[k].first-alpha));
+                s += p;
+            }
+        }
+        return s;
+    }
+};
+
+double f(double x) {
+    return std::sin(2*x) + std::cos(3*x);
+}
+void TestiranjeTrigonometrijskog() {
+    // Svakako, vrlo je moguc previd tokom kodiranja TrigonometricInterpolator klase, 
+    // ali rezultati interpolacije ne daju uopce zadovoljavajuce rezultate.
+    //
+    // Nakon detaljnog testiranja u Julia-i, izgleda da je jednostavno
+    // trigonometrijska interpolacija nedovoljno dobra koristeci ovaj kod:
+    //
+    // itp = Interpolations.scale(interpolate(ydata1, BSpline(Cubic(Periodic())), OnGrid()), xdata1)
+    // etp = Interpolations.extrapolate(itp, Interpolations.Periodic())
+    //
+    // i onda koristeci etp kao funkciju za pronalazenje vrijednosti tacke x trig polinoma.
+    // 
+    double PI = std::atan(1)*4;
+    Dataset data;
+    for(double i = 0; i <= 2*PI; i+=PI/4)
+        data.push_back({i, f(i)});
+
+    TrigonometricInterpolator ti(data);
+    ti.PrintDataset();
+    for(double i = 0; i < 2*PI; i+=PI/8)
+        std::cout << ti(i) << " " << f(i) << "\n";
+    // std::cout << ti(0.2) << ", " << f(0.2) << '\n';
+    // std::cout << ti(1.25) << ", " << f(1.25) << '\n';
+    // std::cout << ti(2.1) << ", " << f(2.1) << '\n';
+}
+
+
 int main() {
-    const double PI3=std::atan(1)*4;
-    std::vector<std::pair<double,double>> data3;
-    for(double i=0; i<=2*PI3; i+=PI3/2)
-        data3.push_back({i,std::cos(i)});
-    SplineInterpolator si3(data3);
-    std::cout<<si3(-0.1)<<" "<<std::cos(-0.1)<<std::endl;
-    std::cout<<si3(-0.2)<<" "<<std::cos(-0.2)<<std::endl;
-    std::cout<<std::round(si3(PI3/2))<<" "<<std::round(std::cos(PI3/2))<<std::endl;
-    std::cout<<si3(PI3/2+0.1)<<" "<<std::cos(PI3/2+0.1)<<std::endl;
-    std::cout<<si3(PI3*3+0.1)<<" "<<std::cos(PI3*3+0.1)<<std::endl;
-    std::cout<<si3(PI3*3+0.2)<<" "<<std::cos(PI3*3+0.2);
+    TestiranjeTrigonometrijskog();
     return 0;
 }
