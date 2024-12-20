@@ -9,6 +9,8 @@ typedef std::pair<double, double> Par;
 typedef std::vector<Par> Dataset;
 typedef std::vector<double> VectorDouble;
 
+const double PI = std::atan(1)*4;
+
 class AbstractInterpolator {
     mutable int lastAccessedInterval;
 protected:
@@ -36,9 +38,10 @@ public:
     }
     virtual double operator()(double x) const = 0;
     void PrintDataset() {
+        std::cout << "[";
         for(int i = 0; i < data.size(); i++)
-            std::cout << "" << data[i].first << " " << data[i].second << "\n";
-        std::cout << "\n";
+            std::cout << "" << data[i].first << ", " << data[i].second << "; ";
+        std::cout << "]\n";
     }
 };
 
@@ -245,7 +248,8 @@ public:
 class TrigonometricInterpolator : public AbstractInterpolator {
 public:
     TrigonometricInterpolator(const std::vector<std::pair<double, double>> &data): AbstractInterpolator(data) {
-        if(std::abs(data[0].second - data[data.size()-1].second) >= EPSILON) throw std::domain_error("Function is not periodic");
+        if(std::fabs(data[0].second - data[data.size()-1].second) >= EPSILON) throw std::domain_error("Function is not periodic");
+        else this->data.pop_back();
     }
     double operator()(double x) const override {
         double PI = std::atan(1)*4;
@@ -254,21 +258,19 @@ public:
         double omega = 2*PI/T;
         double s = 0;
         if(n % 2 == 0) {
-            int m = (n-2)/2;
-            for(int k = 0; k < 2*m+1; k++) {
+            for(int k = 0; k < n-1; k++) {
                 double p = data[k].second;
-                for(int j = 0; j < 2*m+1; j++) {
+                for(int j = 0; j < n-1; j++) {
                     if(j == k) continue;
                     p *= (std::sin(omega/2)*(x-data[j].first))/(std::sin(omega/2)*(data[k].first-data[j].first));
                 }
                 s += p;
             }
         } else {
-            int m = (n-1)/2;
-            for(int k = 0; k < 2*m; k++) {
+            for(int k = 0; k < n-1; k++) {
                 double p = data[k].second;
                 double alpha = 0;
-                for(int j = 0; j < 2*m; j++) {
+                for(int j = 0; j < n-1; j++) {
                     if(j == k) continue;
                     alpha -= data[j].first;
                     p *= (std::sin(omega/2)*(x-data[j].first))/(std::sin(omega/2)*(data[k].first-data[j].first));
@@ -281,37 +283,117 @@ public:
     }
 };
 
-double f(double x) {
-    return std::sin(2*x) + std::cos(3*x);
+double P(double x) {
+    return 0.5729*x*x*x-2.5253*x*x+5.241*x-2.0002;
 }
-void TestiranjeTrigonometrijskog() {
-    // Svakako, vrlo je moguc previd tokom kodiranja TrigonometricInterpolator klase, 
-    // ali rezultati interpolacije ne daju uopce zadovoljavajuce rezultate.
-    //
-    // Nakon detaljnog testiranja u Julia-i, izgleda da je jednostavno
-    // trigonometrijska interpolacija nedovoljno dobra koristeci ovaj kod:
-    //
-    // itp = Interpolations.scale(interpolate(ydata1, BSpline(Cubic(Periodic())), OnGrid()), xdata1)
-    // etp = Interpolations.extrapolate(itp, Interpolations.Periodic())
-    //
-    // i onda koristeci etp kao funkciju za pronalazenje vrijednosti tacke x trig polinoma.
-    // 
-    double PI = std::atan(1)*4;
-    Dataset data;
-    for(double i = 0; i <= 2*PI; i+=PI/4)
-        data.push_back({i, f(i)});
-
-    TrigonometricInterpolator ti(data);
-    ti.PrintDataset();
-    for(double i = 0; i < 2*PI; i+=PI/8)
-        std::cout << ti(i) << " " << f(i) << "\n";
-    // std::cout << ti(0.2) << ", " << f(0.2) << '\n';
-    // std::cout << ti(1.25) << ", " << f(1.25) << '\n';
-    // std::cout << ti(2.1) << ", " << f(2.1) << '\n';
+double trigP(double x) {
+    return 0.5*std::sin(2*x) + 2*std::cos(3*x) - std::sin(x);
 }
 
+void Testiranje() {
+    double donjaGranica = -3, gornjaGranica = 3;
+    double testnaDonjaGranica = -3, testnaGornjaGranica = 3;
+    double N = 24, gustiN = 50;
+
+    Dataset tackePolinoma;
+    Dataset tackeSinusa;
+    Dataset gusteTackeSinusa;
+    Dataset tackeTrigPolinoma;
+
+    for(double i = donjaGranica; i < gornjaGranica; i+=(gornjaGranica-donjaGranica)/N) {
+        tackePolinoma.push_back({i, P(i)});
+        tackeSinusa.push_back({i, std::sin(i)});
+    }
+    for(double i = donjaGranica; i < gornjaGranica; i+=(gornjaGranica-donjaGranica)/gustiN)
+        gusteTackeSinusa.push_back({i, std::sin(i)});
+
+    for(double i = -2*PI; i <= 2*PI+0.1; i+=PI/8)
+        tackeTrigPolinoma.push_back({i, trigP(i)});
+
+    PolynomialInterpolator pi(tackePolinoma);
+
+    LinearInterpolator li(gusteTackeSinusa);
+    PiecewisePolynomialInterpolator ppi(tackeSinusa, 3);
+    SplineInterpolator si(tackeSinusa);
+    BarycentricInterpolator bi(tackeSinusa, 4);
+    TrigonometricInterpolator ti(tackeTrigPolinoma);
+
+    // std::cout << "Tacke polinoma:\n";
+    // pi.PrintDataset();
+    // std::cout << "\nTacke sinusoide:\n";
+    // ppi.PrintDataset();
+    // std::cout << "\nTacke guste sinusoide:\n";
+    // li.PrintDataset();
+
+    double e1 = 0, e2 = 0, einf = 0;
+    std::cout.precision(15);
+
+    std::cout << "Ispitivanje PolynomialInterpolator klase nad polinomom:\n";
+    for(double i = testnaDonjaGranica; i <= testnaGornjaGranica; i+=0.25) {
+        double greska = pi(i) - P(i);
+        e1 += std::fabs(greska);
+        e2 += greska*greska;
+        einf = std::max(std::fabs(greska), einf);
+    }
+    std::cout << "E1: " << e1 << ", E2: " << e2 << ", Einf: " << einf << "\n";
+
+    e1 = e2 = einf = 0;
+
+    std::cout << "Ispitivanje LinearInterpolator klase nad sinusom:\n";
+    for(double i = testnaDonjaGranica; i <= testnaGornjaGranica; i+=0.25) {
+        double greska = li(i) - std::sin(i);
+        e1 += std::fabs(greska);
+        e2 += greska*greska;
+        einf = std::max(std::fabs(greska), einf);
+    }
+    std::cout << "E1: " << e1 << ", E2: " << e2 << ", Einf: " << einf << "\n";
+
+    e1 = e2 = einf = 0;
+
+    std::cout << "Ispitivanje SplineInterpolator klase nad sinusom:\n";
+    for(double i = testnaDonjaGranica; i <= testnaGornjaGranica; i+=0.25) {
+        double greska = si(i) - std::sin(i);
+        e1 += std::fabs(greska);
+        e2 += greska*greska;
+        einf = std::max(std::fabs(greska), einf);
+    }
+    std::cout << "E1: " << e1 << ", E2: " << e2 << ", Einf: " << einf << "\n";
+
+    e1 = e2 = einf = 0;
+
+    std::cout << "Ispitivanje PiecewisePolynomialInterpolator klase nad sinusom:\n";
+    for(double i = testnaDonjaGranica; i <= testnaGornjaGranica; i+=0.25) {
+        double greska = ppi(i) - std::sin(i);
+        e1 += std::fabs(greska);
+        e2 += greska*greska;
+        einf = std::max(std::fabs(greska), einf);
+    }
+    std::cout << "E1: " << e1 << ", E2: " << e2 << ", Einf: " << einf << "\n";
+
+    e1 = e2 = einf = 0;
+
+    std::cout << "Ispitivanje BarycentricInterpolator klase nad sinusom:\n";
+    for(double i = testnaDonjaGranica; i <= testnaGornjaGranica; i+=0.25) {
+        double greska = bi(i) - std::sin(i);
+        e1 += std::fabs(greska);
+        e2 += greska*greska;
+        einf = std::max(std::fabs(greska), einf);
+    }
+    std::cout << "E1: " << e1 << ", E2: " << e2 << ", Einf: " << einf << "\n";
+
+    e1 = e2 = einf = 0;
+
+    std::cout << "Ispitivanje TrigonometricInterpolator klase nad trigonometrijskim polinomom:\n";
+    for(double i = testnaDonjaGranica; i <= testnaGornjaGranica; i+=0.25) {
+        double greska = ti(i) - trigP(i);
+        e1 += std::fabs(greska);
+        e2 += greska*greska;
+        einf = std::max(std::fabs(greska), einf);
+    }
+    std::cout << "E1: " << e1 << ", E2: " << e2 << ", Einf: " << einf << "\n";
+}
 
 int main() {
-    TestiranjeTrigonometrijskog();
+    Testiranje();
     return 0;
 }
