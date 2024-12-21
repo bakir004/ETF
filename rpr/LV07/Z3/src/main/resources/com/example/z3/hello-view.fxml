@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<VBox spacing="10" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.z3.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <VBox spacing="5">
+        <Label text="Naziv predmeta:"/>
+        <HBox spacing="5">
+            <TextField fx:id="nazivInput" promptText="Unesite naziv predmeta"/>
+            <Button text="Azuriraj naziv" onAction="#onAzurirajNazivButtonClick"/>
+        </HBox>
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="ECTS bodovi:"/>
+        <HBox spacing="5">
+            <TextField fx:id="ectsInput" promptText="Unesite ECTS bodove"/>
+            <Button text="Azuriraj ECTS" onAction="#onAzurirajECTSButtonClick"/>
+        </HBox>
+    </VBox>
+    <Label text="Azurirajte atribute predmeta po volji!" fx:id="responseText"/>
+
+    <HBox spacing="10" styleClass="predmet">
+        <Label text="Trenutni predmet:"/>
+        <Label fx:id="predmetNazivText"/>
+        <Label fx:id="predmetECTSText"/>
+    </HBox>
+</VBox>

@@ -1,8 +1,5 @@
-#include <ctime>
-#include <iostream>
-#include <functional>
-#include <cstdlib>
-#include <vector>
+#include<iostream>
+#include<string>
 
 const float FAKTOR_PROSIRENJA = 1.5;
 const int POCETNA_VELICINA = 10;
@@ -123,6 +120,10 @@ class BinStabloMapa: public Mapa<K,V> {
     };
     Cvor* korijen;
     int brojEl;
+    int dajVisinu(Cvor* c) {
+        if(c == nullptr) return -1;
+        return 1 + std::max(dajVisinu(c->lijevo), dajVisinu(c->desno));
+    }
     void brisiOdDatogCvoraNadole(Cvor* c) {
         if(c == nullptr)
             return;
@@ -142,42 +143,66 @@ class BinStabloMapa: public Mapa<K,V> {
         ispisi(c->lijevo);
         ispisi(c->desno);
     }
+    void lijevaRotacija(Cvor* c) {
+        /*std::cout << "ROTIRAM LIJEVO OKO " << c->kljuc << "\n";*/
+        Cvor* babo = c->roditelj;
+        Cvor* dedo = babo->roditelj;
+
+        babo->desno = c->lijevo;
+        if (c->lijevo != nullptr)
+            c->lijevo->roditelj = babo;
+
+        c->lijevo = babo;
+        babo->roditelj = c;
+        c->roditelj = dedo;
+
+        if (dedo != nullptr) {
+            if (dedo->lijevo == babo)
+                dedo->lijevo = c;
+            else
+                dedo->desno = c;
+        } else {
+            korijen = c;
+        }
+
+        babo->tezina = dajVisinu(babo->lijevo) - dajVisinu(babo->desno);
+        c->tezina = dajVisinu(c->lijevo) - dajVisinu(c->desno);
+    }
+
+    void desnaRotacija(Cvor* c) {
+        /*std::cout << "ROTIRAM DESNO OKO " << c->kljuc << "\n";*/
+        Cvor* babo = c->roditelj;
+        Cvor* dedo = babo->roditelj;
+
+        babo->lijevo = c->desno;
+        if (c->desno != nullptr)
+            c->desno->roditelj = babo;
+
+        c->desno = babo;
+        babo->roditelj = c;
+        c->roditelj = dedo;
+
+        if (dedo != nullptr) {
+            if (dedo->lijevo == babo)
+                dedo->lijevo = c;
+            else
+                dedo->desno = c;
+        } else {
+            korijen = c;
+        }
+
+        babo->tezina = dajVisinu(babo->lijevo) - dajVisinu(babo->desno);
+        c->tezina = dajVisinu(c->lijevo) - dajVisinu(c->desno);
+    }
+    void ispisiCvor(Cvor* c) {
+        if(c == nullptr) std::cout << "nullptr\n";
+        std::cout << "Cvor (" << c->kljuc << ", " << c->vrijednost << ", " << c->tezina << ")\n";
+        std::cout << "Lijevo: " << (c->lijevo ? c->lijevo->kljuc : -1) << "\n";
+        std::cout << "Desno: " << (c->desno ? c->desno->kljuc : -1) << "\n";
+    }
 public:
     BinStabloMapa() : korijen(nullptr), brojEl(0) {}
     ~BinStabloMapa() { obrisi(); }
-    BinStabloMapa(const BinStabloMapa& b) : korijen(nullptr), brojEl(0) {
-        std::function<Cvor*(Cvor*)> kopiraj = [&](Cvor* c) -> Cvor* {
-            if (c == nullptr) return nullptr;
-            Cvor* noviCvor = new Cvor{c->kljuc, c->vrijednost, nullptr, nullptr, nullptr, c->tezina};
-            noviCvor->lijevo = kopiraj(c->lijevo);
-            noviCvor->desno = kopiraj(c->desno);
-            if (noviCvor->lijevo) noviCvor->lijevo->roditelj = noviCvor;
-            if (noviCvor->desno) noviCvor->desno->roditelj = noviCvor;
-            return noviCvor;
-        };
-
-        korijen = kopiraj(b.korijen);
-        brojEl = b.brojEl;
-    }
-    BinStabloMapa& operator=(const BinStabloMapa& b) {
-        if (this != &b) {
-            obrisi();
-
-            std::function<Cvor*(Cvor*)> kopiraj = [&](Cvor* c) -> Cvor* {
-                if (c == nullptr) return nullptr;
-                Cvor* noviCvor = new Cvor{c->kljuc, c->vrijednost, nullptr, nullptr, nullptr, c->tezina};
-                noviCvor->lijevo = kopiraj(c->lijevo);
-                noviCvor->desno = kopiraj(c->desno);
-                if (noviCvor->lijevo) noviCvor->lijevo->roditelj = noviCvor;
-                if (noviCvor->desno) noviCvor->desno->roditelj = noviCvor;
-                return noviCvor;
-            };
-
-            korijen = kopiraj(b.korijen);
-            brojEl = b.brojEl;
-        }
-        return *this;
-    }
     V operator[](const K& kljuc) const {
         Cvor* temp = korijen;
         while (temp != nullptr) {
@@ -200,16 +225,16 @@ public:
         Cvor* roditelj = nullptr;
         bool stavljamDesno = false;
         while (temp != nullptr) {
-            if (kljuc == temp->kljuc) {
-                std::cout << "Naso";
+            if (kljuc == temp->kljuc)
                 return temp->vrijednost;
-            }
             else if (kljuc < temp->kljuc) {
                 roditelj = temp;
+                roditelj->tezina--;
                 temp = temp->lijevo;
                 stavljamDesno = false;
             } else {
                 roditelj = temp;
+                roditelj->tezina++;
                 temp = temp->desno;
                 stavljamDesno = true;
             }
@@ -218,108 +243,41 @@ public:
         if(!stavljamDesno) roditelj->lijevo = temp;
         else roditelj->desno = temp;
         brojEl++;
+        Cvor* c = temp->roditelj;
+        while(c != nullptr) {
+            if(c->tezina >= 2) {
+                if(c->desno->tezina == -1)
+                    desnaRotacija(c->desno->lijevo);
+                lijevaRotacija(c->desno);
+                break;
+            } else if(c->tezina <= -2) {
+                if(c->lijevo->tezina == 1)
+                    lijevaRotacija(c->lijevo->desno);
+                desnaRotacija(c->lijevo);
+                break;
+            }
+            c = c->roditelj;
+        }
         return temp->vrijednost;
     }
-    void obrisi() {
-        brisiOdDatogCvoraNadole(korijen); korijen = nullptr; brojEl = 0;
-    }
-    void obrisi(const K& k) {
-        auto p = korijen;
-        Cvor* roditelj = nullptr;
-        while(p != nullptr && k != p->kljuc) {
-            roditelj = p;
-            if(k < p->kljuc) p = p->lijevo;
-            else p = p->desno;
-        }
-        if(p == nullptr) return;
-        Cvor* m;
-        if(p->lijevo == nullptr) {
-            m = p->desno;
-        } else {
-            auto pm = p;
-            m = p->lijevo;
-            auto temp = m->desno;
-            while(temp != nullptr) {
-                pm = m;
-                m = temp;
-                temp = m->desno;
-            }
-            if(pm != p) {
-                pm->desno = m->lijevo;
-                m->lijevo = p->lijevo;
-            }
-            m->desno = p->desno;
-        }
-        if(roditelj == nullptr)
-            korijen = m;
-        else {
-            if(p == roditelj->lijevo) roditelj->lijevo = m;
-            else roditelj->desno = m;
-        }
-        delete p;
-        brojEl--;
-    }
+    void obrisi() {brisiOdDatogCvoraNadole(korijen); korijen = nullptr; brojEl = 0;}
+    void obrisi(const K& kljuc) {}
     int brojElemenata() const { return brojEl; }
     void ispisi() const { ispisi(korijen); }
 };
 
 int main() {
-    std::srand(static_cast<unsigned>(std::time(0)));
-    const int brojUzoraka = 30000;
-    const int min = 1, max = 10000;
-    std::vector<int> uzorci;
-    for(int i = 0; i < brojUzoraka; i++) {
-        int random = std::rand() % (max - min + 1) + min;
-        uzorci.push_back(random);
-    }
-
-    NizMapa<int, int> m1;
-    BinStabloMapa<int, int> m2;
-
-    clock_t vrijeme1 = clock();
-    for(auto e : uzorci)
-        m1[e] = e;
-    clock_t vrijeme2 = clock();
-    int umetanjeNiz = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
-
-    vrijeme1 = clock();
-    for(auto e : uzorci)
-        m2[e] = e;
-    vrijeme2 = clock();
-    int umetanjeBinarno = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
-
-    int s = 0;
-    vrijeme1 = clock();
-    for(auto e : uzorci)
-        s += m1[e];
-    vrijeme2 = clock();
-    int pristupNiz = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
-
-    s = 0;
-    vrijeme1 = clock();
-    for(auto e : uzorci)
-        s += m2[e];
-    vrijeme2 = clock();
-    int pristupBinarno = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
-
-    std::cout << "Umetanje u NizMapa: " << umetanjeNiz << "ms\n";
-    std::cout << "Umetanje u BinStabloMapa: " << umetanjeBinarno << "ms\n";
-    std::cout << "Pristup NizMapa: " << pristupNiz << "ms\n";
-    std::cout << "Pristup BinStabloMapa: " << pristupBinarno << "ms\n";
-
-    // Uzorak od 30000 nasumicnih intova, u opsegu od 1 do 10000.
-    // Za moj procesor AMD Ryzen 5 2600, rezultati su slijedeci:
-    //
-    // Umetanje u NizMapa: 429ms    
-    // Umetanje u BinStabloMapa: 5ms
-    // Pristup NizMapa: 307ms       
-    // Pristup BinStabloMapa: 4ms
-    //
-    // Rezultati su ocekivani: umetanje u NizMapu je najskuplje
-    // sa kompleksnosti O(n) gdje je n broj elemenata.
-    // Isto sa pristupom NizMapi, jer mora pretrazit svaki element
-    // dok ne nadje svoj kljuc. Umetanje i pristup BinStabloMapi 
-    // je mnogo bolje, zbog svoje logaritamske kompleknosti.
+    BinStabloMapa<int, int> m1;
+    m1[1] = 2;
+    m1[5] = 22;
+    m1[6] = -3;
+    m1[4] = 6;
+    m1[3] = 2;
+    m1[2] = 5;
+    m1[8] = 1;
+    m1[0] = 1;
+    m1[7] = 1;
+    m1.ispisi();
 
     return 0;
 }
