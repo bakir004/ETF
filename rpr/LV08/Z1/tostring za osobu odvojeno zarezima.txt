@@ -1,0 +1,8 @@
+public String toString() {
+        return ime.get() +
+                "," + prezime.get() +
+                "," + adresa.get() +
+                "," + datumRodjenja.get() +
+                "," + maticniBroj.get() +
+                "," + uloga.get();
+    }

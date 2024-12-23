@@ -201,7 +201,6 @@ public:
         bool stavljamDesno = false;
         while (temp != nullptr) {
             if (kljuc == temp->kljuc) {
-                std::cout << "Naso";
                 return temp->vrijednost;
             }
             else if (kljuc < temp->kljuc) {
