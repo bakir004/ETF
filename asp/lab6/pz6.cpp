@@ -1,5 +1,4 @@
 #include<iostream>
-#include<string>
 
 const float FAKTOR_PROSIRENJA = 1.5;
 const int POCETNA_VELICINA = 10;
