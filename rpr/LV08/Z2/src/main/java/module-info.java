@@ -6,6 +6,6 @@ module com.example.z2 {
     requires org.kordamp.bootstrapfx.core;
 
     opens com.example.z2 to javafx.fxml;
-    opens com.example.z2.controller to javafx.fxml; // Open the controller package
+    opens com.example.z2.controller to javafx.fxml;
     exports com.example.z2;
 }

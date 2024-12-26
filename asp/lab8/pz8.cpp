@@ -92,15 +92,48 @@ void ucitaj(std::string filename, int*& niz, int &vel) {
         niz[i] = pomocni[i];
 }
 
-int main() {
+void generisi(string filename, int vel) {
+    std::ofstream izlazniTok(filename, std::ios::out);
+    for(int i = 0; i < vel; i++)
+        izlazniTok << std::rand() % 10000 << " ";
+}
+
+void svasta() {
+    generisi("input.txt", 10000);
     int* niz;
     int n;
     ucitaj("input.txt", niz, n);
+    int izbor;
+    std::cout << "Unesite 1 za bubble sort, 2 za selection sort, 3 za quick sort, 4 za merge sort: ";
+    std::cin >> izbor;
+    clock_t vrijeme1 = clock();
+    switch(izbor) {
+        case 1:
+            bubble_sort(niz, n);
+            break;
+        case 2:
+            selection_sort(niz, n);
+            break;
+        case 3:
+            quick_sort(niz, n);
+            break;
+        case 4:
+            merge_sort(niz, n);
+            break;
+        default:
+            throw std::invalid_argument("Nepostojeca opcija");
+    }
+    clock_t vrijeme2 = clock();
+    int vrijemeSortiranjaUMillis = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
+    std::cout << "\nVrijeme sortiranja: " << vrijemeSortiranjaUMillis << "ms\n";
+    std::ofstream izlazniTok("output.txt", std::ios::out);
     for(int i = 0; i < n; i++)
-        std::cout << niz[i] << " ";
-    std::cout << '\n';
-    quick_sort(niz, n);
-    for(int i = 0; i < n; i++)
-        std::cout << niz[i] << " ";
+        izlazniTok << niz[i] << " ";
+    std::cout << "Upisani rezultati u output.txt\n";
+    delete[] niz;
+}
+
+int main() {
+    svasta();
     return 0;
 }
