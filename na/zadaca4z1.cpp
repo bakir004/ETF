@@ -85,10 +85,10 @@ std::pair<double,bool> AdaptiveAux(FunType f, double a, double b,
     double f5 = f((c+b)/2);
     if(!std::isfinite(f5)) f5 = 0;
     double I2 = (b-a)*(f1+4*f4+2*f3+4*f5+f2)/12;
-    if(R <= 0)
-        return {I2,false};
     if(std::fabs(I1-I2)<=eps)
         return {I2, true};
+    if(R <= 0)
+        return {I2, false};
     std::pair<double,bool> aux1 = AdaptiveAux(f,a,c,eps,f1,f3,f4,R-1);
     std::pair<double,bool> aux2 = AdaptiveAux(f,c,b,eps,f3,f2,f5,R-1);
     return {aux1.first + aux2.first, aux1.second && aux2.second};
@@ -117,7 +117,7 @@ std::pair<double, bool> AdaptiveSimpson(FunType f, double a, double b,
 
 template <typename FunType>
 std::pair<double, bool> AdaptiveIntegration(FunType f, double a, double b,
-        double eps = 1e-10, int maxdepth = 20, int nmin = 1) {
+        double eps = 1e-10, int maxdepth = 30, int nmin = 1) {
     if(eps < 0 || nmin < 0 || maxdepth < 0)
         throw std::domain_error("Bad parameter");
     double sign = 1;
