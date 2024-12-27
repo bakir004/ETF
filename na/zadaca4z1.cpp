@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdexcept>
 
+
 template <typename FunType>
 std::pair<double, bool> RombergIntegration(FunType f, double a, double b,
         double eps = 1e-8, int nmax = 1000000, int nmin = 50) {
