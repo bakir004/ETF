@@ -5,7 +5,6 @@
 #include <vector>
 #include <stdexcept>
 
-
 template <typename FunType>
 std::pair<double, bool> RombergIntegration(FunType f, double a, double b,
         double eps = 1e-8, int nmax = 1000000, int nmin = 50) {
@@ -140,23 +139,29 @@ struct Integral {
 };
 
 void Testiranje() {
-    const double PI = std::atan(1)*4;
+const double PI = std::atan(1)*4;
     std::vector<Integral> integrali = {
-        { [](double x) { return 1; }, 0, 1, 1.0 },                          // Constant Function
-        { [](double x) { return x; }, 0, 1, 0.5 },                         // Linear Function
-        { [](double x) { return x * x; }, 0, 1, 1.0 / 3.0 },               // Quadratic Function
-        { [](double x) { return x * x * x; }, 0, 1, 1.0 / 4.0 },           // Cubic Function
-        { [](double x) { return std::exp(x); }, 0, 1, std::exp(1) - 1 },   // Exponential Function
-        { [](double x) { return 1 / x; }, 1, 2, std::log(2) },             // Reciprocal Function
-        { [](double x) { return std::sqrt(x); }, 0, 1, 2.0 / 3.0 },        // Square Root Function
-        { [](double x) { return std::sin(x); }, 0, PI, 2.0 },            // Sine Function
-        { [](double x) { return std::cos(x); }, 0, PI, 0.0 },            // Cosine Function
-        { [](double x) { return std::exp(-x * x); }, -INFINITY, INFINITY, std::sqrt(PI) } // Gaussian Function
+        { "f(x)=1", [](double x) { return 1; }, 0, 1, 1.0 },
+        { "f(x)=x", [](double x) { return x; }, 0, 1, 0.5 },
+        { "f(x)=x^2", [](double x) { return x * x; }, 0, 1, 1.0 / 3.0 },
+        { "f(x)=x^3", [](double x) { return x * x * x; }, 0, 1, 1.0 / 4.0 },
+        { "f(x)=e^x", [](double x) { return std::exp(x); }, 0, 1, std::exp(1) - 1 },
+        { "f(x)=1/x", [](double x) { return 1 / x; }, 1, 2, std::log(2) },
+        { "f(x)=sqrt(x)", [](double x) { return std::sqrt(x); }, 0, 1, 2.0 / 3.0 },
+        { "f(x)=sin(x)", [](double x) { return std::sin(x); }, 0, PI, 2.0 },
+        { "f(x)=cos(x)", [](double x) { return std::cos(x); }, 0, PI, 0.0 },
+        { "f(x)=e^(-x^2)", [](double x) { return std::exp(-x * x); }, -100, 100, std::sqrt(PI) },
+        { "f(x)=1/sqrt(x)", [](double x) { return 1/std::sqrt(x); }, 0, 1, 2 } 
     };
     for(auto s : integrali) {
         std::pair<double,bool> romberg = RombergIntegration(s.f, s.a, s.b);
         std::pair<double,bool> takahashi = TanhSinhIntegration(s.f, s.a, s.b);
         std::pair<double,bool> adaptive = AdaptiveIntegration(s.f, s.a, s.b);
+        std::cout << "Integral funkcije " << s.ime << ":\n";
+        std::cout << "  Romberg: " << romberg.first << ", tacno: " << std::boolalpha << romberg.second << "\n";
+        std::cout << "  Takahashi: " << takahashi.first << ", tacno: " << std::boolalpha << takahashi.second << "\n";
+        std::cout << "  Adaptive: " << adaptive.first << ", tacno: " << std::boolalpha << adaptive.second << "\n";
+        std::cout << "  Ocekivana vrijednost integrala: " << s.ocekivano << "\n";
     }
 }
 
