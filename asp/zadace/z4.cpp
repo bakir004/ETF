@@ -1,8 +1,4 @@
-#include <ctime>
 #include <iostream>
-#include <functional>
-#include <cstdlib>
-#include <vector>
 
 const float FAKTOR_PROSIRENJA = 1.5;
 const int POCETNA_VELICINA = 10;
@@ -103,6 +99,12 @@ class AVLStabloMapa: public Mapa<K,V> {
         babo->tezina = dajVisinu(babo->lijevo) - dajVisinu(babo->desno);
         c->tezina = dajVisinu(c->lijevo) - dajVisinu(c->desno);
     }
+    void preorder(Cvor* c) {
+        if(c == nullptr) return;
+        std::cout << c->kljuc << ",";
+        preorder(c->lijevo);
+        preorder(c->desno);
+    }
     void ispisiCvor(Cvor* c) {
         if(c == nullptr) std::cout << "nullptr\n";
         std::cout << "Cvor (" << c->kljuc << ", " << c->vrijednost << ", " << c->tezina << ")\n";
@@ -119,7 +121,7 @@ class AVLStabloMapa: public Mapa<K,V> {
 
         return novi;
     }
-public:
+    public:
     AVLStabloMapa() : korijen(nullptr), brojEl(0) {}
     ~AVLStabloMapa() { obrisi(); }
     AVLStabloMapa(const AVLStabloMapa& other) : korijen(nullptr), brojEl(0) {
@@ -198,78 +200,136 @@ public:
         }
         return temp->vrijednost;
     }
-    void obrisi() {brisiOdDatogCvoraNadole(korijen); korijen = nullptr; brojEl = 0;}
-    void obrisi(const K& kljuc) {
-        Cvor* c = korijen;
-        Cvor* roditelj = nullptr;
+    void obrisi() { brisiOdDatogCvoraNadole(korijen); korijen = nullptr; brojEl = 0; }
+    void obrisi(Cvor* c, K i) {
+        Cvor *temp = nullptr;
 
-        while (c != nullptr && c->kljuc != kljuc) {
-            roditelj = c;
-            if (kljuc < c->kljuc) c = c->lijevo;
-            else c = c->desno;
+        while (c != nullptr && c->kljuc != i) {
+            temp = c;
+            if (c->kljuc < i) c = c->desno;
+            else c = c->lijevo;
         }
-
         if (c == nullptr) return;
 
-        if (c->lijevo == nullptr || c->desno == nullptr) {
-            Cvor* dijete = (c->lijevo != nullptr) ? c->lijevo : c->desno;
-
-            if (c == korijen) {
-                korijen = dijete;
-            } else {
-                if (c == roditelj->lijevo) roditelj->lijevo = dijete;
-                else roditelj->desno = dijete;
-            }
-
-            if (dijete != nullptr) dijete->roditelj = roditelj;
-
-            delete c;
+        Cvor *c1, *c2, *c3;
+        if (!c->lijevo){
+            c1 = c->desno;
+            c3 = temp;
+        } else if (!c->desno){
+            c1 = c->lijevo;
+            c3 = temp;
         } else {
-            Cvor* nasljednik = c->desno;
-            while (nasljednik->lijevo != nullptr) nasljednik = nasljednik->lijevo;
-
-            c->kljuc = nasljednik->kljuc;
-            c->vrijednost = nasljednik->vrijednost;
-
-            obrisi(nasljednik->kljuc);
-        }
-
-        Cvor* balansCvor = roditelj;
-        while (balansCvor != nullptr) {
-            balansCvor->tezina = dajVisinu(balansCvor->lijevo) - dajVisinu(balansCvor->desno);
-
-            if (balansCvor->tezina == 2) {
-                if (balansCvor->lijevo->tezina < 0) lijevaRotacija(balansCvor->lijevo->desno);
-                desnaRotacija(balansCvor->lijevo);
-            } else if (balansCvor->tezina == -2) {
-                if (balansCvor->desno->tezina > 0) desnaRotacija(balansCvor->desno->lijevo);
-                lijevaRotacija(balansCvor->desno);
+            c1 = c->lijevo;
+            c2 = c1->desno;
+            c3 = c;
+            while (c2) {
+                c3 = c1;
+                c1 = c2;
+                c2 = c1->desno;
             }
-
-            balansCvor = balansCvor->roditelj;
+            if (c != c3) {
+                c3->desno = c1->lijevo;
+                if (c1->lijevo)
+                    c1->lijevo->roditelj = c3;
+                c1->lijevo = c->lijevo;
+                if (c->lijevo)
+                    c->lijevo->roditelj = c1;
+            }
+            c1->desno = c->desno;
+            if (c->desno)
+                c->desno->roditelj = c1;
         }
 
+        if (!temp) korijen = c1;
+        else {
+            if (temp->lijevo == c) {
+                temp->lijevo = c1;
+                temp->tezina--;
+            } else {
+                temp->desno = c1;
+                temp->tezina++;
+            }
+        }
+
+        if (c1) c1->roditelj = temp;
+
+        c->desno = c->lijevo = c->roditelj = nullptr;
+        delete c;
         brojEl--;
     }
+    void obrisi(const K& kljuc) { obrisi(korijen, kljuc); }
     int brojElemenata() const { return brojEl; }
     void ispisi() const { ispisi(korijen); }
     void Preorder() { preorder(korijen); }
-    void preorder(Cvor* c) {
-        if(c == nullptr) return;
-        std::cout << c->kljuc << ",";
-        preorder(c->lijevo);
-        preorder(c->desno);
-    }
 };
 
 int main() {
-    AVLStabloMapa<int, int> avl;
-    avl[1] = 3;
-    avl[2] = 3;
-    avl[3] = 3;
-    avl[4] = 3;
-    avl[5] = 3;
-    avl[6] = 3;
-    avl[7] = 3;
-    avl.Preorder();
+    AVLStabloMapa<int,int> s1;
+    s1[6] = 6;
+    s1[1] = 1;
+    s1[10] = 10;
+    s1[7] = 7;
+    s1[3] = 3;
+    s1[2] = 2;
+    s1[4] = 4;
+    s1[9] = 9;
+    s1[5] = 5;
+    s1[8] = 8;
+    s1.Preorder();
+    std::cout << "\n";
+    AVLStabloMapa<char, char> s2;
+    s2['A'] = 'C';
+    s2['B'] = 'C';
+    s2['C'] = 'C';
+    s2['D'] = 'C';
+    s2['F'] = 'C';
+    s2['G'] = 'C';
+    s2['H'] = 'C';
+    s2['J'] = 'C';
+    s2['K'] = 'C';
+    s2['L'] = 'C';
+    s2.Preorder();
+    std::cout << "\n";
+    AVLStabloMapa<double, double> s3;
+    s3[4.52] = 0.4;
+    s3[3.67] = 0.4;
+    s3[2.33] = 0.4;
+    s3[1.52] = 0.4;
+    s3[9.60] = 0.4;
+    s3[5.57] = 0.4;
+    s3[4.67] = 0.4;
+    s3[2.61] = 0.4;
+    s3[3.41] = 0.4;
+    s3[8.37] = 0.4;
+    s3[4.52] = 0.4;
+    s3.Preorder();
+    std::cout << "\n";
+    AVLStabloMapa<double, int> s4;
+    s4[4.52] = 4;
+    s4[3.67] = 4;
+    s4[8.33] = 4;
+    s4[1.52] = 4;
+    s4[9.60] = 4;
+    s4[18.57] = 4;
+    s4[4.67] = 4;
+    s4[2.61] = 4;
+    s4[15.41] = 4;
+    s4[8.37] = 4;
+    s4[16.52] = 4;
+    s4.Preorder();
+    std::cout << "\n";
+    AVLStabloMapa<std::string, std::string> s5;
+    s5["Bakir"] = "Cinjarevic";
+    s5["Vedad"] = "Gastan";
+    s5["Amar"] = "Handanagic";
+    s5["Emin"] = "Begic";
+    s5["Tarik"] = "Lolic";
+    s5["Mirza M."] = "Halilovic";
+    s5["Omer"] = "Maslesa";
+    s5["Semir"] = "Jamakovic";
+    s5["Muhamed"] = "Kadric";
+    s5["Dzelaludin"] = "Rumi";
+    s5.Preorder();
+    std::cout << "\n";
+    return 0;
 }
