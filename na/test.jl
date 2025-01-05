@@ -22,9 +22,6 @@ end
 function ackley_function(x)
     return -20 * exp(-0.2 * sqrt((x[1]^2 + x[2]^2)/2)) - exp(0.5 * (cos(2 * π * x[1]) + cos(2 * π * x[2]))) + exp(1) + 20
 end
-function rosenbrock_perturbed(x)
-    return (1 - x[1])^2 + 100 * (x[2] - x[1]^2)^2 + 0.01 * (x[1]^3 + x[2]^3)
-end
 function goldstein_price(x)
     term1 = (x[1] + x[2] + 1)^2
     term2 = 19 - 14*x[1] + 3*x[1]^2 - 14*x[2] + 6*x[1]*x[2] + 3*x[2]^2
