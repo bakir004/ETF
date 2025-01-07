@@ -110,13 +110,13 @@ end
 
 # ============= PODESAVANJE PARAMETARA =============
 
-plotxmin = -2
-plotxmax = 2
-f = goldstein_price
-learning_rate = 0.00001
+plotxmin = -10
+plotxmax = 10
+f = sphere_function
+learning_rate = 0.001
 alpha = 0.9
-theta_init = [1., 0.]
-max_iters=5000
+theta_init = [0.1, 2]
+max_iters=10000
 
 # ============= END PODESAVANJA PARAMETARA =============
 
@@ -168,14 +168,14 @@ x_gd_filtered, y_gd_filtered = getindex.(filtered_gd, 1), getindex.(filtered_gd,
 
 # ============= PLOTANJE PUTANJE SPUSTA =============
 
-xx = LinRange(plotxmin, plotxmax, 100)
-yy = LinRange(plotxmin, plotxmax, 100)
-zz = [f([x, y]) for x in xx, y in yy]
+# xx = LinRange(plotxmin, plotxmax, 100)
+# yy = LinRange(plotxmin, plotxmax, 100)
+# zz = [f([x, y]) for x in xx, y in yy]
 
-contour(xx, yy, zz, xlabel="x", ylabel="y", color=:viridis, levels=50)
+# contour(xx, yy, zz, xlabel="x", ylabel="y", color=:viridis, levels=50)
 
-scatter!(x_nesterov_filtered, y_nesterov_filtered, label="Nesterov", color=:blue, markersize=3, marker=:circle)
-scatter!(x_momentum_filtered, y_momentum_filtered, label="Momentum", color=:red, markersize=3, marker=:cross)
+# scatter!(x_nesterov_filtered, y_nesterov_filtered, label="Nesterov", color=:blue, markersize=3, marker=:circle)
+# scatter!(x_momentum_filtered, y_momentum_filtered, label="Momentum", color=:red, markersize=3, marker=:cross)
 # scatter!(x_gd_filtered, y_gd_filtered, label="Gradient Descent", color=:green, markersize=4, marker=:circle)
 
 # ============= END PLOTANJE PUTANJE SPUSTA =============
@@ -190,13 +190,13 @@ scatter!(x_momentum_filtered, y_momentum_filtered, label="Momentum", color=:red,
 # absolute_errors = compute_absolute_error(f, trajectory_nesterov, f_star)
 # absolute_errors2 = compute_absolute_error(f, trajectory_momentum, f_star)
 
-# absolute_errors = max.(absolute_errors, 1e-10)
-# absolute_errors2 = max.(absolute_errors2, 1e-10)
+# absolute_errors = Base.max.(absolute_errors, 1e-10)
+# absolute_errors2 = Base.max.(absolute_errors2, 1e-10)
 
 # iterations = 1:length(absolute_errors)
 # iterations_momentum = 1:length(absolute_errors2)
-# plot(iterations, absolute_errors, xlabel="Iteracija", ylabel="Greška f(theta) - f*", yscale=:log10, title="Greška kroz iteracije", label="Nesterov Gradient Descent")
-# plot!(iterations_momentum, absolute_errors2, xlabel="Iteracija", ylabel="Greška f(theta) - f*", yscale=:log10, title="Greška kroz iteracije", label="Momentum Gradient Descent")
+# plot(iterations, absolute_errors, xlabel="Iteracija", ylabel="Greška f(theta) - f*", yscale=:log10, label="Nesterov Gradient Descent")
+# plot!(iterations_momentum, absolute_errors2, xlabel="Iteracija", ylabel="Greška f(theta) - f*", yscale=:log10, label="Momentum Gradient Descent")
 
 # ============ END PLOTANJE GRESKE ============
 
@@ -230,26 +230,57 @@ scatter!(x_momentum_filtered, y_momentum_filtered, label="Momentum", color=:red,
 #     println("Row $i done")
 # end
 
+
+# min_nesterov = minimum(final_theta_matrix2[.!isnan.(final_theta_matrix2)])
+# println("Minimum Nesterov: $min_nesterov")
+# max_nesterov = maximum(final_theta_matrix2[.!isnan.(final_theta_matrix2)])
+# println("Maximum Nesterov: $max_nesterov")
+
+# min_momentum = minimum(final_theta_matrix[.!isnan.(final_theta_matrix)])
+# println("Minimum Momentum: $min_momentum")
+# max_momentum = maximum(final_theta_matrix[.!isnan.(final_theta_matrix)])
+# println("Maximum Momentum: $max_momentum")
+
 # scatter_x = repeat(xv, inner=length(yv))  
 # scatter_y = repeat(yv, outer=length(xv)) 
-# scatter_color = vec(final_theta_matrix2')
+# scatter_color1 = vec(final_theta_matrix')
+# scatter_color2 = vec(final_theta_matrix2')
 
-# scatter(
-#     scatter_x, 
-#     scatter_y, 
-#     zcolor=scatter_color,
-#     xlabel="x (početno)", 
-#     ylabel="y (početno)", 
+# p1 = scatter(
+#     scatter_x,
+#     scatter_y,
+#     zcolor=scatter_color1,
+#     xlabel="x (početno)",
+#     ylabel="y (početno)",
 #     color=:viridis,
-#     markershape=:rect,  
-#     markersize=2,      
+#     markershape=:rect,
+#     markersize=2,
 #     markerstrokecolor=:transparent,
 #     markerfillcolor=:auto,
-#     markerstrokewidth=0, 
+#     markerstrokewidth=0,
 #     legend=false,
 #     aspect_ratio=:equal,
-#     colorbar=true,    
-#     size=(600,600)
+#     colorbar=true,
+#     size=(600, 600)
 # )
+
+# p2 = scatter(
+#     scatter_x,
+#     scatter_y,
+#     zcolor=scatter_color2,
+#     xlabel="x (početno)",
+#     color=:viridis,
+#     markershape=:rect,
+#     markersize=2,
+#     markerstrokecolor=:transparent,
+#     markerfillcolor=:auto,
+#     markerstrokewidth=0,
+#     legend=false,
+#     aspect_ratio=:equal,
+#     colorbar=true,
+#     size=(600, 600)
+# )
+
+# plot(p1, p2, layout=(1, 2), size=(1400, 600))
 
 # ============= END PLOTANJE KONVERGENCIJA =============
