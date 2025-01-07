@@ -1,14 +1,12 @@
 #include <iostream>
+#include <functional>
+#include <ctime>
 #include <stdexcept>
 #include <string>
-#include <ctime>
-#include <functional>
-#include <cstdlib>
-#include <vector>
 
 const float FAKTOR_PROSIRENJA = 1.5;
 const int POCETNA_VELICINA = 10;
-const int POCETNA_VELICINA_HASH_TABELE = 10;
+const int POCETNA_VELICINA_HASH_TABELE = 10000;
 using namespace std;
 
 template <typename K, typename V>
@@ -114,6 +112,156 @@ public:
     }
 };
 
+template <typename K, typename V>
+class BinStabloMapa: public Mapa<K,V> {
+    struct Cvor {
+        K kljuc;
+        V vrijednost;
+        Cvor* lijevo;
+        Cvor* desno;
+        Cvor* roditelj;
+        int tezina;
+    };
+    Cvor* korijen;
+    int brojEl;
+    void brisiOdDatogCvoraNadole(Cvor* c) {
+        if(c == nullptr)
+            return;
+        Cvor* lijevi = c->lijevo;
+        Cvor* desni = c->desno;
+        delete c;
+        brisiOdDatogCvoraNadole(lijevi);
+        brisiOdDatogCvoraNadole(desni);
+    }
+    void ispisi(Cvor* c) const { 
+        if(c == nullptr) { return; }
+        std::cout << "(" << c->kljuc << ", " << c->vrijednost << ", " << c->tezina << ")\n";
+        if(c->lijevo != nullptr)
+            std::cout << "Lijevo od " << c->kljuc << ": " << c->lijevo->kljuc << "\n";
+        if(c->desno != nullptr)
+            std::cout << "Desno od " << c->kljuc << ": " << c->desno->kljuc << "\n";
+        ispisi(c->lijevo);
+        ispisi(c->desno);
+    }
+public:
+    BinStabloMapa() : korijen(nullptr), brojEl(0) {}
+    ~BinStabloMapa() { obrisi(); }
+    BinStabloMapa(const BinStabloMapa& b) : korijen(nullptr), brojEl(0) {
+        std::function<Cvor*(Cvor*)> kopiraj = [&](Cvor* c) -> Cvor* {
+            if (c == nullptr) return nullptr;
+            Cvor* noviCvor = new Cvor{c->kljuc, c->vrijednost, nullptr, nullptr, nullptr, c->tezina};
+            noviCvor->lijevo = kopiraj(c->lijevo);
+            noviCvor->desno = kopiraj(c->desno);
+            if (noviCvor->lijevo) noviCvor->lijevo->roditelj = noviCvor;
+            if (noviCvor->desno) noviCvor->desno->roditelj = noviCvor;
+            return noviCvor;
+        };
+
+        korijen = kopiraj(b.korijen);
+        brojEl = b.brojEl;
+    }
+    BinStabloMapa& operator=(const BinStabloMapa& b) {
+        if (this != &b) {
+            obrisi();
+
+            std::function<Cvor*(Cvor*)> kopiraj = [&](Cvor* c) -> Cvor* {
+                if (c == nullptr) return nullptr;
+                Cvor* noviCvor = new Cvor{c->kljuc, c->vrijednost, nullptr, nullptr, nullptr, c->tezina};
+                noviCvor->lijevo = kopiraj(c->lijevo);
+                noviCvor->desno = kopiraj(c->desno);
+                if (noviCvor->lijevo) noviCvor->lijevo->roditelj = noviCvor;
+                if (noviCvor->desno) noviCvor->desno->roditelj = noviCvor;
+                return noviCvor;
+            };
+
+            korijen = kopiraj(b.korijen);
+            brojEl = b.brojEl;
+        }
+        return *this;
+    }
+    V operator[](const K& kljuc) const {
+        Cvor* temp = korijen;
+        while (temp != nullptr) {
+            if (kljuc == temp->kljuc)
+                return temp->vrijednost;
+            else if (kljuc < temp->kljuc)
+                temp = temp->lijevo;
+            else
+                temp = temp->desno;
+        }
+        return V();
+    }
+    V& operator[](const K& kljuc) {
+        if(korijen == nullptr) {
+            korijen = new Cvor{kljuc, V(), nullptr, nullptr, nullptr, 0};
+            brojEl++;
+            return korijen->vrijednost;
+        }
+        Cvor* temp = korijen;
+        Cvor* roditelj = nullptr;
+        bool stavljamDesno = false;
+        while (temp != nullptr) {
+            if (kljuc == temp->kljuc) {
+                return temp->vrijednost;
+            }
+            else if (kljuc < temp->kljuc) {
+                roditelj = temp;
+                temp = temp->lijevo;
+                stavljamDesno = false;
+            } else {
+                roditelj = temp;
+                temp = temp->desno;
+                stavljamDesno = true;
+            }
+        }
+        temp = new Cvor{kljuc, V(), nullptr, nullptr, roditelj, 0};
+        if(!stavljamDesno) roditelj->lijevo = temp;
+        else roditelj->desno = temp;
+        brojEl++;
+        return temp->vrijednost;
+    }
+    void obrisi() {
+        brisiOdDatogCvoraNadole(korijen); korijen = nullptr; brojEl = 0;
+    }
+    void obrisi(const K& k) {
+        auto p = korijen;
+        Cvor* roditelj = nullptr;
+        while(p != nullptr && k != p->kljuc) {
+            roditelj = p;
+            if(k < p->kljuc) p = p->lijevo;
+            else p = p->desno;
+        }
+        if(p == nullptr) return;
+        Cvor* m;
+        if(p->lijevo == nullptr) {
+            m = p->desno;
+        } else {
+            auto pm = p;
+            m = p->lijevo;
+            auto temp = m->desno;
+            while(temp != nullptr) {
+                pm = m;
+                m = temp;
+                temp = m->desno;
+            }
+            if(pm != p) {
+                pm->desno = m->lijevo;
+                m->lijevo = p->lijevo;
+            }
+            m->desno = p->desno;
+        }
+        if(roditelj == nullptr)
+            korijen = m;
+        else {
+            if(p == roditelj->lijevo) roditelj->lijevo = m;
+            else roditelj->desno = m;
+        }
+        delete p;
+        brojEl--;
+    }
+    int brojElemenata() const { return brojEl; }
+    void ispisi() const { ispisi(korijen); }
+};
 
 template <typename K, typename V>
 class HashMapa : public Mapa<K, V> {
@@ -121,37 +269,29 @@ class HashMapa : public Mapa<K, V> {
     int velicina;
     int kapacitet;
     Par** niz;
-    unsigned int hash(std::string ulaz, int max) {
-        unsigned int hashValue = 0;
-        unsigned int prime = 37;
-        for (char c : ulaz)
-            hashValue = (hashValue * prime + (unsigned int)(c)) % max;
-        return hashValue;
-    }
+    unsigned int (*hash)(K ulaz, unsigned int max);
     Par* DEL;
-    std::pair<int, bool> trazi(int pocetnaAdresa, const K& kljuc) {
-        int trenutnaAdresa = pocetnaAdresa;
-        int iteracije = 0;
-        while(niz[trenutnaAdresa] == DEL || niz[trenutnaAdresa]->first != kljuc) {
-            std::cout << "Velicina: " << velicina << "\n";
-            if(niz[trenutnaAdresa] == DEL && velicina == kapacitet)
+    std::pair<int, bool> trazi(int trenutnaAdresa, const K& kljuc) const {
+        int prviPronadjenDEL = -1;
+        for(int i = 0; i < kapacitet; i++, trenutnaAdresa = (trenutnaAdresa + 1) % kapacitet) {
+            // std::cout << "trenutna adresa: " << trenutnaAdresa << "\n";
+            // std::cout << "PRVI DEL: " << prviPronadjenDEL << "\n";
+            if(niz[trenutnaAdresa] == nullptr && prviPronadjenDEL == -1)
+                return {trenutnaAdresa, true};
+            if(niz[trenutnaAdresa] == DEL && prviPronadjenDEL == -1)
+                prviPronadjenDEL = trenutnaAdresa;
+            if(niz[trenutnaAdresa] != nullptr && niz[trenutnaAdresa]->first == kljuc)
                 return {trenutnaAdresa, false};
-            std::cout << "Kolizija, " << kljuc << " hoce na adresu " << trenutnaAdresa << " a tamo je " << niz[trenutnaAdresa]->first << '\n';
-            trenutnaAdresa = (trenutnaAdresa + 1) % kapacitet;
-            if(niz[trenutnaAdresa] == nullptr) {
-                return {trenutnaAdresa, false};
-            }
-            if(++iteracije == kapacitet) {
-                /*std::cout << "MJESTA: " << trenutnaAdresa << "\n";*/
-                return {trenutnaAdresa, false};
-            }
         }
-        return {trenutnaAdresa, true};
+        if(prviPronadjenDEL == -1) {
+            throw std::domain_error("PUNA MAPA!");
+        }
+        return {prviPronadjenDEL, true};
     }
     void dodajNaAdresu(const K& kljuc, int adresa) {
         /*std::cout << "Kreiran " << kljuc << " na adresi " << adresa << "\n";*/
         if(niz[adresa] != DEL && niz[adresa] != nullptr) {
-            std::cout << "OVERWRITE: " << kljuc << " uzima mjesto " << niz[adresa]->first << "\n";
+            std::cout << "OVERWRITEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: " << kljuc << " uzima mjesto " << niz[adresa]->first << "\n";
             delete niz[adresa];
         }
         velicina++;
@@ -166,37 +306,72 @@ public:
                 delete niz[i];
         delete[] niz;
     }
-    HashMapa(const HashMapa& nm) : niz(new Par*[nm.kapacitet]{}), velicina(nm.velicina), kapacitet(nm.kapacitet) {
+    HashMapa(const HashMapa& nm): velicina(nm.velicina), kapacitet(nm.kapacitet), hash(nm.hash) {
+        if (this == &nm)
+            return;
+        DEL = new Par({K(),V()});
+        niz = new Par*[kapacitet]{};
+        for (int i = 0; i < kapacitet; i++) {
+            if (nm.niz[i] == nm.DEL) 
+                niz[i] = DEL;
+            else if (nm.niz[i] != nullptr)
+                niz[i] = new Par(*nm.niz[i]);
+        }
     }
     HashMapa& operator=(const HashMapa& nm) {
+        if (this == &nm)
+            return *this;
+        delete DEL;
+        for (int i = 0; i < kapacitet; i++)
+            if (niz[i] != nullptr && niz[i] != DEL)
+                delete niz[i];
+        delete[] niz;
+
+        kapacitet = nm.kapacitet;
+        velicina = nm.velicina;
+        DEL = new Par({K(), V()});
+
+        niz = new Par*[kapacitet]{};
+        for (int i = 0; i < kapacitet; i++) {
+            if (nm.niz[i] == nm.DEL) 
+                niz[i] = DEL;
+            else if (nm.niz[i] != nullptr)
+                niz[i] = new Par(*nm.niz[i]);
+        }
+
+        hash = nm.hash; 
+        return *this;
     }
     V operator[](const K& kljuc) const {
-        return V();
+        unsigned int hashirano = this->hash(kljuc, kapacitet);
+        std::pair<int,bool> pronadjenaAdresa = trazi(hashirano, kljuc);
+        // std::cout << "Pronadjena konstantna adresa: " << pronadjenaAdresa.first << '\n';
+        if(niz[pronadjenaAdresa.first] == nullptr) return V();
+        return niz[pronadjenaAdresa.first]->second;
     }
     V& operator[](const K& kljuc) {
         unsigned int hashirano = this->hash(kljuc, kapacitet);
-        if(niz[hashirano] == nullptr) {
-            dodajNaAdresu(kljuc, hashirano);
-            return niz[hashirano]->second;
-        }
         std::pair<int,bool> pronadjenaAdresa = trazi(hashirano, kljuc);
-        std::cout << "Pronadjena adresa: " << pronadjenaAdresa.first << "\n";
-        if(!pronadjenaAdresa.second)
-            dodajNaAdresu(kljuc, pronadjenaAdresa.first);
+        if(pronadjenaAdresa.second) dodajNaAdresu(kljuc, pronadjenaAdresa.first);
         return niz[pronadjenaAdresa.first]->second;
     }
     void obrisi() {
+        for(int i = 0; i < kapacitet; i++) {
+            delete niz[i];
+            niz[i] = nullptr;
+        }
+        velicina = 0;
     }
     void obrisi(const K& kljuc) {
         unsigned int hashirano = this->hash(kljuc, kapacitet);
         std::pair<int,bool> pronadjenaAdresa = trazi(hashirano, kljuc);
         if(!pronadjenaAdresa.second) {
-            std::cout << "Kljuc ne postoji u mapi\n";
+            delete niz[pronadjenaAdresa.first];
+            niz[pronadjenaAdresa.first] = DEL;
+            velicina--;
             return;
         }
-        std::cout << "Brisem " << kljuc << " sa adrese " << pronadjenaAdresa.first << '\n';
-        delete niz[pronadjenaAdresa.first];
-        niz[pronadjenaAdresa.first] = DEL;
+        std::cout << "Ne postoji u mapi\n";
     }
     int brojElemenata() const { return velicina; }
     void ispisi() const {
@@ -207,38 +382,81 @@ public:
                 std::cout << i << ": DEL, none\n";
             else std::cout << i << ": " << niz[i]->first << ", " << niz[i]->second << "\n";
         }
+        std::cout << "\n";
+    }
+    void definisiHashFunkciju(unsigned int(*funkcija)(K ulaz, unsigned int max)) {
+        hash = funkcija;
     }
 };
 
 
+unsigned int hashiranje(int a, unsigned int max) {
+    return a % max;
+}
+
 int main() {
-    HashMapa<std::string, int> mapa;
-    mapa["bakir"] = 3;
-    mapa["baki"] = 4;
-    mapa["bak"] = 3;
-    mapa.ispisi();
-    mapa.obrisi("bakir");
-    mapa.ispisi();
-    std::cout << mapa["baki"] << "\n";
-    mapa["bakir"] = 2;
-    mapa["gewad"] = 7;
-    mapa["gewa"] = 7;
-    mapa["gew"] = 7;
-    mapa["ge"] = 7;
-    mapa["g"] = 7;
-    mapa["gewadoloid"] = 7;
-    mapa["gewaoloid"] = 7;
-    mapa.ispisi();
-    std::cout << mapa["baki"] << '\n';
-    std::cout << mapa["bakir"] << '\n';
-    mapa.obrisi("bakir");
-    mapa["bakir"] = 77;
-    std::cout << mapa["bakir"] << '\n';
-    mapa.ispisi();
 
-    std::cout << "Dalje\n";
-    mapa["divan123"] = 6969;
-    mapa.ispisi();
+    NizMapa<int,int> nm;
+    BinStabloMapa<int,int> bm;
+    HashMapa<int,int> hm;
+    hm.definisiHashFunkciju(hashiranje);
+    clock_t vrijeme1 = clock();
+    int brojElemenata = 10000;
+    for(int i = 0; i < brojElemenata; i++)
+        nm[i] = i;
+    clock_t vrijeme2 = clock();
+    int umetanjeNizMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
+    vrijeme1 = clock();
+    for(int i = 0; i < brojElemenata; i++)
+        bm[i] = i;
+    vrijeme2 = clock();
+    int umetanjeBinStabloMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
+    vrijeme1 = clock();
+    for(int i = 0; i < brojElemenata; i++)
+        hm[i] = i;
+    vrijeme2 = clock();
+    int umetanjeHashMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
+    vrijeme1 = clock();
+    for(int i = 0; i < brojElemenata; i++) nm[i];
+    vrijeme2 = clock();
+    int pristupNizMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
+    vrijeme1 = clock();
+    for(int i = 0; i < brojElemenata; i++) bm[i];
+    vrijeme2 = clock();
+    int pristupBinStabloMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
+    vrijeme1 = clock();
+    for(int i = 0; i < brojElemenata; i++) hm[i];
+    vrijeme2 = clock();
+    int pristupHashMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
 
+    std::cout << "NizMapa:\n";
+    std::cout << "  Pristup: " << pristupNizMapa << "ms\n";
+    std::cout << "  Umetanje: " << umetanjeNizMapa << "ms\n";
+    std::cout << "BinStabloMapa:\n";
+    std::cout << "  Pristup: " << pristupBinStabloMapa << "ms\n";
+    std::cout << "  Umetanje: " << pristupBinStabloMapa << "ms\n";
+    std::cout << "HashMapa:\n";
+    std::cout << "  Pristup: " << pristupHashMapa << "ms\n";
+    std::cout << "  Umetanje: " << umetanjeHashMapa << "ms\n";
+
+    // Primjer ispisa:
+    // NizMapa:
+    //   Pristup: 124ms 
+    //   Umetanje: 260ms
+    // BinStabloMapa:   
+    //   Pristup: 223ms 
+    //   Umetanje: 223ms
+    // HashMapa:        
+    //   Pristup: 0ms   
+    //   Umetanje: 1ms
+    //
+    // Vidimo da NizMapa pati od umetanja jer se mora prvo linearno pretraziti kljuc, 
+    // i dodati ga ako ga ne nadje. Pristup je brzi od umetanja jer vrlo je moguce naci element prije kraja.
+    //
+    // BinStabloMapa za ovaj konkretan slucaj ce biti linked lista je se svi elementi nadodaju na kraj.
+    // Zbog toga su identicni pristup i umetanje u smislu vremena izvrsavanja. 
+    // Brzinu BinStabloMape nad nasumicnim skupom podataka smo vidjeli u PZ7.
+    //
+    // HashMapa je neobicno brza. Koristi se u implementaciji std::unorderded_map.
     return 0;
 }
