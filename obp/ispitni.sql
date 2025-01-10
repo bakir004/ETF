@@ -237,3 +237,35 @@ SELECT id + p_fk FROM PRETPLATA p
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

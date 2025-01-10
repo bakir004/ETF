@@ -51,18 +51,6 @@ HAVING sum(f.iznos) > (SELECT avg(t.sum) FROM (SELECT sum(f.iznos) sum FROM fizi
 											GROUP BY fl.ime, fl.prezime) t
 					)
 
-SELECT * FROM narudzba_proizvoda;
-SELECT * FROM popust;
-
-SELECT * FROM narudzba_proizvoda np
-LEFT JOIN popust p ON np.popust_id = p.popust_id;
-
-SELECT * FROM popust p
-OUTER JOIN narudzba_proizvoda np ON np.popust_id = p.popust_id;
-
-SELECT * FROM kurirska_sluzba ks
-JOIN pravno_lice pl ON ks.kurirska_sluzba_id = pl.pravno_lice_id;
-					
 --6.
 SELECT pl.naziv "naziv" FROM narudzba_proizvoda np
 JOIN proizvod p ON np.proizvod_id = p.proizvod_id
