@@ -1,7 +1,7 @@
-#include <cstdlib>
 #include <iostream>
 #include <stdexcept>
-#include <string>
+#include <queue>
+#include <stack>
 
 using namespace std;
 
@@ -68,7 +68,6 @@ public:
     GranaIterator<T>(const UsmjereniGraf<T>& g, int redniBrojGrane): graf(g), redniBrojGrane(redniBrojGrane) {}
     GranaIterator<T>(const UsmjereniGraf<T>& g): redniBrojGrane(0), graf(g) {}
     Grana<T> operator*() {
-        std::cout << "Pristup iteratoru " << redniBrojGrane / graf.dajBrojCvorova() << ", " << redniBrojGrane % graf.dajBrojCvorova() << std::endl;
         if(redniBrojGrane >= graf.dajBrojCvorova() * graf.dajBrojCvorova())
             throw std::domain_error("Iterator je izvan opsega"); 
         return graf.dajGranu(redniBrojGrane / graf.dajBrojCvorova(), redniBrojGrane % graf.dajBrojCvorova());
@@ -122,7 +121,6 @@ public:
         if(cvorovi[dolazni].dajOznaku() == T())
             cvorovi[dolazni] = Cvor<T>(dolazni, T());
         Grana<T> grana = Grana<T>(cvorovi[polazni], cvorovi[dolazni], tezina);
-        std::cout << "dodana grana " << grana.dajPolazniCvor().dajRedniBroj() << ", " << grana.dajDolazniCvor().dajRedniBroj() << std::endl;
         grane[polazni][dolazni] = grana;
     }
     void obrisiGranu(int polazni, int dolazni) {
@@ -168,28 +166,71 @@ public:
         for(int i = 0; i < brojCvorova; i++)
             cout << cvorovi[i].dajOznaku() << " ";
     }
+    void bfs(int pocetniCvor) {
+        bool* posjeceni = new bool[brojCvorova];
+        for(int i = 0; i < brojCvorova; i++)
+            posjeceni[i] = false;
+
+        // ovdje bih koristio vec implementirani Red iz PZ4, 
+        // ali zbog glomaznog koda koji nosi sa sobom,
+        // koristicu standardni red
+        std::queue<int> q;
+
+        q.push(pocetniCvor);
+        posjeceni[pocetniCvor] = true;
+        std::cout << "Posjecen cvor " << pocetniCvor << "\n";
+        while(!q.empty()) {
+            int trenutniCvor = q.front();
+            q.pop();
+            for(int i = 0; i < brojCvorova; i++) {
+                if(grane[trenutniCvor][i].dajTezinu() != -1 && !posjeceni[i]) {
+                    q.push(i);
+                    posjeceni[i] = true;
+                    std::cout << "Posjecen cvor " << i << "\n";
+                }
+            }
+        }
+        delete[] posjeceni;
+    }
+    void dfs(int pocetniCvor) {
+        bool* posjeceni = new bool[brojCvorova];
+        for(int i = 0; i < brojCvorova; i++)
+            posjeceni[i] = false;
+
+        // ovdje bih koristio vec implementirani Stek iz PZ4, 
+        // ali zbog glomaznog koda koji nosi sa sobom,
+        // koristicu standardni stack 
+        std::stack<int> s;
+
+        s.push(pocetniCvor);
+        posjeceni[pocetniCvor] = true;
+        while(!s.empty()) {
+            int trenutniCvor = s.top();
+            std::cout << "Posjecen cvor " << trenutniCvor << "\n";
+            s.pop();
+            for(int i = 0; i < brojCvorova; i++) {
+                if(grane[trenutniCvor][i].dajTezinu() != -1 && !posjeceni[i]) {
+                    s.push(i);
+                    posjeceni[i] = true;
+                }
+            }
+        }
+        delete[] posjeceni;
+    }
 };
 
 
 int main() {
-    UsmjereniGraf<bool> *g = new MatricaGraf<bool>(6);
-    g->dodajGranu(0, 1, 2.5);
-    g->dodajGranu(1, 0, 1.2);
-    g->dodajGranu(1, 2, 0.1);
-    g->dodajGranu(0, 0, 3.14);
-    /*g->ispisiCvorove();*/
-    GranaIterator<bool> iter = g->dajGranePocetak();
-    std::cout << (*iter++).dajPolazniCvor().dajRedniBroj() << std::endl;
-    std::cout << (*iter++).dajPolazniCvor().dajRedniBroj() << std::endl;
-    std::cout << (*iter++).dajPolazniCvor().dajRedniBroj() << std::endl;
-    std::cout << (*iter++).dajPolazniCvor().dajRedniBroj() << std::endl;
-    /*for(; iter != g->dajGraneKraj(); ++iter)*/
-    /*    cout << (*iter).dajTezinu() << " ";*/
-    /*for (GranaIterator<bool> iter = g->dajGranePocetak();*/
-    /*    iter != g->dajGraneKraj(); ++iter)*/
-    /*    cout << "(" << (*iter).dajPolazniCvor().dajRedniBroj() << ","*/
-    /*        << (*iter).dajDolazniCvor().dajRedniBroj() << ") -> "*/
-    /*        << (*iter).dajTezinu() << "; ";*/
-    delete g;
+    MatricaGraf<int> g(6);
+    g.dodajGranu(0, 1);
+    g.dodajGranu(1, 0);
+    g.dodajGranu(0, 2);
+    g.dodajGranu(0, 3);
+    g.dodajGranu(2, 5);
+    g.dodajGranu(1, 4);
+    g.dodajGranu(1, 5);
+    g.dfs(0);
+    g.bfs(0);
+
     return 0;
 }
