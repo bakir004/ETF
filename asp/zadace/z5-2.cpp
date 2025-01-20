@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <queue>
 #include <stack>
+#include <utility>
 
 using namespace std;
 
@@ -382,82 +383,241 @@ public:
     LinkedCvor* dajListuCvorova(int cvor) { return listaCvorova[cvor]; }
 };
 
-template <typename T>
-void bfs(UsmjereniGraf<T>* g, std::vector<Cvor<T>> v, Cvor<T> pocetni) {
-    int brojCvorova = g->dajBrojCvorova();
-    bool* posjeceni = new bool[brojCvorova];
-    for(int i = 0; i < brojCvorova; i++)
-        posjeceni[i] = false;
+// template <typename T>
+// void bfs(UsmjereniGraf<T>* g, std::vector<Cvor<T>> v, Cvor<T> pocetni) {
+//     int brojCvorova = g->dajBrojCvorova();
+//     bool* posjeceni = new bool[brojCvorova];
+//     for(int i = 0; i < brojCvorova; i++)
+//         posjeceni[i] = false;
+//
+//     // ovdje bih koristio vec implementirani Red iz PZ4, 
+//     // ali zbog glomaznog koda koji nosi sa sobom,
+//     // koristicu standardni red
+//     std::queue<int> q;
+//     int pocetniCvor = pocetni.dajRedniBroj();
+//     q.push(pocetniCvor);
+//     posjeceni[pocetniCvor] = true;
+//     while(!q.empty()) {
+//         int trenutniCvor = q.front();
+//         std::cout << "Posjecen cvor " << trenutniCvor << "\n";
+//         v.push_back({trenutniCvor, T()});
+//         q.pop();
+//         auto trenutni = g->dajListuCvorova(trenutniCvor);
+//         while(trenutni != nullptr) {
+//             if(!posjeceni[trenutni->cvor.dajRedniBroj()]) {
+//                 q.push(trenutni->cvor.dajRedniBroj());
+//                 posjeceni[trenutni->cvor.dajRedniBroj()];
+//             }
+//             trenutni = trenutni->sljedeci;
+//         }
+//     }
+//     delete[] posjeceni;
+// }
+//
+// template <typename T>
+// void dfs(UsmjereniGraf<T>* g, std::vector<Cvor<T>> v, Cvor<T> pocetni) {
+//     int brojCvorova = g->dajBrojCvorova();
+//     bool* posjeceni = new bool[brojCvorova];
+//     for(int i = 0; i < brojCvorova; i++)
+//         posjeceni[i] = false;
+//
+//     // ovdje bih koristio vec implementirani Stek iz PZ4, 
+//     // ali zbog glomaznog koda koji nosi sa sobom,
+//     // koristicu standardni stack 
+//     std::stack<int> s;
+//
+//     int pocetniCvor = pocetni.dajRedniBroj();
+//     s.push(pocetniCvor);
+//     posjeceni[pocetniCvor] = true;
+//     while(!s.empty()) {
+//         int trenutniCvor = s.top();
+//         std::cout << "Posjecen cvor " << trenutniCvor << "\n";
+//         v.push_back({trenutniCvor, T()});
+//         s.pop();
+//         auto trenutni = g->dajListuCvorova(trenutniCvor);
+//         while(trenutni != nullptr) {
+//             if(!posjeceni[trenutni->cvor.dajRedniBroj()]) {
+//                 s.push(trenutni->cvor.dajRedniBroj());
+//                 posjeceni[trenutni->cvor.dajRedniBroj()];
+//             }
+//             trenutni = trenutni->sljedeci;
+//         }
+//     }
+//     delete[] posjeceni;
+// }
 
-    // ovdje bih koristio vec implementirani Red iz PZ4, 
-    // ali zbog glomaznog koda koji nosi sa sobom,
-    // koristicu standardni red
-    std::queue<int> q;
-    int pocetniCvor = pocetni.dajRedniBroj();
-    q.push(pocetniCvor);
-    posjeceni[pocetniCvor] = true;
-    while(!q.empty()) {
-        int trenutniCvor = q.front();
-        std::cout << "Posjecen cvor " << trenutniCvor << "\n";
-        v.push_back({trenutniCvor, T()});
-        q.pop();
-        auto trenutni = g->dajListuCvorova(trenutniCvor);
-        while(trenutni != nullptr) {
-            if(!posjeceni[trenutni->cvor.dajRedniBroj()]) {
-                q.push(trenutni->cvor.dajRedniBroj());
-                posjeceni[trenutni->cvor.dajRedniBroj()];
+template <typename K, typename V>
+class Mapa {
+public:
+    virtual ~Mapa() {}
+    virtual void obrisi() = 0;
+    virtual void obrisi(const K& kljuc) = 0;
+    virtual int brojElemenata() const = 0;
+    virtual V& operator[] (const K& kljuc) = 0;
+    virtual V operator[] (const K& kljuc) const = 0;
+};
+
+template <typename K, typename V>
+class HashMapaLan : public Mapa<K,V> {
+    struct Cvor {
+        std::pair<K, V> par;
+        Cvor* sljedeci;
+    };
+    Cvor** elementi;
+    int kapacitet;
+    int brojEl;
+    static const int POCETNA_VELICINA = 100;
+    unsigned int (*hashFunkcija)(K, unsigned int);
+    const std::pair<K, V>* DEL;
+public:
+    HashMapaLan() : elementi(new Cvor*[POCETNA_VELICINA]{}), kapacitet(POCETNA_VELICINA), brojEl(0) {
+        for(int i = 0; i < kapacitet; i++)
+            elementi[i] = nullptr;
+    }
+    HashMapaLan(const HashMapaLan& h) : elementi(new Cvor*[h.kapacitet]{}), kapacitet(h.kapacitet), brojEl(h.brojEl) {
+        for(int i = 0; i < kapacitet; i++) {
+            Cvor* trenutni = h.elementi[i];
+            Cvor* prethodni = nullptr;
+            while(trenutni != nullptr) {
+                Cvor* novi = new Cvor{trenutni->par, nullptr};
+                if(prethodni == nullptr) {
+                    elementi[i] = novi;
+                } else {
+                    prethodni->sljedeci = novi;
+                }
+                prethodni = novi;
+                trenutni = trenutni->sljedeci;
             }
+        }
+    }
+    HashMapaLan& operator=(const HashMapaLan& h) {
+        if(this == &h) return *this;
+        for(int i = 0; i < kapacitet; i++) {
+            Cvor* trenutni = elementi[i];
+            while(trenutni != nullptr) {
+                Cvor* stari = trenutni;
+                trenutni = trenutni->sljedeci;
+                delete stari;
+            }
+        }
+        delete[] elementi;
+        elementi = new Cvor*[h.kapacitet]{};
+        kapacitet = h.kapacitet;
+        brojEl = h.brojEl;
+        for(int i = 0; i < kapacitet; i++) {
+            Cvor* trenutni = h.elementi[i];
+            Cvor* prethodni = nullptr;
+            while(trenutni != nullptr) {
+                Cvor* novi = new Cvor{trenutni->par, nullptr};
+                if(prethodni == nullptr) {
+                    elementi[i] = novi;
+                } else {
+                    prethodni->sljedeci = novi;
+                }
+                prethodni = novi;
+                trenutni = trenutni->sljedeci;
+            }
+        }
+        return *this;
+    }
+    ~HashMapaLan() {
+        for(int i = 0; i < kapacitet; i++) {
+            Cvor* trenutni = elementi[i];
+            while(trenutni != nullptr) {
+                Cvor* stari = trenutni;
+                trenutni = trenutni->sljedeci;
+                delete stari;
+            }
+        }
+        delete[] elementi;
+    }
+    void obrisi() {
+        for(int i = 0; i < kapacitet; i++) {
+            Cvor* trenutni = elementi[i];
+            while(trenutni != nullptr) {
+                Cvor* stari = trenutni;
+                trenutni = trenutni->sljedeci;
+                delete stari;
+            }
+            elementi[i] = nullptr;
+        }
+        brojEl = 0;
+    }
+    void obrisi(const K& kljuc) {
+        int indeks = hashFunkcija(kljuc, kapacitet);
+        Cvor* trenutni = elementi[indeks];
+        Cvor* prethodni = nullptr;
+        while(trenutni != nullptr) {
+            if(trenutni->par.first == kljuc) {
+                if(prethodni == nullptr) {
+                    elementi[indeks] = trenutni->sljedeci;
+                } else {
+                    prethodni->sljedeci = trenutni->sljedeci;
+                }
+                delete trenutni;
+                brojEl--;
+                return;
+            }
+            prethodni = trenutni;
             trenutni = trenutni->sljedeci;
         }
     }
-    delete[] posjeceni;
-}
-
-template <typename T>
-void dfs(UsmjereniGraf<T>* g, std::vector<Cvor<T>> v, Cvor<T> pocetni) {
-    int brojCvorova = g->dajBrojCvorova();
-    bool* posjeceni = new bool[brojCvorova];
-    for(int i = 0; i < brojCvorova; i++)
-        posjeceni[i] = false;
-
-    // ovdje bih koristio vec implementirani Stek iz PZ4, 
-    // ali zbog glomaznog koda koji nosi sa sobom,
-    // koristicu standardni stack 
-    std::stack<int> s;
-
-    int pocetniCvor = pocetni.dajRedniBroj();
-    s.push(pocetniCvor);
-    posjeceni[pocetniCvor] = true;
-    while(!s.empty()) {
-        int trenutniCvor = s.top();
-        std::cout << "Posjecen cvor " << trenutniCvor << "\n";
-        v.push_back({trenutniCvor, T()});
-        s.pop();
-        auto trenutni = g->dajListuCvorova(trenutniCvor);
+    int brojElemenata() const { return brojEl; }
+    V& operator[] (const K& kljuc) {
+        int indeks = hashFunkcija(kljuc, kapacitet);
+        Cvor* trenutni = elementi[indeks];
+        Cvor* prethodni = nullptr;
         while(trenutni != nullptr) {
-            if(!posjeceni[trenutni->cvor.dajRedniBroj()]) {
-                s.push(trenutni->cvor.dajRedniBroj());
-                posjeceni[trenutni->cvor.dajRedniBroj()];
+            if(trenutni->par.first == kljuc) {
+                return trenutni->par.second;
+            }
+            prethodni = trenutni;
+            trenutni = trenutni->sljedeci;
+        }
+        if(brojEl >= kapacitet * 0.75) {
+            rehash();
+            indeks = hashFunkcija(kljuc, kapacitet);
+        }
+        Cvor* novi = new Cvor{{kljuc, V()}, nullptr};
+        if(prethodni == nullptr) {
+            elementi[indeks] = novi;
+        } else {
+            prethodni->sljedeci = novi;
+        }
+        brojEl++;
+        return novi->par.second;
+    }
+    V operator[] (const K& kljuc) const {
+        int indeks = hashFunkcija(kljuc, kapacitet);
+        Cvor* trenutni = elementi[indeks];
+        while(trenutni != nullptr) {
+            if(trenutni->par.first == kljuc) {
+                return trenutni->par.second;
             }
             trenutni = trenutni->sljedeci;
         }
+        return V();
     }
-    delete[] posjeceni;
-}
+    void rehash() {
+        Cvor** novi = new Cvor*[kapacitet * 2]{};
+        for(int i = 0; i < kapacitet; i++) {
+            Cvor* trenutni = elementi[i];
+            while(trenutni != nullptr) {
+                Cvor* stari = trenutni;
+                trenutni = trenutni->sljedeci;
+                int indeks = hashFunkcija(stari->par.first, kapacitet * 2);
+                stari->sljedeci = novi[indeks];
+                novi[indeks] = stari;
+            }
+        }
+        delete[] elementi;
+        elementi = novi;
+        kapacitet *= 2;
+    }
+    void definisiHashFunkciju(unsigned int(*funkcija)(K ulaz, unsigned int max)) {
+        hashFunkcija = funkcija;
+    }
+};
 
 int main() {
-    UsmjereniGraf<bool> *g = new ListaGraf<bool>(6);
-    g->dodajGranu(0, 1, 2.5);
-    g->dodajGranu(1, 2, 1.2);
-    g->dodajGranu(1, 3, 0.1);
-    g->dodajGranu(2, 4, 3.14);
-    g->dodajGranu(2, 3, 2.73);
-    g->dodajGranu(3, 5, 1);
-    g->dodajGranu(5, 2, -5.0);
-    std::vector<Cvor<bool> > dfs_obilazak;
-    dfs(g, dfs_obilazak, g->dajCvor(0));
-    for (int i = 0; i < dfs_obilazak.size(); i++)
-        cout << dfs_obilazak[i].dajRedniBroj() << ",";
-    delete g;
-        return 0;
 }
