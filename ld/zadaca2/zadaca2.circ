@@ -1603,14 +1603,4 @@
     <wire from="(940,360)" to="(940,560)"/>
     <wire from="(940,360)" to="(950,360)"/>
   </circuit>
-  <circuit name="Z3">
-    <a name="appearance" val="logisim_evolution"/>
-    <a name="circuit" val="Z3"/>
-    <a name="circuitnamedboxfixedsize" val="true"/>
-    <a name="simulationFrequency" val="4.0"/>
-    <wire from="(370,240)" to="(370,320)"/>
-    <wire from="(370,240)" to="(510,240)"/>
-    <wire from="(370,320)" to="(510,320)"/>
-    <wire from="(510,240)" to="(510,320)"/>
-  </circuit>
 </project>
