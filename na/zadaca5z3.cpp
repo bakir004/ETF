@@ -6,6 +6,8 @@
 typedef std::pair<double,double> Pair;
 typedef std::vector<Pair> VectorPair;
 
+const double PI = std::atan(1)*4;
+
 template <typename FunType>
 double RK4Step(FunType f, double x0, double y0, double h) {
     double x = x0;
@@ -91,7 +93,7 @@ void Testiranje() {
     }
 
     auto res3 = RK4Integrator([](double x, double y) { return std::cos(x); },
-                              0, 0, M_PI, 0.1, eps, true);
+                              0, 0, PI, 0.1, eps, true);
     auto exact3 = [](double x) { return std::sin(x); };
     for (const auto& [x, y] : res3) {
         if (std::fabs(y - exact3(x)) > eps) {
