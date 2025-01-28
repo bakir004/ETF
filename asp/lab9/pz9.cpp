@@ -2,11 +2,10 @@
 #include <functional>
 #include <ctime>
 #include <stdexcept>
-#include <string>
 
 const float FAKTOR_PROSIRENJA = 1.5;
 const int POCETNA_VELICINA = 10;
-const int POCETNA_VELICINA_HASH_TABELE = 10000;
+const int POCETNA_VELICINA_HASH_TABELE = 10;
 using namespace std;
 
 template <typename K, typename V>
@@ -395,49 +394,61 @@ unsigned int hashiranje(int a, unsigned int max) {
 }
 
 int main() {
-
-    NizMapa<int,int> nm;
-    BinStabloMapa<int,int> bm;
     HashMapa<int,int> hm;
     hm.definisiHashFunkciju(hashiranje);
-    clock_t vrijeme1 = clock();
-    int brojElemenata = 10000;
-    for(int i = 0; i < brojElemenata; i++)
-        nm[i] = i;
-    clock_t vrijeme2 = clock();
-    int umetanjeNizMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
-    vrijeme1 = clock();
-    for(int i = 0; i < brojElemenata; i++)
-        bm[i] = i;
-    vrijeme2 = clock();
-    int umetanjeBinStabloMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
-    vrijeme1 = clock();
-    for(int i = 0; i < brojElemenata; i++)
-        hm[i] = i;
-    vrijeme2 = clock();
-    int umetanjeHashMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
-    vrijeme1 = clock();
-    for(int i = 0; i < brojElemenata; i++) nm[i];
-    vrijeme2 = clock();
-    int pristupNizMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
-    vrijeme1 = clock();
-    for(int i = 0; i < brojElemenata; i++) bm[i];
-    vrijeme2 = clock();
-    int pristupBinStabloMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
-    vrijeme1 = clock();
-    for(int i = 0; i < brojElemenata; i++) hm[i];
-    vrijeme2 = clock();
-    int pristupHashMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
+    hm[1] = 1;
+    hm[2] = 2;
+    hm[3] = 3;
+    hm[4] = 4;
+    hm[5] = 44;
+    hm[15] = 44;
+    hm[25] = 44;
 
-    std::cout << "NizMapa:\n";
-    std::cout << "  Pristup: " << pristupNizMapa << "ms\n";
-    std::cout << "  Umetanje: " << umetanjeNizMapa << "ms\n";
-    std::cout << "BinStabloMapa:\n";
-    std::cout << "  Pristup: " << pristupBinStabloMapa << "ms\n";
-    std::cout << "  Umetanje: " << pristupBinStabloMapa << "ms\n";
-    std::cout << "HashMapa:\n";
-    std::cout << "  Pristup: " << pristupHashMapa << "ms\n";
-    std::cout << "  Umetanje: " << umetanjeHashMapa << "ms\n";
+    hm.ispisi();
+
+
+    /*NizMapa<int,int> nm;*/
+    /*BinStabloMapa<int,int> bm;*/
+    /*HashMapa<int,int> hm;*/
+    /*hm.definisiHashFunkciju(hashiranje);*/
+    /*clock_t vrijeme1 = clock();*/
+    /*int brojElemenata = 10000;*/
+    /*for(int i = 0; i < brojElemenata; i++)*/
+    /*    nm[i] = i;*/
+    /*clock_t vrijeme2 = clock();*/
+    /*int umetanjeNizMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);*/
+    /*vrijeme1 = clock();*/
+    /*for(int i = 0; i < brojElemenata; i++)*/
+    /*    bm[i] = i;*/
+    /*vrijeme2 = clock();*/
+    /*int umetanjeBinStabloMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);*/
+    /*vrijeme1 = clock();*/
+    /*for(int i = 0; i < brojElemenata; i++)*/
+    /*    hm[i] = i;*/
+    /*vrijeme2 = clock();*/
+    /*int umetanjeHashMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);*/
+    /*vrijeme1 = clock();*/
+    /*for(int i = 0; i < brojElemenata; i++) nm[i];*/
+    /*vrijeme2 = clock();*/
+    /*int pristupNizMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);*/
+    /*vrijeme1 = clock();*/
+    /*for(int i = 0; i < brojElemenata; i++) bm[i];*/
+    /*vrijeme2 = clock();*/
+    /*int pristupBinStabloMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);*/
+    /*vrijeme1 = clock();*/
+    /*for(int i = 0; i < brojElemenata; i++) hm[i];*/
+    /*vrijeme2 = clock();*/
+    /*int pristupHashMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);*/
+    /**/
+    /*std::cout << "NizMapa:\n";*/
+    /*std::cout << "  Pristup: " << pristupNizMapa << "ms\n";*/
+    /*std::cout << "  Umetanje: " << umetanjeNizMapa << "ms\n";*/
+    /*std::cout << "BinStabloMapa:\n";*/
+    /*std::cout << "  Pristup: " << pristupBinStabloMapa << "ms\n";*/
+    /*std::cout << "  Umetanje: " << pristupBinStabloMapa << "ms\n";*/
+    /*std::cout << "HashMapa:\n";*/
+    /*std::cout << "  Pristup: " << pristupHashMapa << "ms\n";*/
+    /*std::cout << "  Umetanje: " << umetanjeHashMapa << "ms\n";*/
 
     // Primjer ispisa:
     // NizMapa:
