@@ -220,7 +220,45 @@ public:
 };
 
 
+/*int main() {*/
+/*    UsmjereniGraf<bool> *g = new MatricaGraf<bool>(6);*/
+/*    g->dodajGranu(0, 1, 2.5);*/
+/*    g->dodajGranu(1, 0, 1.2);*/
+/*    g->dodajGranu(1, 2, 0.1);*/
+/*    g->dodajGranu(0, 0, 3.14);*/
+/*    /*g->ispisiCvorove();*/*/
+/*    GranaIterator<bool> iter = g->dajGranePocetak();*/
+/*    std::cout << (*iter++).dajPolazniCvor().dajRedniBroj() << std::endl;*/
+/*    std::cout << (*iter++).dajPolazniCvor().dajRedniBroj() << std::endl;*/
+/*    std::cout << (*iter++).dajPolazniCvor().dajRedniBroj() << std::endl;*/
+/*    std::cout << (*iter++).dajPolazniCvor().dajRedniBroj() << std::endl;*/
+/*    /*for(; iter != g->dajGraneKraj(); ++iter)*/*/
+/*    /*    cout << (*iter).dajTezinu() << " ";*/*/
+/*    /*for (GranaIterator<bool> iter = g->dajGranePocetak();*/*/
+/*    /*    iter != g->dajGraneKraj(); ++iter)*/*/
+/*    /*    cout << "(" << (*iter).dajPolazniCvor().dajRedniBroj() << ","*/*/
+/*    /*        << (*iter).dajDolazniCvor().dajRedniBroj() << ") -> "*/*/
+/*    /*        << (*iter).dajTezinu() << "; ";*/*/
+/*    delete g;*/
+/*    return 0;*/
+/*}*/
 int main() {
+UsmjereniGraf<std::string> *g = new ListaGraf<std::string>(4);
+  g->dodajGranu(0, 1, 2.5);
+  g->dodajGranu(1, 2, 1.2);
+  g->dodajGranu(1, 3, 0.1);
+  g->dodajGranu(3, 3, -4.0);
+  g->postaviOznakuGrane(3, 3, "aa");
+  Grana<std::string> grana = g->dajGranu(0,1);
+  grana.postaviOznaku("bb");
+  grana.postaviTezinu(3.5);
+  for (int i = 0; i < 4; i++)
+    for (int j = 0; j < 4; j++)
+      if (g->postojiGrana(i,j)) {
+        cout << "(" << i << "," << j << ") -> '" << g->dajOznakuGrane(i, j) << "','" << g->dajGranu(i, j).dajOznaku();
+        cout << "'," << g->dajTezinuGrane(i, j) << "; ";
+      }
+delete g;#include <string>
     MatricaGraf<int> g(6);
     g.dodajGranu(0, 1);
     g.dodajGranu(1, 0);
