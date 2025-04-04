@@ -1,0 +1,15 @@
+/home/bakir/fax/ooad/example/bin/Debug/net8.0/example
+/home/bakir/fax/ooad/example/bin/Debug/net8.0/example.deps.json
+/home/bakir/fax/ooad/example/bin/Debug/net8.0/example.runtimeconfig.json
+/home/bakir/fax/ooad/example/bin/Debug/net8.0/example.dll
+/home/bakir/fax/ooad/example/bin/Debug/net8.0/example.pdb
+/home/bakir/fax/ooad/example/obj/Debug/net8.0/example.GeneratedMSBuildEditorConfig.editorconfig
+/home/bakir/fax/ooad/example/obj/Debug/net8.0/example.AssemblyInfoInputs.cache
+/home/bakir/fax/ooad/example/obj/Debug/net8.0/example.AssemblyInfo.cs
+/home/bakir/fax/ooad/example/obj/Debug/net8.0/example.csproj.CoreCompileInputs.cache
+/home/bakir/fax/ooad/example/obj/Debug/net8.0/example.sourcelink.json
+/home/bakir/fax/ooad/example/obj/Debug/net8.0/example.dll
+/home/bakir/fax/ooad/example/obj/Debug/net8.0/refint/example.dll
+/home/bakir/fax/ooad/example/obj/Debug/net8.0/example.pdb
+/home/bakir/fax/ooad/example/obj/Debug/net8.0/example.genruntimeconfig.cache
+/home/bakir/fax/ooad/example/obj/Debug/net8.0/ref/example.dll

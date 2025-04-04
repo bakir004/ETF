@@ -1,0 +1,18 @@
+Za kvadratnu matricu kažemo da je cirkulantna ukoliko su elementi
+svakog njenog reda osim prvog dobijeni cikličkim (kružnim) pomjeranjem
+prethodnog reda za jedno mjesto udesno. Na primjer,
+cirkulantna matrica formata 4×4 ima sljedeći oblik:
+
+a b c d
+d a b c
+c d a b
+b c d a
+
+Napišite funkciju “DaLiJeCirkulantna” koja vraća rezultat “true” ili 
+“false” ovisno od toga da li njen parametar koji je organiziran kao 
+dek dekova (tj. dek čiji su elementi dekovi) predstavlja neku 
+cirkulantnu matricu ili ne. Funkcija treba vratiti “false” kad god se
+ne radi o cirkulantnoj matrici, uključujući i slučajeve kad parametar
+uopće nema formu matrice (tj. kada različiti redovi nemaju
+isti broj elemenata).
+Ako je matrica prazna treba baciti izuzetak tipa domain_error.
