@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <functional>
 #include <ctime>
 #include <stdexcept>
@@ -262,6 +263,33 @@ public:
     void ispisi() const { ispisi(korijen); }
 };
 
+
+unsigned int hashiranje(int a, unsigned int max) {
+    std::cout << "HASHIRANJE\n";
+    std::ofstream outFile("example.txt"); // Open a file for writing
+    if (outFile.is_open()) {
+        outFile << "Hello, this is a test file.\n";
+        outFile << "C++ file handling is fun!\n";
+        outFile.close(); // Close the file after writing
+    } else {
+        std::cerr << "Unable to open file for writing.\n";
+        return 1;
+    }
+
+    std::ifstream inFile("example.txt"); // Open a file for reading
+    if (inFile.is_open()) {
+        std::string line;
+        while (std::getline(inFile, line)) { // Read the file line by line
+            std::cout << line << '\n'; // Print each line to the console
+        }
+        inFile.close(); // Close the file after reading
+    } else {
+        std::cerr << "Unable to open file for reading.\n";
+        return 1;
+    }
+    std::cout << "HASHIRANJE\n";
+    return a % max;
+}
 template <typename K, typename V>
 class HashMapa : public Mapa<K, V> {
     typedef std::pair<K, V> Par;
@@ -297,7 +325,9 @@ class HashMapa : public Mapa<K, V> {
         niz[adresa] = new Par({kljuc, V()});
     }
 public:
-    HashMapa(): velicina(0), DEL(new Par({K(),V()})), kapacitet(POCETNA_VELICINA_HASH_TABELE), niz(new Par*[kapacitet]{}) { }
+    HashMapa(): velicina(0), DEL(new Par({K(),V()})), kapacitet(POCETNA_VELICINA_HASH_TABELE), niz(new Par*[kapacitet]{}) { 
+        hashiranje(0,1);
+    }
     ~HashMapa() {
         delete DEL;
         for(int i = 0; i < kapacitet; i++)
@@ -389,11 +419,41 @@ public:
 };
 
 
-unsigned int hashiranje(int a, unsigned int max) {
-    return a % max;
-}
-
 int main() {
+    hashiranje(0, 0);
+
+    // NizMapa<int,int> nm;
+    // BinStabloMapa<int,int> bm;
+    // HashMapa<int,int> hm;
+    // hm.definisiHashFunkciju(hashiranje);
+    // clock_t vrijeme1 = clock();
+    // int brojElemenata = 10000;
+    // for(int i = 0; i < brojElemenata; i++)
+    //     nm[i] = i;
+    // clock_t vrijeme2 = clock();
+    // int umetanjeNizMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
+    // vrijeme1 = clock();
+    // for(int i = 0; i < brojElemenata; i++)
+    //     bm[i] = i;
+    // vrijeme2 = clock();
+    // int umetanjeBinStabloMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
+    // vrijeme1 = clock();
+    // for(int i = 0; i < brojElemenata; i++)
+    //     hm[i] = i;
+    // vrijeme2 = clock();
+    // int umetanjeHashMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
+    // vrijeme1 = clock();
+    // for(int i = 0; i < brojElemenata; i++) nm[i];
+    // vrijeme2 = clock();
+    // int pristupNizMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
+    // vrijeme1 = clock();
+    // for(int i = 0; i < brojElemenata; i++) bm[i];
+    // vrijeme2 = clock();
+    // int pristupBinStabloMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
+    // vrijeme1 = clock();
+    // for(int i = 0; i < brojElemenata; i++) hm[i];
+    // vrijeme2 = clock();
+    // int pristupHashMapa = (vrijeme2-vrijeme1)/(CLOCKS_PER_SEC/1000);
     HashMapa<int,int> hm;
     hm.definisiHashFunkciju(hashiranje);
     hm[1] = 1;
@@ -461,13 +521,34 @@ int main() {
     //   Pristup: 0ms   
     //   Umetanje: 1ms
     //
-    // Vidimo da NizMapa pati od umetanja jer se mora prvo linearno pretraziti kljuc, 
-    // i dodati ga ako ga ne nadje. Pristup je brzi od umetanja jer vrlo je moguce naci element prije kraja.
+    // std::cout << "NizMapa:\n";
+    // std::cout << "  Pristup: " << pristupNizMapa << "ms\n";
+    // std::cout << "  Umetanje: " << umetanjeNizMapa << "ms\n";
+    // std::cout << "BinStabloMapa:\n";
+    // std::cout << "  Pristup: " << pristupBinStabloMapa << "ms\n";
+    // std::cout << "  Umetanje: " << pristupBinStabloMapa << "ms\n";
+    // std::cout << "HashMapa:\n";
+    // std::cout << "  Pristup: " << pristupHashMapa << "ms\n";
+    // std::cout << "  Umetanje: " << umetanjeHashMapa << "ms\n";
     //
-    // BinStabloMapa za ovaj konkretan slucaj ce biti linked lista je se svi elementi nadodaju na kraj.
-    // Zbog toga su identicni pristup i umetanje u smislu vremena izvrsavanja. 
-    // Brzinu BinStabloMape nad nasumicnim skupom podataka smo vidjeli u PZ7.
-    //
-    // HashMapa je neobicno brza. Koristi se u implementaciji std::unorderded_map.
-    return 0;
+    // // Primjer ispisa:
+    // // NizMapa:
+    // //   Pristup: 124ms 
+    // //   Umetanje: 260ms
+    // // BinStabloMapa:   
+    // //   Pristup: 223ms 
+    // //   Umetanje: 223ms
+    // // HashMapa:        
+    // //   Pristup: 0ms   
+    // //   Umetanje: 1ms
+    // //
+    // // Vidimo da NizMapa pati od umetanja jer se mora prvo linearno pretraziti kljuc, 
+    // // i dodati ga ako ga ne nadje. Pristup je brzi od umetanja jer vrlo je moguce naci element prije kraja.
+    // //
+    // // BinStabloMapa za ovaj konkretan slucaj ce biti linked lista je se svi elementi nadodaju na kraj.
+    // // Zbog toga su identicni pristup i umetanje u smislu vremena izvrsavanja. 
+    // // Brzinu BinStabloMape nad nasumicnim skupom podataka smo vidjeli u PZ7.
+    // //
+    // // HashMapa je neobicno brza. Koristi se u implementaciji std::unorderded_map.
+    // return 0;
 }

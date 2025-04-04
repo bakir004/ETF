@@ -61,6 +61,51 @@ function gradient_descent_classic(f; theta_init, learning_rate=0.001, max_iter=1
     return theta, iter, trajectory
 end
 
+# function gradient_descent_with_momentum(f; theta_init, learning_rate=0.001, alpha=0.9, max_iter=10000, tol=1e-6)
+#     theta = theta_init           
+#     v = zeros(length(theta)) 
+#     iter = 0
+#     trajectory = []
+
+#     while iter < max_iter
+#         g = gradient(f, theta) 
+#         v = alpha * v - learning_rate * g 
+#         theta += v 
+#         push!(trajectory, copy(theta))
+
+#         if norm(g) < tol
+#             break
+#         end
+
+#         iter += 1
+#     end
+
+#     return theta, iter, trajectory
+# end
+
+# function nesterov_gradient_descent(f; theta_init, learning_rate=0.001, alpha=0.9, max_iter=10000, tol=1e-6)
+#     theta = theta_init  
+#     v = zeros(length(theta))
+#     iter = 0
+#     trajectory = []
+
+#     while iter < max_iter
+#         theta_tilde = theta + alpha * v
+#         g = gradient(f, theta_tilde)
+#         v = alpha * v - learning_rate * g
+#         theta += v
+#         push!(trajectory, copy(theta))
+
+#         if norm(g) < tol
+#             break
+#         end
+
+#         iter += 1
+#     end
+
+#     return theta, iter, trajectory
+# end
+
 function gradient_descent_with_momentum(f; theta_init, learning_rate=0.001, alpha=0.9, max_iter=10000, tol=1e-6)
     theta = theta_init           
     v = zeros(length(theta)) 
@@ -72,6 +117,14 @@ function gradient_descent_with_momentum(f; theta_init, learning_rate=0.001, alph
         v = alpha * v - learning_rate * g 
         theta += v 
         push!(trajectory, copy(theta))
+
+        if any(isnan, theta)
+            learning_rate /= 2
+            theta = theta_init
+            v .= 0
+            iter = 0
+            continue
+        end
 
         if norm(g) < tol
             break
@@ -96,6 +149,14 @@ function nesterov_gradient_descent(f; theta_init, learning_rate=0.001, alpha=0.9
         theta += v
         push!(trajectory, copy(theta))
 
+        if any(isnan, theta)
+            learning_rate /= 2
+            theta = theta_init
+            v .= 0
+            iter = 0
+            continue
+        end
+
         if norm(g) < tol
             break
         end
@@ -112,11 +173,11 @@ end
 
 plotxmin = -10
 plotxmax = 10
-f = sphere_function
+f = goldstein_price
 learning_rate = 0.001
 alpha = 0.9
 theta_init = [0.1, 2]
-max_iters=10000
+max_iters=1000
 
 # ============= END PODESAVANJA PARAMETARA =============
 
@@ -202,86 +263,85 @@ x_gd_filtered, y_gd_filtered = getindex.(filtered_gd, 1), getindex.(filtered_gd,
 
 # ============= PLOTANJE KONVERGENCIJA =============
 
-# xv = LinRange(plotxmin, plotxmax, 110)
-# yv = LinRange(plotxmin, plotxmax, 110)
+xv = LinRange(plotxmin, plotxmax, 110)
+yv = LinRange(plotxmin, plotxmax, 110)
 
-# final_theta_matrix = zeros(Float64, length(xv), length(yv))
-# final_theta_matrix2 = zeros(Float64, length(xv), length(yv))
+final_theta_matrix = zeros(Float64, length(xv), length(yv))
+final_theta_matrix2 = zeros(Float64, length(xv), length(yv))
 
-# for (i, x) in enumerate(xv)
-#     for (j, y) in enumerate(yv)
-#         point, _, _ = gradient_descent_with_momentum(
-#             f;
-#             theta_init=[x,y],
-#             learning_rate=learning_rate,
-#             alpha=alpha,
-#             max_iter=max_iters
-#         )
-#         point2, _, _ = nesterov_gradient_descent(
-#             f;
-#             theta_init=[x,y],
-#             learning_rate=learning_rate,
-#             alpha=alpha,
-#             max_iter=max_iters
-#         )
-#         final_theta_matrix[i, j] = f(point)
-#         final_theta_matrix2[i, j] = f(point2)
-#     end
-#     println("Row $i done")
-# end
+for (i, x) in enumerate(xv)
+    for (j, y) in enumerate(yv)
+        point, _, _ = gradient_descent_with_momentum(
+            f;
+            theta_init=[x,y],
+            learning_rate=learning_rate,
+            alpha=alpha,
+            max_iter=max_iters
+        )
+        point2, _, _ = nesterov_gradient_descent(
+            f;
+            theta_init=[x,y],
+            learning_rate=learning_rate,
+            alpha=alpha,
+            max_iter=max_iters
+        )
+        final_theta_matrix[i, j] = f(point)
+        final_theta_matrix2[i, j] = f(point2)
+    end
+    println("Row $i done")
+end
 
 
-# min_nesterov = minimum(final_theta_matrix2[.!isnan.(final_theta_matrix2)])
-# println("Minimum Nesterov: $min_nesterov")
-# max_nesterov = maximum(final_theta_matrix2[.!isnan.(final_theta_matrix2)])
-# println("Maximum Nesterov: $max_nesterov")
+min_nesterov = minimum(final_theta_matrix2[.!isnan.(final_theta_matrix2)])
+println("Minimum Nesterov: $min_nesterov")
+max_nesterov = maximum(final_theta_matrix2[.!isnan.(final_theta_matrix2)])
+println("Maximum Nesterov: $max_nesterov")
 
-# min_momentum = minimum(final_theta_matrix[.!isnan.(final_theta_matrix)])
-# println("Minimum Momentum: $min_momentum")
-# max_momentum = maximum(final_theta_matrix[.!isnan.(final_theta_matrix)])
-# println("Maximum Momentum: $max_momentum")
+min_momentum = minimum(final_theta_matrix[.!isnan.(final_theta_matrix)])
+println("Minimum Momentum: $min_momentum")
+max_momentum = maximum(final_theta_matrix[.!isnan.(final_theta_matrix)])
+println("Maximum Momentum: $max_momentum")
 
-# scatter_x = repeat(xv, inner=length(yv))  
-# scatter_y = repeat(yv, outer=length(xv)) 
-# scatter_color1 = vec(final_theta_matrix')
-# scatter_color2 = vec(final_theta_matrix2')
+scatter_x = repeat(xv, inner=length(yv))  
+scatter_y = repeat(yv, outer=length(xv)) 
+scatter_color1 = vec(final_theta_matrix')
+scatter_color2 = vec(final_theta_matrix2')
 
-# p1 = scatter(
-#     scatter_x,
-#     scatter_y,
-#     zcolor=scatter_color1,
-#     xlabel="x (početno)",
-#     ylabel="y (početno)",
-#     color=:viridis,
-#     markershape=:rect,
-#     markersize=2,
-#     markerstrokecolor=:transparent,
-#     markerfillcolor=:auto,
-#     markerstrokewidth=0,
-#     legend=false,
-#     aspect_ratio=:equal,
-#     colorbar=true,
-#     size=(600, 600)
-# )
+p1 = scatter(
+    scatter_x,
+    scatter_y,
+    zcolor=scatter_color1,
+    xlabel="x (početno)",
+    ylabel="y (početno)",
+    color=:viridis,
+    markershape=:rect,
+    markersize=2,
+    markerstrokecolor=:transparent,
+    markerfillcolor=:auto,
+    markerstrokewidth=0,
+    legend=false,
+    aspect_ratio=:equal,
+    colorbar=true,
+    size=(600, 600)
+)
 
-# ============= END PLOTANJE KONVERGENCIJA =============
-# p2 = scatter(
-#     scatter_x,
-#     scatter_y,
-#     zcolor=scatter_color2,
-#     xlabel="x (početno)",
-#     color=:viridis,
-#     markershape=:rect,
-#     markersize=2,
-#     markerstrokecolor=:transparent,
-#     markerfillcolor=:auto,
-#     markerstrokewidth=0,
-#     legend=false,
-#     aspect_ratio=:equal,
-#     colorbar=true,
-#     size=(600, 600)
-# )
+p2 = scatter(
+    scatter_x,
+    scatter_y,
+    zcolor=scatter_color2,
+    xlabel="x (početno)",
+    color=:viridis,
+    markershape=:rect,
+    markersize=2,
+    markerstrokecolor=:transparent,
+    markerfillcolor=:auto,
+    markerstrokewidth=0,
+    legend=false,
+    aspect_ratio=:equal,
+    colorbar=true,
+    size=(600, 600)
+)
 
-# plot(p1, p2, layout=(1, 2), size=(1400, 600))
+plot(p1, p2, layout=(1, 2), size=(1400, 600))
 
 # ============= END PLOTANJE KONVERGENCIJA =============
