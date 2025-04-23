@@ -24,21 +24,9 @@ fun NewsList(
     ) {
         items(newsList) { news ->
             if(news.isFeatured) {
-                FeaturedNewsCard(
-                    title = news.title,
-                    snippet = news.snippet,
-                    imageUrl = news.imageUrl,
-                    source = news.source,
-                    publishedDate = news.publishedDate
-                )
+                FeaturedNewsCard(news)
             } else {
-                StandardNewsCard(
-                    title = news.title,
-                    snippet = news.snippet,
-                    imageUrl = news.imageUrl,
-                    source = news.source,
-                    publishedDate = news.publishedDate
-                )
+                StandardNewsCard(news)
             }
         }
     }

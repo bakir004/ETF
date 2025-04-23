@@ -21,14 +21,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import etf.ri.rma.newsfeedapp.R
+import etf.ri.rma.newsfeedapp.model.NewsItem
 
 @Composable
 fun FeaturedNewsCard(
-    title: String,
-    snippet: String,
-    imageUrl: String?,
-    source: String,
-    publishedDate: String
+    news: NewsItem
 ) {
     Card(
         modifier = Modifier
@@ -54,14 +51,14 @@ fun FeaturedNewsCard(
                         .aspectRatio(16 / 9f)
                 )
                 Text(
-                    text = title,
+                    text = news.title,
                     style = MaterialTheme.typography.titleSmall,
                     maxLines = 2,
                     overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = snippet,
+                    text = news.snippet,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 2,
                     overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
@@ -72,7 +69,7 @@ fun FeaturedNewsCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = source,
+                        text = news.source,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -80,7 +77,7 @@ fun FeaturedNewsCard(
                         text = " • "
                     )
                     Text(
-                        text = publishedDate,
+                        text = news.publishedDate,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.secondary
                     )
