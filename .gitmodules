@@ -1,3 +1,6 @@
 [submodule "rma/labovi"]
 	path = rma/labovi
 	url = https://rma-24-25-admin@bitbucket.org/rma-24-25/bakircinjarevic-rma-24-25.git
+[submodule "rma/spirala"]
+	path = rma/spirala
+	url = https://rma-24-25-admin@bitbucket.org/rma-24-25/rma25projekat-19705.git
