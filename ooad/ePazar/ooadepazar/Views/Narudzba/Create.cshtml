@@ -1,0 +1,35 @@
+﻿@model ooadepazar.Models.Narudzba
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Narudzba</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+
+        <form asp-action="Create" method="post">
+            <input asp-for="DatumNarudzbe" class="form-control" />
+            <input asp-for="DatumObrade" class="form-control" />
+
+            <select asp-for="Status" class="form-control"
+                    asp-items="Html.GetEnumSelectList<ooadepazar.Models.Status>()"></select>
+
+            <!-- Hidden input for Artikal ID from URL -->
+            <input type="hidden" name="artikalId" value="@ViewBag.SelectedArtikalId" />
+
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Markdig" Version="0.41.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.4" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.4" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Artikal\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Artikal\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Artikal\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Artikal\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Artikal\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Korisnik\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Korisnik\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Korisnik\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Korisnik\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Korisnik\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Narudzba\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Narudzba\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Narudzba\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Narudzba\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Narudzba\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Notifikacija\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Notifikacija\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Notifikacija\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Notifikacija\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Notifikacija\Index.cshtml" />
+    </ItemGroup>
+
+</Project>

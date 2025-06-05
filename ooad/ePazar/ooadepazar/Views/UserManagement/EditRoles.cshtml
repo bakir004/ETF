@@ -1,0 +1,35 @@
+@model ooadepazar.Controllers.EditUserRolesViewModel
+
+@{
+    ViewData["Title"] = "Edit User Roles";
+}
+
+<h2>Edit Roles for @Model.Email</h2>
+
+<form asp-action="EditRoles" method="post">
+    <input type="hidden" asp-for="UserId" />
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Role</th>
+            <th>Assigned</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for (int i = 0; i < Model.RoleSelections.Count; i++)
+        {
+            <tr>
+                <td>@Model.RoleSelections[i].RoleName</td>
+                <td>
+                    <input asp-for="RoleSelections[i].IsSelected" type="checkbox" />
+                    <input asp-for="RoleSelections[i].RoleName" type="hidden" />
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>

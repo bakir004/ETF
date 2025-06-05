@@ -1,0 +1,67 @@
+﻿@model ooadepazar.Models.Artikal
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-body">
+            <h3 class="card-title mb-4">Uredi artikal</h3>
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ID" />
+
+                <div class="mb-3">
+                    <label asp-for="Naziv" class="form-label"></label>
+                    <input asp-for="Naziv" class="form-control" />
+                    <span asp-validation-for="Naziv" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Stanje" class="form-label"></label>
+                    <select asp-for="Stanje" class="form-control" asp-items="ViewBag.StanjeOptions"></select>
+                    <span asp-validation-for="Stanje" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Opis" class="form-label"></label>
+                    <input asp-for="Opis" class="form-control" />
+                    <span asp-validation-for="Opis" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Cijena" class="form-label"></label>
+                    <input asp-for="Cijena" class="form-control" />
+                    <span asp-validation-for="Cijena" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Lokacija" class="form-label"></label>
+                    <input asp-for="Lokacija" class="form-control" />
+                    <span asp-validation-for="Lokacija" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Kategorija" class="form-label"></label>
+                    <select asp-for="Kategorija" class="form-control" asp-items="ViewBag.KategorijaOptions"></select>
+                    <span asp-validation-for="Kategorija" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SlikaUrl" class="form-label"></label>
+                    <input asp-for="SlikaUrl" class="form-control" />
+                    <span asp-validation-for="SlikaUrl" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Datum objave</label>
+                    <input class="form-control" value="@Model.DatumObjave.ToString("g")" readonly />
+                </div>
+                <input type="hidden" asp-for="DatumObjave" />
+
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

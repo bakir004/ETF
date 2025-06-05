@@ -1,0 +1,38 @@
+@model List<ooadepazar.Controllers.UserRolesViewModel>
+
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<h2>User Management</h2>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Email</th>
+        <th>Roles</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>
+                @if (user.Roles != null && user.Roles.Count > 0)
+                {
+                    @string.Join(", ", user.Roles)
+                }
+                else
+                {
+                    <span class="text-muted">No roles assigned</span>
+                }
+            </td>
+            <td>
+                <a class="btn btn-primary btn-sm" asp-action="EditRoles" asp-route-userId="@user.UserId">Edit Roles</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
