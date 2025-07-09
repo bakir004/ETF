@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ooadepazar.Data;
 using ooadepazar.Models;
-using Microsoft.AspNetCore.Mvc.Rendering; // Required for SelectList and SelectListItem
-using System.Linq; // Required for LINQ queries
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Markdig;
-using Microsoft.Extensions.Logging; // Required for Enum
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
 
 namespace ooadepazar.Controllers;
 
@@ -17,11 +18,13 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+    public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
         _logger = logger;
-        _context = context; 
+        _context = context;
+        _userManager = userManager;
     }
 
     // This is now your main e-commerce homepage action
@@ -35,16 +38,18 @@ public class HomeController : Controller
                              .Select(k => new SelectListItem
                              {
                                  Value = ((int)k).ToString(),
-                                 Text = k.ToString().Replace("_", " ") // Make enum names more readable
+                                 Text = k.ToString().Replace("_", " ")
                              })
+                             .OrderBy(x => x.Text)
                              .ToList();
-        kategorije.Insert(0, new SelectListItem { Value = "", Text = "Sve kategorije", Selected = true }); // Add "All Categories" option
+
+        kategorije.Insert(0, new SelectListItem { Value = "", Text = "Sve kategorije", Selected = true });
         ViewBag.KategorijaOptions = kategorije;
 
         // Populate Sorting dropdown options
         var sortOptions = new List<SelectListItem>
         {
-            new SelectListItem { Value = "latest", Text = "Najnovije objavljeno" },
+            new SelectListItem { Value = "latest", Text = "Najnovije" },
             new SelectListItem { Value = "price_asc", Text = "Cijena (rastuće)" },
             new SelectListItem { Value = "price_desc", Text = "Cijena (opadajuće)" },
             new SelectListItem { Value = "name_asc", Text = "Naziv (A-Z)" }
@@ -56,10 +61,24 @@ public class HomeController : Controller
         ViewBag.CurrentCategoryId = categoryId;
         ViewBag.CurrentSortBy = sortBy;
 
+        // --- Check if current user is Admin ---
+        var currentUser = await _userManager.GetUserAsync(User);
+        bool isAdmin = currentUser != null && await _userManager.IsInRoleAsync(currentUser, "Admin");
+
         // --- Fetch, Filter, and Sort Articles ---
 
         // Start with all articles and eager load the Korisnik (user) data
-        var artikli = _context.Artikal.Include(a => a.Korisnik).AsQueryable();
+        var artikli = _context.Artikal
+            .Include(a => a.Korisnik)
+            .AsQueryable();
+
+        // Filter by order status based on user role
+        if (!isAdmin)
+        {
+            // Regular users can only see articles that are not ordered
+            artikli = artikli.Where(a => a.Narucen == false);
+        }
+        // Admin can see all articles (both ordered and not ordered)
 
         // Apply Search Filtering
         if (!string.IsNullOrEmpty(searchQuery))
@@ -91,11 +110,29 @@ public class HomeController : Controller
                 break;
         }
 
-        // --- Execute Query and Return to View ---
-
-        // Convert to list and apply defensive null check for any potentially null items within the collection
+        // --- Execute Query and get articles ---
         var finalArtikli = await artikli.ToListAsync();
         finalArtikli = finalArtikli.Where(item => item != null).ToList();
+
+        // --- Fetch narudžbe for ordered articles ---
+        var narudzbe = new Dictionary<int, int>(); // artikalId -> narudzbaId
+
+        var orderedArtikli = finalArtikli.Where(a => a.Narucen).Select(a => a.ID).ToList();
+        if (orderedArtikli.Any())
+        {
+            var narudzbeList = await _context.Narudzba
+                .Where(n => orderedArtikli.Contains(n.Artikal.ID))
+                .Select(n => new { ArtikalId = n.Artikal.ID, NarudzbaId = n.ID })
+                .ToListAsync();
+
+            foreach (var narudzba in narudzbeList)
+            {
+                narudzbe[narudzba.ArtikalId] = narudzba.NarudzbaId;
+            }
+        }
+
+        // Pass narudžbe dictionary to the view
+        ViewBag.Narudzbe = narudzbe;
 
         return View(finalArtikli); // Pass the filtered and sorted articles to the view
     }
@@ -104,18 +141,20 @@ public class HomeController : Controller
     {
         return View();
     }
-    
-    [HttpGet]
-    public async Task<IActionResult> GetAIResponseInMarkdown()
-    {
-        string prompt = "💰OSUNČAN MANJI STAN💰\n🏘️ KUPITE STAN NA URIJAMA (PRIJEDOR)!!!\n\n🔔ODLIČNO ORGANIZOVAN PROSTOR🔔\nPROJEKTOVANA POVRŠINA: 42,85m2\nSTRUKTURA:\n* kuhinja\n* dnevni boravak sa trpezarijom\n* soba 1\n* kupatilo\n* hodnik\n* lođa\n\nCIJENA: 2.500 KM/m2\nUKUPNA CIJENA: 107.125KM\n\nStan je na četvrtom spratu a zgrada ima šest spratova.\n\nObjekat  posjeduje  dva lifta!\nUz stan se može kupiti i parking mjesto u podzemnoj garaži koje je 1200KM/m2\nVanjska parking mjesta se ne plaćaju.\nGrijanje -podno na struju\n\nKeramika u hodniku, kupatilu i kuhinji!\nParket u sobi, dnevnom boravku i trpezariji.\nStolarija sedmokomorna!";
 
+    [HttpGet("Home/GetAIResponseInMarkdown/{artikalId}")]
+    public async Task<IActionResult> GetAIResponseInMarkdown(int artikalId)
+    {
+        var artikal = await _context.Artikal.FindAsync(artikalId);
+        if (artikal == null)
+        {
+            return NotFound($"Artikal with ID {artikalId} not found.");
+        }
+
+        string prompt = $"💰{artikal.Naziv}💰\n🏘️ {artikal.Opis}\n\nCIJENA: {artikal.Cijena}, LOKACIJA: {artikal.Lokacija}";
         OpenAIController c = new OpenAIController();
-        // string markdown = await c.SendMessageAsync(prompt);
-        string markdown =
-            "**Pozitivne strane o stanu:**\n\n1. **Odlično organizovan prostor:** Površina od 42,85m² je dobro iskorištena sa funkcionalnim rasporedom prostorija.\n2. **Dva lifta u zgradi:** Olakšava pristup stanovima na višim spratovima, što je korisno za svakodnevni život i transport materijala.\n3. **Podno grijanje:** Osigurava ravnomjerno grijanje stana, što poboljšava udobnost tokom zimskih mjeseci.\n4. **Kvalitetna stolarija i podne obloge:** Sedmokomorna stolarija i keramičke pločice, kao i parket, doprinose boljem estetskom dojmu i energetskoj efikasnosti.\n\n**Loše strane o stanu:**\n\n1. **Visoka cijena po kvadratnom metru:** Cijena od 2.500 KM/m² je relativno visoka za Prijedor, što može predstavljati izazov za potencijalne kupce.\n2. **Grijanje na struju:** Može rezultirati visokim troškovima tokom zimskih mjeseci ukoliko nije adekvatno izolirano.\n3. **Lokacija na četvrtom spratu:** Iako zgrada ima liftove, neki bi kupci mogli preferirati niže spratove zbog prijatnosti pristupa ili straha od visine.\n\n**Poređenje sa sličnim artiklima na tržištu:**\n\nNa tržištu nekretnina u Prijedoru, cijena od 2.500 KM/m² je iznad prosjeka. Većina stambenih jedinica u ovom gradu kreće se između 1.500 i 2.000 KM po kvadratnom metru, ovisno o lokaciji, kvaliteti gradnje i dodatnim pogodnostima. Međutim, postojanje podzemne garaže i visoki standardi unutrašnjih radova mogu opravdati višu cijenu za neke kupce.\n\n**Zaključak:**\n\nAko tražite funkcionalno organizovan stan s modernim sadržajima i ne smeta vam cijena iznad proseka, ovo bi mogla biti dobra investicija. Ipak, trebali biste pažljivo razmotriti svoju financijsku situaciju i potencijalne dodatne troškove grijanja. Također, bilo bi korisno istražiti slične ponude u Prijedoru kako biste bili sigurni da donosite najbolju odluku.";
-        await Task.Delay(5000);
-            
+        string markdown = await c.SendMessageAsync(prompt);
+
         string html = Markdown.ToHtml(markdown);
         return Content(html, "text/html");
     }

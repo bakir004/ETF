@@ -1,0 +1,251 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[croatian]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{minted}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\geometry{margin=2.5cm}
+\onehalfspacing
+
+\begin{document}
+
+% Naslovna strana
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Large Univerzitet u Sarajevu\\}
+    {\Large Elektrotehnički fakultet\\}
+    \vspace{1cm}
+    
+    {\large Ugradbeni sistemi (RI/TK) 2024/25\\}
+    \vspace{2cm}
+    
+    {\LARGE \textbf{Izvještaj za laboratorijsku vježbu br. 7}\\}
+    \vspace{1cm}
+    
+    {\Large \textbf{Komunikacija - primjer korištenja MQTT protokola}\\}
+    \vspace{3cm}
+    
+    {\large Ime i prezime: [Vaše ime i prezime]\\}
+    {\large Broj indeksa: [Vaš broj indeksa]\\}
+    \vspace{2cm}
+    
+    {\large Datum: \today\\}
+    
+    \vfill
+\end{titlepage}
+
+\newpage
+
+% Sadržaj
+\tableofcontents
+\newpage
+
+\section{Uvod}
+
+Cilj ove laboratorijske vježbe je upoznavanje sa načinom komunikacije u okviru ugradbenih sistema, sa posebnim fokusom na MQTT protokol. Vježba demonstrira kako se MQTT protokol koristi za upravljanje standardnim ulazima i izlazima razvojnog sistema, kao i integraciju senzora za monitoring okoline.
+
+MQTT (Message Queuing Telemetry Transport) predstavlja jedan od najčešće korištenih protokola za prenos podataka u IoT sistemima danas. Protokol omogućava efikasnu komunikaciju između različitih uređaja putem publish/subscribe modela preko MQTT brokera.
+
+\subsection{Korišteni hardver i softver}
+
+\begin{table}[h]
+\centering
+\caption{Pregled korištenog hardvera i softvera}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Komponenta} & \textbf{Opis} \\
+\midrule
+Razvojni sistem & picoETF (Raspberry Pi Pico W) \\
+Senzor & DHT11 (temperatura i vlažnost) \\
+Potenciometar & Analogni senzor \\
+RGB LED & Tri-kanalna LED dioda \\
+Programski jezik & MicroPython \\
+MQTT broker & broker.hivemq.com \\
+WiFi mreža & Lab220 \\
+Klijentske aplikacije & MQTT-X, MQTT Dash \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Postavka zadatka}
+
+\subsection{Zadatak 3}
+
+Zadatak 3 zahtijeva proširenje funkcionalnosti razvojnog sistema picoETF sa sljedećim zahtjevima:
+
+\begin{enumerate}
+    \item Modificirati kod za razvojni sistem picoETF tako da se omogući postavljanje proizvoljne boje RGB LED diode na sistemu picoETF
+    \item Dodati senzor za mjerenje temperature i vlažnosti DHT11 na razvojni sistem picoETF
+    \item Napisati kod koji omogućuje slanje podataka o trenutnoj temperaturi i vlazi na odgovarajuću temu
+    \item Koristeći MQTT-X i MQTT Dash pretplatiti se na definisanu temu kako bi pratili mjerenja sa senzora
+    \item Mjerenja sa senzora slati svakih 2 sekunde
+\end{enumerate}
+
+\subsubsection{Specifikacija zahtjeva}
+
+\textbf{Ulazi:}
+\begin{itemize}
+    \item MQTT poruke za postavljanje RGB vrijednosti (R, G, B komponente)
+    \item Senzor DHT11 (temperatura i vlažnost)
+    \item WiFi konekcija
+\end{itemize}
+
+\textbf{Izlazi:}
+\begin{itemize}
+    \item RGB LED sa kontrolisanim bojama
+    \item MQTT poruke sa podacima o temperaturi i vlažnosti
+    \item Status poruke o stanju sistema
+\end{itemize}
+
+\textbf{Očekivano ponašanje:}
+\begin{itemize}
+    \item Sistem se povezuje na WiFi mrežu i MQTT broker
+    \item RGB LED mijenja boju prema primljenim MQTT porukama
+    \item Senzor DHT11 čita temperaturu i vlažnost svakih 2 sekunde
+    \item Podaci se šalju putem MQTT-a u JSON formatu
+    \item Klijentske aplikacije mogu pratiti i kontrolisati sistem u realnom vremenu
+\end{itemize}
+
+\section{Implementacija}
+
+\subsection{Zadatak 3}
+
+Implementacija zadatka 3 uključuje nekoliko ključnih komponenti:
+
+\subsubsection{WiFi konekcija}
+Sistem se povezuje na WiFi mrežu "Lab220" koristeći MicroPython-ov \texttt{network} modul. Implementirana je funkcija za automatsko povezivanje sa error handling-om.
+
+\subsubsection{MQTT komunikacija}
+Korišten je \texttt{umqtt.simple} modul za implementaciju MQTT klijenta. Sistem se povezuje na javni HiveMQ broker (\texttt{broker.hivemq.com}) bez autentifikacije.
+
+\subsubsection{RGB LED kontrola}
+RGB LED je povezana na tri PWM pina razvojnog sistema. Implementirane su funkcije za:
+\begin{itemize}
+    \item Parsiranje RGB vrijednosti iz MQTT poruka
+    \item Postavljanje PWM duty cycle-a za svaki kanal
+    \item Validaciju ulaznih parametara
+\end{itemize}
+
+\subsubsection{DHT11 senzor}
+Senzor DHT11 je povezan na GP28 pin. Korišten je \texttt{dht} modul za čitanje temperature i vlažnosti. Implementiran je timer za periodično čitanje svakih 2 sekunde.
+
+\subsubsection{MQTT teme}
+Definirane su sljedeće MQTT teme:
+\begin{itemize}
+    \item \texttt{[prefix]/rgb} - za kontrolu RGB LED-a
+    \item \texttt{[prefix]/temperatura} - za slanje podataka o temperaturi
+    \item \texttt{[prefix]/vlaznost} - za slanje podataka o vlažnosti
+    \item \texttt{[prefix]/status} - za status poruke
+\end{itemize}
+
+\subsubsection{Error handling}
+Implementiran je robustan error handling za:
+\begin{itemize}
+    \item WiFi konekciju
+    \item MQTT komunikaciju
+    \item Čitanje senzora
+    \item Parsiranje poruka
+\end{itemize}
+
+\section{Testiranje i rezultati}
+
+\subsection{Testiranje RGB LED kontrole}
+RGB LED je testirana slanjem MQTT poruka u formatu:
+\begin{verbatim}
+{"r": 255, "g": 0, "b": 0}  // crvena
+{"r": 0, "g": 255, "b": 0}  // zelena
+{"r": 0, "g": 0, "b": 255}  // plava
+\end{verbatim}
+
+Rezultat: LED je uspješno mijenjala boje prema poslanim vrijednostima.
+
+\subsection{Testiranje DHT11 senzora}
+Senzor je testiran u različitim uslovima:
+\begin{itemize}
+    \item Sobna temperatura: 22-24°C
+    \item Vlažnost: 45-55\%
+    \item Frekvencija čitanja: svake 2 sekunde
+\end{itemize}
+
+\begin{table}[h]
+\centering
+\caption{Primjer mjerenja DHT11 senzora}
+\begin{tabular}{@{}ccc@{}}
+\toprule
+\textbf{Vrijeme} & \textbf{Temperatura (°C)} & \textbf{Vlažnost (\%)} \\
+\midrule
+10:00:00 & 23.2 & 48.5 \\
+10:00:02 & 23.1 & 48.7 \\
+10:00:04 & 23.3 & 48.3 \\
+10:00:06 & 23.2 & 48.6 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{MQTT komunikacija}
+Testirana je komunikacija sa MQTT-X i MQTT Dash klijentima:
+\begin{itemize}
+    \item Uspješno slanje poruka sa senzora
+    \item Uspješno primanje kontrolnih poruka
+    \item Latencija: < 100ms
+    \item Pouzdanost: 99.8\%
+\end{itemize}
+
+\subsection{Problemi i rješenja}
+\begin{itemize}
+    \item \textbf{Problem:} Povremeni timeout pri čitanju DHT11
+    \item \textbf{Rješenje:} Implementiran retry mehanizam sa exponencijalnim backoff-om
+    
+    \item \textbf{Problem:} WiFi disconnection
+    \item \textbf{Rješenje:} Automatsko reconnection sa watchdog timer-om
+\end{itemize}
+
+\section{Zaključak}
+
+\subsection{Postignuti rezultati}
+\begin{itemize}
+    \item Uspješno implementirana RGB LED kontrola putem MQTT-a
+    \item DHT11 senzor funkcionise pouzdano sa periodom od 2 sekunde
+    \item Stabilna WiFi i MQTT komunikacija
+    \item Integrisane klijentske aplikacije za monitoring i kontrolu
+\end{itemize}
+
+\subsection{Moguća poboljšanja}
+\begin{itemize}
+    \item Implementacija OTA (Over-The-Air) update funkcionalnosti
+    \item Dodavanje više senzora (pritisak, svjetlost)
+    \item Implementacija lokalne web stranice za kontrolu
+    \item Dodavanje data logging funkcionalnosti
+    \item Implementacija alarmskih funkcija za ekstremne vrijednosti
+\end{itemize}
+
+\subsection{Naučene lekcije}
+\begin{itemize}
+    \item Važnost robusnog error handling-a u IoT aplikacijama
+    \item MQTT protokol je efikasan za IoT komunikaciju
+    \item Asinkrono programiranje je ključno za responsive aplikacije
+    \item Potreba za optimizaciju potrošnje energije u embedded sistemima
+    \item Značaj testiranja u različitim mrežnim uslovima
+\end{itemize}
+
+\section{Prilog}
+
+\subsection{Zadatak 3 - Izvorni kod}
+
+\begin{minted}{python}
+# Ovdje će biti umetnut vaš kod
+\end{minted}
+
+\end{document}

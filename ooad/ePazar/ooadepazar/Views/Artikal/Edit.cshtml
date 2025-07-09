@@ -1,67 +1,250 @@
 ﻿@model ooadepazar.Models.Artikal
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Uredi artikal - Pregled";
 }
 
-<div class="container mt-4">
-    <div class="card shadow">
-        <div class="card-body">
-            <h3 class="card-title mb-4">Uredi artikal</h3>
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="ID" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
 
-                <div class="mb-3">
-                    <label asp-for="Naziv" class="form-label"></label>
-                    <input asp-for="Naziv" class="form-control" />
-                    <span asp-validation-for="Naziv" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Stanje" class="form-label"></label>
-                    <select asp-for="Stanje" class="form-control" asp-items="ViewBag.StanjeOptions"></select>
-                    <span asp-validation-for="Stanje" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Opis" class="form-label"></label>
-                    <input asp-for="Opis" class="form-control" />
-                    <span asp-validation-for="Opis" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Cijena" class="form-label"></label>
-                    <input asp-for="Cijena" class="form-control" />
-                    <span asp-validation-for="Cijena" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Lokacija" class="form-label"></label>
-                    <input asp-for="Lokacija" class="form-control" />
-                    <span asp-validation-for="Lokacija" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Kategorija" class="form-label"></label>
-                    <select asp-for="Kategorija" class="form-control" asp-items="ViewBag.KategorijaOptions"></select>
-                    <span asp-validation-for="Kategorija" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="SlikaUrl" class="form-label"></label>
-                    <input asp-for="SlikaUrl" class="form-control" />
-                    <span asp-validation-for="SlikaUrl" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Datum objave</label>
-                    <input class="form-control" value="@Model.DatumObjave.ToString("g")" readonly />
-                </div>
-                <input type="hidden" asp-for="DatumObjave" />
+<style>
+    .card-img-container-4-3 {
+        width: 100%;
+        padding-top: 75%;
+        position: relative;
+        overflow: hidden;
+        background-color: #f8f9fa;
+        display: block;
+        border-top-left-radius: 0.375rem;
+        border-top-right-radius: 0.375rem;
+    }
 
-                <button type="submit" class="btn btn-primary">Save</button>
-                <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
-            </form>
+    .card-img-fit {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .card {
+        border: none;
+        border-radius: 0.5rem;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+    .card-title {
+        color: #0056b3;
+        font-weight: 600;
+        font-size: 1.25rem;
+    }
+
+    .card-text small {
+        color: #6c757d;
+    }
+
+    .card-price {
+        color: #28a745;
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid #e9ecef;
+        padding: 0.75rem 1rem;
+    }
+
+    #previewCard .card-text.flex-grow-1 {
+        max-height: 4.5em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .row.align-items-stretch .col-lg-4 {
+        display: flex;
+    }
+
+    .row.align-items-stretch .card {
+        flex-grow: 1;
+    }
+
+    #previewCard h2 {
+        margin-top: 0;
+    }
+</style>
+
+<div class="container py-4">
+    <div class="row justify-content-center align-items-stretch">
+        <!-- Edit Form -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Uredi artikal</h3>
+                    <form asp-action="Edit" method="post" id="editArtikalForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="ID" />
+                        <input type="hidden" asp-for="DatumObjave" />
+
+                        <div class="mb-3">
+                            <label asp-for="Naziv" class="form-label"></label>
+                            <input asp-for="Naziv" class="form-control" id="Naziv"
+                                   maxlength="30"
+                                   pattern="^[\w\-.]+$"
+                                   title="Dozvoljena su slova, brojevi, crtice i tačke. Maksimalno 30 karaktera." />
+                            <span asp-validation-for="Naziv" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Stanje" class="form-label"></label>
+                            <select asp-for="Stanje" class="form-control" asp-items="ViewBag.StanjeOptions" id="Stanje"></select>
+                            <span asp-validation-for="Stanje" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Kategorija" class="form-label"></label>
+                            <select asp-for="Kategorija" class="form-control" asp-items="ViewBag.KategorijaOptions" id="Kategorija"></select>
+                            <span asp-validation-for="Kategorija" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Opis" class="form-label"></label>
+                            <textarea asp-for="Opis" class="form-control" rows="3" id="Opis"></textarea>
+                            <span asp-validation-for="Opis" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Cijena" class="form-label"></label>
+                            <input asp-for="Cijena" class="form-control" type="number" step="0.01" min="0" max="1000000" id="Cijena" maxlength="10"
+                                   title="Cijena mora biti između 0 i 1,000,000." />
+                            <span asp-validation-for="Cijena" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Lokacija" class="form-label"></label>
+                            <input asp-for="Lokacija" class="form-control" id="Lokacija"
+                                   maxlength="30"
+                                   pattern="^[a-zA-Z0-9]+$"
+                                   title="Dozvoljena su samo slova i brojevi. Maksimalno 30 karaktera." />
+                            <span asp-validation-for="Lokacija" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="SlikaUrl" class="form-label"></label>
+                            <input asp-for="SlikaUrl" class="form-control" id="SlikaUrl" />
+                            <span asp-validation-for="SlikaUrl" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Potvrdi izmjene</button>
+                        <a asp-controller="Artikal" asp-action="Details" asp-route-id="@Model.ID" class="btn btn-secondary ms-2">Nazad na detalje</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview Card -->
+        <div class="col-lg-4 d-flex flex-column">
+            <div class="text-center mb-4">
+                <h2 class="display-6 fw-bold text-dark">Pregled Artikla</h2>
+                <p class="lead text-muted">Kako će artikal izgledati na početnoj stranici.</p>
+            </div>
+            <div class="card shadow h-100" id="previewCard">
+                <div class="card-img-container-4-3">
+                    <img src="@(!string.IsNullOrWhiteSpace(Model.SlikaUrl) ? Model.SlikaUrl : "https://placehold.co/300x225/CED4DA/495057?text=Nema+Slike")"
+                         class="card-img-fit" alt="Nema Slike" id="previewSlikaUrl" loading="lazy">
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title mb-2">
+                        <a href="#" class="text-decoration-none text-primary" id="previewNaziv">@Model.Naziv</a>
+                    </h5>
+                    <p class="card-text text-muted mb-1">
+                        <small><i class="bi bi-tag me-1"></i> Kategorija: <span id="previewKategorija">@Model.Kategorija</span></small>
+                    </p>
+                    <p class="card-text text-muted mb-1">
+                        <small><i class="bi bi-geo-alt me-1"></i> Lokacija: <span id="previewLokacija">@Model.Lokacija</span></small>
+                    </p>
+                    <p class="card-text text-muted mb-2">
+                        <small><i class="bi bi-info-circle me-1"></i> Stanje: <span id="previewStanje">@Model.Stanje</span></small>
+                    </p>
+                    <p class="card-text flex-grow-1 text-secondary mb-3" id="previewOpis">@Model.Opis</p>
+                    <h4 class="card-price mt-auto" id="previewCijena">@Model.Cijena.ToString("0.00") KM</h4>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <small class="text-muted"><i class="bi bi-calendar me-1"></i> <span id="previewDatumObjave">@Model.DatumObjave.ToString("dd/MM/yyyy")</span></small>
+                    <small class="text-info"><i class="bi bi-person me-1"></i> <span id="previewKorisnik">Vi</span></small>
+                    <a href="#" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-arrow-right-circle"></i> Detalji
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function updatePreview() {
+                var naziv = $('#Naziv').val() || 'Naziv Artikla';
+                var stanje = $('#Stanje option:selected').text() || 'Nije odabrano';
+                var kategorija = $('#Kategorija option:selected').text() || 'Nije odabrano';
+                var opis = $('#Opis').val() || 'Kratak opis artikla će se ovdje pojaviti.';
+                var cijenaInput = $('#Cijena').val();
+                var cijena = parseFloat(cijenaInput);
+
+                if (isNaN(cijena) || cijenaInput === "") {
+                    cijena = '0.00';
+                } else {
+                    const maxCijena = 999999.99;
+                    if (cijena > maxCijena) {
+                        cijena = maxCijena;
+                    }
+                    cijena = cijena.toFixed(2);
+                }
+
+                var lokacija = $('#Lokacija').val() || 'Nije unijeto';
+                var slikaUrl = $('#SlikaUrl').val();
+
+                const nazivMaxLength = 15;
+                if (naziv.length > nazivMaxLength) {
+                    naziv = naziv.substring(0, nazivMaxLength) + '...';
+                }
+
+                const opisMaxLength = 100;
+                if (opis.length > opisMaxLength) {
+                    opis = opis.substring(0, opisMaxLength) + '...';
+                }
+
+                $('#previewNaziv').text(naziv);
+                $('#previewStanje').text(stanje);
+                $('#previewKategorija').text(kategorija.replace(/_/g, ' '));
+                $('#previewOpis').text(opis);
+                $('#previewCijena').text(cijena + ' KM');
+                $('#previewLokacija').text(lokacija);
+
+                if (slikaUrl) {
+                    $('#previewSlikaUrl').attr('src', slikaUrl);
+                } else {
+                    $('#previewSlikaUrl').attr('src', 'https://placehold.co/300x225/CED4DA/495057?text=Nema+Slike');
+                }
+
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0');
+                var yy = today.getFullYear();
+                $('#previewDatumObjave').text(mm + '/' + dd + '/' + yy);
+
+                $('#previewKorisnik').text('Vi');
+            }
+
+            $('#editArtikalForm input, #editArtikalForm select, #editArtikalForm textarea').on('input change', updatePreview);
+            updatePreview();
+        });
+    </script>
 }

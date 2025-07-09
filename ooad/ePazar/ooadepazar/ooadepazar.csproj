@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="itext7" Version="9.2.0" />
+      <PackageReference Include="itext7.bouncy-castle-adapter" Version="9.2.0" />
       <PackageReference Include="Markdig" Version="0.41.1" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.4" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.4" />
@@ -43,6 +45,10 @@
       <_ContentIncludedByDefault Remove="Views\Notifikacija\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Notifikacija\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Notifikacija\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Views\Pracenje\" />
     </ItemGroup>
 
 </Project>

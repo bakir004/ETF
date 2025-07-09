@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,16 +15,46 @@ namespace ooadepazar.Controllers
     public class NotifikacijaController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public NotifikacijaController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        
+        public NotifikacijaController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
 
         // GET: Notifikacija
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Notifikacija.ToListAsync());
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+
+            var notifikacije = await _context.Notifikacija
+                .Where(n => n.KorisnikId.Id == user.Id)
+                .OrderByDescending(n => n.DatumObjave)
+                .ToListAsync();
+
+            return View(notifikacije);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> MarkAsRead(int id)
+        {
+            var notifikacija = await _context.Notifikacija.FindAsync(id);
+            if (notifikacija == null)
+                return NotFound();
+
+            notifikacija.Procitana = true;
+            _context.Update(notifikacija);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Notifikacija/Details/5

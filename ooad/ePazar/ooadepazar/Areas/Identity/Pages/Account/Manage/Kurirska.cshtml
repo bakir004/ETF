@@ -1,0 +1,175 @@
+﻿@page
+@model KurirskaModel
+@{
+    ViewData["Title"] = "Moja kurirska služba";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var isKurirska = User.IsInRole("KurirskaSluzba");
+    var isAdmin = User.IsInRole("Admin");
+
+    var kreirane = Model.Orders.Where(n => n.Status == ooadepazar.Models.Status.Kreiran).OrderBy(n => n.DatumNarudzbe).ToList();
+    var uObradi = Model.Orders.Where(n => n.Status == ooadepazar.Models.Status.UObradi).OrderBy(n => n.DatumNarudzbe).ToList();
+    var dostavljene = Model.Orders.Where(n => n.Status == ooadepazar.Models.Status.Dostavljen).OrderBy(n => n.DatumNarudzbe).ToList();
+
+    var sections = new[] {
+            new { Title = "Kreirane narudžbe", Orders = kreirane },
+            new { Title = "Narudžbe u obradi", Orders = uObradi },
+            new { Title = "Dostavljene narudžbe", Orders = dostavljene }
+        };
+
+    // Generiši ispravnu URL za vraćanje na ovu stranicu
+    var currentPageUrl = Url.Page("Kurirska", new { area = "Identity" });
+
+    // Dobijamo naziv kurirske službe
+    var nazivKurirske = !string.IsNullOrEmpty(Model.NazivKurirskeSluzbe)
+        ? Model.NazivKurirskeSluzbe
+        : $"{Model.ImeKorsinika} {Model.PrezimeKorisnika}";
+}
+
+<style>
+    .order-card-img-container {
+        width: 100%;
+        padding-top: 75%;
+        position: relative;
+        overflow: hidden;
+        background: #f8f9fa;
+        border-top-left-radius: 0.4rem;
+        border-top-right-radius: 0.4rem;
+    }
+
+    .order-card-img-fit {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .order-card {
+        border: none;
+        border-radius: 0.4rem;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        font-size: 0.95rem;
+        transition: transform 0.15s;
+        min-width: 120px;
+        max-width: 150px;
+    }
+
+        .order-card:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+        }
+
+    .order-card-title {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #0056b3;
+        margin-bottom: 0.25rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .order-card-location {
+        color: #6c757d;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .kurirska-header {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+    }
+
+        .kurirska-header h2 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+
+        .kurirska-header .subtitle {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+</style>
+
+<!-- Header sa nazivom kurirske službe -->
+<div class="kurirska-header">
+    <h2><i class="bi bi-truck me-2"></i>@nazivKurirske</h2>
+    <p class="subtitle">Upravljanje narudžbama kurirske službe</p>
+</div>
+
+@foreach (var sec in sections)
+{
+    <h4 class="mt-4 mb-3">@sec.Title</h4>
+    @if (sec.Orders.Any())
+    {
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-2">
+            @foreach (var narudzba in sec.Orders)
+            {
+                var artikal = narudzba.Artikal;
+                if (artikal == null) { continue; }
+                <div class="col">
+                    <div class="order-card h-100 position-relative">
+                        <a asp-controller="Narudzba" asp-action="Details" asp-route-id="@narudzba.ID" class="text-decoration-none d-block">
+                            <div class="order-card-img-container">
+                                <img src="@(string.IsNullOrEmpty(artikal.SlikaUrl) ? "https://placehold.co/150x112/CED4DA/495057?text=Nema+Slike" : artikal.SlikaUrl)"
+                                     class="order-card-img-fit" alt="Slika artikla: @artikal.Naziv" />
+                            </div>
+                            <div class="p-2">
+                                <div class="order-card-title" title="@artikal.Naziv">@artikal.Naziv</div>
+                                <div class="order-card-location" title="@artikal.Lokacija">
+                                    <i class="bi bi-geo-alt"></i> @artikal.Lokacija
+                                </div>
+                                <div class="order-card-date text-muted small">
+                                    <i class="bi bi-calendar"></i> @narudzba.DatumNarudzbe.ToShortDateString()
+                                </div>
+                            </div>
+                        </a>
+                        @if (sec.Title == "Kreirane narudžbe")
+                        {
+                            <form asp-controller="Narudzba" asp-action="PromijeniStatus" asp-route-id="@narudzba.ID" asp-route-noviStatus="UObradi" asp-route-returnUrl="@currentPageUrl" method="post" class="position-absolute top-0 end-0 m-2">
+                                <button type="submit" class="btn btn-primary btn-md" title="Pošalji u obradu">
+                                    <i class="bi bi-truck"></i>
+                                </button>
+                            </form>
+                        }
+                        else if (sec.Title == "Narudžbe u obradi")
+                        {
+                            <div class="position-absolute top-0 end-0 m-2 d-flex flex-column gap-1">
+                                <form asp-controller="Narudzba" asp-action="PromijeniStatus" asp-route-id="@narudzba.ID" asp-route-noviStatus="Dostavljen" asp-route-returnUrl="@currentPageUrl" method="post">
+                                    <button type="submit" class="btn btn-sm btn-success mb-1" title="Završi narudžbu">
+                                        <i class="bi bi-check-circle"></i>
+                                    </button>
+                                </form>
+                                <form asp-controller="Narudzba" asp-action="PromijeniStatus" asp-route-id="@narudzba.ID" asp-route-noviStatus="Kreiran" asp-route-returnUrl="@currentPageUrl" method="post">
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Otkaži narudžbu">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-secondary text-center py-2 mb-4">Nema narudžbi u ovoj sekciji.</div>
+    }
+}

@@ -2,20 +2,45 @@
 
 @{
     ViewData["Title"] = "Details";
+    var isAnalyzing = false;
 }
+
+<style>
+    .fade-right {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 60px; /* adjust the width of fade */
+        height: 100%;
+        background: linear-gradient(to right, rgba(255,255,255,0) 0%, white 100%);
+        pointer-events: none;
+    }
+    .rainbow-gradient {
+        background: linear-gradient(90deg, rgb(220, 206, 254) 0%, rgb(201, 233, 254) 25%, rgb(189, 255, 245) 50.18%, rgb(227, 255, 207) 75%, rgb(254, 254, 179) 100%);        background-size: 400% 400%;
+        animation: rainbow 5s ease infinite;
+        border: none;
+    }
+
+    
+</style>
 
 <div class="container mt-4">
     <div class="card shadow">
         <div class="row g-0">
             @if (!string.IsNullOrEmpty(Model.SlikaUrl)) {
                 <div class="col-md-4">
-                    <img src="@Model.SlikaUrl" class="img-fluid rounded-start" alt="Slika artikla" style="max-height:300px;object-fit:cover;">
+                    <div class="position-relative h-100 w-100">
+                        <img src="@Model.SlikaUrl" alt="Slika artikla"
+                             class="img-fluid h-100 w-100"
+                             style="object-fit: cover; object-position: center;">
+                        <div class="fade-right"></div>
+                    </div>
                 </div>
             }
             <div class="col-md-8">
                 <div class="card-body">
                     <h3 class="card-title">@Model.Naziv</h3>
-                    <h5 class="card-subtitle mb-2 text-muted">@Model.Kategorija</h5>
+                    <h5 class="card-subtitle mb-2 text-muted">@Model.Kategorija.ToString().Replace("_", " ")</h5>
                     <dl class="row">
                         <dt class="col-sm-4">Stanje</dt>
                         <dd class="col-sm-8">@Model.Stanje</dd>
@@ -30,17 +55,82 @@
                         <dt class="col-sm-4">Datum ažuriranja</dt>
                         <dd class="col-sm-8">@Model.DatumAzuriranja.ToString("g")</dd>
                     </dl>
+                    @{
+                        var isOwner = Model.Korisnik != null && Model.Korisnik.UserName == User.Identity?.Name;
+                        var isAdmin = User.IsInRole("Admin");
+                    }
                     <div class="mt-3">
-                        <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-primary">Edit</a>
-                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                        <a class="btn btn-success" asp-controller="Narudzba" asp-action="Create" asp-route-id="@Model?.ID">Naruči ovaj artikal</a>
+                        @if (isOwner || isAdmin)
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-primary">Uredi</a>
+                        }
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Početna</a>
+                        @if (!isOwner && User.Identity?.IsAuthenticated == true) {
+                            <a asp-controller="Narudzba" asp-action="Create" asp-route-id="@Model?.ID" class="btn btn-success">
+                                Naruči ovaj artikal
+                            </a>
+                        }
+                        
+                        @if (isOwner || isAdmin)
+                        {
+                            <a asp-action="Delete" asp-route-id="@Model.ID" class="btn btn-danger">Obriši</a>
+                        }
+                        
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <button id="aiAnalyzeBtn" class="btn rainbow-gradient" onclick="analyzeWithAI()" type="button">
+                                <svg class="me-1" width="20" height="20" style="display: inline-block;" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                    <path d="M16 8.016A8.522 8.522 0 008.016 16h-.032A8.521 8.521 0 000 8.016v-.032A8.521 8.521 0 007.984 0h.032A8.522 8.522 0 0016 7.984v.032z"
+                                          fill="url(#prefix__paint0_radial_980_20147)"/>
+                                    <defs>
+                                        <radialGradient id="prefix__paint0_radial_980_20147" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                                                        gradientTransform="matrix(16.1326 5.4553 -43.70045 129.2322 1.588 6.503)">
+                                            <stop offset=".067" stop-color="#9168C0"/>
+                                            <stop offset=".343" stop-color="#5684D1"/>
+                                            <stop offset=".672" stop-color="#1BA1E3"/>
+                                        </radialGradient>
+                                    </defs>
+                                </svg>
+                                Analiziraj sa AI
+                            </button>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <div id="aiResponseContainer" class="mt-3" style="display:none;">
+        <!-- Loading -->
+        <div id="aiLoading" class="d-flex justify-content-center align-items-center" style="display: none;">
+            <div class="spinner-border text-primary" role="status"></div>
+            <span class="ms-2">AI analiziranje u toku...</span>
+        </div>
 
-    @if (Model.Korisnik != null) {
+        <!-- Result -->
+        <div id="aiResult" style="display:none;" class="mt-2 border p-4 bg-light rounded">
+            <h2 class="mb-3 d-flex align-items-center">
+                <svg class="me-2" width="24" height="24" style="display: inline-block;" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path d="M16 8.016A8.522 8.522 0 008.016 16h-.032A8.521 8.521 0 000 8.016v-.032A8.521 8.521 0 007.984 0h.032A8.522 8.522 0 0016 7.984v.032z"
+                          fill="url(#prefix__paint0_radial_980_20147)"/>
+                    <defs>
+                        <radialGradient id="prefix__paint0_radial_980_20147" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                                        gradientTransform="matrix(16.1326 5.4553 -43.70045 129.2322 1.588 6.503)">
+                            <stop offset=".067" stop-color="#9168C0"/>
+                            <stop offset=".343" stop-color="#5684D1"/>
+                            <stop offset=".672" stop-color="#1BA1E3"/>
+                        </radialGradient>
+                    </defs>
+                </svg>
+                AI odgovor
+            </h2>
+            <div id="aiContent"></div>
+        </div>
+    </div>
+
+
+    @if (Model.Korisnik != null)
+    {
         <div class="card mt-4 border-info">
             <div class="card-header bg-info text-white">
                 Informacije o korisniku
@@ -48,7 +138,18 @@
             <div class="card-body">
                 <dl class="row mb-0">
                     <dt class="col-sm-4">Korisničko ime</dt>
-                    <dd class="col-sm-8">@Model.Korisnik.UserName</dd>
+                    <dd class="col-sm-8">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <a asp-controller="Korisnik" asp-action="Index" asp-route-id="@Model.Korisnik.Id">
+                                @Model.Korisnik.Ime @Model.Korisnik.Prezime
+                            </a>
+                        }
+                        else
+                        {
+                            <span>@Model.Korisnik.Ime @Model.Korisnik.Prezime</span>
+                        }
+                    </dd>
                     <dt class="col-sm-4">Ime</dt>
                     <dd class="col-sm-8">@Model.Korisnik.Ime</dd>
                     <dt class="col-sm-4">Prezime</dt>
@@ -57,8 +158,6 @@
                     <dd class="col-sm-8">@Model.Korisnik.EmailAdresa</dd>
                     <dt class="col-sm-4">Broj telefona</dt>
                     <dd class="col-sm-8">@Model.Korisnik.BrojTelefona</dd>
-                    <dt class="col-sm-4">Uloga</dt>
-                    <dd class="col-sm-8">@Model.Korisnik.Uloga</dd>
                     <dt class="col-sm-4">Datum registracije</dt>
                     <dd class="col-sm-8">@Model.Korisnik.DatumRegistracije.ToString("d")</dd>
                 </dl>
@@ -66,3 +165,41 @@
         </div>
     }
 </div>
+
+@section Scripts {
+    <script>
+    async function analyzeWithAI() {
+        const btn = document.getElementById("aiAnalyzeBtn");
+        const container = document.getElementById("aiResponseContainer");
+        const loading = document.getElementById("aiLoading");
+        const result = document.getElementById("aiResult");
+        const content = document.getElementById("aiContent");
+
+        // Prepare UI
+        btn.disabled = true;
+        container.style.display = "block";
+        loading.style.display = "flex";
+        result.style.display = "none";
+        content.innerHTML = "";
+
+        try {
+            const artikalId = @Model?.ID;
+            const response = await fetch(`/Home/GetAIResponseInMarkdown/${artikalId}`);
+            const data = await response.text();
+
+            // Hide loading safely
+            loading.style.display = "none";
+            loading.innerHTML = "";
+            // Show result
+            content.innerHTML = data;
+            result.style.display = "block";
+        } catch (err) {
+            loading.style.display = "none";
+            content.innerText = "Greška prilikom dohvaćanja AI odgovora.";
+            result.style.display = "block";
+        }
+    }
+</script>
+
+}
+

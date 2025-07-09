@@ -1,0 +1,269 @@
+@model IEnumerable<ooadepazar.Models.Artikal>
+
+
+
+@{
+
+    ViewData["Title"] = "Početna stranica";
+
+}
+
+
+
+<style>
+
+    /* Custom CSS for image sizing and aspect ratio */
+
+
+
+    /* Container to enforce 4:3 aspect ratio */
+
+    .card-img-container-4-3 {
+
+        width: 100%; /* Take full width of parent column */
+
+        padding-top: 75%; /* This creates the 4:3 aspect ratio (3/4 = 0.75) */
+
+        position: relative; /* For absolute positioning of child img */
+
+        overflow: hidden; /* Hide any content that overflows this box */
+
+        background-color: #f0f0f0; /* Optional: A light background while image loads or if broken */
+
+        display: block; /* Ensure it behaves as a block element */
+
+    }
+
+
+
+    /* The actual image inside the aspect ratio container */
+
+    .card-img-fit {
+
+        position: absolute;
+
+        top: 0;
+
+        left: 0;
+
+        width: 100%;
+
+        height: 100%;
+
+        object-fit: cover; /* Crops the image to fit the container without distortion */
+
+        display: block; /* Ensure it is a block element */
+
+    }
+
+</style>
+
+
+
+<div class="text-center mb-5">
+
+    <h1 class="display-4">Dobrodošli na E-pazar!</h1>
+
+    <p>Pregledajte najnovije objavljene artikle.</p>
+
+</div>
+
+
+
+<div class="container">
+
+    @* Control Line for Filtering and Sorting *@
+
+    <form asp-controller="Home" asp-action="Index" method="get" class="mb-4">
+
+        <div class="row g-2 align-items-center mb-3">
+
+            <div class="col-md-4">
+
+                <input type="text" class="form-control" id="searchQuery" name="searchQuery" placeholder="Pretraži artikle..." value="@ViewBag.CurrentSearchQuery" />
+
+            </div>
+
+            <div class="col-md-3">
+
+                <select class="form-select" id="categoryId" name="categoryId">
+
+                    @foreach (var option in ViewBag.KategorijaOptions)
+
+                    {
+
+                        <option value="@option.Value" selected="@(option.Value == ViewBag.CurrentCategoryId?.ToString())">@option.Text</option>
+
+                    }
+
+                </select>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <select class="form-select" id="sortBy" name="sortBy">
+
+                    @foreach (var option in ViewBag.SortOptions)
+
+                    {
+
+                        <option value="@option.Value" selected="@(option.Value == ViewBag.CurrentSortBy)">@option.Text</option>
+
+                    }
+
+                </select>
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button type="submit" class="btn btn-primary w-100">Pretraži</button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+    
+
+
+
+    @if (Model != null && Model.Any())
+
+    {
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+            @foreach (var item in Model)
+
+            {
+
+                @* Defensive null check for 'item' to prevent NullReferenceException *@
+
+                @if (item == null)
+
+                {
+
+                    continue;
+
+                }
+
+
+
+                <div class="col">
+
+                    <div class="card h-100 shadow-sm">
+
+                        @* This div acts as the aspect ratio container for the image *@
+
+                        <div class="card-img-container-4-3">
+
+                            @if (!string.IsNullOrEmpty(item.SlikaUrl))
+
+                            {
+
+                                <img src="@item.SlikaUrl" class="card-img-fit" alt="@item.Naziv">
+
+                            }
+
+                            else
+
+                            {
+
+                                @* Fallback to placeholder image if SlikaUrl is empty or null *@
+
+                                <img src="https://placehold.co/300x225/E0E0E0/333333?text=Nema+Slike" class="card-img-fit" alt="Nema Slike">
+
+                            }
+
+                        </div>
+
+                        
+
+                        <div class="card-body d-flex flex-column">
+
+                            <h5 class="card-title text-primary">@item.Naziv</h5>
+
+                            <p class="card-text text-muted mb-1">
+
+                                <small>Kategorija: @item.Kategorija.ToString().Replace("_", " ")</small>
+
+                            </p>
+
+                            <p class="card-text text-muted mb-1">
+
+                                <small>Lokacija: @item.Lokacija</small>
+
+                            </p>
+
+                            <p class="card-text text-muted mb-1">
+
+                                <small>Stanje: @item.Stanje.ToString()</small>
+
+                            </p>
+
+                            <p class="card-text flex-grow-1">@item.Opis</p>
+
+                            <h4 class="text-success mt-auto">@item.Cijena KM</h4>
+
+                        </div>
+
+                        <div class="card-footer bg-light d-flex justify-content-between align-items-center">
+
+                            <small class="text-muted">Objavljeno: @item.DatumObjave.ToShortDateString()</small>
+
+                            @if (item.Korisnik != null)
+
+                            {
+
+                                <small class="text-info">Objavio: @item.Korisnik.Ime</small>
+
+                            }
+
+                            else
+
+                            {
+
+                                <small class="text-info">Objavio: N/A</small>
+
+                            }
+
+                            @* Example of a detail link (you'd need a controller action for this) *@
+
+                            <a asp-controller="Artikal" asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary">Detalji</a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+
+    }
+
+    else
+
+    {
+
+        <div class="alert alert-info text-center" role="alert">
+
+            Trenutno nema objavljenih artikala koji odgovaraju vašim kriterijima.
+
+        </div>
+
+    }
+
+</div>
+
+
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

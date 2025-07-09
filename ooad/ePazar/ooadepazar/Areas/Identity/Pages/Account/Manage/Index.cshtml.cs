@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using ooadepazar.Data;
 using ooadepazar.Models;
 
 namespace ooadepazar.Areas.Identity.Pages.Account.Manage
@@ -17,13 +19,15 @@ namespace ooadepazar.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-
+        private readonly ApplicationDbContext _context;
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         /// <summary>
@@ -74,15 +78,35 @@ namespace ooadepazar.Areas.Identity.Pages.Account.Manage
             };
         }
 
+        public IList<Artikal> Artikli { get; set; } = new List<Artikal>();
+        public Dictionary<int, int> Narudzbe { get; set; } = new Dictionary<int, int>();
+
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
+                return NotFound("User not found");
+
+            Artikli = await _context.Artikal
+                .Include(a => a.Korisnik)
+                .Where(a => a.Korisnik.Id == user.Id)
+                .ToListAsync();
+
+            // --- Fetch narudžbe for ordered articles ---
+            var orderedArtikli = Artikli.Where(a => a.Narucen).Select(a => a.ID).ToList();
+            if (orderedArtikli.Any())
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                var narudzbeList = await _context.Narudzba
+                    .Where(n => orderedArtikli.Contains(n.Artikal.ID))
+                    .Select(n => new { ArtikalId = n.Artikal.ID, NarudzbaId = n.ID })
+                    .ToListAsync();
+
+                foreach (var narudzba in narudzbeList)
+                {
+                    Narudzbe[narudzba.ArtikalId] = narudzba.NarudzbaId;
+                }
             }
 
-            await LoadAsync(user);
             return Page();
         }
 

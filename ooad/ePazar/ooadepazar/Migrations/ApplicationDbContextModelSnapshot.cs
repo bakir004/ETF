@@ -278,7 +278,11 @@ namespace ooadepazar.Migrations
 
                     b.Property<string>("Lokacija")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("Narucen")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Naziv")
                         .IsRequired()
@@ -315,7 +319,7 @@ namespace ooadepazar.Migrations
                     b.Property<DateTime>("DatumNarudzbe")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DatumObrade")
+                    b.Property<DateTime?>("DatumObrade")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("KorisnikId")
@@ -323,6 +327,10 @@ namespace ooadepazar.Migrations
 
                     b.Property<string>("KurirskaSluzbaId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Lokacija")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -444,7 +452,8 @@ namespace ooadepazar.Migrations
                 {
                     b.HasOne("ooadepazar.Models.ApplicationUser", "Korisnik")
                         .WithMany()
-                        .HasForeignKey("KorisnikId");
+                        .HasForeignKey("KorisnikId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Korisnik");
                 });
@@ -457,11 +466,13 @@ namespace ooadepazar.Migrations
 
                     b.HasOne("ooadepazar.Models.ApplicationUser", "Korisnik")
                         .WithMany()
-                        .HasForeignKey("KorisnikId");
+                        .HasForeignKey("KorisnikId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ooadepazar.Models.ApplicationUser", "KurirskaSluzba")
                         .WithMany()
-                        .HasForeignKey("KurirskaSluzbaId");
+                        .HasForeignKey("KurirskaSluzbaId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Artikal");
 

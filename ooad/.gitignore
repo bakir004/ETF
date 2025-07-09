@@ -3,6 +3,7 @@
 .vs/
 *.user
 *.suo
+.DS_Store
 
 # Ignore build output
 bin/

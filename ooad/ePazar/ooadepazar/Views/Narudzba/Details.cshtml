@@ -1,42 +1,165 @@
 ﻿@model ooadepazar.Models.Narudzba
 
 @{
-    ViewData["Title"] = "Details";
+    var artikal = Model.Artikal;
+    var korisnik = Model.Korisnik;
 }
 
-<h1>Details</h1>
+<!-- Order Information -->
+<div class="card mb-4 mt-4 border-primary shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Informacije o narudžbi</h5>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Datum narudžbe</dt>
+            <dd class="col-sm-8">@Model.DatumNarudzbe.ToString("g")</dd>
+            <dt class="col-sm-4">Status</dt>
+            <dd class="col-sm-8">
+                @{
+                    string statusDisplay = Model.Status switch
+                    {
+                        ooadepazar.Models.Status.Kreiran => "Kreiran",
+                        ooadepazar.Models.Status.UObradi => "U obradi",
+                        ooadepazar.Models.Status.Dostavljen => "Dostavljen",
+                        _ => Model.Status.ToString()
+                    };
+                }
+                <span class="badge
+                    @(Model.Status == ooadepazar.Models.Status.Kreiran ? "bg-warning text-dark" :
+                      Model.Status == ooadepazar.Models.Status.UObradi ? "bg-info text-dark" :
+                      "bg-success")" style="font-size:1rem;">
+                    @statusDisplay
+                </span>
+            </dd>
+            <dt class="col-sm-4">Datum obrade</dt>
+            <dd class="col-sm-8">
+                @if (Model.DatumObrade.HasValue)
+                {
+                    @Model.DatumObrade.Value.ToString("g")
+                }
+                else
+                {
+                    <span class="text-muted fst-italic">Nije obrađeno</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
 
-<div>
-    <h4>Narudzba</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DatumNarudzbe)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DatumNarudzbe)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DatumObrade)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DatumObrade)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Artikal)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Artikal.Lokacija)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<!-- Courier Service Information -->
+@if (Model.KurirskaSluzba != null)
+{
+    <div class="card mb-4 mt-4 border-success">
+        <div class="card-header bg-success text-white">
+            <h6 class="mb-0">Informacije o kurirskoj službi</h6>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">Kurirska služba</dt>
+                <dd class="col-sm-8">
+                    @if (!string.IsNullOrEmpty(Model.KurirskaSluzba.KurirskaSluzba))
+                    {
+                        @Model.KurirskaSluzba.KurirskaSluzba
+                    }
+                    else
+                    {
+                        @($"{Model.KurirskaSluzba.Ime} {Model.KurirskaSluzba.Prezime}")
+                    }
+                </dd>
+                <dt class="col-sm-4">Kontakt email</dt>
+                <dd class="col-sm-8">@Model.KurirskaSluzba.EmailAdresa</dd>
+                @if (!string.IsNullOrEmpty(Model.KurirskaSluzba.BrojTelefona))
+                {
+                    <dt class="col-sm-4">Broj telefona</dt>
+                    <dd class="col-sm-8">@Model.KurirskaSluzba.BrojTelefona</dd>
+                }
+            </dl>
+        </div>
+    </div>
+}
+
+<!-- Article Information -->
+@if (artikal != null)
+{
+    <div class="card mb-4 border-secondary">
+        <div class="card-header bg-light text-secondary">
+            <h6 class="mb-0">Informacije o artiklu</h6>
+        </div>
+        <div class="card-body py-3">
+            <div class="row align-items-center">
+                <div class="col-md-2">
+                    <img src="@(string.IsNullOrEmpty(artikal.SlikaUrl) ? "https://placehold.co/120x90/CED4DA/495057?text=Nema+Slike" : artikal.SlikaUrl)"
+                         class="img-fluid rounded" alt="Slika artikla: @artikal.Naziv" />
+                </div>
+                <div class="col-md-10">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-3">Naziv</dt>
+                        <dd class="col-sm-9">@artikal.Naziv</dd>
+                        <dt class="col-sm-3">Lokacija</dt>
+                        <dd class="col-sm-9">@artikal.Lokacija</dd>
+                        <dt class="col-sm-3">Opis</dt>
+                        <dd class="col-sm-9">@artikal.Opis</dd>
+                        <dt class="col-sm-3">Cijena</dt>
+                        <dd class="col-sm-9">@artikal.Cijena KM</dd>
+                        @if (artikal.Korisnik != null)
+                        {
+                            <dt class="col-sm-3">Objavio</dt>
+                            <dd class="col-sm-9">
+                                <a asp-controller="Korisnik" asp-action="Index" asp-route-id="@artikal.Korisnik.Id" class="text-decoration-none">
+                                    <i class="bi bi-person"></i> @artikal.Korisnik.Ime @artikal.Korisnik.Prezime
+                                </a>
+                                @if (!string.IsNullOrEmpty(artikal.Korisnik.EmailAdresa))
+                                {
+                                    <br>
+
+                                    <small class="text-muted"><i class="bi bi-envelope"></i> @artikal.Korisnik.EmailAdresa</small>
+                                }
+                                @if (!string.IsNullOrEmpty(artikal.Korisnik.BrojTelefona))
+                                {
+                                    <br>
+
+                                    <small class="text-muted"><i class="bi bi-telephone"></i> @artikal.Korisnik.BrojTelefona</small>
+                                }
+                            </dd>
+                        }
+                        else
+                        {
+                            <dt class="col-sm-3">Objavio</dt>
+                            <dd class="col-sm-9"><span class="text-muted fst-italic">Nepoznat korisnik</span></dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.Korisnik != null)
+{
+    <div class="card mt-4 border-info">
+        <div class="card-header bg-info text-white">
+            Informacije o naručiocu
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">Korisničko ime</dt>
+                <dd class="col-sm-8">
+                    <a asp-controller="Korisnik" asp-action="Index" asp-route-id="@Model.Korisnik.Id">
+                        @Model.Korisnik.Ime @Model.Korisnik.Prezime
+                    </a>
+                </dd>
+                <dt class="col-sm-4">Ime</dt>
+                <dd class="col-sm-8">@Model.Korisnik.Ime</dd>
+                <dt class="col-sm-4">Prezime</dt>
+                <dd class="col-sm-8">@Model.Korisnik.Prezime</dd>
+                <dt class="col-sm-4">Email</dt>
+                <dd class="col-sm-8">@Model.Korisnik.EmailAdresa</dd>
+                <dt class="col-sm-4">Broj telefona</dt>
+                <dd class="col-sm-8">@Model.Korisnik.BrojTelefona</dd>
+                <dt class="col-sm-4">Datum registracije</dt>
+                <dd class="col-sm-8">@Model.Korisnik.DatumRegistracije.ToString("d")</dd>
+            </dl>
+        </div>
+    </div>
+}

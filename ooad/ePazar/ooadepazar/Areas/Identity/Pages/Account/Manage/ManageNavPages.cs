@@ -30,6 +30,24 @@ namespace  ooadepazar.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public static string ChangePassword => "ChangePassword";
+        public static string Followers => "Followers";
+
+        public static string FollowersNavClass(ViewContext viewContext) => 
+            PageNavClass(viewContext, Followers);
+        public static string Following => "Following";
+
+        public static string FollowingNavClass(ViewContext viewContext) => 
+            PageNavClass(viewContext, Following);
+
+        public static string Orders => "Orders";
+
+        public static string OrdersNavClass(ViewContext viewContext) =>
+            PageNavClass(viewContext, Orders);
+
+        public static string Kurirska => "Kurirska";
+
+        public static string KurirNavClass(ViewContext viewContext) =>
+            PageNavClass(viewContext, Kurirska);
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

@@ -32,6 +32,24 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             b.Property(u => u.KurirskaSluzba);
         });
 
+        // Artikal → ApplicationUser (Korisnik)
+        modelBuilder.Entity<Artikal>()
+            .HasOne(a => a.Korisnik)
+            .WithMany() // or .WithMany(u => u.Artikli) if you add the collection property
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Narudzba → ApplicationUser (Korisnik)
+        modelBuilder.Entity<Narudzba>()
+            .HasOne(n => n.Korisnik)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Narudzba → ApplicationUser (KurirskaSluzba)
+        modelBuilder.Entity<Narudzba>()
+            .HasOne(n => n.KurirskaSluzba)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Restrict); // prevent accidental mass-deletion
+        
         base.OnModelCreating(modelBuilder);
     }
 }

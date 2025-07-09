@@ -1,24 +1,91 @@
 ﻿@page
 @model PersonalDataModel
 @{
-    ViewData["Title"] = "Personal Data";
+    ViewData["Title"] = "Lični podaci";
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
 <h3>@ViewData["Title"]</h3>
 
 <div class="row">
-    <div class="col-md-6">
-        <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
-        <p>
-            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
-        </p>
-        <form id="download-data" asp-page="DownloadPersonalData" method="post">
-            <button class="btn btn-primary" type="submit">Download</button>
-        </form>
-        <p>
-            <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
-        </p>
+    <div class="col-md-8">
+        <!-- Prikaz osnovnih podataka korisnika -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Osnovni podaci</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" asp-page-handler="UpdateProfile">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Input.FirstName" class="form-label">Ime</label>
+                                <input asp-for="Input.FirstName" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Input.LastName" class="form-label">Prezime</label>
+                                <input asp-for="Input.LastName" class="form-control" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Input.Email" class="form-label">Email</label>
+                        <input asp-for="Input.Email" class="form-control" readonly />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Input.PhoneNumber" class="form-label">Broj telefona</label>
+                                <input asp-for="Input.PhoneNumber" class="form-control" />
+                                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Input.Location" class="form-label">Adresa</label>
+                                <input asp-for="Input.Location" class="form-control" />
+                                <span asp-validation-for="Input.Location" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> Sačuvaj izmjene
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Upravljanje podacima -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Upravljanje podacima</h5>
+            </div>
+            <div class="card-body">
+                <p>Vaš račun sadrži lične podatke koje ste nam dali. Ova stranica vam omogućava da preuzmete ili izbrišete te podatke.</p>
+                <p>
+                    <strong>Brisanjem ovih podataka trajno ćete ukloniti svoj račun i ne možete ih oporaviti.</strong>
+                </p>
+
+                <div class="d-flex gap-2">
+                    <form id="download-data" asp-page="DownloadPersonalData" method="post" class="d-inline">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="bi bi-download"></i> Preuzmi
+                        </button>
+                    </form>
+
+                    <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Obriši
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

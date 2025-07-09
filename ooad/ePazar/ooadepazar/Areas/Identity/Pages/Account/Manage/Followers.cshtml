@@ -1,0 +1,28 @@
+@page
+@model FollowersModel
+@{
+    ViewData["Title"] = "Pratioci";
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<h3>@ViewData["Title"]</h3>
+
+@if (Model.Followers.Count == 0)
+{
+    <p>Nemate nijednog pratioca.</p>
+}
+else
+{
+    <ul class="list-group">
+        @foreach (var follower in Model.Followers)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>@follower.Ime @follower.Prezime (@follower.Email)</span>
+                <form method="post" asp-page-handler="RemoveFollower" asp-route-userId="@follower.Id" class="m-0 p-0">
+                    <button type="submit" class="btn btn-sm btn-danger" title="Ukloni pratioca">
+                        <i class="bi bi-trash"></i> <!-- Bootstrap trash icon -->
+                    </button>
+                </form>
+            </li>
+        }
+    </ul>
+}

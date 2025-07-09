@@ -13,7 +13,7 @@ public class OpenAIController
 
     public async Task<string> SendMessageAsync(string prompt)
     {
-        string apiKey = "ih da ti je znat";
+        string apiKey = "";
         string systemPrompt =
             "Odgovaraj samo na bosanskom jeziku. Ti is profesionalni finansijski menadzer. Tvoj je zadatak da procijenis artikle koje ti korisnik dadne, i da kazes korisniku da li je artikal dobra ponuda. Napisi odgovor u 4 dijela: dobre stvari o artiklu, lose stvari o artiklu, kako se poredi sa slicnim artiklima na trzistu, i zakljucak gdje kazes da li se korisniku isplati kupiti dati artikal.";
         

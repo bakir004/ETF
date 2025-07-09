@@ -1,47 +1,53 @@
 ﻿@model IEnumerable<ooadepazar.Models.Notifikacija>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Moje notifikacije";
 }
 
-<h1>Index</h1>
+<h2 class="mb-4 mt-4">📬 Moje notifikacije</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Sadrzaj)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DatumObjave)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Procitana)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sadrzaj)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DatumObjave)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Procitana)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Nemate nijednu notifikaciju.</div>
 }
-    </tbody>
-</table>
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+        <tr>
+            <th>Sadržaj</th>
+            <th>Datum objave</th>
+            <th>Status</th>
+            <th>Akcija</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="@(item.Procitana ? "" : "table-primary")">
+                    <td>@Html.Raw(item.Sadrzaj)</td>
+                    <td>@item.DatumObjave.ToString("dd.MM.yyyy. HH:mm")</td>
+                <td>
+                    @if (item.Procitana)
+                    {
+                        <span class="badge bg-success">Pročitana</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Nepročitana</span>
+                    }
+                </td>
+                <td>
+                    @if (!item.Procitana)
+                    {
+                        <form asp-action="MarkAsRead" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@item.ID" />
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Označi kao pročitano</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

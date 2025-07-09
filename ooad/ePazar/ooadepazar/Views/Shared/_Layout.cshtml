@@ -1,53 +1,161 @@
-﻿
-
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="bs">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ePazar</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/ooadepazar.styles.css" asp-append-version="true"/>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ooadepazar.styles.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Custom CSS za header */
+        .navbar-custom {
+            background-color: #ffffff; /* Bijela pozadina */
+            border-bottom: 1px solid #e9ecef; /* Svijetla linija na dnu */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Blaga sjena */
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: #007bff !important; /* Plava boja za brend */
+            display: flex;
+            align-items: center;
+        }
+
+            .navbar-brand .bi {
+                font-size: 1.5rem;
+                margin-right: 0.5rem;
+                color: #28a745; /* Zelena ikona */
+            }
+
+        .nav-link {
+            color: #343a40 !important; /* Tamniji tekst linka */
+            font-weight: 500;
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+            transition: color 0.2s ease-in-out;
+        }
+
+            .nav-link:hover {
+                color: #007bff !important; /* Plavi hover */
+            }
+
+        .btn-outline-primary-custom {
+            color: #007bff;
+            border-color: #007bff;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+        }
+
+            .btn-outline-primary-custom:hover {
+                background-color: #007bff;
+                color: #fff;
+            }
+
+        .btn-success-custom {
+            /* Prilagođena boja za dugme "Objavite Oglas" */
+            background-color: #28a745; /* Tamnija zelena za bolje isticanje */
+            border-color: #28a745;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            color: white; /* Osiguraj bijeli tekst */
+        }
+
+            .btn-success-custom:hover {
+                background-color: #218838; /* Malo tamnija zelena za hover */
+                border-color: #1e7e34;
+            }
+
+        /* Prilagodbe za mobilne uređaje */
+        @@media (max-width: 767.98px) {
+            .navbar-nav .nav-link {
+                padding-left: 0.5rem;
+            }
+
+            .navbar-collapse {
+                border-top: 1px solid #e9ecef;
+                margin-top: 0.5rem;
+                padding-top: 0.5rem;
+            }
+        }
+        /* Dodatni stil za footer */
+        footer {
+            background-color: #f8f9fa; /* Svijetlo siva pozadina */
+            color: #6c757d; /* Tamniji tekst */
+            border-top: 1px solid #e9ecef; /* Tanka linija iznad */
+            padding-top: 1.5rem; /* Više prostora */
+            padding-bottom: 1.5rem;
+            font-size: 0.9rem; /* Malo manji font */
+        }
+    </style>
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ePazar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Artikal" asp-action="Create">Dodaj artikal</a>
-                    </li>
-                </ul>
-                <partial name="_LoginPartial"></partial>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-light bg-light navbar-custom">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-shop"></i> ePazar
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Preklopi navigaciju">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Početna</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto mb-2 mb-md-0 d-flex align-items-center">
+                        
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-success-custom" asp-area="" asp-controller="Artikal" asp-action="Create">
+                                    <i class="bi bi-plus-circle"></i> Objavite Oglas
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("KurirskaSluzba") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Narudzba" asp-action="Index">
+                                    <i class="bi bi-truck"></i> Narudžbe
+                                </a>
+                            </li>
+                        }
+                        <li class="nav-item me-2">
+                            <partial name="_LoginPartial"></partial>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
-</header>
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
+        </nav>
+    </header>
 
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2025 - ePazar: <em>A. Handanagić, E. Adilović, D. Alibegović, B. Činjarević</em>
+    <div class="container pb-5">
+        @* Povećan padding-bottom *@
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
-</footer>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-@await RenderSectionAsync("Scripts", required: false)
+
+    <footer class="border-top footer text-muted mt-5 py-3 text-center">
+        @* mt-10 nije standardna Bootstrap klasa, promijenjeno u mt-5 *@
+        <div class="container">
+            &copy; 2025 - ePazar: <em>A. Handanagić, E. Adilović, D. Alibegović, B. Činjarević</em>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

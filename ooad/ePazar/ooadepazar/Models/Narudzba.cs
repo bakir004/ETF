@@ -8,13 +8,19 @@ public class Narudzba
 {
     [Key]
     public int ID { get; set; }
+
     [Required]
     public DateTime DatumNarudzbe { get; set; }
-    [Required]
+
     public DateTime? DatumObrade { get; set; }
+
     [Required]  
     public Status Status { get; set; }  // Kreiran, UObradi, Dostavljen
+
+    public String Lokacija { get; set; }
+
     public ApplicationUser? Korisnik { get; set; }
+
     public Artikal? Artikal { get; set; }
     
     public ApplicationUser? KurirskaSluzba { get; set; }

@@ -1,121 +1,315 @@
-﻿@model IEnumerable<ooadepazar.Models.Artikal>
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<ooadepazar.Models.Artikal>
+@inject UserManager<ApplicationUser> UserManager
 
 @{
-    ViewData["Title"] = "Početna stranica";
+    ViewData["Title"] = "Početna stranica - ePazar"; // Naslov stranice je već preveden
+    var currentUser = UserManager.GetUserAsync(User).Result;
+    var isAdmin = currentUser != null && await UserManager.IsInRoleAsync(currentUser, "Admin");
 }
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
 
 <style>
     /* Custom CSS for image sizing and aspect ratio */
-
-    /* Container to enforce 4:3 aspect ratio */
     .card-img-container-4-3 {
-        width: 100%; /* Take full width of parent column */
-        padding-top: 75%; /* This creates the 4:3 aspect ratio (3/4 = 0.75) */
-        position: relative; /* For absolute positioning of child img */
-        overflow: hidden; /* Hide any content that overflows this box */
-        background-color: #f0f0f0; /* Optional: A light background while image loads or if broken */
-        display: block; /* Ensure it behaves as a block element */
+        width: 100%;
+        padding-top: 75%; /* 4:3 Aspect Ratio */
+        position: relative;
+        overflow: hidden;
+        background-color: #f8f9fa; /* Light background */
+        display: block;
+        border-top-left-radius: 0.375rem; /* Match Bootstrap card radius */
+        border-top-right-radius: 0.375rem;
     }
 
-    /* The actual image inside the aspect ratio container */
     .card-img-fit {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        object-fit: cover; /* Crops the image to fit the container without distortion */
-        display: block; /* Ensure it is a block element */
+        object-fit: cover; /* Crops the image */
+        display: block;
+    }
+
+    /* Card enhancements */
+    .card {
+        border: none; /* Remove default border */
+        border-radius: 0.5rem; /* Slightly more rounded */
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* Soft shadow */
+    }
+
+        .card:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* Stronger shadow on hover */
+        }
+
+    /* Naručeni artikli styling */
+    .card-ordered {
+        opacity: 0.7;
+        border: 2px solid #ffc107; /* Žuta boja za naručene */
+        background-color: #fff9e6; /* Svetlo žuta pozadina */
+        position: relative;
+    }
+
+        .card-ordered::before {
+            content: "NARUČENO";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ffc107;
+            color: #212529;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .card-ordered .card-img-fit {
+            filter: grayscale(30%); /* Blago siva slika za naručene */
+        }
+
+        .card-ordered .card-title {
+            color: #6c757d !important; /* Siva boja za naslov naručenih */
+        }
+
+        .card-ordered .card-price {
+            color: #6c757d !important; /* Siva boja za cenu naručenih */
+            text-decoration: line-through; /* Precrtana cena */
+        }
+
+        .card-ordered .btn-outline-primary {
+            opacity: 0.6;
+            pointer-events: none; /* Onemogući klik na dugme */
+        }
+
+    .card-title {
+        color: #0056b3; /* Darker blue for titles */
+        font-weight: 600;
+        font-size: 1.25rem; /* Slightly larger title */
+    }
+
+    .card-text small {
+        color: #6c757d; /* Muted gray for small text */
+    }
+
+    .card-price {
+        color: #28a745; /* Green for price */
+        font-size: 1.75rem; /* Larger price */
+        font-weight: 700;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa; /* Light background for footer */
+        border-top: 1px solid #e9ecef; /* Light border */
+    }
+
+    .card-ordered .card-footer {
+        background-color: #fff3cd; /* Žućkasta pozadina za footer naručenih */
+    }
+
+    .filter-section {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+    }
+
+    .form-control, .form-select {
+        border-radius: 0.375rem;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.2s, border-color 0.2s;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+    .btn-outline-primary {
+        color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-outline-primary:hover {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+    /* Naslov bez linka za naručene artikle */
+    .title-no-link {
+        color: #6c757d !important;
+        text-decoration: none !important;
+        cursor: default;
     }
 </style>
 
-<div class="text-center mb-5">
-    <h1 class="display-4">Dobrodošli na E-pazar!</h1>
-    <p>Pregledajte najnovije objavljene artikle.</p>
-</div>
+<div class="container py-4">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-dark">Dobrodošli na <span class="text-primary">ePazar</span>!</h1> @* "E-pazar" ispravljeno u "ePazar" da bude konzistentno *@
+        <p class="lead text-muted">Pregledajte najnovije objavljene artikle i pronađite šta tražite.</p>
+    </div>
 
-<div class="container">
     @* Control Line for Filtering and Sorting *@
-    <form asp-controller="Home" asp-action="Index" method="get" class="mb-4">
-        <div class="row g-2 align-items-center mb-3">
-            <div class="col-md-4">
-                <input type="text" class="form-control" id="searchQuery" name="searchQuery" placeholder="Pretraži artikle..." value="@ViewBag.CurrentSearchQuery" />
+    <div class="filter-section mb-5">
+        <form asp-controller="Home" asp-action="Index" method="get">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-5">
+                    <label for="searchQuery" class="form-label visually-hidden">Pretraži artikle</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" id="searchQuery" name="searchQuery" placeholder="Pretraži po nazivu ili opisu..." value="@ViewBag.CurrentSearchQuery" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="categoryId" class="form-label visually-hidden">Kategorija</label>
+                    <select class="form-select" id="categoryId" name="categoryId">
+                        @foreach (var option in ViewBag.KategorijaOptions)
+                        {
+                            <option value="@option.Value" selected="@(option.Value == ViewBag.CurrentCategoryId?.ToString())">@option.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="sortBy" class="form-label visually-hidden">Sortiraj po</label>
+                    <select class="form-select" id="sortBy" name="sortBy">
+                        @* Ovdje se generiraju opcije za sortiranje. Provjeri kako su postavljene u tvom kontroleru. *
+                         * Ako su već prevedene u kontroluru (npr. "Najnovije", "Cijena: od najniže"), onda je ovdje OK.
+                         * Ako nisu, trebat će ih prevesti u kontroleru prilikom punjenja ViewBag.SortOptions. *@
+                        <option value="">Sortiraj po</option> @* DODANO: Placeholder za sortiranje *@
+                        <option value="date_desc" selected="@("date_desc" == ViewBag.CurrentSortBy)">Najnovije</option> @* Prevedeno i detaljnije *@
+                        <option value="price_asc" selected="@("price_asc" == ViewBag.CurrentSortBy)">Cijena (od najniže)</option> @* Prevedeno *@
+                        <option value="price_desc" selected="@("price_desc" == ViewBag.CurrentSortBy)">Cijena (od najviše)</option> @* Prevedeno *@
+                        <option value="name_asc" selected="@("name_asc" == ViewBag.CurrentSortBy)">Naziv (A-Z)</option> @* Prevedeno *@
+                        <option value="name_desc" selected="@("name_desc" == ViewBag.CurrentSortBy)">Naziv (Z-A)</option> @* Prevedeno *@
+                    </select>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-funnel"></i> Pretraži</button> @* Prevedeno *@
+                </div>
             </div>
-            <div class="col-md-3">
-                <select class="form-select" id="categoryId" name="categoryId">
-                    @foreach (var option in ViewBag.KategorijaOptions)
-                    {
-                        <option value="@option.Value" selected="@(option.Value == ViewBag.CurrentCategoryId?.ToString())">@option.Text</option>
-                    }
-                </select>
-            </div>
-            <div class="col-md-3">
-                <select class="form-select" id="sortBy" name="sortBy">
-                    @foreach (var option in ViewBag.SortOptions)
-                    {
-                        <option value="@option.Value" selected="@(option.Value == ViewBag.CurrentSortBy)">@option.Text</option>
-                    }
-                </select>
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100">Pretraži</button>
-            </div>
-        </div>
-    </form>
-    
+            @if (!string.IsNullOrEmpty(ViewBag.CurrentSearchQuery) || ViewBag.CurrentCategoryId != null)
+            {
+                <div class="mt-3 text-end">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-x-circle"></i> Poništi filtere
+                    </a>
+                </div>
+            }
+        </form>
+    </div>
 
     @if (Model != null && Model.Any())
     {
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
             @foreach (var item in Model)
             {
-                @* Defensive null check for 'item' to prevent NullReferenceException *@
                 @if (item == null)
                 {
                     continue;
                 }
 
                 <div class="col">
-                    <div class="card h-100 shadow-sm">
-                        @* This div acts as the aspect ratio container for the image *@
+                    <div class="card h-100 @(item.Narucen ? "card-ordered" : "")">
                         <div class="card-img-container-4-3">
                             @if (!string.IsNullOrEmpty(item.SlikaUrl))
                             {
-                                <img src="@item.SlikaUrl" class="card-img-fit" alt="@item.Naziv">
+                                <img src="@item.SlikaUrl" class="card-img-fit" alt="Slika artikla: @item.Naziv" loading="lazy">
                             }
                             else
                             {
-                                @* Fallback to placeholder image if SlikaUrl is empty or null *@
-                                <img src="https://placehold.co/300x225/E0E0E0/333333?text=Nema+Slike" class="card-img-fit" alt="Nema Slike">
+                                <img src="https://placehold.co/300x225/CED4DA/495057?text=Nema+Slike" class="card-img-fit" alt="Nema Slike" loading="lazy">
                             }
                         </div>
-                        
+
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title text-primary">@item.Naziv</h5>
+                            <h5 class="card-title mb-2">
+                                @if (item.Narucen)
+                                {
+                                    <span class="title-no-link">@item.Naziv</span>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Artikal" asp-action="Details" asp-route-id="@item.ID" class="text-decoration-none text-primary">
+                                        @item.Naziv
+                                    </a>
+                                }
+                            </h5>
                             <p class="card-text text-muted mb-1">
-                                <small>Kategorija: @item.Kategorija.ToString().Replace("_", " ")</small>
+                                <small><i class="bi bi-tag me-1"></i> Kategorija: @item.Kategorija.ToString().Replace("_", " ")</small>
                             </p>
                             <p class="card-text text-muted mb-1">
-                                <small>Lokacija: @item.Lokacija</small>
+                                <small><i class="bi bi-geo-alt me-1"></i> Lokacija: @item.Lokacija</small>
                             </p>
-                            <p class="card-text text-muted mb-1">
-                                <small>Stanje: @item.Stanje.ToString()</small>
+                            <p class="card-text text-muted mb-2">
+                                <small><i class="bi bi-info-circle me-1"></i> Stanje: @item.Stanje.ToString()</small> @* Prevedeno Stanje *@
                             </p>
-                            <p class="card-text flex-grow-1">@item.Opis</p>
-                            <h4 class="text-success mt-auto">@item.Cijena KM</h4>
+                            @if (item.Narucen)
+                            {
+                                <p class="card-text text-muted mb-2">
+                                    <small><i class="bi bi-check-circle-fill text-warning me-1"></i> Status: <strong>Naručeno</strong></small>
+                                </p>
+                            }
+                            <p class="card-text flex-grow-1 text-secondary mb-3">
+                                @(item.Opis.Length > 100 ? item.Opis.Substring(0, 100) + "..." : item.Opis)
+                            </p>
+                            <h4 class="card-price mt-auto">@item.Cijena KM</h4>
                         </div>
-                        <div class="card-footer bg-light d-flex justify-content-between align-items-center">
-                            <small class="text-muted">Objavljeno: @item.DatumObjave.ToShortDateString()</small>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <small class="text-muted"><i class="bi bi-calendar me-1"></i> @item.DatumObjave.ToShortDateString()</small>
                             @if (item.Korisnik != null)
                             {
-                                <small class="text-info">Objavio: @item.Korisnik.Ime</small>
+                                @if (User.Identity?.IsAuthenticated == true)
+                                {
+                                    <small class="text-info">
+                                        <i class="bi bi-person me-1"></i>
+                                        <a asp-controller="Korisnik" asp-action="Index" asp-route-id="@item.Korisnik.Id" class="text-info text-decoration-underline">
+                                            @item.Korisnik.Ime
+                                        </a>
+                                    </small>
+                                }
+                                else
+                                {
+                                    <span>@item.Korisnik.Ime</span>
+                                }
                             }
                             else
                             {
-                                <small class="text-info">Objavio: N/A</small>
+                                <small class="text-info"><i class="bi bi-person-slash me-1"></i> N/A</small> @* "N/A" se obično ne prevodi, univerzalno je *@
                             }
-                            @* Example of a detail link (you'd need a controller action for this) *@
-                            <a asp-controller="Artikal" asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary">Detalji</a>
+
+                            @{
+                                var narudzbe = ViewBag.Narudzbe as Dictionary<int, int>;
+                            }
+
+                            @if (item.Narucen)
+                            {
+                                @if (narudzbe != null && narudzbe.ContainsKey(item.ID))
+                                {
+                                    <a asp-controller="Narudzba" asp-action="Details" asp-route-id="@narudzbe[item.ID]" class="btn btn-sm btn-outline-warning">
+                                        <i class="bi bi-receipt"></i> Detalji narudžbe
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="btn btn-sm btn-outline-secondary disabled">
+                                        <i class="bi bi-receipt"></i> Narudžba nije pronađena
+                                    </span>
+                                }
+                            }
+                            else
+                            {
+                                <a asp-controller="Artikal" asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-arrow-right-circle"></i> Detalji
+                                </a>
+                            }
                         </div>
                     </div>
                 </div>
@@ -124,12 +318,17 @@
     }
     else
     {
-        <div class="alert alert-info text-center" role="alert">
-            Trenutno nema objavljenih artikala koji odgovaraju vašim kriterijima.
+        <div class="alert alert-info text-center py-4" role="alert">
+            <h4 class="alert-heading"><i class="bi bi-info-circle me-2"></i>Nema rezultata!</h4>
+            <p>Trenutno nema objavljenih artikala koji odgovaraju vašim kriterijima pretrage.</p>
+            <hr>
+            <p class="mb-0">Pokušajte promijeniti filtere ili pretragu.</p>
         </div>
     }
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

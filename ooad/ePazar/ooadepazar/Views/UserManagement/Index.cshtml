@@ -1,38 +1,58 @@
 @model List<ooadepazar.Controllers.UserRolesViewModel>
-
 @{
     ViewData["Title"] = "User Management";
 }
-
-<h2>User Management</h2>
-
+<!-- Prikaz poruka -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<h2>Upravljanje korisnicima</h2>
 <table class="table table-bordered">
     <thead>
-    <tr>
-        <th>Email</th>
-        <th>Roles</th>
-        <th>Actions</th>
-    </tr>
+        <tr>
+            <th>Email</th>
+            <th>Uloge</th>
+            <th>Akcije</th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var user in Model)
-    {
-        <tr>
-            <td>@user.Email</td>
-            <td>
-                @if (user.Roles != null && user.Roles.Count > 0)
-                {
-                    @string.Join(", ", user.Roles)
-                }
-                else
-                {
-                    <span class="text-muted">No roles assigned</span>
-                }
-            </td>
-            <td>
-                <a class="btn btn-primary btn-sm" asp-action="EditRoles" asp-route-userId="@user.UserId">Edit Roles</a>
-            </td>
-        </tr>
-    }
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>
+                    @if (user.Roles != null && user.Roles.Count > 0)
+                    {
+                        @string.Join(", ", user.Roles)
+                    }
+                    else
+                    {
+                        <span class="text-muted">Nema dodijeljenih uloga</span>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm me-2" asp-action="EditRoles" asp-route-userId="@user.UserId">Uredi Uloge</a>
+                    @if (user.Roles == null || !user.Roles.Contains("Admin"))
+                    {
+                        <form method="post" asp-action="DeleteUser" asp-route-userId="@user.UserId" class="d-inline"
+                              onsubmit="return confirm('Da li ste sigurni da želite obrisati korisnika @user.Email? Ova akcija se ne može opozvati.');">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm">Obriši nalog</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

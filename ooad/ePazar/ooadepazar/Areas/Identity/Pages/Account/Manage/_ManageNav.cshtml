@@ -1,15 +1,26 @@
 @inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+
+    // Provjeri da li trenutni korisnik ima ulogu kurirske službe
+    var currentUser = await UserManager.GetUserAsync(User);
+    var isKurirskaSluzba = currentUser != null && (await UserManager.IsInRoleAsync(currentUser, "KurirskaSluzba") || await UserManager.IsInRoleAsync(currentUser, "Kurirska_Sluzba") || await UserManager.IsInRoleAsync(currentUser, "Admin"));
 }
+
 <ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Moji artikli</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
-    @if (hasExternalLogins)
+    <li class="nav-item"><a class="nav-link @ManageNavPages.FollowersNavClass(ViewContext)" id="followers" asp-page="./Followers">Pratioci</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.FollowingNavClass(ViewContext)" id="following" asp-page="./Following">Pratim</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Lozinka</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Lični podaci</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.OrdersNavClass(ViewContext)" id="orders-data" asp-page="./Orders">Moje narudžbe</a></li>
+
+    @* Prikaži "Moja kurirska" samo korisnicima sa ulogom kurirske službe *@
+    @if (isKurirskaSluzba)
     {
-        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
+        <li class="nav-item"><a class="nav-link @ManageNavPages.KurirNavClass(ViewContext)" id="kurirska-data" asp-page="./Kurirska">Moja kurirska</a></li>
     }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
 </ul>

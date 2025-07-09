@@ -1,94 +1,71 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Registracija";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="row w-100">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <div class="card shadow-lg p-4">
+                <div class="card-body">
+                    <h1 class="card-title text-center mb-4">@ViewData["Title"]</h1>
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" autocomplete="off">
+                        <h2 class="h4 text-center mb-3">Kreirajte novi račun.</h2>
+                        <hr class="mb-4" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger text-center mb-3" role="alert"></div>
 
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Ime" class="form-control" aria-required="true" placeholder="John" />
-                <label asp-for="Input.Ime">Ime (First Name)</label>
-                <span asp-validation-for="Input.Ime" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Prezime" class="form-control" aria-required="true" placeholder="Doe" />
-                <label asp-for="Input.Prezime">Prezime (Last Name)</label>
-                <span asp-validation-for="Input.Prezime" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Adresa" class="form-control" aria-required="true" placeholder="123 Main St" />
-                <label asp-for="Input.Adresa">Adresa (Address)</label>
-                <span asp-validation-for="Input.Adresa" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.BrojTelefona" class="form-control" aria-required="true" placeholder="555-123-4567" />
-                <label asp-for="Input.BrojTelefona">Broj Telefona (Phone Number)</label>
-                <span asp-validation-for="Input.BrojTelefona" class="text-danger"></span>
-            </div>
-            @* If KurirskaSluzba is optional on registration, and only applies to certain roles,
-               you might hide this or make it conditional. For now, it's included as a simple input. *@
-            <div class="form-floating mb-3">
-                <input asp-for="Input.KurirskaSluzba" class="form-control" placeholder="ABC Delivery" />
-                <label asp-for="Input.KurirskaSluzba">Kurirska Sluzba (Delivery Service)</label>
-                <span asp-validation-for="Input.KurirskaSluzba" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" aria-required="true" placeholder="ime@primjer.com" />
+                            <label asp-for="Input.Email">Email</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
                         </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Ime" class="form-control" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" aria-required="true" placeholder="Marko" />
+                            <label asp-for="Input.Ime">Ime</label>
+                            <span asp-validation-for="Input.Ime" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Prezime" class="form-control" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" aria-required="true" placeholder="Horvat" />
+                            <label asp-for="Input.Prezime">Prezime</label>
+                            <span asp-validation-for="Input.Prezime" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Adresa" class="form-control" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" aria-required="true" placeholder="Glavna ulica 123" />
+                            <label asp-for="Input.Adresa">Adresa</label>
+                            <span asp-validation-for="Input.Adresa" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.BrojTelefona" class="form-control" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" aria-required="true" placeholder="061-123-456" />
+                            <label asp-for="Input.BrojTelefona">Broj telefona</label>
+                            <span asp-validation-for="Input.BrojTelefona" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.KurirskaSluzba" class="form-control" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" placeholder="Brza dostava" />
+                            <label asp-for="Input.KurirskaSluzba">Kurirska služba (opcionalno)</label>
+                            <span asp-validation-for="Input.KurirskaSluzba" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" aria-required="true" placeholder="lozinka" />
+                            <label asp-for="Input.Password">Lozinka</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" aria-required="true" placeholder="potvrdi lozinku" />
+                            <label asp-for="Input.ConfirmPassword">Potvrdi lozinku</label>
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary mt-3">Registruj se</button>
                     </form>
-                }
-            }
-        </section>
+
+                    <hr class="my-4" />
+
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

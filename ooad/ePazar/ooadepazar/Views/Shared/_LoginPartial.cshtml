@@ -1,39 +1,110 @@
 @using Microsoft.AspNetCore.Identity
+@using ooadepazar.Data
 @using ooadepazar.Models
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@inject ApplicationDbContext _context
 
 @{
+    // Get the current user
     var user = await UserManager.GetUserAsync(User);
-}
-<ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    @if (User.IsInRole("Admin"))
+
+    // Default values if user is null (shouldn't happen if SignInManager.IsSignedIn(User) is true)
+    var firstLetter = user?.Ime?.FirstOrDefault().ToString()?.ToUpper() ?? "?";
+
+    // Generate a consistent random background color for the avatar
+    // Use a fixed seed for Random to ensure the same user gets the same color
+    var random = new Random(user?.UserName?.GetHashCode() ?? 0);
+    var bgColor = $"#{random.Next(0x1000000):X6}"; // Generate a random hex color
+
+    // Calculate unread notification count
+    int unreadCount = 0;
+    if (user != null) // Use the 'user' variable from above
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="UserManagement"
-               asp-action="Index">Dashboard</a>
+        unreadCount = _context.Notifikacija
+            .Where(n => n.KorisnikId.Id == user.Id && !n.Procitana) // Use user.Id
+            .Count();
+    }
+}
+
+<ul class="navbar-nav d-flex align-items-center">
+    @* Added d-flex and align-items-center for better alignment *@
+    @if (SignInManager.IsSignedIn(User))
+    {
+        // Admin link, if user is an Admin
+        @if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item me-3">
+                @* Added margin to the right *@
+                <a class="nav-link btn btn-outline-secondary btn-sm" asp-area="" asp-controller="UserManagement" asp-action="Index">
+                    <i class="bi bi-people me-1"></i> Korisnici
+                </a>
+            </li>
+        }
+
+        // Notifications link with badge
+        <li class="nav-item position-relative me-3">
+            @* Added margin to the right *@
+            <a class="nav-link text-dark position-relative" asp-area="" asp-controller="Notifikacija" asp-action="Index" title="Notifikacije">
+                <i class="bi bi-bell fs-5"></i> @* Larger bell icon *@
+
+                @if (unreadCount > 0)
+                {
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          style="font-size: 0.65rem; padding: 0.35em 0.6em;">
+                        @* Adjusted padding for badge *@
+                        @unreadCount
+                        <span class="visually-hidden">nepročitane notifikacije</span>
+                    </span>
+                }
+            </a>
+        </li>
+
+        // User Dropdown (Avatar and Name)
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center p-0" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                @* Removed padding for tighter fit *@
+                <div class="rounded-circle d-flex justify-content-center align-items-center me-2"
+                     style="width: 36px; height: 36px; background-color:@bgColor; color: white; font-weight: bold; flex-shrink: 0;">
+                    @* Added flex-shrink: 0 to prevent shrinking *@
+                    @firstLetter
+                </div>
+                <span class="text-dark fw-semibold d-none d-md-inline">@user?.Ime</span> @* Hide name on small screens *@
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li>
+                    <a class="dropdown-item d-flex flex-column align-items-start" asp-area="Identity" asp-page="/Account/Manage/Index">
+                        <div>
+                            <i class="bi bi-person me-2"></i> Profil
+                        </div>
+                        <small class="text-muted ms-4">@user?.Email</small>
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li> @* Separator *@
+                <li>
+                    <form class="dropdown-item p-0" id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="btn w-100 text-start ps-3 py-2">
+                            @* Adjusted padding for logout button *@
+                            <i class="bi bi-box-arrow-right me-2"></i> Odjavi se
+                        </button>
+                    </form>
+                </li>
+            </ul>
         </li>
     }
-
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @user?.Ime!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+    else
+    {
+        // Login and Register links for guests
+        <li class="nav-item me-2">
+            <a class="btn btn-outline-primary-custom" id="login" asp-area="Identity" asp-page="/Account/Login">
+                <i class="bi bi-person me-1"></i> Prijava
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-outline-secondary" id="register" asp-area="Identity" asp-page="/Account/Register">
+                <i class="bi bi-person-plus me-1"></i> Registracija
+            </a>
+        </li>
+    }
 </ul>

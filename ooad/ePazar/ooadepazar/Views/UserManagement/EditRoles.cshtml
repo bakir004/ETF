@@ -1,10 +1,10 @@
 @model ooadepazar.Controllers.EditUserRolesViewModel
 
 @{
-    ViewData["Title"] = "Edit User Roles";
+    ViewData["Title"] = "Uredi uloge";
 }
 
-<h2>Edit Roles for @Model.Email</h2>
+<h2>Uredi ulogu za @Model.Email</h2>
 
 <form asp-action="EditRoles" method="post">
     <input type="hidden" asp-for="UserId" />
@@ -12,8 +12,8 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>Role</th>
-            <th>Assigned</th>
+            <th>Uloga</th>
+            <th>Dodijeljeno</th>
         </tr>
         </thead>
         <tbody>
@@ -30,6 +30,6 @@
         </tbody>
     </table>
 
-    <button type="submit" class="btn btn-success">Save Changes</button>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <button type="submit" class="btn btn-success">Spasi promjene</button>
+    <a asp-action="Index" class="btn btn-secondary">Nazad na listu</a>
 </form>
