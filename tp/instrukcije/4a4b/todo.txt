@@ -1,0 +1,34 @@
+
+4a4b:
+
+4a:
+    - reference
+    - kreiranje referenci
+    - ponasanje referenci
+    - l-vrijednosti
+    - funkcije sa referencama u parametru
+    - konstantne reference
+    - primjeri kada treba koristiti reference umjesto kopiranja parametara
+    - visece reference
+    - std::string_view
+    - && - r-vrijednosne reference
+
+4b:
+    - podrazumijevani parametri
+    - istoimene funkcije sa razlicitim brojem parametara
+    - istoimene funkcije sa razlicitim tipovima parametara
+    - genericke funkcije (npr. Razmijeni, Sortiraj)
+    - eksplicitno navodjenje tipa
+    - genericke funkcije sa string i const char*
+    - protivrjecni parametri
+
+
+
+
+
+
+
+Zadaci:
+
+1. Analiza broja: funkcija prima int i smjesta broj cifara, min i max cifru u referencama.
+2. Matrica: funkcija prima matricu i obrce redoslijed elemenata unutar redova i istovremeno vraca vektor suma kolona

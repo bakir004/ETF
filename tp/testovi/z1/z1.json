@@ -1,0 +1,318 @@
+{
+  "id": 0,
+  "name": "Tehnike programiranja, Zadaća 1, Zadatak 1",
+  "version": "3",
+  "languages": [
+    "C++"
+  ],
+  "tools": {
+    "compile": {
+      "require": "g++",
+      "features": [
+        "optimize",
+        "warn",
+        "pedantic",
+        "C++17"
+      ]
+    },
+    "compile[debug]": {
+      "require": "g++",
+      "features": [
+        "debug",
+        "C++17",
+        "asan"
+      ]
+    },
+    "execute": {
+      "require": "asan"
+    },
+    "debug": [],
+    "profile[asan]": {
+      "require": "asan",
+      "input_file": "stderr.txt",
+      "fast": true
+    }
+  },
+  "prepare": [
+    "compile"
+  ],
+  "tests": [
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "main",
+              "code": "//AT1: Test main funkcije (postavka), eventualna pitanja slati na sbehic2@etf.unsa.ba\n\n    {\n         _main();\n    }\n"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "environment": {
+              "stdin": "3 5 1 2 4 3 5 7 8 1 2 5 9 4 7 .\n5 7 8 1 2 5 9 4 7 3 5 1 2 4 3 ."
+            },
+            "expect": [
+              "Prva sekvenca: Druga sekvenca:\n\nDruga sekvenca je ciklicka permutacija prve s pomakom 6.\n"
+            ]
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 1",
+      "id": 1
+    },
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "main",
+              "code": "//AT2: Test main funkcije (postavka), eventualna pitanja slati na sbehic2@etf.unsa.ba\n\n    {\n         _main();\n    }\n"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "expect": [
+              "Prva sekvenca: Druga sekvenca:\nDruga sekvenca nije ciklicka permutacija prve."
+            ],
+            "environment": {
+              "stdin": "1 2 3 4 5 kraj\n2 3 4 5 6 7 8 kraj"
+            }
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 2",
+      "id": 2
+    },
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "main",
+              "code": "//AT3: Eventualna pitanja slati na sbehic2@etf.unsa.ba\n\n    {\n         _main();\n    }\n"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "environment": {
+              "stdin": "7 8 9 10 11 12 .\n7 8 9 10 11 12 ."
+            },
+            "expect": [
+              "Prva sekvenca: Druga sekvenca:\nDruga sekvenca je ciklicka permutacija prve s pomakom 0."
+            ]
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 3",
+      "id": 3
+    },
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "main",
+              "code": "//AT4: Eventualna pitanja slati na sbehic2@etf.unsa.ba\n\n    {\n         _main();\n    }\n"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "environment": {
+              "stdin": "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 .\n6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 1 2 3 4 99 ."
+            },
+            "expect": [
+              "Prva sekvenca: Druga sekvenca:\nDruga sekvenca nije ciklicka permutacija prve."
+            ]
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 4",
+      "id": 4
+    },
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "top_of_file",
+              "code": "//AT5: Eventualna pitanja slati na sbehic2@etf.unsa.ba"
+            },
+            {
+              "position": "main",
+              "code": "{\n     std::vector<int> s1 = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200};\n     std::vector<int> s2 = {200, 190, 180, 170, 160, 150, 140, 130, 120, 110, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10};\n\n     std::cout<<CiklickaPermutacija(s1, s2);\n\n}"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "expect": [
+              "-1"
+            ]
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 5",
+      "id": 5
+    },
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "top_of_file",
+              "code": "//AT6: Eventualna pitanja slati na sbehic2@etf.unsa.ba"
+            },
+            {
+              "position": "main",
+              "code": "{\n     std::vector<int> s1 = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200};\n     std::vector<int> s2 = {60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 10, 20, 30, 40, 50};\n\n     std::cout<<CiklickaPermutacija(s1, s2);\n\n}"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "expect": [
+              "5"
+            ]
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 6",
+      "id": 6
+    },
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "main",
+              "code": "{\n     std::vector<int> s1;\n     std::vector<int> s2 = {60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 10, 20, 30, 40, 50};\n\n     std::cout << CiklickaPermutacija(s1, s2) << \" \" << CiklickaPermutacija(s2, s1);\n\n}"
+            },
+            {
+              "position": "top_of_file",
+              "code": "//AT7: Eventualna pitanja slati na sbehic2@etf.unsa.ba"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "environment": {
+              "stdin": "-1 -1"
+            }
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 7",
+      "id": 7
+    },
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "top_of_file",
+              "code": "//AT8: Eventualna pitanja slati na sbehic2@etf.unsa.ba"
+            },
+            {
+              "position": "main",
+              "code": "{\n     std::vector<int> s1 = {7}, s2 = {1};\n\n     std::cout << CiklickaPermutacija(s1, s1) << \" \" << CiklickaPermutacija(s1, s2);\n\n}"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "expect": [
+              "0 -1"
+            ]
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 8",
+      "id": 8
+    },
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "top_of_file",
+              "code": "//AT9: Eventualna pitanja slati na sbehic2@etf.unsa.ba"
+            },
+            {
+              "position": "main",
+              "code": "{\n     std::vector<int> s1 = {1, 2}, s2 = {2, 1}, s3 = {5, 1};\n\n     std::cout << CiklickaPermutacija(s1, s2) << \" \" << CiklickaPermutacija(s2, s3);\n\n}"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "expect": [
+              "1 -1"
+            ]
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 9",
+      "id": 9
+    },
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "top_of_file",
+              "code": "//AT10: Eventualna pitanja slati na sbehic2@etf.unsa.ba"
+            },
+            {
+              "position": "main",
+              "code": "{\n     std::vector<int> s1 = {1, 2, 4, 5, 6}, s2 = {1, 2, 3, 4, 5, 6, 7};\n\n     std::cout << CiklickaPermutacija(s1, s2) << \" \" << CiklickaPermutacija(s2, s1);\n\n}"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "expect": [
+              "-1 -1"
+            ]
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 10",
+      "id": 10
+    }
+  ],
+  "code": "200"
+}

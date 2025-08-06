@@ -1,0 +1,171 @@
+{
+  "id": 0,
+  "name": "Tehnike programiranja, S_Z 1, Zadatak 4",
+  "version": "3",
+  "languages": [
+    "C++"
+  ],
+  "tools": {
+    "compile": {
+      "require": "g++",
+      "features": [
+        "optimize",
+        "warn",
+        "pedantic",
+        "C++17"
+      ]
+    },
+    "compile[debug]": {
+      "require": "g++",
+      "features": [
+        "debug",
+        "C++17",
+        "asan"
+      ]
+    },
+    "execute": {
+      "require": "asan"
+    },
+    "debug": [],
+    "profile[asan]": {
+      "require": "asan",
+      "input_file": "stderr.txt",
+      "fast": true
+    }
+  },
+  "prepare": [
+    "compile"
+  ],
+  "tests": [
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "main",
+              "code": "// AT 1: Test main funkcije (postavka), eventualna pitanja poslati na kerim.hodzic@etf.unsa.ba\n    {\n        _main();\n    }"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "environment": {
+              "stdin": "Kazu da je starogrcki pisac Aristofan sastavio rijec od 183 slova lopadotemachoselachogaleokranioleipsanodrimhupotrimmatosilphiokarabomelitokatakechumenokichlepikossuphophattoperisteralektruonoptokephalliokigklopeleiolagoiosiraioaphetraganopterugon, tako da ima (nerazumnih) rijeci koje su duze od 100 znakova...\n"
+            },
+            "expect": [
+              "Unesite recenicu:\nGreska: Recenica sadrzi predugacku rijec!"
+            ]
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 1",
+      "id": 1
+    },
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "main",
+              "code": "// AT 2: Test main funkcije (postavka)\n    {\n        _main();\n    }"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "expect": [
+              "Unesite recenicu:\nDuzina 1: A\nDuzina 4: KISA PADA GORA\nDuzina 5: TRAVA RASTE\nDuzina 6: ZELENI"
+            ],
+            "environment": {
+              "stdin": "Kisa pada, trava raste, a gora zeleni!"
+            }
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 2",
+      "id": 2
+    },
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "main",
+              "code": "// AT 3\n   \n  try {\n        std::array<std::vector<std::string>, 100> rijeciPoDuzini;    \n        rijeciPoDuzini = RazvrstajRijeciPoDuzini(\"n4Pw9uhTwa86RjCBC2Bczh2Xv5qdnKyg3J49qrUp5BdMWoBc6K6wm2dH7o3nfnFFPD9hgWOamuYDUoDujTESCCCnGHZjB1YW9HFp\");\n        for (int i = 1; i < 100; ++i) {\n            if (!rijeciPoDuzini[i].empty()) {\n                std::cout << \"Duzina \" << i << \": \";\n                for (std::string rijec : rijeciPoDuzini[i]) {\n                    std::cout << rijec << \" \";\n                }\n                std::cout << std::endl;\n            }\n        }\n    } catch (const std::range_error &e) {\n        std::cout << e.what() << std::endl;\n    }\n"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "expect": [
+              "Predugacka rijec!"
+            ]
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 3",
+      "id": 3
+    },
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "main",
+              "code": "//AT4 \ntry {\n        std::array<std::vector<std::string>, 100> rijeciPoDuzini;    \n        rijeciPoDuzini = RazvrstajRijeciPoDuzini(\"jedan1 dva2 tri3 cetiri4cetiri 3tri 2dva jedan1\");\n        for (int i = 1; i < 100; ++i) {\n            if (!rijeciPoDuzini[i].empty()) {\n                std::cout << \"Duzina \" << i << \": \";\n                for (std::string rijec : rijeciPoDuzini[i]) {\n                    std::cout << rijec << \" \";\n                }\n                std::cout << std::endl;\n            }\n        }\n    } catch (const std::range_error &e) {\n        std::cout << e.what() << std::endl;\n    }"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "expect": [
+              "Duzina 4: DVA2 TRI3 3TRI 2DVA \nDuzina 6: JEDAN1 JEDAN1 \nDuzina 13: CETIRI4CETIRI"
+            ]
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 4",
+      "id": 4
+    },
+    {
+      "tools": [
+        {
+          "patch": [
+            {
+              "position": "main",
+              "code": "// AT 5: Test main funkcije \n    {\n        _main();\n    }"
+            }
+          ]
+        },
+        "compile[debug]",
+        {
+          "execute": {
+            "environment": {
+              "stdin": "ovdje testiramo main funkciju i      Da LI RaDE i VELIKA I MALA SlOVA i razdvajanje INTERpunkcijskim ZNAkovima, pa,,,da,,,vidimo,,,da. li .. radi."
+            },
+            "expect": [
+              "Unesite recenicu:\nDuzina 1: I I I I \nDuzina 2: DA LI PA DA DA LI \nDuzina 4: MAIN RADE MALA RADI \nDuzina 5: OVDJE SLOVA \nDuzina 6: VELIKA VIDIMO \nDuzina 8: FUNKCIJU \nDuzina 9: TESTIRAMO ZNAKOVIMA \nDuzina 11: RAZDVAJANJE \nDuzina 16: INTERPUNKCIJSKIM"
+            ]
+          }
+        },
+        "debug",
+        "profile[asan]"
+      ],
+      "name": "Test 5",
+      "id": 5
+    }
+  ],
+  "code": "200"
+}

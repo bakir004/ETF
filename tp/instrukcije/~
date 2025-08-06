@@ -1,0 +1,110 @@
+#include<iostream>
+#include<string>
+#include<iomanip>
+
+int main() {
+  // double broj;
+  // std::string ostatak;
+  // std::cout << "Unesite broj: ";
+  // std::cin >> broj;
+  // std::cin.ignore(10000, '\n');
+  // std::cout << "Unesite recenicu: ";
+  // std::getline(std::cin, recenica);
+  //
+  // std::cout << "Unijeli ste broj " << broj << " i recenicu " << recenica;
+
+  // std::cin >> broj;
+  // std::getline(std::cin, ostatak);
+  //
+  // if(!std::cin) {
+  //   std::cout << "Ulazni tok je u neispravnom stanju!\n";
+  //   std::cin.clear();
+  //   std::cin.ignore(10000, '\n');
+  // }
+  // std::cin >> broj;
+  // if(!std::cin) {
+  //   std::cout << "Drugi put Ulazni tok je u neispravnom stanju!\n";
+  // }
+  //
+  //
+  // std::cout << "Broj: " << broj << "\nOstatak: " << ostatak;
+
+  // int a,b,c;
+  // (std::cin >> a) >> b >> c;
+  // (std::cin >> b) >> c; 
+  // std::cin >> c;
+  // std::cin;
+  //
+  // std::cout << 5 << 6 << 7;
+  // std::cout << 6 << 7;
+  // std::cout << 7;
+  // std::cout;
+  //
+  // std::cin >> a, b, c;
+  //
+  // 52
+  
+  // int a = 18, b = 7;
+
+  // int/int -> int
+  // int/double -> double
+  // double/int -> double
+  // double/double -> double
+
+  // std::cout << a/5.;
+  // std::cout << int/double;
+
+  // int najveciInt  =  2147483647;
+  // int najmanjiInt = -2147483648;
+  //
+  // // std::cout << std::numeric_limits<double>::epsilon();
+  //
+  // double a = 5;
+  // double b = std::sqrt(3*3+4*4);
+  // if(std::fabs(a-b)<0.0001) std::cout << "Jednaki";
+
+  // const int velicinaNiza = 6;
+  //
+  // const int brojSlovaAbecede = 26;
+  // int niz[brojSlovaAbecede];
+
+  // int niz[velicinaNiza];
+  // int niz2[velicinaNiza];
+  // int niz3[velicinaNiza];
+
+  // std::cout.width(20);
+  // std::cout << 2;
+  // std::cout.width(20);
+  // std::cout << 3;
+  // std::cout.width(20);
+  // std::cout << 4 << std::endl;
+  //
+  // double x = 0.1;
+  // std::cout.precision(30);
+  // std::cout << x << std::endl;
+  // std::cout << x << std::endl;
+
+
+  // std::cout.width(7);
+  // std::cout << 123 << std::endl;
+  // std::cout.width(7);
+  // std::cout << 124132 << std::endl;
+  // std::cout.width(7);
+  // std::cout << std::setw(8) << "asd" << std::endl
+  //   << std::left << std::setw(8) << std::setprecision(3) << 1./7 << std::endl
+  //   << std::right << std::setw(8) << 1./9;
+
+
+  std::cout << "Desetka s lukom" << std::setw(10) << std::setprecision(2) << 14.1 << "KM"; 
+
+
+
+
+
+
+
+
+
+
+  return 0;
+}

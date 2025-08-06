@@ -1,0 +1,9 @@
+3a3b
+
+- deklarisanje matrica
+- typedef matrica 
+- kod sa matricama
+- std::array i c-ovske matrice
+- cin.get(char) i cin.peek()
+- ascii sifre
+- getline u c-ovski niz
