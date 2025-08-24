@@ -19,6 +19,7 @@ void SortirajBinarnuDatoteku(const char ime_datoteke[], std::function<bool(TipEl
             tok.seekg(pozicijaJ, std::ios::beg);
             TipElemenata elementJ;
             tok.read(reinterpret_cast<char*>(&elementJ), sizeof(TipElemenata));
+
             if(!kriterij(elementI, elementJ)) {
                 tok.seekp(pozicijaI, std::ios::beg);
                 tok.write(reinterpret_cast<char*>(&elementJ), sizeof(TipElemenata));

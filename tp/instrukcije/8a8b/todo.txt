@@ -1,0 +1,16 @@
+8a8b
+
+strukture
+niz struktura
+prvi primjer
+dinamicka alokacija niza pointera na strukture
+
+std::pair
+
+std::map
+std::unordered_map
+std::tuple
+
+genericke strukture
+jednostruko povezane liste
+sa pametnim pokazivacima
