@@ -1,4 +1,5 @@
 #include<iostream>
+#include<cstring>
 
 class String {
 public:
@@ -53,8 +54,9 @@ String operator+(const String& s1, const String& s2) {
 }
 
 std::ostream& operator<<(std::ostream& tok, const String& s) {
-  for(int i = 0; i < s.duzina; i++)
-    tok << s.znakovi[i];
+  std::cout << s.znakovi;
+  // for(int i = 0; i < s.duzina; i++)
+  //   tok << s.znakovi[i];
   return tok;
 }
 

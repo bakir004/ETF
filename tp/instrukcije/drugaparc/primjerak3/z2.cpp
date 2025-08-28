@@ -1,5 +1,6 @@
 #include<deque>
 #include<iostream>
+#include<algorithm>
 
 template <typename T>
 class RedSPrioritetom {
@@ -29,7 +30,6 @@ int main() {
     std::cout << r.DajNajveci();
     r.UkloniNajveci();
   }
-
 
   return 0;
 }
