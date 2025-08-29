@@ -66,7 +66,8 @@ bool Vektor::operator!() const {
   return this->empty();
 }
 double& Vektor::operator()(int index) {
-  if(index < 1 || index > this->size()) throw std::out_of_range("Neispravan index");
+  if(index < 1 || index > this->size()) 
+    throw std::out_of_range("Neispravan index");
   return (*this)[index-1];
 }
 Vektor& Vektor::operator+=(const Vektor& v) {
