@@ -1,9 +1,13 @@
+cd(@__DIR__)
 import Pkg;
 # Pkg.add("ForwardDiff")
 # Pkg.add("Plots")
 using ForwardDiff
 using LinearAlgebra
+ENV["GKSwstype"] = "100"  # ensures GR saves plots to file instead of GUI
 using Plots
+gr()  # explicitly use GR backend
+
 
 # ============= TESTNE FUNKCIJE =============
 
@@ -173,11 +177,11 @@ end
 
 plotxmin = -10
 plotxmax = 10
-f = goldstein_price
+f = himmelblau_function 
 learning_rate = 0.001
-alpha = 0.9
+alpha = 0.8
 theta_init = [0.1, 2]
-max_iters=1000
+max_iters=100
 
 # ============= END PODESAVANJA PARAMETARA =============
 
@@ -342,6 +346,8 @@ p2 = scatter(
     size=(600, 600)
 )
 
-plot(p1, p2, layout=(1, 2), size=(1400, 600))
-
+# plot(p1, p2, layout=(1, 2), size=(1400, 600))
+combined = plot!(p1, p2, layout = (1, 2), size = (1400, 600))
+output_path = joinpath(pwd(), "scatter_comparison.png")
+savefig(combined, output_path)
 # ============= END PLOTANJE KONVERGENCIJA =============

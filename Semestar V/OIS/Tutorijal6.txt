@@ -1,0 +1,702 @@
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+
+
+
+
+
+
+
+
+
+
+
+
+OSNOVE INFORMACIONIH SISTEMA
+Tutorijal 6
+
+
+
+
+
+
+
+
+
+
+
+
+19.11.2024
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analiza zahtjeva
+
+
+
+
+> Zahtjevi su izjave koje odreduju šta sistem treba raditi zarad pružanja funkcionalnosti.
+
+> Analiza zahtjeva proces je definiranja ocekivanja korisnika za aplikaciju koja treba biti izgradena ili izmijenjena.
+
+> Analiza zahtjeva se provodi radi prepoznavanja potreba razlicitih stakeholdera.
+
+> Stoga, analiza zahtjeva znaci analizu, dokumentiranje, potvrdivanje i upravljanje softverskim ili sistemskim zahtjevima.
+
+
+
+1.
+Planiranje
+
+
+2.
+Analiza
+
+
+3.
+Dizajn
+
+
+4.
+Implementacija
+
+
+5.
+Održavanje
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analiza zahtjeva
+
+> Zahtjevi su izjave koje odreduju šta sistem treba raditi zarad pružanja funkcionalnosti.
+
+> Analiza zahtjeva proces je definiranja ocekivanja korisnika za aplikaciju koja treba biti izgradena ili izmijenjena.
+
+> Analiza zahtjeva se provodi radi prepoznavanja potreba razlicitih stakeholdera.
+
+> Stoga, analiza zahtjeva znaci analizu, dokumentiranje, potvrdivanje i upravljanje softverskim ili sistemskim zahtjevima.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analiza zahtjeva
+
+> Zahtjevi opisuju ono što korisnici žele da sistem radi.
+
+> Dakle, dobro definirani zahtjevi su presudni za uspjeh projekta.
+
+> Svi sudionici u projektu ( programeri, krajnji korisnici, menadžeri,..) - moraju postici zajednicko razumijevanje o tome kakav ce proizvod biti i šta ce isti raditi.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+4 koraka Analize zahtjeva
+
+1. Prikupljanje zahtjeva: komuniciranje sa korisnicima u
+cilju saznanja njihovih zahtjeva
+
+2. Analiziranje zahtjeva: utvrdivanje jesu li navedeni zahtjevi nejasni, nepotpuni, dvosmisleni, a zatim rješavanje ovih pitanja.
+
+3. Modeliranje zahtjeva: Zahtjevi se mogu dokumentirati u razlicitim oblicima, kao što su dokumenti, slucajevi upotrebe, korisnicke price ili specifikacije procesa.
+
+4. Pregled i retrospektiva: Clanovi tima analiziraju
+cjelokupan proces te predlažu eventualna unaprijedenja.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Metode prikupljanja zahtjeva
+
+> Tradicionalne metode prikupljanja
+zahtjeva:
+
+1. Intervjuiranje pojedinih korisnika
+2. Intervjuiranje grupa korisnika
+3. Promatranje rada (observiranje)
+4. Proucavanje poslovnih dokumenata
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Metode prikupljanja zahtjeva
+
+> Savremene metode prikupljanja zahtjeva:
+
+* Joint Application Design (Okuplja kljucne korisnike, menadžere i analiticare Sistema, Namjena: sakupiti zahtjeve o sistemu simultano od kljucnih ljudi, intenzivna grupno orjentirana tehnika odredivanja zahtjeva, Clanovi tima sastaju se u izolaciji na duže vrijeme )
+
+* CASE alati (Analiza postojecih sistema, domena je softverskih alata za izradu i implementaciju aplikacija. Razni alati ugradeni su u CASE i nazivaju se CASE alati - koriste za podršku razlicitim fazama i prekretnicama u životnom ciklusu razvoja softvera. Osnovna ideja CASE alata je da ugradeni programi mogu pomoci u analizi sistema u razvoju kako bi se poboljšala kvaliteta i pružili bolji ishodi. Primjeri: Accept 360, Accompa, CaseComplet)
+
+* Sistem prototipova (Iterativni razvojni process, Brzo pretvara zahtjeve u radnu verziju Sistema, Nakon što korisnik vidi zahtjeve pretvorene u sistem, on ce tražiti izmjene ili ce generisati dodatne zahtjeve )
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analysis paralysis
+
+> odnosi se na situaciju u kojoj se pojedinac ili skupina nisu u stanju pomjeriti naprijed s odlukom zbog prevelike kolicine podataka
+
+> opisuje stanje kada se zaglavi u procesu analize
+
+> samo ova podfaza sistemske analize rezultira velikom kolicinom informacija. Trošak njihovog prikupljanja i struktuiranja može biti velik i vremenski i finansijski. Previše analize nije produktivno.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Intervju
+
+> je tehnika prikupljanja zahtjeva putem razgovora.
+
+> Struktuirani / formalni intervju - pitanja se postavljaju po zadanom / standardiziranom redoslijedu ( nefleksibilan intervju bez odstupanja)
+
+> Nestruktuirani / slobodni intervju - usmjereni razgovor ;
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Intervju
+
+> Priprema za intervju ukljucuje spisak ispitanika, svrhu intervjua, mjesto i vrijeme, informacije o ispitaniku, poslu, priprema koncepta, odredivanje pitanja.
+> Korak pred intervju: ukljucuje pocetak realizacije intervjua: Tips&Tricks: Dodite ranije sa spremnim konceptom
+> Intervjuiranje: postavljanje pitanja, kreiranje zabilješki
+> Zakljucivanje intervjua: zahvala sugovorniku, finalna pitanja i
+komentari
+> Evaluacija: anliziranje prikupljenog i zapisanog, pregledati bilješke u roku od 48h
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Intervju
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Intervju
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Intervju
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Intervju - Tip pitanja
+
+> OTVORENA ispitaniku daje priliku da slobodno izrazi svoje mišljenje. Ova pitanja nemaju unaprijed odredeni skup odgovora i ispitanik je slobodan reci sve što misli. Ukljucivanjem pitanja otvorenog formata u svoj upitnik, možete dobiti istinite, pronicljive i cak neocekivane prijedloge.
+- Šta mislite o trenutnom nacinu procesiranja
+narudžbi?
+> ZATVORENA vrsta pitanja koja ispitanicima daju mogucnost da odaberu iz razlicitog skupa unaprijed definiranih odgovora
+- Da li mislite da ce ovaj proizvod biti koristan?
+> OPIPAVANJA su dodatna pitanja, koja se nadovezuju na prethodna otvorena ili zatvorena pitanja. Njihov cilj je da potvde odgovor ili da ga prošire sa dodatnim informacijama.
+- Možete li mi dati primjer?
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Intervju - Primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Intervju - Primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Intervju - Primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analiza dokumenata
+
+
+? Analiza dokumenata je tehnika koja se koristi za prikupljanje zahtjeva tokom faze iznošenja zahtjeva projekta.
+
+
+? Opisuje akt pregleda postojece dokumentacije kako bi se
+izvukli podaci koji su relevantni za tekuci projekat.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analiza dokumenata - primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analiza dokumenata - primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analiza dokumenata - primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analiza dokumenata - primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Upitnici
+
+
+? Upitnik je instrument za prikupljanje podataka, koji gotovo uvijek ukljucuje traženje od ispitanika da odgovori na set usmenih ili pismenih pitanja.
+
+
+? Upitnici omogucavaju da se isti set pitanja postavi vecoj grupi ljudi. Pažljivo osmišljen upitnik može biti vrlo brz i povoljan nacin da se od velikog broja ljudi dobiju konkretni odgovori na odredena pitanja.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Upitnici
+
+? Upitnici su efikasni kada sistemski analiticar traži malu kolicinu
+podataka od velike grupe ljudi.
+? Upitnik mora biti pažljivo formuliran kako bi znacenje svakog pitanja
+bilo jasno vecini ispitanika.
+? Upitnike je teško sastaviti. Isto pitanje može imati razlicita znacenja za razlicite ispitanike. Cesto, loše formulirana pitanja dovode ispitanika do ocekivanog odgovora, a ne do iskrenog odgovora.
+? Efikasan upitnik je kratak, jasan i dobro testiran.
+? Pitanja moraju biti pažljivo analizirana jer osobe koje popunjavaju upitnik nece imati priliku da postavljaju pitanja i tako razjasne nejasnoce.
+? Jedna od prednosti upitnika u sistemskoj analizi je to što omogucava velikoj grupi ljudi da osjete da ucestvuju u razvoju buducih sistema kompanije.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Funkcionalni zahtjevi
+
+> Opisuje funkcije koje softver mora da obavlja
+
+> Funkcionalni softverski zahtjevi pomažu da zabilježite predvideno ponašanje sistema.
+
+> Ovo ponašanje se može izraziti kao funkcije, usluge ili zadaci koje
+sistem obavlja da bi ispunio korisnicka ocekivanja.
+
+> Softver mora omoguciti spašavanje izvještaja.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Nefunkcionalni zahtjevi
+
+> definira atribute kvalitete softverskog sistema.
+
+> Predstavljaju skup standarda koji se koriste za prosudivanje konkretnog rada sistema.
+
+> Neophodni za osiguravanje upotrebljivosti i efikasnosti
+cjelokupnog softverskog sistema.
+> Politicki faktori i zakonske procedure
+> Ko ima autorizovan pristup i pod kojim okolnostima
+> Fizicko i tehnicko okruženje u kojem ce sistem raditi
+> Brzina kapacitet i pouzdanost Sistema
+
+> web lokacija bi se trebala ucitati za 3 sekunde kada je broj
+istodobnih korisnika> 10000
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Funkcionalni vs nefunkcionalni zahtjevi
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+Funkcionalni vs nefunkcionalni zahtjevi - primjer
+? Proces razvoja sistema i isporuceni dokumenti moraju slijediti standard XYZCo-SP-STAN-
+95.
+? NFZ
+? Korisniku mora biti omoguceno pretraživanje pocetnog skupa clanaka ili njihovog podskupa.
+? FZ
+? Svakoj narudžbi potrebno je alocirati jedinstveni identifikator (ORDER_ID) koji korisnik
+mora moci kopirati u svoj korisnicki prostor.
+? FZ
+? Bankomat treba provjeriti tacnost PIN-a kojeg je upisao korisnik.
+? FZ
+? Softver za bankomat treba biti napisan u jeziku C++.
+? NFZ
+? Bankomat treba ispitati valjanost bankomatske kartice u roku od 3 sekunde ili brže.
+? NFZ
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+USE CASE - Model slucaja upotrebe
+
+> Slucajevi upotrebe su detaljni opisi kako korisnici koriste sistem za
+postizanje cilja.
+
+
+> Oni opisuju sistem iz perspektive korisnika, tako da korisnik ima
+aktivnu ulogu u njihovom kreiranju.
+
+
+> Model slucaja upotrebe sastoji se od dva artefakta: dijagrama slucaja upotrebe, koji je graficki prikaz korisnika i slucaja upotrebe vezanih za iste, te opis slucaja upotrebe koji je detaljan tekst i isti korak po korak opisuje interakciju i dijalog izmedu aktera i sistema.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Elementi slucaja upotrebe
+
+> OSNOVNE INFORMACIJE: naziv, ID, prioritet, ucesnik (osoba, drugi sistem ili uredaj koji je u interakciji sa sistemom), opis, trigger (dogadaj koji uzrokuje slucaj upotrebe), ucestalost upotrebe
+> Preduvjeti: stanja koja trebaju biti uspostavljena prije nego što pocne
+slucaj upotrebe.
+> Postkondicioni uvjeti: Postkondicioniranje uspjeha oznacava šta se dešava kada se proces uspješno završi. Postkondicija neuspjeha je suprotna; ona odreduje šta se dogada kada postupak ne završi uspješno.
+> Tok:
+> Normalni tok - happy path : ruta koja opisuje korake po planu bez neocekivanih koraka do ispunjenja cilja
+> Alternativni tok : ruta koja opisuje alternativne korake do ispunjenja cilja
+> Tok izuzetaka : ruta koja opisuje korake koji vode do
+neostvarivanja cilja
+> Rezultati: definiraju finalni proizvod slucaja upotrebe.
+> Ulazi i izlazi: sumiraju osnovne ulaze i izlaze svakog koraka u slucaju
+upotrebe..
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Elementi slucaja upotrebe - primjer
+
+
+Proces : Davanje izjave o pružanju socijalne
+pomociID: US-1Prioritet: visok
+
+Ucestalost upotrebe: cestoUcesnik:Donator, radnik na prijemuOpis:Slucaj upotrebe opisuje proces davanja izjave o pružanju socijalne pomoci, direktno na licu mjesta predvidenom za istoTrigger:Donator popunjava i predaje izjavu o pružanju socijalne pomoci.Preduslovi:Donator mora biti stanovnik podrucja koje je predvideno da bude pod okriljem Socijalne službe i ispunjavati propisane uslove koje definira Služba.Normalan tok:Donator daje izjavu o pružanju socijalne pomoci,
+- Radnik na prijemu provjerava da li je donator evidentiran u bazi,
+-Radnik na prijemu evidentira izjavu u bazu,
+-Nakon uspješno izvršene akcije radnik na prijemu izdaje potvrdu
+donatoruAlternativni tokDonator nije evidentiran u bazi
+- Radnik na prijemu evidentira donatora.RezultatPotvrda za donatoraIzuzeciE1 Izjava je nepotpuna
+- Izjava biva vracena donatoru na dopunjavanje.
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Slucaj upotrebe
+
+
+> Situacija u kojoj se sistem koristi za ispunjavanje korisnickih
+zahtjeva i pokazuje djelic funkcionalnosti koju sistem pruža
+
+> Opisuje funkcionalne zahtjeve sistema gledano "spolja"
+
+> Prikažite vrijednost koju sistem pruža korisnicima
+
+> Nastaje u ranim fazama dizajna (najcešce kao prvi dijagram)
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagram slucaja upotrebe
+
+
+> Pokazuju samo ono što sistem treba da uradi (funkcionalni zahtevi)
+
+> Važno je otkriti i predstaviti funkcionalne zahtjeve na pocetku
+projekta (ušteda vremena i novca kasnije)
+
+> Prikazuje ponašanje sistema kako ga vidi korisnik
+
+> Aktivnosti na visokom nivou
+
+> Odgovara na nekoliko pitanja:
+> Šta se opisuje? (Sistem)
+> Ko je u interakciji sa sistemom? (ucesnici)
+> Šta ucesnici mogu da urade? (slucajevi upotrebe)
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Definiranje sistemskih zahtjeva (1)
+
+
+Prvi korak: odredite ko/šta je u interakciji sa sistemom! ? UCESNICI
+
+
+
+
+
+
+
+
+
+
+
+
+Ucesnik
+> Eksterni entitet povezan sa sistemom, ali nije dio sistema
+o Pokrece neke radnje
+o Stvarna osoba ili drugi sistem (npr. aplikacija)
+o Imaju imena koja ne bi trebala biti vezana za organizaciju kompanije
+o Napiši kao imenicu u jednini
+> Kako saznati ko je ucesnik citajuci sistemske zahtjeve?
+o Ne može se promijeniti, nije bitno kako funkcionira, ali mora biti u
+interakciji sa sistemom
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Definiranje sistemskih zahtjeva (2)
+
+> Drugi korak: pronadite slucajeve u kojima se sistem koristi za obavljanje odredenih zadataka ucesnika! ? SLUCAJEVI UPOTREBE
+
+
+
+
+
+> Slucajevi upotrebe se identifikuju analizom dokumenata sa zahtevima
+> Ovi dokumenti ukljucuju specifikacije napisane na prirodnom
+jeziku koje objašnjavaju šta korisnik želi od sistema
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Definiranje sistemskih zahtjeva (3)
+
+> Treci korak: opišite slucajeve upotrebe!
+
+> Dijagrami ne mogu pružiti dovoljno detalja dizajnerima sistema:
+> Ko je najvažniji ucesnik?
+> Koji su koraci tog slucaja upotrebe?
+
+> Najcešce se dodatno opisuju složeniji sistemi
+
+> Opisan je SVAKI slucaj upotrebe u modelu
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Scenario
+
+> Da bi se kroz analizu zahtjeva lakše identifikovali slucajevi upotrebe,
+potrebno je razviti scenario
+> SCENARIO - niz koraka koji opisuju interakciju izmedu ucesnika i Sistema
+
+> Primjer scenarija: Web shop
+
+Kupac pretražuje web katalog proizvoda i dodaje željene proizvode u košaricu. Prilikom kupovine kupac odabire lokaciju dostave i daje podatke o kreditnoj kartici i potvrduje kupovinu.
+Sistem zatim provjerava valjanost kreditne kartice, potvrduje kupovinu i šalje
+e-mail kojim potvrduje kupovinu.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Scenario
+
+
+> Prikazan je glavni (uspješan) scenario
+> Autorizacija kreditne kartice ? uspješno/neuspješno
+
+> ALTERNATIVNI SCENARIO
+> Kreditna kartica odbijena!
+> Kupovina proizvoda je obustavljena!
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Primjer scenarija: kupovina proizvoda
+
+1. Kupac pregledava katalog i bira proizvode
+2. Kupac potvrduje proizvode
+3. Kupac unosi podatke o isporuci (npr. sljedeci dan ili za 3 dana)
+4. Sistem prikazuje punu cijenu sa dostavom
+5. Klijent popunjava podatke o kreditnoj kartici
+6. Sistem odobrava kupovinu
+7. Sistem potvrduje prodaju
+8. Sistem šalje potvrdni e-mail kupcu
+
+EElelektkrottreohntieckhi nfaikculkteit fSaakraujelvtoet Sarajevo
+
+Univerzitet u Sarajevu
+
+Univerzitet u Sarajevu
+
+
+Dijagram slucaja upotrebe
+
+• 1. GRANICE SISTEMA
+
+
+
+
+
+• 2. UCESNIK
+
+
+
+
+
+• 3. SLUCAJ UPOTREBE
+
+
+
+
+1. Asocijativne
+2. Sadržajne (include)
+3. Proširene (extend)
+4. Generalizacije
+
+EElelektkrottreohntieckhi nfaikculkteit fSaakraujelvtoet Sarajevo
+
+Univerzitet u Sarajevu
+
+Univerzitet u Sarajevu
+
+
+Veze izmedu elementa modela
+
+
+
+Veze izmedu elementa modela predstavljaju relacije. Relacija opisuje odnose izmedu elemenata sistema. U dijagramu slucaja upotrebe, definirane su cetiri vrste veza:
+
+* Asocijacija (eng. Association) - predstavlja komunikacijsku putanju izmedu aktera i slucaja upotrebe u kojem sudjeluje. Medusobno povezivanje aktera ili medusobno povezivanje obrazaca upotrebe ovom vrstom veze nije dozvoljeno. U slucaju da se želi naglasiti koji akter inicira odredeni obrazac upotrebe (inicijator) to se može napraviti dodatkom strelice na vezu asocijacije.
+
+* Proširene (eng. Extend) - relacijom proširenja se oznacava dodavanje dodatnih funkcionalnosti osnovnom slucaju upotrebe. Prošireni slucaj upotrebe predstavljaju izvršavanje dodatnih funkcionalnosti osnovnog slucaja upotrebe ili funkcionalnosti koje se izvršavaju samo ako su zadovoljeni prethodno definirani uslovi. Osnovni slucaj upotrebe mora moci funkcionirati samostalno bez upotrebe proširenog slucaja.
+
+EElelektkrottreohntieckhi nfaikculkteit fSaakraujelvtoet Sarajevo
+
+Univerzitet u Sarajevu
+
+Univerzitet u Sarajevu
+
+
+Veze izmedu elementa modela
+
+
+
+* Poopcavanje (eng. Generalization) - relacija poopcavanja ili relacija nasljedivanja se koristi kada postoji podslucaj upotrebe (dijete) koji koristi svojstava, operacije i odnose od višeg slucaja uporabe (roditelj). Jedan slucaj upotrebe može imati više podslucaja. U podslucaju uporabe samo se definiraju svojstava, operacije i odnosi koji nisu naslijedeni od višeg slucaja uporabe. Poopcavanje se može primijeniti i izmedu aktera sistema. Nasljedivanje svojstva podrazumijeva i nasljedivanje prava pristupa istim slucajevima upotrebe kao i akter od kojeg su naslijedena svojstva.
+
+* Obuhvacanje / Sadržajne (eng. Include) - relacija obuhvacanja se primjenjuje kada osnovni slucaj upotrebe izricito ukljucuje funkcionalnosti drugog slucaja upotrebe. Obuhvaceni slucaj upotrebe ne postoji samostalno, vec ovisi o jednom ili više osnovnih slucaja upotrebe. Njime se izdvajaju zajednicke funkcionalnosti više slucaja upotrebe.
+
+EElelektkrottreohntieckhi nfaikculkteit fSaakraujelvtoet Sarajevo
+
+Univerzitet u Sarajevu
+
+Univerzitet u Sarajevu
+
+
+Veze izmedu elementa modela
+
+EElelektkrottreohntieckhi nfaikculkteit fSaakraujelvtoet Sarajevo
+
+Univerzitet u Sarajevu
+
+Univerzitet u Sarajevu
+
+
+Veze izmedu elementa modela
+
+
+Asocijacija
+Ucesnici se povezuju na slucajeve upotrebe
+
+
+
+
+
+
+
+
+
+
+
+
+Generalizacija
+Oznacava da je ucesnik ili slucaj upotrebe vrsta drugog ucesnika
+ili slucaja upotrebe
+
+EElelektkrottreohntieckhi nfaikculkteit fSaakraujelvtoet Sarajevo
+
+Univerzitet u Sarajevu
+
+Univerzitet u Sarajevu
+
+
+Veze izmedu elementa modela
+
+
+
+Ukljucivanje / include
+> Povezuje dva slucaja upotrebe
+> Jedan slucaj upotrebe u toku njegovog izvršenja u
+potpunosti izvršava drugi SK
+> Prvi slucaj upotrebe ukljucuje drugi
+
+EElelektkrottreohntieckhi nfaikculkteit fSaakraujelvtoet Sarajevo
+
+Univerzitet u Sarajevu
+
+Univerzitet u Sarajevu
+
+
+Veze izmedu elementa modela
+
+
+
+Proširenje / extend
+> Povezuje dva slucaja upotrebe gdje jedan proširuje
+funkcionalnost drugog (ako je ispunjen odredeni uslov)
+> Veza uvijek ide od proširenog do osnovnog SK
+
+EElelektkrottreohntieckhi nfaikculkteit fSaakraujelvtoet Sarajevo
+
+Univerzitet u Sarajevu
+
+Univerzitet u Sarajevu
+
+
+Veze izmedu elementa modela
+
+
+
+Granice sistema
+> Oni služe za jasno odvajanje ucesnika (koji nisu dio sistema) od
+samog sistema
+> Nacrtani su na nacin da su svi slucajevi upotrebe stavljeni u jedan kvadrat
+> Kvadratu se najcešce daje ime samog sistema
+
+EElelektkrottreohntieckhi nfaikculkteit fSaakraujelvtoet Sarajevo
+
+Primjer
+
+Univerzitet u Sarajevu
+
+Univerzitet u Sarajevu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+System
+boundaries
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Zadatak
+
+? Korisnik dolaskom u banku ima opciju kreiranja(otvaranja) racuna, povlacenja sredstava sa racuna,deponovanja (ulaganja) novcanih sredstva.
+? Racun otvara uposlenik banke.
+? Ukoliko je korisnik stariji od 55 godina ili deponuje sredstva iznad
+10000 KM obracunava mu se bonus.
+? Pri povlacenju i deponovanju sredstava korisniku se vrši
+ažuriranje sredstava na racunu.
+? Takoder, korisnik može biti domaci ili strani državljanin.
+? Korisnik strani državljanin ima sve mogucnosti kao i domaci korisnik, ali dodatno ima mogucnost zamjene strane valute u domacu valutu.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Zadatak
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Projektni zadatak 2
+
+
+? Zadatak:
+? Intervju - najmanje sa 3 osobe - ne više od 5 osoba
+? Upitnik
+? Analiza dokumenata
+? Definicija zahtjeva (funkcionalni + nefunkcionalni)
+? Slucajevi upotrebe (tabele) + Dijagrami slucajeva
+upotrebe
+? VOÐA GRUPE:
+? ZADATAK + IZVJEŠTAJ POSLATI DO : 08.12.2024. 23:59 na
+email: amer.koric@etf.unsa.ba

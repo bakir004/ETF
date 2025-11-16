@@ -1,0 +1,663 @@
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+
+
+
+
+
+
+
+
+
+
+
+
+OSNOVE INFORMACIONIH SISTEMA
+Tutorijal 3
+
+
+
+
+
+
+
+
+
+
+
+
+29.10.2024.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+SDLC faza - Planiranje (1/2)
+Dokument "Planiranja" za projekt koji koristi SDLC (Software Development Life Cycle) metodologiju Waterfall trebao bi sadržavati niz kljucnih informacija i planova koji ce voditi projekt od pocetka do kraja. Ovdje su neke od kljucnih elemenata koje bi trebao sadržavati:
+
+Uvod i sažetak
+Uvodni dio koji opisuje svrhu dokumenta i sažetak projekta. Ovdje se obicno spominje
+ime projekta, tim koji ce raditi na projektu i datum izrade dokumenta.
+
+Opis projekta
+Detaljan opis projekta koji ukljucuje njegovu svrhu, ciljeve i obim. Ovo je mjesto gdje
+cete definirati što želite postici ovim projektom.
+
+Faze i aktivnosti
+Opis svake faze u SDLC metodologiji Waterfall, pocevši s analizom i planiranjem. Za
+svaku fazu navedite aktivnosti koje ce se provoditi, rokove i odgovorne osobe.
+
+Raspored projekta (Project Schedule)
+Raspored koji prikazuje vremenski okvir za svaku fazu i aktivnost projekta. To ukljucuje datum pocetka i završetka, trajanje faza i rokove za kljucne isporuke.
+
+Resursi
+Popis resursa potrebnih za projekt, ukljucujuci osoblje, opremu, alate i tehnologije.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+SDLC faza - Planiranje (2/2)
+Budžet
+Financijski plan koji ukljucuje procijenjeni proracun za projekt, ukljucujuci troškove
+osoblja, opreme, licenci i ostale resurse.
+
+Plan upravljanja rizicima
+Identificirajte potencijalne rizike i navedite strategije za njihovo upravljanje. Ovo ukljucuje identifikaciju rizika, analizu rizika i planove za smanjenje rizika.
+
+Kvaliteta i testiranje
+Planiranje za osiguranje kvalitete u svim fazama projekta, ukljucujuci strategije
+testiranja i kriterije prihvatljivosti.
+
+Odgovornosti i ovlasti
+Popis kljucnih clanova tima i njihovih odgovornosti, kao i ovlasti za donošenje odluka.
+
+Kontrola promjena
+Proces i pravila za upravljanje promjenama u zahtjevima ili planu projekta tijekom razvoja.
+
+Komunikacijski plan
+Strategija za komunikaciju unutar tima i s dionicima projekta, ukljucujuci redovite
+sastanke, izvješca i nacine komunikacije.
+
+Zakljucak i odobrenje
+Zakljucak dokumenta u kojem se obicno traži odobrenje od strane relevantnih strana
+(npr. rukovoditelja projekta, klijenta, ili odjela za upravljanje projektima).
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Aktivnost i projekat
+• Aktivnost koja je:
+- privremena
+- posjeduje jasno definiran datum pocetka i završetka
+- jedinstvena
+- donosi promjene
+- ogranicena vremenom, troškovima i resursima
+- se preduzima da bi se isporucio proizvod u
+skladu sa postavljenim zahtjevima
+- služi za rješavanje problema ili korištenja prednosti prilike
+• Projekt je jedinstven - to nije rutinska operacija, vec odredeni skup operacija
+osmišljenih za postizanje jedinstvenog cilja
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Cesto korišteni projektni termini
+
+
+• Stakeholder je svako ko ima interes za neki projekat, posao ili organizaciju. U pogledu upravljanja projektima, stakeholder je pojedinac ili grupa na koju ce utjecati ishod projekta. Zainteresirane strane mogu biti unutar organizacije ili izvan nje;
+• Milestones - Kontrolna tacka : tacka koja predstavlja mjesto provjere; datumi
+do kojih su glavne aktivnosti izvršene.
+• Tasks : Zadaci - Akcije: radnje poduzete projektom
+• Risks: Rizici: Potencijalni problemi koji mogu nastati
+• Issues- Problemi: Rizici koji su se dogodili
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Pojašnjenja termina kroz primjere
+Pojašnjenja termina kroz primjere:
+• Milestones (Kontrolna tacka): Milestone je kljucna tacka u projektu koja oznacava
+završetak važne faze ili postizanje cilja.
+Na primer, kod razvoja informacionog sistema za upravljanje pacijentima, milestone bi mogao biti "Završetak faze analize zahteva", s datumom do kojeg svi zahtevi korisnika treba da budu dokumentovani i analizirani.
+
+• Tasks (Zadaci): Zadaci su konkretne aktivnosti koje se preduzimaju u okviru
+projekta.
+Kod implementacije informacionog sistema, zadaci bi ukljucivali "Izrada baze podataka za pacijente", "Razvoj korisnickog interfejsa" ili "Obuka medicinskog osoblja za korišcenje sistema".
+
+• Risks (Rizici): Rizici predstavljaju potencijalne probleme koji bi mogli ometati
+projekt.
+U slucaju informacionog sistema, rizik bi mogao biti "Kašnjenje u nabavci potrebnog hardvera", ili "Mogucnost neuskladenosti sa zakonskim propisima o zaštiti podataka".
+
+• Issues (Problemi): Issues su rizici koji su se vec ostvarili.
+Na primer, ako je došlo do kašnjenja u isporuci servera za informacioni sistem, to postaje problem koji treba rešiti kako bi se nastavilo s projektom.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Primjer tretiranja rizika
+
+Rizik: "Kašnjenje u nabavci potrebnog hardvera"
+• Identifikacija: Tim identifikuje rizik na pocetku projekta.
+• Procjena: Procjenjuje se vjerovatnoca i uticaj ovog rizika na projekt. Na primjer, tim procjenjuje da postoji 30% šanse za kašnjenje u nabavci i da bi to moglo znacajno odložiti implementaciju sistema.
+• Strategija za upravljanje rizikom:
+- Mitigacija: Kao mjera za ublažavanje, tim može kontaktirati više dobavljaca i unaprijed potvrditi rokove isporuke.
+- Planiranje rezervnih mjera: Kao alternativa, projektni tim može predvidjeti privremeno rješenje, poput korištenja postojeceg hardvera ili iznajmljivanja potrebne opreme dok ne stigne naruceni hardver.
+• Pracenje: Redovno provjeravati status nabavke hardvera i imati plan
+hitnih mjera ako se rizik ostvari.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Primjer tretiranja problema
+
+Problem: "Kašnjenje u isporuci servera za informacioni sistem"
+• Identifikacija: Tim utvrduje da je došlo do kašnjenja u isporuci servera,
+što je problem koji je vec prisutan.
+• Analiza: Tim analizira uticaj kašnjenja na projektne aktivnosti - u ovom slucaju, nemogucnost instalacije sistema i potencijalno kašnjenje u testiranju.
+• Akcije za rešavanje problema:
+- Privremeno rješenje: Tim može odluciti da koristi neki drugi server ili privremeni virtualni server, kako bi se nastavilo s testiranjem i razvojem.
+- Pregovaranje s dobavljacem: Kontaktirati dobavljaca kako bi se ubrzala isporuka ili obezbijedio slican server kao privremeno rješenje.
+• Pracenje i revizija: Redovno pratiti situaciju s dobavljacem i ažurirati
+plan projekta kako bi se minimizirali dodatni uticaji na vremenski okvir.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Upravljanje projektom
+
+
+• Upravljanje projektom je primjena procesa, metoda, vještina, znanja,tehnika i
+iskustva za postizanje odredenih ciljeva projekta prema kriterijima prihvacanja projekta u okviru zadanog vremena i budžeta.
+• Kljucni faktor koji razlikuje upravljanje projektima od samog procesa "menadžmenta" je taj što ima konacni rezultat i ogranicen vremenski period, za razliku od menadžmenta koji je tekuci proces.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Upravljanje projektom - zašto?
+
+• Upravljanje projektom ima za cilj predvidjeti i prepoznati moguce probleme i rizike te u odnosu na njih planirati, organizirati, koordinirati i kontrolirati aktivnosti kako bi projekat uspješno bio
+završen.
+
+- Unaprijedenje unutarnje i vanjske
+komunikacije
+- Jednostavno suradivanje
+- Optimizirano upravljanje
+vremenom
+- Jasnije razumijevanje ciljeva
+- Pracenje projektnih zadataka i
+procesa
+- Ucinkovito upravljanje
+proracunom projekta
+- Unaprijedenje donošenja odluka
+- Smanjenje neizvjesnosti
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Projekt menadžer i projektni tim
+
+Projekt menader:
+• Osoba odgovorna za vodenje projekta od njegovog pocetka do izvršenja te je dužan osigurati uspjeh projekta minimiziranjem rizika kroz životni ciklus razvoja sistema.
+• Osoba sa raznolikim setom vještina: menadžment, liderstvo, tehnicka potkovanost, rješavanje sukoba, upravljanje i odnos sa kupcima, upravljanje vremenom, planiranje, komunikativnost, upravljanje rizikom, pregovaranje
+• Projekt menadžer pravi plan projekta.
+
+Projektni tim:
+• Tim je grupa pojedinaca koji rade zajedno na postizanju odredenog
+cilja.
+• Dobra saradnja projektnog tima kljucna je za uspjeh projekta.
+• Posebno je efikasno i ucinkovito komuniciranje važno kako bi se osiguralo da svi imaju potrebne informacije kako bi dovršili svoje zadatke i pravilno izvršili svoje uloge.
+• U idealnom slucaju, mišljenja, rješenja i sukobi takoder se razmatraju, raspravljaju i rješavaju u sklopu projektnog tima.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Plan projekta
+
+> Prvi korak u kreiranju plana projekta jeste identifikacija taskova.
+> Identifikacija taskova slijedi top-downpristup.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Work Breakdown Structure - WBS
+* Work breakdown structure(WBS) je hijerarhijska dekompozicija posla koji treba izvesti projektni
+tim radi ostvarenja projektnih ciljeva i stvaranja potrebnih rezultata.
+
+* To je nacin za podjelu i osvajanje velikih projekata, radi bržeg i efikasnijeg rada.
+
+* WBS dijeli projekt u manje elemente, koji su upravljivi i mjerljivi.
+
+* Svaki element opisan je detaljima poput: naziv, datum pocetka i završetka, predvideno i stvarno
+trajanje, status, ovisnosti, potrebni resursi, ...
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Work Breakdown Structure - WBS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+www.workamajig.com/blog/guide-to-work-breakdown-
+structures-wbs
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Gantt Chart - Gantogram
+* Gantogram je tip horizontalnog stupcanog grafika za graficki prikaz
+rasporeda projekta.
+* Gantogram nudi graficki prikaz rasporeda koji pomaže u planiranju,
+koordinaciji i pracenju odredenih zadataka u projektu
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Gantt Chart - Gantogram - primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Upravljanje osobljem
+
+Prilikom rasporedivanja clanova na taskove, treba imati na umu da li oni
+posjeduju odgovarajuce tehnicke i komunikacijske sposobnosti.
+Matrica sposobnosti: je alat koji se koristi za dokumentiranje i usporedivanje potrebnih kompetencija za radno mjesto s trenutnom razinom vještina zaposlenih.
+
+
+
+INTERES
+• 0 - nema interesa
+• 1 - ima interesa
+
+ZNANJE
+• 0 - nema znanja
+• 1 - osnovni nivo znanja
+• 2 - srednji nivo znanja
+• 3 - visok nivo znanja
+
+ISKUSTVO
+• 0 - nema iskustva
+• 1 - mora raditi uz nadzor
+• 2 - može raditi samostalno, uz
+povremenu kontrolu
+• 3 - može obucavati ostale
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Mrežno planiranje
+Mrežni dijagram (plan) je graf, kojim je prikazan redoslijed aktivnosti jednog
+projekta i njihove medusobne zavisnosti, cime se postiže uvid u nacin,
+redoslijed i vrijeme izvršenja aktivnosti.
+
+Veze se prikazuju linijama orijentisanim strelicama. Podrazumijeva se da je veza orijentisana od lijeva na desno, te da je lijeva aktivnost prethodna, a desna naredna.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Mrežni dijagram
+
+• Osnovni termini:
+* DOGAÐAJ: stanje koje indicira kada aktivnost pocinje ili završava. U mrežnim dijagramima su predstavljeni sa krugovima. Uobicajeno je da se oznacavaju brojevima i - pocetni dogadaj aktivnosti, j - krajnji dogadaj aktivnosti.
+* AKTIVNOST: predstavlja izvršenje nekog taska. U mrežnim dijagramima se
+predstavljaju strelicama izmedu dva kruga - dogadaja. Usmjerenje strelice pokazuje tok aktivnosti. Obicno se oznacavaju sa i-j, gdje su i i j pocetni i krajnji dogadaj aktivnosti.
+* TRAJANJE: vrijeme potrebno da se izvrši neka aktivnost. Izražava se u
+vremenskim jedinicama (sati, dani, sedmice, godine, itd).
+* VREMENSKA REZERVA: pokazuje koliko se može produžiti ili odgoditi izvršavanje neke aktivnosti. Aktivnost ima vremenski rezervu vecu od nule ako joj je vrijeme trajanja manje od raspoloživog vremena.
+
+
+• KRITICNI PUT: skup aktivnosti cije se izvršavanje ne može produžiti niti odgoditi,
+a da se to ne odrazi na trajanje projekta.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Mrežni dijagram
+
+
+
+aktivnostprethodniktrajanjeA-1BA5CA2DB2EB2FC2GC3HD, F2IH3JE, I3KG, J2
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Mrežni dijagram
+
+
+
+Na osnovu trajanja aktivnosti i veza medu njima racunaju se vremenski
+podaci za svaku aktivnost.
+
+Metoda zahtjeva dva prolaza kroz aktivnosti - proracun naprijed i
+proracun nazad.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Mrežni dijagram - Proracun naprijed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Proracunom naprijed se odredi najranije vrijeme u kojem se
+može dogoditi svaki dogadaj u rasporedu.
+Najraniji pocetak aktivnosti:
+
+EFi = max [ EF(PA) + ti ]
+gde je PA, oznaka za prethodnu aktivnost.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+Mrežni dijagram - Proracun naprijed (postavka zadatka)
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+Mrežni dijagram - Proracun naprijed (rezultat zadatka)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EF(20) = max { EF(5)+t5= 1+5=6 EF(10)+t10=3+2=5 EF(15)+t15=8+2=10
+}
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Mrežni dijagram - Proracun nazad
+
+
+
+
+LFi = min [LF(NA) - ti(NA)]
+proracun "nazad", na osnovu koga se odreduje vrijednost
+najkasnijeg pocetka (LF) svake aktivnosti
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Critical Path Method (CPM)
+
+
+
+One aktivnosti cija su vremena najranijeg i najkasnijeg pocetka, odnosno završetka, jednaka imaju vremensku rezervu jednaku 0. To su tzv. kriticne aktivnosti, koje tvore kriticni put.
+
+Critical Path odreduje trajanje projekta.
+Ukoliko bilo koja aktivnost koja je na kriticnom putu bude odložena
+cijeli projekat ce kasniti!
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Critical Path Method (CPM)
+
+
+
+
+
+
+Prvi moguci put :
+Start (S) - A - D - End
+(E) traje 16 sedmica
+
+Drugi moguci put:
+S - A - E - G - E
+traje 16 sedmica
+
+Treci moguci put :
+S - B - C - E - G - E
+traje 22 sedmice
+
+Cetvrti moguci put: S - B - F - G -E
+traje 20 sedmica
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Boss vs Team Leader vs Team
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Slika sve govori???
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+DISC - (D)ominance, (I)nfluence, (S)teadiness and (C)onscientiousness
+
+• DiSC profili se ticu samospoznaje i komunikacije. Osmišljeni su kako bi pomogli poboljšati komunikaciju i suradnju na radnom mjestu, poboljšati performanse timova i poboljšati ucinkovitost voda i menadžera.
+
+• DiSC profili pružaju zajednicki jezik koji ljudi mogu koristiti za bolje razumijevanje sebe i svojih kolega, a zatim to znanje koristiti za prilagodavanje svog
+ponašanja i poboljšanje odnosa.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+DISC - (D)ominance, (I)nfluence, (S)teadiness and (C)onscientiousness
+
+• DiSC je akronim koji oznacava cetiri glavna profila licnosti opisana u
+DiSC modelu:
+(D -dominance) dominacija, (I - influence) utjecaj, (S - steadiness)
+stabilnost i (C - conscientiousness) savjesnost.
+
+• D : tendencija ka samopouzdanju i stavljanje naglaska na postizanje krajnjih rezultata i "gledanje velike slike". Samopouzdani su, iskreni i zahtjevni.
+
+• I: tendencija ka pristupacnosti i stavljanje naglaska na odnose, utjecaj ili uvjeravanje drugih. Oni su obicno entuzijasticni, optimisticni, povjerljivi i energicni.
+
+• S: tendenciju ka pouzdanosti i naglasak na suradnji i iskrenosti. Skloni
+su smirenoj naravi i ne vole da ih se požuruje.
+
+• C: naglasak na kvaliteti, tacnosti, strucnosti i kompetenciji. Uživaju u
+svojoj neovisnosti, zahtijevaju detalje i cesto se boje da ne pogriješe.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+DISC profil se sastoji od cetiri glavna stila ponašanja 1/2
+
+1. D - Dominance (Dominacija)
+• Osobine: Fokusirani su na rezultate, efikasni su u donošenju odluka i cesto vole kontrolu. Ljudi s visokim D profilom su samouvjereni, direktni i cesto veoma motivirani postizanjem ciljeva.
+• Snage: Odlucnost, samopouzdanje, sposobnost brzog donošenja odluka.
+• Slabosti: Mogu biti nestrpljivi, skloni konfliktima i mogu ignorisati mišljenja drugih ako smatraju da ometaju rezultate.
+• Primjeri: Vode, menadžeri, direktori, ljudi koji preuzimaju inicijativu i brzo
+reaguju.
+
+2. I - Influence (Uticaj)
+• Osobine: Ljudi s visokim I profilom su otvoreni, komunikativni, optimisticni i entuzijasticni. Uživace u socijalnim interakcijama i cesto imaju pozitivnu energiju koja inspiriše druge.
+• Snage: Motivišu druge, imaju dobre komunikacijske vještine, teže za
+timskim radom.
+• Slabosti: Mogu biti neorganizovani, skloni da izbjegavaju konflikt i previše
+fokusirani na zabavu.
+• Primjeri: Prodavaci, motivatori, PR strucnjaci, ljudi koji su cesto u centru
+pažnje i inspirišu druge.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+DISC profil se sastoji od cetiri glavna stila ponašanja 2/2
+
+3. S - Steadiness (Stabilnost)
+• Osobine: Fokusirani su na podršku drugih, veoma su strpljivi, pouzdani i posveceni. Ljudi s visokim S profilom cijene harmoniju i stabilnost u odnosima i okruženju.
+• Snage: Pouzdanost, sposobnost za timski rad, strpljenje i empatija.
+• Slabosti: Mogu izbjegavati promjene, teško im je donijeti brze odluke i
+nerado izlaze iz svoje zone komfora.
+• Primjeri: Savjetnici, timski igraci, ucitelji, asistenti, ljudi koji su orijentisani na
+podršku i preferiraju stabilno okruženje.
+
+4. C - Conscientiousness (Savjesnost)
+• Osobine: Detaljni su, analiticni i precizni. Ljudi s visokim C profilom vole
+analizirati informacije prije donošenja odluke i cijene kvalitet.
+• Snage: Pažnja prema detaljima, organiziranost, sklonost ka analiziranju podataka.
+• Slabosti: Mogu biti previše kriticni, skloni perfekcionizmu i neodlucni kada
+nemaju sve potrebne informacije.
+• Primjeri: Analiticari, naucnici, racunovode, inženjeri, ljudi koji su usmjereni
+na kvalitet i detalje.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+DISC - (D)ominance, (I)nfluence, (S)teadiness and (C)onscientiousness
+
+
+
+• Dominantnost
+• Utjecajnost
+• Stabilnost
+• Savjesnost
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Projekat izgradnje Sidnejske Opere
+
+• Kratka sinteza: Sidnejska opera predstavlja remek-djelo arhitekture 20. vijeka. Njegov znacaj je zasnovan na njegovom dizajnu i konstrukciji bez premca; svojim izuzetnim inženjerskim dostignucima i tehnološkim inovacijama i položajem svjetski poznate ikone arhitekture.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Dali je projekat bio USPJEŠAN?
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Projekat izgradnje Sidnejske Opere
+
+
+
+
+
+
+Ne možete reci iz gledanja, ali legendarna opera u Sidneju u Australiji je zapravo studija u projektu koji je propao. Njegov prvobitni plan imao je cetvorogodišnji raspored i budžet od 7 miliona AU, ali je na kraju bilo potrebno 102 miliona AU i 14 godina da se završi.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+"Iron Triangle"
+
+? Tri ogranicenja u Iron Triangle-u služe i kao mjerilo uspjeha ili neuspjeha projekta.
+? Da bi projekt bio uspješan, navedena tri faktora moraju biti uravnotežena.
+
+
+
+
+
+ OPSEG	
+
+
+
+
+
+
+
+
+
+
+KVALITET
+
+
+
+ VRIJEME		 TROŠKOVI	
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Upravljanje kvalitetom
+
+
+• Cetvrto ogranicenje (jednako važno, ali cesto zaboravljeno) je kvaliteta.
+
+• Upravljanje kvalitetom projekta obuhvata procese i aktivnosti koje se
+koriste da bi se utvrdila i postigla kvaliteta rezultata projekta.
+
+• O definiciji same ‚kvalitete' se može diskutovati.
+
+• Kvaliteta je jednostavno ono što kupcu ili stakeholderima treba od rezultata projekta
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Koncepti upravljanja kvalitetom
+
+• Tri su kljucna koncepta upravljanja kvalitetom:
+- Zadovoljstvo kupaca
+• Nekada i kada su svi zahtjevi i ciljevi ispunjeni, a sam proces nije bio
+zadovoljavajuci kupac ce projekat obilježiti kao nesupješan.
+- Prevencija prije inspekcije
+• Trošak kvalitete (Cost of Quality - COQ) je novac koji se troši za bavljenje problemima tokom projekta, a potom i nakon projekta, kako bi se riješili eventualni propusti.
+• Odnosi se na kumulativne troškove potrebne da bi se usluga ili proizvodi prilagodili standardima.
+• Dva su tipa troškova: troškovi prevencije i procjene te troškovi neuskladenosti/neuspjeha
+• Trošak procjene odnosi se na trošak potreban za mjerenje i procjenu proizvoda
+ili usluge u razlicitim intervalima tokom proizvodnje i nakon završetka.
+• 	Druga kategorija su troškovi neuskladenosti, koji se takoder nazivaju i troškovi neuspjeha. To su troškovi popravka ili preinake proizvoda ili usluge loše kvalitete. Unutarnji troškovi kvara su troškovi nastali prije isporuke proizvoda ili pružanja usluge, poput troškova prerade proizvoda, komponenata. Vanjski troškovi kvara odnose se na troškove nakon isporuke proizvoda i tokom ili nakon pružanja usluge.
+• https://www.project-management-skills.com/project-quality-management.html
+- Kontinuirano poboljšanje
+• neprekidni napori poboljšanja proizvoda, usluga ili procesa tokom vremena
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+PDCA / Deming cycle
+
+PDCA (plan-do-check-act ili plan-do-check - adjust) je iterativna metoda upravljanja u cetiri koraka koja se koristi u poslovanju za kontrolu i kontinuirano poboljšavanje procesa i proizvoda.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+PDCA / Deming cycle
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Pitanja i odgovori
+
+
+
+Pitanja i odgovori ???
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Zadaca br. 1
+• Podijeliti svaku grupu na A i B (npr. Grupa 1 ce biti podijeljena na
+Grupa1_A sastavljena od 5 clana i Grupa1_B sastavljena od 4-5 clanova))
+• Prva podgrupa ce prezentovati jednu a druga podgrupa drugu zadacu dok
+su svi student duzni ucestvovati u kreiranju obje prezentacije.
+• Napraviti prezentaciju dodijeljene teme (Potrebno je napraviti jedan dokumment - prezentaciju (ppt file) koja ce sadržavati objedinjene slajdove - ukupno 16 slajdova)
+• Napraviti kratak opis prezentacijije (word dokument - cca 3-4 stranice
+ukupno za svaku prezentaciju)
+• Svaka podgupa treba prezentovati (max 16 minuta)
+• 4 minute su rezervisane za pitanja i odgovore
+• Izvještaj ( Voda tima)
+• Termini prezentacija ce biti definisani sa predmetnim asistentom
+• Uradenu prezentaciju (sve grupa) trebaju poslati do 08.11.2024. ( 23:59 )
+na email:	amer.koric@etf.unsa.ba

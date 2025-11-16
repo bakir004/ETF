@@ -1,0 +1,255 @@
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+
+
+
+
+
+
+
+
+
+
+
+
+OSNOVE INFORMACIONIH SISTEMA
+Tutorijal 4
+
+
+
+
+
+
+
+
+
+
+
+
+05.11.2024
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - kljucni aspekti
+
+Motivacija igra kljucnu ulogu u procesu analize i projektovanja informacionih sistema. Motivisani timovi i pojedinci obicno ostvaruju bolje rezultate, angažuju se više i donose kvalitetnije odluke.
+
+Evo nekoliko kljucnih aspekata motivacije u kontekstu analize i projektovanja informacionih sistema:
+
+1. Postizanje Ciljeva: Motivacija pomaže u postizanju ciljeva i ispunjenju zahteva projekta. Kada su clanovi tima motivisani, verovatnije je da ce raditi sa vecom predanošcu kako bi postigli zadate ciljeve i dostavili kvalitetan softver.
+
+2. Kreativnost i Inovacija: Motivisani pojedinci su skloniji kreativnosti i pronalaze inovativne rešenja za probleme u analizi i projektovanju informacionih sistema. Motivacija podstice razmišljanje "izvan kutije" i donošenje novih ideja.
+
+3. Angažovanje i Produktivnost: Visok nivo motivacije doprinosi vecem angažovanju i produktivnosti. Timovi koji su motivisani obicno rade sa manje odlaganja i efikasnije koriste svoje resurse.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - kljucni aspekti
+
+4. Rešavanje Izazova: U procesu analize i projektovanja informacionih sistema mogu se pojaviti razni izazovi. Motivacija pomaže timovima da se suoce sa izazovima, traže rešenja i prevazidu prepreke.
+
+5. Kvalitetna Komunikacija: Motivisani pojedinci obicno su bolji u komunikaciji i saradnji sa kolegama. Otvorena komunikacija je kljucna za uspeh u analizi i projektovanju informacionih sistema.
+
+6. Zadovoljstvo i Zadržavanje Zaposlenih: Motivacija doprinosi povecanju zadovoljstva zaposlenih, što može smanjiti fluktuaciju i pomoci organizacijama da zadrže kvalitetne clanove tima.
+
+7. Licni Razvoj: Motivacija za rad na analizi i projektovanju informacionih sistema može biti motivisana željom za licnim razvojem i sticanjem novih veština. Ovo može biti izuzetno inspirativno za pojedince.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - razliciti metodi
+
+Motivacija - "Mrkva i štap"
+Motivacija - McGregorova Teorija X i Teorija Y Motivacija - Teorija hijerarhije potreba Motivacija - Herzbergova teorija motivacije Motivacija - Motivacijska teorija ocekivanja Motivacija - Teorija pravednosti
+Motivacija - Teorija pojacavanja Motivacija - McClellandova teorija potreba Posebne motivacijske tehnike
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - "Mrkva i štap"
+
+• Ova se metafora odnosi na upotrebu nagrada i kazni u cilju poticanja željenog ponašanja.
+• 	Metafora dolazi od stare price koja govori o tome da ako želimo natjerati magarca da se pokrene moramo ispred njega staviti mrkvu ili ga odozada potjerati štapom.
+• Unatoc svim istraživanjima i teorijama motivacije koje su se pojavile posljednjih godina, nagrada i kazna se još uvijek smatraju snažnim motivatorom. Stoljecima su nagrada i kazna cesto smatrane jedinom silom koja može motivirati ljude.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - McGregorova Teorija X i Teorija Y
+
+> Šezdesetih godina prošlog stoljeca psiholog Douglas McGregor razvio je dvije kontrastne teorije koje su objašnjavale kako uvjerenja menadžera o tome što motivira njihove ljude mogu utjecati na njihov stil upravljanja. Oznacio ih je kao teoriju X i teoriju Y.
+
+> 	Upravljanje, smatrao je McGregor, treba poceti s osnovnim pitanjem o tome kako menadžeri vide sebe u odnosu na druge osobe. Teorija X i Teorija Y jesu dva skupa pretpostavki o ljudskoj prirodi, McGregor je izabrao ove termine jer je želio neutralnu terminologiju bez konotacija s "dobri" ili "loši".
+
+> Teorija X je pesimisticka, staticna i rigidna. Kontrola je primarno eksterna, tj. nametnuta od nadredenih. Nasuprot tome, Teorija Y je optimisticna, dinamicna i fleksibilna, s naglaskom na samousmjeravanje i integraciju individualnih potreba s organizacijskim zahtjevima.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - McGregorova Teorija X i Teorija Y
+
+> Ako vjerujete da se clanovi vašeg tima ne vole svoj posao i imaju malo motivacije, tada cete, prema McGregoru, vjerojatno koristiti autoritarni stil upravljanja. (X)
+
+> S druge strane, ako vjerujete da se vaši ljudi ponose svojim radom i smatraju ga izazovom, tada cete vjerojatnije usvojiti participativni stil upravljanja. (Y)
+
+> Pristup koji zauzmete imat ce znacajan utjecaj na vašu sposobnost
+da motivirate clanove svog tima.
+
+> Teorija X: Tradicionalno gledište radne snage drži da su radnici u biti lijeni, samoživi i nemaju ambicije. Stoga je prikladan stil upravljanja jaka kontrola odozgo prema dolje.
+
+> Teorija Y: Ovo gledište pretpostavlja da su radnici inherentno
+motivirani i željni prihvacanja odgovornosti. Prikladan stil upravljanja je usredotociti se na stvaranje produktivnog radnog okruženja, zajedno s pozitivnim nagradama i pojacanjem.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - Teorija hijerarhije potreba
+> Hijerarhija potreba prema Abrahamu Maslowu temelji se na teoriji da se one mogu zadovoljavati samo postupno, i to cesto odredenim redoslijedom.
+
+> Izjavio je da potrebe niže u hijerarhiji moraju biti zadovoljene prije nego što pojedinci mogu udovoljiti potrebama više hijerarhije.
+
+> Kada gradimo elitne timove, usredotocujemo se na to da se svi ti elementi pojedinacno zadovoljavaju i da ljudi postanu najbolji što mogu.
+
+> Moramo stvoriti mjesto na kojem ce svi nastojati biti najbolji što mogu. Njihove su fiziološke potrebe zadovoljene, osjecaju se sigurno, voljeno, pripadaju necemu posebnom, ponosni su, samopouzdani i visoko su cijenjeni. Mjesto gdje tim ima
+svrhu, ciljevi su jasni i vrijednosti uskladene. Mjesto gdje se duh, vještine, procesi i zdravlje kombiniraju kako bi se osiguralo da se magija dogodi.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - Herzbergova teorija motivacije
+
+
+> Herzbergov model teorije motivacije ili teorija dva faktora tvrdi da postoje dva faktora koja organizacija može prilagoditi kako bi utjecala na motivaciju na radnom mjestu.
+
+> Ti faktori su:
+> Motivatori: koji zaposlenike mogu potaknuti na veci
+rad.
+> Higijenski faktori: To nece potaknuti zaposlenike na veci rad, ali ce uzrokovati da postanu nemotivirani ako nisu prisutni.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - Herzbergova teorija motivacije
+
+Motivacijski faktori ukljucuju:
+
+> Postignuce: Posao zaposleniku mora pružiti osjecaj postignuca. To ce pružiti
+ponosan osjecaj da ste ucinili nešto teško, ali vrijedno.
+
+> Priznanje: Posao zaposleniku mora pružiti pohvalu i priznanje za njegov uspjeh. Ovo priznanje trebali bi dobiti i njihovi nadredeni i njihovi vršnjaci.
+
+> Sam posao: Sam posao mora biti zanimljiv, raznolik i pružati dovoljno izazova da motivira zaposlenike.
+
+> Odgovornost: Zaposlenici bi trebali "posjedovati" svoj rad. Trebali bi se smatrati odgovornima za isti.
+
+> Napredak: Zaposlenik treba imati mogucnosti napredovanja.
+
+> Rast: Posao bi zaposlenicima trebao pružiti priliku da nauce nove vještine. To se može dogoditi na poslu ili kroz formalnije osposobljavanje.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - Herzbergova teorija motivacije
+
+Higijenski cimbenici ukljucuju:
+
+> Politika tvrtke: Trebala bi biti poštena i jasna prema svakom zaposleniku.
+
+> Nadzor: Nadzor mora biti pošten i primjeren. Zaposleniku treba pružiti onoliko autonomije koliko je to razumno.
+
+> Odnosi: Ne bi trebalo postojati tolerancija prema nasilju. Izmedu vršnjaka,
+nadredenih i podredenih trebao bi postojati zdrav, ljubazan i primjeren odnos.
+
+> Uvjeti rada: Oprema i radno okruženje trebaju biti sigurni, primjereni i higijenski.
+
+> Placa: Struktura placa trebala bi biti poštena i razumna. Takoder bi trebao biti konkurentan ostalim organizacijama u istoj industriji.
+
+> Status: Organizacija treba zadržati status svih zaposlenika u organizaciji. Obavljanje smislenog posla može pružiti osjecaj statusa.
+
+> Sigurnost: Važno je da zaposlenici osjecaju da je njihov posao siguran i da nisu
+pod stalnom prijetnjom otpuštanja.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - Motivacijska teorija ocekivanja
+
+
+> Jedna od vodecih osoba u razvitku i objašnjenju ove teorije je
+psiholog Victor H. Vroom.
+
+> On smatra da ce ljudi biti motivirani na akcije za ostvarenje cilja ako vjeruju u vrijednost cilja i ako mogu vidjeti da ono što cine pomaže u njegovom ostvarenju.
+
+> Preciznije receno, Vroomova teorija kaže da je motivacija ljudi
+odredena vrijednošcu koju pridaju rezultatu svojih napora
+pomnoženoj s pouzdanošcu s kojom smatraju da ce njihovi napori
+pomoci u ostvarenju ciljeva.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - Teorija pravednosti
+
+
+> Važan faktor motivacije je doživljavaju li pojedinci strukturu
+nagradivanja kao pravednu.
+
+> Jedan od nacina pristupa ovom problemu je teorija pravednosti koja se odnosi na subjektivan sud pojedinca o pravednosti nagrade koju on ili ona prima u odnosu na uložene inpute, a u usporedbi s nagradama koje primaju drugi.
+
+> J. Stacy Adams je u velikoj mjeri zaslužan za formuliranje teorije pravednosti.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - Teorija pojacavanja
+
+> Psiholog B. F. Skinner s Harvarda razvio je zanimljivu - ali kontroverznu
+- tehniku motivacije.
+> Ovaj pristup nazvan pozitivno pojacanje ili modificiranje ponašanja drži da pojedinci mogu biti motivirani pravilnim oblikovanjem radnog okruženja i nagradama za ostvarenje, te da kazne daju negativne rezultate.
+> Oni analiziraju radnu situaciju da bi utvrdili što uzrokuje da se radnici ponašaju na nacin kako se ponašaju te iniciraju promjene kako bi uklonili problematicna podrucja i prepreke ostvarenju. Zatim se, uz pomoc i participaciju radnika, postavljaju specificni ciljevi, osigurava trenutacna i kontinuirana povratna veza te se poboljšanje ostvarenja nagraduje priznanjem i nagradom
+> Cak i kada ostvarenje nije jednako ciljevima pronalaze se nacini da se
+pomogne ljudima i da ih se nagradi za ono što su dobro ucinili.
+> Ova tehnika izgleda gotovo suviše jednostavna da bi bila djelotvorna i zato su mnogi znanstvenici koji se bave ponašanjem i menedžeri
+sumnjicavi prema njezinoj uspješnosti.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Motivacija - McClellandova teorija potreba
+
+> David C. McClelland pridonio je razumijevanju motivacije identificirajuci tri tipa osnovnih motivirajucih potreba. Klasificirao ih je kao potrebu za moci, potrebu za povezanošcu i potrebu za postignucem.
+> Potreba za moci. McClelland i drugi istraživaci ustanovili su da ljudi s visokom potrebom za moci pridaju veliku pažnju utjecanju i kontroli. Ovakve osobe, opcenito, teže pozicijama vode, cesto su dobri govornici, cesto skloni raspravljanju.
+> Potreba za povezivanjem. Ljudi s velikom potrebom za povezivanjem, osjecaju se zadovoljni ako su voljeni, gdje nastoje izbjeci bol koji uzrokuje odbacenost iz skupine. Kao pojedinci, vjerojatno su zaokupljeni održavanjem ugodnih društvenih veza, uživaju u osjecaju intimnosti i razumijevanjem ugodnih društvenih veza.
+> Potreba za postignucem. Ljudi s velikom potrebom za postignucem imaju intenzivnu želju za uspjehom i jednako intenzivan strah od neuspjeha. Žele biti izazvani i postavljaju poprilicno teške ciljeve.
+> Po McClellandu svaki pojedinac iskazivat ce jednu vrstu potreba više nego drugu, odnosno osobe ce se medusobno razlikovati po stupnju izraženosti potreba za postignucem, moci i povezivanjem. Uslijed toga, neke osobe bit ce visoko motivirane za postignucem, nisko prema moci te neutralno (srednje) prema povezivanju, druge ce imati visoku potrebu za moci i postignucem, a nisku prema povezivanju, itd.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Posebne motivacijske tehnike
+
+> Novac Novac je važan bilo u obliku nadnica, rada po komadu ili kojeg drugog oblika poticajnog placanja, premija, dionica, osiguranja koje placa kompanija ili bilo koje druge stvari koja se ljudima može dati za njihov obavljeni posao.
+
+> 	Participacija Rijetki su ljudi koji ne osjecaju motiviranost ako ih se konzultira o zbivanjima koja na njih utjecu. Participacija je takoder sredstvo priznanja. Ona utjece na potrebu za povezivanjem i
+prihvacanjem. Iznad svega, daje ljudima osjecaj postignuca.
+
+> Obogacivanje posla Obogacivanje posla treba razlikovati od proširenja opsega posla. Proširivanje opsega posla nastoji posao uciniti varijabilnijim uklanjanjem dosade koja proizlazi iz obavljanja repetitivnih operacija. Pri obogacivanju posla nastoji se ugraditi u posao veci osjecaj izazovnosti i postignuca.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dobra motivacija
+
+Dobijte povratne informacije od pocetka. Nemojte provoditi sesije pregleda na pola projekta. Umjesto toga, pripremite povratne informacije od prvog dana da ih izbjegavate nakon što nešto pode po zlu.
+
+Navedite poticaje. Iako to nije uvijek moguce, sve veci poticaji poput kompenzacije
+rijetko uspijevaju nadahnuti motivaciju.
+
+Oznacite prednosti rada. Izdvajanje prednosti projekta generira dublju zahvalnost i predanost radu. Takoder, kada clanovi razumiju namjere koje stoje iza projekta, lakše se povezuju s njim.
+
+Pronadite nacine za njegovanje snažnih odnosa medu svim clanovima. Imati tim koji može dobro funkcionirati izvan ureda je nezamjenjiv. Kad se brinu jedni o drugima na nivou dubljem od suradnika, oni ce biti spremni uložiti više napora u svoje uloge.Dajte im svaku priliku da zasjaju. Znate da vaš uspjeh ovisi i o uspjehu vašeg tima.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Loša motivacija
+
+Dati nerealan rok završetka - Clanovi nece ni pokušati raditi task koji je nemoguce
+završiti u roku
+
+Ignorisati napore clanova - Clanovi ce se više truditi ako vide da se njihovi napori
+cijene
+
+Kreiranje proizvoda loše kvalitete - Malo ce ko pristati da radi na kreiranju lošeg proizvoda
+
+Dati svima povišicu - Ako svi clanovi dobiju istu povišicu, kvalitetni clanovi ce imati utisak da se nerad nagraduje, te ce biti uvrijedeni
+
+Donošenje važnih odluka bez konsultacije sa timom - Prilikom donošenja odluke, koja ima znacajan utjecaj na citav tim, projekt menadžer mora ukljuciti citav tim u proces odlucivanja
+
+Loši uslovi rada - Loši uslovi rada imaju negativan utjecaj na motivaciju. Stoga je
+neophodno obezbjediti osvjetljenje, radni stol, privatnost, reference, itd.

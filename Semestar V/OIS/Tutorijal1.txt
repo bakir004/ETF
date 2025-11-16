@@ -1,0 +1,617 @@
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+
+
+
+
+
+
+
+
+
+
+
+
+OSNOVE INFORMACIONIH SISTEMA
+Tutorijal 1
+
+
+
+
+
+
+
+
+
+
+
+
+15.10.2024.
+
+
+
+
+
+
+
+
+
+
+
+Sistem je skup objekata (entiteta) i njihovih medusobnih veza usmjerenih ka ostvarivanju zajednickog cilja, prihvatanjem ulaza i proizvodnjom izlaza u organizacijskom transformacionom procesu.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+Podaci	Informacije
+
+
+
+Podaci (engl. data) su prosti zapisi koji imaju smisao samo u kontekstu u kome su zapisani.
+
+Primjer:
+
+Informacije su podaci koji su obradeni i zapisani u složenom kontekstu u kome imaju odredeni smisao i znacenje.
+Primjer:
+
+
+
+
+• "Osnove informacionih sistema "
+
+"Tutorijal iz Osnova informacionih
+sistema je 11. oktobra 2022. u 17:00. "
+
+
+
+• "11. oktobar 2022."
+
+
+• "Tutorijal"
+
+
+• "17:00"
+
+Znanje
+Informacije Podaci
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+• Koncept informacionog sistema se javlja oko 1960. godine.
+
+• Iako se smatra dobro uspostavljenim konceptom i dalje se teško
+precizno definira.
+
+• Sistem koji uzima podatke kao ulaz i pretvara ih u informacije na izlazu.
+
+
+
+
+
+
+
+
+
+
+
+• "Informacioni sistem je odredeni skup metoda, postupaka i resursa, oblikovanih tako
+da se potpomogne postizanje nekih ciljeva." (Thierauf R.)
+
+• 	"Informacioni sistem je sistem koji prikuplja, pohranjuje, cuva, obraduje i isporucuje informacije važne za organizaciju i društvo, tako da budu dostupne i upotrebljive za svakog ko se želi njima koristiti, ukljucujuci poslovodstvo, klijente, zaposlene i ostale. Informacioni sistem aktivni je društveni sistem koji se može, ali i ne mora, koristiti informacionom tehnologijom." (International Federation for Information Processing - IFIP)
+
+• 	Informacioni sistem je uredeni sistem koji cine ljudi, podaci, procesi i interfejsi koji medusobno saraduju na podršci i unapredivanju svakodnevnih operacija u poslovanju i omogucavaju rješavanje problema i donošenje odluka upravi i korisnicima.
+
+• Informacioni sistem je sistemsko rješenje informacionih potreba pripadnog subjekta,
+realizirano kao skup medusobno interagirajucih elemenata povezanih na bazi akvizicije, razmjene, procesiranja i prezentacije razlicitih nivoa informacija, s ciljem zadovoljavanja generickih i specificnih zahtjeva za informacijama potrebnim za neometano funkcioniranje pripadnog subjekta.
+
+
+
+
+Karakteristike informa
+Karakteristike dobrog informacionog sistema:cionog sistema:
+Karakteristike lošeg informacionog sistema:• Ucinkovitost• Neucinkovitost• Pouzdanost• Nestabilnost / Nepouzdanost• Prilagodljivost• Nedostatak prilagodljivosti• Sigurnost• Nesigurnost• Kvalitetni izlazi• Niska kvaliteta izlaza• Integracija• Nedostatak integracije• Podrška korisnicima• Nedostatak podrške korisnicima
+
+
+
+Cilj i osobine informa
+
+
+Cilj izgradnje IS-acionog sistema:
+
+
+Kakav treba biti IS?Osnovni cilj izgradnje informacionog sistema jeste postizanje boljih rezultata poslovanja.Razumljiv svim korisnicimaSvi drugi ciljevi proizilaze iz ciljeva poslovnog sistema i sa njima moraju biti uskladeni.Jednostavan u prezentiranju
+informacijaPouzdanDa omoguci iskazivanje obradenih informacija u vrlo kratkim vremenskim intervalima
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+• Raznolikost vještina
+• Podjela odgovornosti
+• Strucno znanje
+• Komunikacija i suradnja
+• Kontinuirani nadzor i podrška
+• Rizik i krizni menadžment
+• Kvaliteta i kontrola
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+• Projekt manager (voditelj projekta)
+• Analiticar poslovnih procesa
+• Programeri i razvojni inženjeri
+• Dizajner interfejsa
+• Administrator baze podataka
+• Inženjer za sigurnost podataka
+• Testeri i QA analiticari
+• Korisnici i narucitelji
+
+
+
+
+
+
+
+
+
+
+
+
+
+• Proizvesti najjeftiniji proizvod ili ponuditi najjeftiniju poslovnu uslugu
+
+• Kreirati unikatan proizvod za kojeg ne postoji konkurentski prozivod
+
+• Pronaci odredeno podrucje tržišta, tzv. niša u kojem proizvod dominira svojim privlacnim kvalitetom
+
+• Uspostaviti takve barijere tako da njihovo prevazilaženje bi obeshrabrilo potencijalne konkurente na tržištu
+
+
+
+
+
+
+
+
+
+
+
+
+
+• IS je "dobar" ako su korisnici zadovoljni!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+• Svi sistemi koji postoje (bilo oni biološki, fizikalni, socijalni) posjeduju velik
+broj zajednickih karakteristika.
+
+• Životni ciklus opcih sistema (GSLC) predstavlja jedno od informacijskih
+podrucja sa najvecim mogucnostima korištenja analogije.
+
+• Model ukljucuje cetiri faze unutar efektivnog života bilo kojeg sistema, koje su strogo odvojene.
+o Prva faza je nastanak sistema (npr.osnivanje poslovne kompanije).
+o Druga faza je razvoj i rast globalnog sistema (npr. pojava poslovne
+organizacije na tržištu u borbi sa konkurencijom).
+o Treca faza je zrelost sistema (npr. kompanija prestaje dalje rasti i dostiže stabilnu poziciju).
+o Cetvrta faza je deterioracija sistema (npr. kompanija gubi svoju
+tržišnu poziciju).
+
+
+
+
+
+
+
+
+
+
+
+
+
+• ISLC je slican GSLC-u.
+• Faze su:
+- razvoj sistema (dizajn)
+- implementacija sistema
+- rad i korištenje sistema
+(održavanje)
+- zastarjelost sistema
+(obsolentnost)
+
+• 	Karakteristika posljednje faze je ta da se ona rijetko ocituje u fizickoj formi, vec sistemi postaju tehnološki i tehnicki zastarjeli i nisu više u mogucnosti ispunjavati funkcionalne zahtjeve koje im postavljaju korisnici.
+
+
+
+
+
+
+
+
+
+
+
+Tok vremena
+
+
+
+
+
+
+
+
+
+
+
+
+
+• Životni ciklus opcih sistema
+=
+General Systems Life Cycle
+
+• Životni ciklus informacionih
+sistema
+=
+Information Systems Life
+Cycle
+
+
+
+
+
+
+
+
+
+Tok vremena
+
+
+
+
+
+Tok vremena
+deterioracija (kasnolat. deterioratio: pogoršanje) - pogoršavanje, upropaštavanje, kvarenje
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+• Racunovodstvena
+• Tehnološka
+• Deterioracija
+• Korisnicka ocekivanja
+• Eksterni utjecaji
+
+
+
+
+
+
+
+
+
+
+
+• Racunovodstvena dimenzija - U svakoj profitnoj organizaciji, knjigovodstveno se vodi amortizacija poslovne opreme. Period amortizacije varira, dok je negdje amortizacija za racunarske sisteme potpuno ukinuta zbog intenzivnog razvoja i zastarjevanja ovih sistema. U trenutku kada to vodenje prestane, nastupa knjigovodstevna smrt IS. Naravno, u mnogim organizacijama, korištenje IS se nastavlja i poslije ove 'smrti' jer se ne može priuštiti redovno obnavljanje i nabavka novih sistema.
+- Amortizacija - U ekonomiji, smanjenje vrijednosti imovine zbog fizickoga trošenja, uništenja ili
+moralnoga odnosno ekonomskoga zastarijevanja kao posljedice razvoja znanosti i tehnologije.
+
+• Tehnološka dimenzija. Ukoliko konkurentne poslovne organizacije uvedu novije i modernije
+IS, tada i druge organizacije moraju, u najmanjoj mjeri, preispitati svoje sisteme.
+
+• Deterioracija. IS doživljavaju i fizicko trošenje. Stalno je pristuno pitanje nadogradnje, zamjene ili potpunog izbacivanja sistema iz prakse.
+
+• Korisnicka ocekivanja. Iako IS može funkcionirati i poslije njegove 'knjigovodstvene smrti', ne mora biti tehnološki zastario i ne pokazivati simptome fizikalne deterioracije, on ipak može biti neprihvatljiv I nezadovoljavajuci. To je zato što su se korisnicka ocekivanja vremenom promjenila. Nije od presudne važnosti samo koliko je 'zdrav' IS, vec koliko je on ispunio
+korisnicka ocekivanja.
+
+• Eksterni utjecaji. Nekada IS moraju biti zamjenjeni zbog vanjskih uticaja koji vrše pritisak na poslovnu organizaciju. Npr. organizacija A traži od organizacije B da izvrši konverziju svojih sistema.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+• SDLC ( Software Development Life Cycle) je proces koji ukljucuje odredivanje nacina na koji ce informacioni sistem podržati poslovne potrebe, dizajniranje sistema, izgradnju sistema te isporuku sistema korisnicima.
+
+• Dakle, SDLC predstavlja konceptualni model koji se koristi u upravljanju projektima, kako bi se opisali faze i zadaci koji su ukljuceni u svaki korak razvoja i implementacije softvera.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. Incijacija projekta : kakvu poslovnu vrijednost sistem isporucuje organizaciji. Izlazi ovog koraka su:
+- zahtjev za sistemom
+- analiza izvodljivosti.
+
+2. Upravljanje projektom: projekt menadžer kreira plan projekta, uspostavlja tim, dodjeljuje zadatke clanovima tima, te odreduje tehnike koje ce obezbjediti kontrolu nad projektom kroz SDLC.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. Strategija analize: istražuje se postojeci sistem, njegove nedostaci i problemi, te se zamišlja novi sistem
+
+2. Prikupljanje zahtjeva: zahtjevi se prikupljaju kroz intervju, grupne radionice, upitnike, proucavanje dokumentacije i sl.
+
+3. Kreiranje slucajeva upotrebe
+
+4. Modeliranje procesa i podataka
+
+
+
+
+
+
+
+
+
+
+
+
+1. Strategija dizajna: odreduje
+nacin razvoja softvera
+
+2. Dizajn arhitekture: opisuje hardver, softver i mrežna infrastruktura.
+
+3. Dizajn interfejsa i izvještaja: specificira izgled i navigaciju korisnicnog interfejsa.
+
+4. Dizajn baze podataka: definira koji ce podaci biti pohranjivani i kako ce se pohranjivati.
+
+5. Dizajn programa: definira programe i šta koji program radi.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. Razvoj sistema:
+Programiranje i testiranje
+
+2. Instalacija sistema: Stavljanje sistema u operativno okruženje
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. Popravljanje i unapredivanje
+sistema
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+• Timski projekat
+• Svaki tim ima zadatak da obradi konkretan primjer u konkretnom organizacijskom kontekstu po vlastitom izboru.
+• Izbjegavati teme koje su se pojavljivale prošlih godina!
+• Inovativnost!
+• Izbor je jedinstven!
+
+
+
+
+
+
+
+
+
+
+
+
+
+• Maksimalan broj bodova koji studenti mogu ostvariti izradom
+projekta je : 20.
+
+• Svaki tim dužan je braniti projekat. Odbrana projekta ce biti kod predmetnog asistenta i svaki clan tima ce prezentirati dio projekta.
+
+• Svaki tutorijal je jedan projektni zadatak i studenti su dužni iste donijeti na naredni tutorijal.
+
+
+
+
+
+
+
+
+
+
+
+
+• Izvještaji:
+- Voda tima ce za svaki projektni zadatak slati izvještaj o istom ( podjela po zadacima, planirano vrijeme izrade, stvarno vrijeme izrade, kašnjenja, problemi i sl.)
+- Svaki clan tima na kraju izrade projekta dužan je poslati izvještaj o njegovom videnju projekta, tima, rada u istom te ocjeniti clanove svog tima ocjenama od 1 do 5 uz kraci komentar
+- Svaki clan tima ce dobiti skaliranu (prosjecnu) ocjenu za rad i
+zalaganje na projektu
+
+• Bodovanje projekta:
+- 20 bodova - konacna dokumentacija poslana na pregled +
+izvještaji +projektni zadaci + dojam
+• 6 izvještaja - 3 boda
+• 6 projektnih zadataka - 12 bodova
+• Ukupni dojam - 5 bodova (prisustvo na prezentaciji, ocjena clanova tima,
+dojam asistentice o zalaganju studenata)
+• U slucaju da tim ne pošalje projektni zadatak do zadanog roka odmah gubi bodove na isti
+
+
+
+
+
+
+
+
+
+
+
+
+
+• Izabrati vodu tima
+• Izabrati temu projekta
+• U dokumentu poslati imena clanova tima skupa sa
+brojem indeksa kao i izabranom temom (voda tima)
+
+• Predstavnik godine : kreirati dokument sa tabelarnim prikazom timova (clanovi, naznacen voda) i odabranom temom
+
+• Rok za slanje: 20.10.2024. 17:00 na email: amer.koric@etf.unsa.ba

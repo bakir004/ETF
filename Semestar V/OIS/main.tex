@@ -1,0 +1,1048 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[serbian]{babel}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+
+\title{\textbf{SAŽETAK TUTORIJALA\\OSNOVE INFORMACIONIH SISTEMA}}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Tutorijal 1: Uvod u Informacione Sisteme}
+
+\subsection{Definicija sistema}
+Sistem je skup objekata (entiteta) i njihovih međusobnih veza usmjerenih ka ostvarivanju zajedničkog cilja, prihvatanjem ulaza i proizvodnjom izlaza u organizacijskom transformacionom procesu.
+
+\subsection{Podaci i informacije}
+\textbf{Podaci} (engl. data) su prosti zapisi koji imaju smisao samo u kontekstu u kome su zapisani. Primjer: "11. oktobar 2022.", "Tutorijal", "17:00".
+
+\textbf{Informacije} su podaci koji su obrađeni i zapisani u složenom kontekstu u kome imaju određeni smisao i značenje. Primjer: "Tutorijal iz Osnova informacionih sistema je 11. oktobra 2022. u 17:00."
+
+Hijerarhija: \textbf{Znanje} $\rightarrow$ \textbf{Informacije} $\rightarrow$ \textbf{Podaci}
+
+\subsection{Definicije informacionog sistema}
+Koncept informacionog sistema javlja se oko 1960. godine. Iako se smatra dobro uspostavljenim konceptom, i dalje se teško precizno definira.
+
+\textbf{Ključne definicije:}
+\begin{itemize}
+    \item Sistem koji uzima podatke kao ulaz i pretvara ih u informacije na izlazu.
+    \item \textbf{Thierauf R.:} "Informacioni sistem je određeni skup metoda, postupaka i resursa, oblikovanih tako da se potpomogne postizanje nekih ciljeva."
+    \item \textbf{IFIP:} "Informacioni sistem je sistem koji prikuplja, pohranjuje, čuva, obrađuje i isporučuje informacije važne za organizaciju i društvo, tako da budu dostupne i upotrebljive za svakog ko se želi njima koristiti."
+    \item Informacioni sistem je uređeni sistem koji čine ljudi, podaci, procesi i interfejsi koji međusobno saraduju na podršci i unapređivanju svakodnevnih operacija u poslovanju.
+\end{itemize}
+
+\subsection{Karakteristike informacionog sistema}
+\textbf{Dobri informacioni sistemi:}
+\begin{itemize}
+    \item Učinkovitost
+    \item Pouzdanost
+    \item Prilagodljivost
+    \item Sigurnost
+    \item Kvalitetni izlazi
+    \item Integracija
+    \item Podrška korisnicima
+\end{itemize}
+
+\textbf{Loši informacioni sistemi:}
+\begin{itemize}
+    \item Neučinkovitost
+    \item Nestabilnost / Nepouzdanost
+    \item Nedostatak prilagodljivosti
+    \item Nesigurnost
+    \item Niska kvaliteta izlaza
+    \item Nedostatak integracije
+    \item Nedostatak podrške korisnicima
+\end{itemize}
+
+\subsection{Cilj izgradnje IS-a}
+Osnovni cilj izgradnje informacionog sistema jeste postizanje boljih rezultata poslovanja. Svi drugi ciljevi proizilaze iz ciljeva poslovnog sistema i sa njima moraju biti usklađeni.
+
+\textbf{Kakav treba biti IS:}
+\begin{itemize}
+    \item Razumljiv svim korisnicima
+    \item Jednostavan u prezentiranju informacija
+    \item Pouzdan
+    \item Omogućava iskazivanje obrađenih informacija u vrlo kratkim vremenskim intervalima
+\end{itemize}
+
+\subsection{Tim za razvoj IS-a}
+Ključni članovi tima:
+\begin{itemize}
+    \item Projekt manager (voditelj projekta)
+    \item Analitičar poslovnih procesa
+    \item Programeri i razvojni inženjeri
+    \item Dizajner interfejsa
+    \item Administrator baze podataka
+    \item Inženjer za sigurnost podataka
+    \item Testeri i QA analitičari
+    \item Korisnici i naručitelji
+\end{itemize}
+
+\textbf{Ključne karakteristike tima:}
+\begin{itemize}
+    \item Raznolikost vještina
+    \item Podjela odgovornosti
+    \item Stručno znanje
+    \item Komunikacija i suradnja
+    \item Kontinuirani nadzor i podrška
+    \item Rizik i krizni menadžment
+    \item Kvaliteta i kontrola
+\end{itemize}
+
+\subsection{Strategije konkurentske prednosti}
+\begin{itemize}
+    \item Proizvesti najjeftiniji proizvod ili ponuditi najjeftiniju poslovnu uslugu
+    \item Kreirati unikatan proizvod za kojeg ne postoji konkurentski proizvod
+    \item Pronaći određeno područje tržišta (niša) u kojem proizvod dominira svojim privlačnim kvalitetom
+    \item Uspostaviti takve barijere tako da njihovo prevazilaženje bi obeshrabrilo potencijalne konkurente
+\end{itemize}
+
+\textbf{Ključna misao:} IS je "dobar" ako su korisnici zadovoljni!
+
+\subsection{Životni ciklus općih sistema (GSLC)}
+Svi sistemi koji postoje (biološki, fizički, socijalni) posjeduju velik broj zajedničkih karakteristika. GSLC predstavlja model sa četiri faze:
+
+\begin{enumerate}
+    \item \textbf{Nastanak sistema} - osnivanje poslovne kompanije
+    \item \textbf{Razvoj i rast} - pojava poslovne organizacije na tržištu u borbi sa konkurencijom
+    \item \textbf{Zrelost sistema} - kompanija prestaje dalje rasti i dostiže stabilnu poziciju
+    \item \textbf{Deterioracija sistema} - kompanija gubi svoju tržišnu poziciju
+\end{enumerate}
+
+\subsection{Životni ciklus informacionih sistema (ISLC)}
+ISLC je sličan GSLC-u. Faze su:
+\begin{itemize}
+    \item Razvoj sistema (dizajn)
+    \item Implementacija sistema
+    \item Rad i korištenje sistema (održavanje)
+    \item Zastarjelost sistema (obsolentnost)
+\end{itemize}
+
+Karakteristika posljednje faze je ta da se ona rijetko očituje u fizičkoj formi, već sistemi postaju tehnološki i tehnički zastarjeli i nisu više u mogućnosti ispunjavati funkcionalne zahtjeve koje im postavljaju korisnici.
+
+\subsection{Dimenzije zastarjevanja IS-a}
+\begin{enumerate}
+    \item \textbf{Računovodstvena dimenzija} - U svakoj profitnoj organizaciji, knjigovodstveno se vodi amortizacija poslovne opreme. Period amortizacije varira, dok je negdje amortizacija za računarske sisteme potpuno ukinuta zbog intenzivnog razvoja i zastarjevanja ovih sistema.
+    
+    \item \textbf{Tehnološka dimenzija} - Ukoliko konkurentne poslovne organizacije uvedu novije i modernije IS, tada i druge organizacije moraju, u najmanjoj mjeri, preispitati svoje sisteme.
+    
+    \item \textbf{Deterioracija} - IS doživljavaju i fizičko trošenje. Stalno je prisutno pitanje nadogradnje, zamjene ili potpunog izbacivanja sistema iz prakse.
+    
+    \item \textbf{Korisnička očekivanja} - Iako IS može funkcionirati i poslije njegove 'knjigovodstvene smrti', ne mora biti tehnološki zastario i ne pokazivati simptome fizičke deterioracije, on ipak može biti neprihvatljiv i nezadovoljavajući jer su se korisnička očekivanja vremenom promjenila.
+    
+    \item \textbf{Eksterni utjecaji} - Nekada IS moraju biti zamjenjeni zbog vanjskih uticaja koji vrše pritisak na poslovnu organizaciju.
+\end{enumerate}
+
+\subsection{Software Development Life Cycle (SDLC)}
+SDLC je proces koji uključuje određivanje načina na koji će informacioni sistem podržati poslovne potrebe, dizajniranje sistema, izgradnju sistema te isporuku sistema korisnicima.
+
+SDLC predstavlja konceptualni model koji se koristi u upravljanju projektima, kako bi se opisali faze i zadaci koji su uključeni u svaki korak razvoja i implementacije softvera.
+
+\textbf{Faze SDLC-a:}
+\begin{enumerate}
+    \item \textbf{Planiranje}
+    \begin{itemize}
+        \item Inicijacija projekta: kakvu poslovnu vrijednost sistem isporučuje organizaciji
+        \item Upravljanje projektom: projekt menadžer kreira plan projekta, uspostavlja tim, dodjeljuje zadatke članovima tima
+    \end{itemize}
+    
+    \item \textbf{Analiza}
+    \begin{itemize}
+        \item Strategija analize: istražuje se postojeći sistem, njegovi nedostaci i problemi
+        \item Prikupljanje zahtjeva: zahtjevi se prikupljaju kroz intervju, grupne radionice, upitnike, proučavanje dokumentacije
+        \item Kreiranje slučajeva upotrebe
+        \item Modeliranje procesa i podataka
+    \end{itemize}
+    
+    \item \textbf{Dizajn}
+    \begin{itemize}
+        \item Strategija dizajna: određuje način razvoja softvera
+        \item Dizajn arhitekture: opisuje hardver, softver i mrežna infrastruktura
+        \item Dizajn interfejsa i izvještaja: specificira izgled i navigaciju korisničnog interfejsa
+        \item Dizajn baze podataka: definira koji će podaci biti pohranjivani i kako će se pohranjivati
+        \item Dizajn programa: definira programe i šta koji program radi
+    \end{itemize}
+    
+    \item \textbf{Implementacija}
+    \begin{itemize}
+        \item Razvoj sistema: Programiranje i testiranje
+        \item Instalacija sistema: Stavljanje sistema u operativno okruženje
+    \end{itemize}
+    
+    \item \textbf{Održavanje}
+    \begin{itemize}
+        \item Popravljanje i unapređivanje sistema
+    \end{itemize}
+\end{enumerate}
+
+\section{Tutorijal 2: SDLC - Faza Planiranja}
+
+\subsection{Opis faze planiranja}
+SDLC faza planiranja je prva faza u životnom ciklusu razvoja softvera. Ova faza je ključna jer postavlja temelje za cijeli projekt i definira njegove ciljeve, opseg, potrebne resurse i vremenski okvir.
+
+Osnovni zadatak faze planiranja je osigurati da svi članovi tima i zainteresirane strane (stakeholderi) razumiju što se želi postići i na koji način će se to postići.
+
+\subsection{Šta se radi u fazi planiranja SDLC-a}
+
+\subsubsection{1. Identifikacija poslovnog problema ili prilike}
+U ovoj fazi se analizira i definiše poslovni problem koji softver treba riješiti ili prilika koju treba iskoristiti. To može uključivati izazove sa trenutnim sistemima ili prepoznavanje novih potreba tržišta.
+
+\subsubsection{2. Definisanje ciljeva projekta}
+Ciljevi moraju biti jasni, mjerljivi, ostvarivi, relevantni i vremenski ograničeni (\textbf{SMART ciljevi}):
+\begin{itemize}
+    \item \textbf{S}pecific (specifični)
+    \item \textbf{M}easurable (mjerljivi)
+    \item \textbf{A}chievable (ostvarivi)
+    \item \textbf{R}elevant (relevantni)
+    \item \textbf{T}ime-bound (vremenski ograničeni)
+\end{itemize}
+
+\subsubsection{3. Analiza zahtjeva zainteresiranih strana (Stakeholder analysis)}
+Identifikuju se zahtjevi i očekivanja različitih zainteresiranih strana, uključujući krajnje korisnike, menadžment i druge ključne aktere.
+
+\subsubsection{4. Izrada poslovnog slučaja i studije izvodljivosti}
+Poslovni slučaj se bavi ekonomskim aspektima projekta, analizirajući troškove i koristi, dok studija izvodljivosti procjenjuje tehničke i vremenske mogućnosti realizacije projekta.
+
+\subsubsection{5. Definisanje opsega projekta (Scope definition)}
+Definira se šta je tačno uključeno u projekt, kako bi se izbjeglo proširenje opsega (scope creep). Jasno se postavljaju granice onoga što će softver obuhvatiti.
+
+\subsubsection{6. Planiranje resursa i budžeta}
+Procjenjuju se potrebni resursi (ljudski, tehnički, finansijski) i kreira se budžet za projekt.
+
+\subsubsection{7. Izrada vremenskog rasporeda (Project Schedule)}
+Kreira se detaljan raspored koji uključuje ključne prekretnice (milestones) i rokove za svaki korak u procesu razvoja.
+
+\subsubsection{8. Analiza rizika (Risk analysis)}
+Identificiraju se potencijalni rizici koji mogu ugroziti projekt, te se razvijaju planovi za njihovo ublažavanje.
+
+\subsubsection{9. Izrada projektne povelje (Project Charter)}
+Dokument koji formalizuje ciljeve, opseg, raspored, budžet i odgovornosti, te daje ovlaštenja projektnom menadžeru za vođenje projekta.
+
+\subsection{Zahtjev za sistemom / Analiza izvodljivosti}
+
+\subsubsection{Identifikacija zahtjeva za sistemom}
+\begin{itemize}
+    \item \textbf{Prikupljanje informacija:} Angažovanje sa ključnim zainteresovanim stranama (korisnicima, menadžerima, tehničkim timovima) kroz intervjue, ankete, fokus grupe i radionice.
+    \item \textbf{Definisanje zahtjeva:} Na osnovu prikupljenih informacija, tim definiše funkcionalne (šta sistem treba da radi) i nefunkcionalne zahtjeve (kako treba da se ponaša, performanse, sigurnost).
+\end{itemize}
+
+\subsubsection{Analiza izvodljivosti}
+Vrste analiza izvodljivosti:
+\begin{enumerate}
+    \item \textbf{Tehnička izvodljivost} - Možemo li izgraditi sistem?
+    \begin{itemize}
+        \item Bliskost sa poslovnom oblasti
+        \item Bliskost sa tehnologijom
+        \item Kompatibilnost sa postojećom tehnologijom
+        \item Veličina projekta i resursi koje projekat zahtjeva
+    \end{itemize}
+    
+    \item \textbf{Ekonomska izvodljivost} - Trebamo li izgraditi sistem?
+    \begin{itemize}
+        \item Identifikacija koristi i troškova
+        \item Dodjeljivanje vrijednosti koristima i troškovima
+        \item Određivanje toka novca
+        \item Ocjenjivanje ekonomske vrijednosti projekta
+    \end{itemize}
+    
+    \item \textbf{Operativna izvodljivost} - Ako izgradimo sistem, hoće li se koristiti?
+    
+    \item \textbf{Organizaciona izvodljivost} - Da li menadžement razumije tržište? Koliko je menadžment stručan za pokretanje poduhvata?
+    
+    \item \textbf{Zakonska izvodljivost} - Da li je predloženi sistem u sukobu sa zakonskim zahtjevima?
+    
+    \item \textbf{Rasporedna izvodljivost} - Da li je raspored projekta razuman?
+\end{enumerate}
+
+\subsubsection{Dokumentovanje i validacija}
+\begin{itemize}
+    \item \textbf{Dokumentovanje zahtjeva:} Sve prikupljene informacije i analize se dokumentuju u \textbf{SRS (Software Requirements Specification)} dokumentu.
+    \item \textbf{Validacija:} Nakon što su zahtjevi definisani, važno je da se oni validiraju sa ključnim zainteresovanim stranama.
+\end{itemize}
+
+\subsection{Software Requirements Specification (SRS)}
+
+\subsubsection{Šta je SRS dokument?}
+Dokument o specifikaciji softverskih zahtjeva opisuje namjenu, zahtjeve i prirodu softvera koji će se razvijati.
+
+\subsubsection{Sadržaj dokumenta}
+\begin{enumerate}
+    \item \textbf{UVOD}
+    \begin{itemize}
+        \item Svrha/Cilj/Namjena
+        \item Konvencija dokumenta (Standard izgleda dokumenta)
+        \item Predviđeni korisnici i sugestije pri korištenju
+        \item Opseg projekta
+        \item Reference
+    \end{itemize}
+    
+    \item \textbf{Historija izmjena dokumenta} - OBAVEZNO koristiti jedan od službenih jezika u Bosni i Hercegovini
+\end{enumerate}
+
+\subsection{Upoznavanje sa organizacijom / kompanijom}
+\begin{itemize}
+    \item Upoznati se sa organizacijom za koju gradite IS
+    \item Koristiti različite izvore (web, direktni kontakt, promotivni materijali)
+    \item Navesti kratku historiju organizacije
+    \item Navesti glavne proizvode
+\end{itemize}
+
+\subsection{Misija organizacije / kompanije}
+Misija organizacije definira svrhu organizacije, osnovnu funkciju organizacije odnosno razlog zbog kojeg organizacija postoji.
+
+\textbf{MISIJA = RAZLOG POSTOJANJA ORGANIZACIJE}
+
+Najbolje izjave o misiji su jasne, sažete i korisne. Prosječna dužina je samo 15,3 riječi.
+
+\subsection{Vizija organizacije / kompanije}
+Vizija organizacije je poželjna slika budućnosti organizacije, odnosno ono što poduzeće želi ostvariti.
+
+\textbf{Imati viziju znači imati odgovore na pitanja:}
+\begin{enumerate}
+    \item Kuda želimo ići?
+    \item Šta želimo biti u budućnosti?
+\end{enumerate}
+
+\subsection{Ciljevi organizacije / kompanije}
+Ciljevi organizacije predstavljaju stanje, tip ili nivo poslovnih performansi kojima će organizacija težiti u ostvarivanju svoje misije i vizije.
+
+\textbf{CILJ = KRAJNJA TAČKA DO KOJE TREBA IĆI; KRAJNJI REZULTAT KOJI TREBA POSTIĆI}
+
+Ciljevi se mogu podijeliti na:
+\begin{itemize}
+    \item \textbf{Kratkoročne} (period do 1 godine)
+    \item \textbf{Srednjoročne} (period između 1 i 5 godina)
+    \item \textbf{Dugoročne} (period veći od 5 godina)
+\end{itemize}
+
+\subsection{Stakeholderi}
+Stakeholderi su pojedinci i organizacije koji su aktivno uključeni u projekt ili na čije interese (rezultat) izvršenje projekta može (pozitivno ili negativno) uticati.
+
+\textbf{Stakeholderi projekta:}
+\begin{itemize}
+    \item Sponzori projekta
+    \item Kupac koji će primiti isporučene proizvode
+    \item Korisnici rezultata projekta
+    \item Voda projekta i projektni tim
+\end{itemize}
+
+\subsection{Zahtjev za sistemom}
+Dokument u kojem su navedeni razlozi za izgradnju sistema i vrijednost za koju se očekuje da će je sistem obezbijediti. Odgovara na pitanje: \textbf{Odakle dolazi ideja za novi projekat?}
+
+\subsection{Ciljevi projekta}
+\begin{itemize}
+    \item Navesti ciljeve projekta te preciznije detalje istih (referentne tačke)
+    \item Navesti konkretne rezultate koje projekat donosi, preciznije detalje istih (koji će to biti rezultati i ko je odgovoran za njihovu proizvodnju i primanje)
+\end{itemize}
+
+\subsection{Ekonomska izvodljivost - Finansijski pokazatelji}
+
+\subsubsection{Return on Investment (ROI)}
+ROI pokazuje koliki je povrat neke investicije. Računa se kao količnik neto koristi (ukupna korist - ukupan trošak) i ukupnog troška.
+
+\textbf{Formula:}
+\[
+ROI = \frac{\text{Ukupna korist} - \text{Ukupan trošak}}{\text{Ukupan trošak}} \times 100\%
+\]
+
+Visok ROI pokazuje da su koristi projekta daleko veće od ulaganja. ROI se obično računa na svakih 5 godina. Na samom početku projekta često isti bude negativan.
+
+\subsubsection{Break-Even Point (BEP)}
+BEP ili tačka pokrića je ekonomski koncept koji označava nivo prodaje ili aktivnosti pri kojem su ukupni prihodi jednaki ukupnim troškovima. U ovoj tački, preduzeće ne ostvaruje ni profit ni gubitak; ono samo pokriva svoje troškove.
+
+\textbf{Vrste troškova:}
+\begin{itemize}
+    \item \textbf{Varijabilni troškovi} - troškovi kompanije koji su povezani s brojem robe ili usluga koje proizvodi. Varijabilni troškovi povećavaju se i smanjuju s opsegom proizvodnje.
+    \item \textbf{Fiksni troškovi} - troškovi kompanije koji ne variraju s opsegom proizvodnje. Fiksni troškovi ostaju isti bez obzira proizvode li se robe ili usluge.
+\end{itemize}
+
+\subsubsection{Payback Period (PB)}
+Payback period ili period povrata ulaganja je vrijeme potrebno da se povrati inicijalno ulaganje u neki projekat ili investiciju kroz novčane tokove (cash flow) generisane tim projektom.
+
+\textbf{Za ravnomjeran cash flow:}
+\[
+\text{Payback period} = \frac{\text{Investirani novac}}{\text{Neto godišnji novčani priliv}}
+\]
+
+\textbf{Za neravnomjeran cash flow:} Računa se kumulativno - broj godina potrebnih da poduzeće primi neto novčane prilive koji se zbrajaju s iznosom početnog novčanog ulaganja.
+
+\subsubsection{Present Value (PV) i Net Present Value (NPV)}
+\textbf{Present Value (PV)} predstavlja trenutnu vrijednost buduće sume novca ili tok novčanog toka s obzirom na određenu stopu povrata. Present Value predstavlja vrijednost novca koji ćete primiti u budućnosti, ali izražena u današnjim vrijednostima.
+
+\textbf{Net Present Value (NPV)} je razlika između sadašnje vrijednosti novčanih priliva i sadašnje vrijednosti odliva novca tokom određenog vremenskog razdoblja.
+
+\textbf{Formula za PV:}
+\[
+PV = \frac{\text{Buduća vrijednost}}{(1 + r)^n}
+\]
+gdje je $r$ stopa povrata, a $n$ broj perioda.
+
+\textbf{Projekat se smatra ekonomski isplativim ukoliko je NPV veći od nule.}
+
+\section{Tutorijal 3: Upravljanje Projektom}
+
+\subsection{SDLC faza - Planiranje (detaljno)}
+
+Dokument "Planiranja" za projekt koji koristi SDLC metodologiju Waterfall trebao bi sadržavati:
+
+\begin{enumerate}
+    \item \textbf{Uvod i sažetak} - Uvodni dio koji opisuje svrhu dokumenta i sažetak projekta
+    
+    \item \textbf{Opis projekta} - Detaljan opis projekta koji uključuje njegovu svrhu, ciljeve i obim
+    
+    \item \textbf{Faze i aktivnosti} - Opis svake faze u SDLC metodologiji Waterfall, počevši s analizom i planiranjem
+    
+    \item \textbf{Raspored projekta (Project Schedule)} - Raspored koji prikazuje vremenski okvir za svaku fazu i aktivnost projekta
+    
+    \item \textbf{Resursi} - Popis resursa potrebnih za projekt, uključujući osoblje, opremu, alate i tehnologije
+    
+    \item \textbf{Budžet} - Financijski plan koji uključuje procijenjeni proračun za projekt
+    
+    \item \textbf{Plan upravljanja rizicima} - Identifikacija potencijalnih rizika i strategije za njihovo upravljanje
+    
+    \item \textbf{Kvaliteta i testiranje} - Planiranje za osiguranje kvalitete u svim fazama projekta
+    
+    \item \textbf{Odgovornosti i ovlasti} - Popis ključnih članova tima i njihovih odgovornosti
+    
+    \item \textbf{Kontrola promjena} - Proces i pravila za upravljanje promjenama u zahtjevima ili planu projekta
+    
+    \item \textbf{Komunikacijski plan} - Strategija za komunikaciju unutar tima i s dionicima projekta
+    
+    \item \textbf{Zaključak i odobrenje} - Zaključak dokumenta u kojem se traži odobrenje od strane relevantnih strana
+\end{enumerate}
+
+\subsection{Aktivnost i projekat}
+
+\textbf{Aktivnost} koja je:
+\begin{itemize}
+    \item Privremena
+    \item Posjeduje jasno definiran datum početka i završetka
+    \item Jedinstvena
+    \item Donosi promjene
+    \item Ograničena vremenom, troškovima i resursima
+    \item Se preduzima da bi se isporučio proizvod u skladu sa postavljenim zahtjevima
+    \item Služi za rješavanje problema ili korištenja prednosti prilike
+\end{itemize}
+
+\textbf{Projekat je jedinstven} - to nije rutinska operacija, već određeni skup operacija osmišljenih za postizanje jedinstvenog cilja.
+
+\subsection{Često korišteni projektni termini}
+
+\begin{itemize}
+    \item \textbf{Stakeholder} - Svako ko ima interes za neki projekat, posao ili organizaciju. U pogledu upravljanja projektima, stakeholder je pojedinac ili grupa na koju će utjecati ishod projekta.
+    
+    \item \textbf{Milestones (Kontrolna tačka)} - Tačka koja predstavlja mjesto provjere; datumi do kojih su glavne aktivnosti izvršene.
+    
+    \item \textbf{Tasks (Zadaci)} - Akcije: radnje poduzete projektom
+    
+    \item \textbf{Risks (Rizici)} - Potencijalni problemi koji mogu nastati
+    
+    \item \textbf{Issues (Problemi)} - Rizici koji su se dogodili
+\end{itemize}
+
+\subsection{Upravljanje projektom}
+
+\textbf{Definicija:} Upravljanje projektom je primjena procesa, metoda, vještina, znanja, tehnika i iskustva za postizanje određenih ciljeva projekta prema kriterijima prihvaćanja projekta u okviru zadanog vremena i budžeta.
+
+Ključni faktor koji razlikuje upravljanje projektima od samog procesa "menadžmenta" je taj što ima konačni rezultat i ograničen vremenski period, za razliku od menadžmenta koji je tekući proces.
+
+\textbf{Zašto upravljanje projektom?}
+\begin{itemize}
+    \item Unapređenje unutarnje i vanjske komunikacije
+    \item Jednostavno surađivanje
+    \item Optimizirano upravljanje vremenom
+    \item Jasnije razumijevanje ciljeva
+    \item Praćenje projektnih zadataka i procesa
+    \item Učinkovito upravljanje proračunom projekta
+    \item Unapređenje donošenja odluka
+    \item Smanjenje neizvjesnosti
+\end{itemize}
+
+\subsection{Projekt menadžer i projektni tim}
+
+\textbf{Projekt menadžer:}
+\begin{itemize}
+    \item Osoba odgovorna za vođenje projekta od njegovog početka do izvršenja
+    \item Dužan osigurati uspjeh projekta minimiziranjem rizika kroz životni ciklus razvoja sistema
+    \item Osoba sa raznolikim setom vještina: menadžment, liderstvo, tehnička potkovanost, rješavanje sukoba, upravljanje i odnos sa kupcima, upravljanje vremenom, planiranje, komunikativnost, upravljanje rizikom, pregovaranje
+    \item Projekt menadžer pravi plan projekta
+\end{itemize}
+
+\textbf{Projektni tim:}
+\begin{itemize}
+    \item Tim je grupa pojedinaca koji rade zajedno na postizanju određenog cilja
+    \item Dobra saradnja projektnog tima ključna je za uspjeh projekta
+    \item Posebno je efikasno i učinkovito komuniciranje važno kako bi se osiguralo da svi imaju potrebne informacije
+    \item U idealnom slučaju, mišljenja, rješenja i sukobi se razmatraju, raspravljaju i rješavaju u sklopu projektnog tima
+\end{itemize}
+
+\subsection{Plan projekta}
+
+Prvi korak u kreiranju plana projekta jeste identifikacija taskova. Identifikacija taskova slijedi \textbf{top-down pristup}.
+
+\subsection{Work Breakdown Structure (WBS)}
+
+\textbf{Definicija:} Work Breakdown Structure (WBS) je hijerarhijska dekompozicija posla koji treba izvesti projektni tim radi ostvarenja projektnih ciljeva i stvaranja potrebnih rezultata.
+
+\textbf{Karakteristike:}
+\begin{itemize}
+    \item To je način za podjelu i osvajanje velikih projekata, radi bržeg i efikasnijeg rada
+    \item WBS dijeli projekt u manje elemente, koji su upravljivi i mjerljivi
+    \item Svaki element opisan je detaljima poput: naziv, datum početka i završetka, predviđeno i stvarno trajanje, status, ovisnosti, potrebni resursi
+\end{itemize}
+
+\subsection{Gantt Chart (Gantogram)}
+
+\textbf{Definicija:} Gantogram je tip horizontalnog stupčanog grafika za grafički prikaz rasporeda projekta.
+
+Gantogram nudi grafički prikaz rasporeda koji pomaže u planiranju, koordinaciji i praćenju određenih zadataka u projektu.
+
+\subsection{Upravljanje osobljem}
+
+Prilikom raspoređivanja članova na taskove, treba imati na umu da li oni posjeduju odgovarajuće tehničke i komunikacijske sposobnosti.
+
+\textbf{Matrica sposobnosti} je alat koji se koristi za dokumentiranje i uspoređivanje potrebnih kompetencija za radno mjesto s trenutnom razinom vještina zaposlenih.
+
+\textbf{Skale:}
+\begin{itemize}
+    \item \textbf{INTERES:} 0 - nema interesa, 1 - ima interesa
+    \item \textbf{ZNANJE:} 0 - nema znanja, 1 - osnovni nivo, 2 - srednji nivo, 3 - visok nivo znanja
+    \item \textbf{ISKUSTVO:} 0 - nema iskustva, 1 - mora raditi uz nadzor, 2 - može raditi samostalno uz povremenu kontrolu, 3 - može obučavati ostale
+\end{itemize}
+
+\subsection{Mrežno planiranje}
+
+\textbf{Mrežni dijagram (plan)} je graf, kojim je prikazan redoslijed aktivnosti jednog projekta i njihove međusobne zavisnosti, čime se postiže uvid u način, redoslijed i vrijeme izvršenja aktivnosti.
+
+Veze se prikazuju linijama orijentisanim strelicama. Podrazumijeva se da je veza orijentisana od lijevo na desno, te da je lijevo aktivnost prethodna, a desno naredna.
+
+\textbf{Osnovni termini:}
+\begin{itemize}
+    \item \textbf{DOGAĐAJ:} Stanje koje indicira kada aktivnost počinje ili završava. U mrežnim dijagramima su predstavljeni sa krugovima. Obično se označavaju brojevima: $i$ - početni događaj aktivnosti, $j$ - krajnji događaj aktivnosti.
+    
+    \item \textbf{AKTIVNOST:} Predstavlja izvršenje nekog taska. U mrežnim dijagramima se predstavljaju strelicama između dva kruga - događaja. Usmjerenje strelice pokazuje tok aktivnosti. Obično se označavaju sa $i-j$, gdje su $i$ i $j$ početni i krajnji događaj aktivnosti.
+    
+    \item \textbf{TRAJANJE:} Vrijeme potrebno da se izvrši neka aktivnost. Izražava se u vremenskim jedinicama (sati, dani, sedmice, godine).
+    
+    \item \textbf{VREMENSKA REZERVA:} Pokazuje koliko se može produžiti ili odgoditi izvršavanje neke aktivnosti. Aktivnost ima vremenski rezervu veću od nule ako joj je vrijeme trajanja manje od raspoloživog vremena.
+    
+    \item \textbf{KRITIČNI PUT:} Skup aktivnosti čije se izvršavanje ne može produžiti niti odgoditi, a da se to ne odrazi na trajanje projekta.
+\end{itemize}
+
+\subsubsection{Proračun naprijed}
+Proračunom naprijed se odredi najranije vrijeme u kojem se može dogoditi svaki događaj u rasporedu.
+
+\textbf{Najraniji početak aktivnosti:}
+\[
+EF_i = \max[EF(PA) + t_i]
+\]
+gdje je $PA$ oznaka za prethodnu aktivnost, a $t_i$ trajanje aktivnosti $i$.
+
+\subsubsection{Proračun nazad}
+Proračun "nazad", na osnovu koga se određuje vrijednost najkasnijeg početka (LF) svake aktivnosti:
+\[
+LF_i = \min[LF(NA) - t_i(NA)]
+\]
+gdje je $NA$ oznaka za narednu aktivnost.
+
+\subsection{Critical Path Method (CPM)}
+
+One aktivnosti čija su vremena najranijeg i najkasnijeg početka, odnosno završetka, jednaka imaju vremensku rezervu jednaku 0. To su tzv. kritične aktivnosti, koje tvore kritični put.
+
+\textbf{Critical Path određuje trajanje projekta.} Ukoliko bilo koja aktivnost koja je na kritičnom putu bude odložena, cijeli projekat će kasniti!
+
+\subsection{DiSC Profili}
+
+DiSC profili se tiču samospoznaje i komunikacije. Osmišljeni su kako bi pomogli poboljšati komunikaciju i suradnju na radnom mjestu, poboljšati performanse timova i poboljšati učinkovitost voda i menadžera.
+
+\textbf{DiSC je akronim koji označava četiri glavna profila ličnosti:}
+\begin{itemize}
+    \item \textbf{D - Dominance (Dominacija):} Tendencija ka samopouzdanju i stavljanje naglaska na postizanje krajnjih rezultata. Samopouzdani su, iskreni i zahtjevni.
+    \item \textbf{I - Influence (Utjecaj):} Tendencija ka pristupačnosti i stavljanje naglaska na odnose, utjecaj ili uvjeravanje drugih. Entuzijastični, optimistični, povjerljivi i energični.
+    \item \textbf{S - Steadiness (Stabilnost):} Tendencija ka pouzdanosti i naglasak na suradnji i iskrenosti. Skloni smirenoj naravi i ne vole da ih se požuruje.
+    \item \textbf{C - Conscientiousness (Savjesnost):} Naglasak na kvalitetu, tačnosti, stručnosti i kompetenciji. Uživaju u svojoj neovisnosti, zahtijevaju detalje i često se boje da ne pogriješe.
+\end{itemize}
+
+\subsection{Iron Triangle}
+
+Tri ograničenja u Iron Triangle-u služe i kao mjerilo uspjeha ili neuspjeha projekta:
+\begin{itemize}
+    \item \textbf{Opseg} - šta projekt treba da isporuči
+    \item \textbf{Vrijeme} - kada projekt treba da bude završen
+    \item \textbf{Troškovi} - koliko će projekt koštati
+\end{itemize}
+
+Da bi projekt bio uspješan, navedena tri faktora moraju biti uravnotežena.
+
+\subsection{Upravljanje kvalitetom}
+
+Kvaliteta je četvrto ograničenje (jednako važno, ali često zaboravljeno).
+
+\textbf{Upravljanje kvalitetom projekta} obuhvata procese i aktivnosti koje se koriste da bi se utvrdila i postigla kvaliteta rezultata projekta.
+
+\textbf{Kvaliteta je jednostavno ono što kupcu ili stakeholderima treba od rezultata projekta.}
+
+\subsubsection{Koncepti upravljanja kvalitetom}
+
+Tri su ključna koncepta upravljanja kvalitetom:
+\begin{enumerate}
+    \item \textbf{Zadovoljstvo kupaca} - Nekada i kada su svi zahtjevi i ciljevi ispunjeni, a sam proces nije bio zadovoljavajući, kupac će projekat obilježiti kao neuspješan.
+    
+    \item \textbf{Prevencija prije inspekcije} - Trošak kvalitete (Cost of Quality - COQ) je novac koji se troši za bavljenje problemima tokom projekta, a potom i nakon projekta, kako bi se riješili eventualni propusti.
+    
+    \textbf{Vrste troškova:}
+    \begin{itemize}
+        \item Troškovi prevencije i procjene
+        \item Troškovi neuskladenosti/neuspjeha (unutarnji i vanjski troškovi kvara)
+    \end{itemize}
+    
+    \item \textbf{Kontinuirano poboljšanje} - Neprekidni napori poboljšanja proizvoda, usluga ili procesa tokom vremena
+\end{enumerate}
+
+\subsubsection{PDCA / Deming Cycle}
+
+PDCA (Plan-Do-Check-Act ili Plan-Do-Check-Adjust) je iterativna metoda upravljanja u četiri koraka koja se koristi u poslovanju za kontrolu i kontinuirano poboljšavanje procesa i proizvoda.
+
+\textbf{Koraci:}
+\begin{enumerate}
+    \item \textbf{Plan} - Planiranje
+    \item \textbf{Do} - Izvršavanje
+    \item \textbf{Check} - Provjera
+    \item \textbf{Act/Adjust} - Djelovanje/Podešavanje
+\end{enumerate}
+
+\section{Tutorijal 6: Analiza zahtjeva}
+
+\subsection{Definicija analize zahtjeva}
+
+\textbf{Zahtjevi} su izjave koje određuju šta sistem treba raditi zarad pružanja funkcionalnosti.
+
+\textbf{Analiza zahtjeva} je proces definiranja očekivanja korisnika za aplikaciju koja treba biti izgrađena ili izmijenjena.
+
+Analiza zahtjeva se provodi radi prepoznavanja potreba različitih stakeholdera. Stoga, analiza zahtjeva znači analizu, dokumentiranje, potvrđivanje i upravljanje softverskim ili sistemskim zahtjevima.
+
+\textbf{Dobro definirani zahtjevi su presudni za uspjeh projekta.} Svi sudionici u projektu (programeri, krajnji korisnici, menadžeri) moraju postići zajedničko razumijevanje o tome kakav će proizvod biti i šta će isti raditi.
+
+\subsection{4 koraka analize zahtjeva}
+
+\begin{enumerate}
+    \item \textbf{Prikupljanje zahtjeva:} Komuniciranje sa korisnicima u cilju saznanja njihovih zahtjeva
+    
+    \item \textbf{Analiziranje zahtjeva:} Utvrđivanje jesu li navedeni zahtjevi nejasni, nepotpuni, dvosmisleni, a zatim rješavanje ovih pitanja
+    
+    \item \textbf{Modeliranje zahtjeva:} Zahtjevi se mogu dokumentirati u različitim oblicima, kao što su dokumenti, slučajevi upotrebe, korisničke priče ili specifikacije procesa
+    
+    \item \textbf{Pregled i retrospektiva:} Članovi tima analiziraju cjelokupan proces te predlažu eventualna unapređenja
+\end{enumerate}
+
+\subsection{Metode prikupljanja zahtjeva}
+
+\subsubsection{Tradicionalne metode}
+\begin{itemize}
+    \item Intervjuiranje pojedinačnih korisnika
+    \item Intervjuiranje grupa korisnika
+    \item Promatranje rada (observiranje)
+    \item Proučavanje poslovnih dokumenata
+\end{itemize}
+
+\subsubsection{Savremene metode}
+\begin{itemize}
+    \item \textbf{Joint Application Design (JAD):} Okuplja ključne korisnike, menadžere i analitičare sistema. Namjena: sakupiti zahtjeve o sistemu simultano od ključnih ljudi, intenzivna grupno orijentirana tehnika određivanja zahtjeva. Članovi tima sastaju se u izolaciji na duže vrijeme.
+    
+    \item \textbf{CASE alati:} Analiza postojećih sistema, domena je softverskih alata za izradu i implementaciju aplikacija. Osnovna ideja CASE alata je da ugradeni programi mogu pomoći u analizi sistema u razvoju kako bi se poboljšala kvaliteta i pružili bolji ishodi. Primjeri: Accept 360, Accompa, CaseComplet.
+    
+    \item \textbf{Sistem prototipova:} Iterativni razvojni proces, brzo pretvara zahtjeve u radnu verziju sistema. Nakon što korisnik vidi zahtjeve pretvorene u sistem, on će tražiti izmjene ili će generisati dodatne zahtjeve.
+\end{itemize}
+
+\subsection{Analysis paralysis}
+
+Analysis paralysis odnosi se na situaciju u kojoj se pojedinac ili skupina nisu u stanju pomjeriti naprijed s odlukom zbog prevelike količine podataka. Opisuje stanje kada se zaglavi u procesu analize. Trošak njihovog prikupljanja i struktuiranja može biti velik i vremenski i finansijski. \textbf{Previše analize nije produktivno.}
+
+\subsection{Intervju}
+
+Intervju je tehnika prikupljanja zahtjeva putem razgovora.
+
+\textbf{Vrste intervjua:}
+\begin{itemize}
+    \item \textbf{Strukturirani/formalni intervju:} Pitanja se postavljaju po zadanom/standardiziranom redoslijedu (nefleksibilan intervju bez odstupanja)
+    \item \textbf{Nestrukturirani/slobodni intervju:} Usmjereni razgovor
+\end{itemize}
+
+\textbf{Proces intervjua:}
+\begin{enumerate}
+    \item \textbf{Priprema za intervju:} Spisak ispitanika, svrha intervjua, mjesto i vrijeme, informacije o ispitaniku, poslu, priprema koncepta, određivanje pitanja
+    \item \textbf{Korak prije intervjua:} Dolazak ranije sa spremnim konceptom
+    \item \textbf{Intervjuiranje:} Postavljanje pitanja, kreiranje zabilježki
+    \item \textbf{Zaključivanje intervjua:} Zahvala sugovorniku, finalna pitanja i komentari
+    \item \textbf{Evaluacija:} Analiziranje prikupljenog i zapisanog, pregledati bilješke u roku od 48h
+\end{enumerate}
+
+\textbf{Tipovi pitanja:}
+\begin{itemize}
+    \item \textbf{OTVORENA:} Ispitaniku daje priliku da slobodno izrazi svoje mišljenje. Uključivanjem pitanja otvorenog formata u svoj upitnik, možete dobiti istinite, pronicljive i čak neočekivane prijedloge.
+    \item \textbf{ZATVORENA:} Vrsta pitanja koja ispitanicima daju mogućnost da odaberu iz različitog skupa unaprijed definiranih odgovora
+    \item \textbf{OPIPAVANJA:} Dodatna pitanja, koja se nadovezuju na prethodna otvorena ili zatvorena pitanja. Njihov cilj je da potvrde odgovor ili da ga prošire sa dodatnim informacijama.
+\end{itemize}
+
+\subsection{Analiza dokumenata}
+
+Analiza dokumenata je tehnika koja se koristi za prikupljanje zahtjeva tokom faze iznošenja zahtjeva projekta. Opisuje akt pregleda postojeće dokumentacije kako bi se izvukli podaci koji su relevantni za tekući projekat.
+
+\subsection{Upitnici}
+
+Upitnik je instrument za prikupljanje podataka, koji gotovo uvijek uključuje traženje od ispitanika da odgovori na set usmenih ili pismenih pitanja.
+
+\textbf{Karakteristike upitnika:}
+\begin{itemize}
+    \item Upitnici omogućavaju da se isti set pitanja postavi većoj grupi ljudi
+    \item Upitnici su efikasni kada sistemski analitičar traži malu količinu podataka od velike grupe ljudi
+    \item Upitnik mora biti pažljivo formuliran kako bi značenje svakog pitanja bilo jasno većini ispitanika
+    \item Upitnike je teško sastaviti - isto pitanje može imati različita značenja za različite ispitanike
+    \item Efikasan upitnik je kratak, jasan i dobro testiran
+    \item Jedna od prednosti upitnika u sistemskoj analizi je to što omogućava velikoj grupi ljudi da osjete da učestvuju u razvoju budućih sistema kompanije
+\end{itemize}
+
+\subsection{Funkcionalni vs nefunkcionalni zahtjevi}
+
+\subsubsection{Funkcionalni zahtjevi}
+
+Opisuju funkcije koje softver mora da obavlja. Funkcionalni softverski zahtjevi pomažu da zabilježite predviđeno ponašanje sistema. Ovo ponašanje se može izraziti kao funkcije, usluge ili zadaci koje sistem obavlja da bi ispunio korisnička očekivanja.
+
+\textbf{Primjer:} Softver mora omogućiti spašavanje izvještaja.
+
+\subsubsection{Nefunkcionalni zahtjevi}
+
+Definiraju atribute kvaliteta softverskog sistema. Predstavljaju skup standarda koji se koriste za prosudivanje konkretnog rada sistema. Neophodni za osiguravanje upotrebljivosti i efikasnosti cjelokupnog softverskog sistema.
+
+\textbf{Obuhvataju:}
+\begin{itemize}
+    \item Političke faktore i zakonske procedure
+    \item Ko ima autorizovan pristup i pod kojim okolnostima
+    \item Fizičko i tehničko okruženje u kojem će sistem raditi
+    \item Brzina, kapacitet i pouzdanost sistema
+\end{itemize}
+
+\textbf{Primjer:} Web lokacija bi se trebala učitati za 3 sekunde kada je broj istodobnih korisnika > 10000.
+
+\subsection{Use Case - Model slučaja upotrebe}
+
+\textbf{Slučajevi upotrebe} su detaljni opisi kako korisnici koriste sistem za postizanje cilja. Oni opisuju sistem iz perspektive korisnika, tako da korisnik ima aktivnu ulogu u njihovom kreiranju.
+
+\textbf{Model slučaja upotrebe} sastoji se od dva artefakta:
+\begin{itemize}
+    \item \textbf{Dijagram slučaja upotrebe:} Grafički prikaz korisnika i slučajeva upotrebe vezanih za iste
+    \item \textbf{Opis slučaja upotrebe:} Detaljan tekst koji korak po korak opisuje interakciju i dijalog između aktera i sistema
+\end{itemize}
+
+\subsubsection{Elementi slučaja upotrebe}
+
+\begin{itemize}
+    \item \textbf{Osnovne informacije:} Naziv, ID, prioritet, učesnik (osoba, drugi sistem ili uređaj koji je u interakciji sa sistemom), opis, trigger (događaj koji uzrokuje slučaj upotrebe), učestalost upotrebe
+    
+    \item \textbf{Preduvjeti:} Stanja koja trebaju biti uspostavljena prije nego što počne slučaj upotrebe
+    
+    \item \textbf{Postkondicioni uvjeti:} Postkondicioniranje uspjeha označava šta se dešava kada se proces uspješno završi. Postkondicija neuspjeha je suprotna; ona određuje šta se događa kada postupak ne završi uspješno.
+    
+    \item \textbf{Tok:}
+    \begin{itemize}
+        \item \textbf{Normalni tok (happy path):} Ruta koja opisuje korake po planu bez neočekivanih koraka do ispunjenja cilja
+        \item \textbf{Alternativni tok:} Ruta koja opisuje alternativne korake do ispunjenja cilja
+        \item \textbf{Tok izuzetaka:} Ruta koja opisuje korake koji vode do neostvarivanja cilja
+    \end{itemize}
+    
+    \item \textbf{Rezultati:} Definiraju finalni proizvod slučaja upotrebe
+    
+    \item \textbf{Ulazi i izlazi:} Sumiraju osnovne ulaze i izlaze svakog koraka u slučaju upotrebe
+\end{itemize}
+
+\subsubsection{Dijagram slučaja upotrebe}
+
+Dijagrami slučaja upotrebe:
+\begin{itemize}
+    \item Pokazuju samo ono što sistem treba da uradi (funkcionalni zahtjevi)
+    \item Važno je otkriti i predstaviti funkcionalne zahtjeve na početku projekta (ušteda vremena i novca kasnije)
+    \item Prikazuje ponašanje sistema kako ga vidi korisnik
+    \item Aktivnosti na visokom nivou
+    \item Odgovara na pitanja: Šta se opisuje? (Sistem), Ko je u interakciji sa sistemom? (učesnici), Šta učesnici mogu da urade? (slučajevi upotrebe)
+\end{itemize}
+
+\subsubsection{Definiranje sistemskih zahtjeva}
+
+\textbf{Prvi korak:} Odredite ko/šta je u interakciji sa sistemom! $\rightarrow$ \textbf{UČESNICI}
+
+\textbf{Učesnik:} Eksterni entitet povezan sa sistemom, ali nije dio sistema. Pokreće neke radnje. Može biti stvarna osoba ili drugi sistem (npr. aplikacija). Imaju imena koja ne bi trebala biti vezana za organizaciju kompanije. Napiši kao imenicu u jednini.
+
+\textbf{Drugi korak:} Pronađite slučajeve u kojima se sistem koristi za obavljanje određenih zadataka učesnika! $\rightarrow$ \textbf{SLUČAJEVI UPOTREBE}
+
+Slučajevi upotrebe se identifikuju analizom dokumenata sa zahtevima. Ovi dokumenti uključuju specifikacije napisane na prirodnom jeziku koje objašnjavaju šta korisnik želi od sistema.
+
+\textbf{Treći korak:} Opišite slučajeve upotrebe!
+
+Dijagrami ne mogu pružiti dovoljno detalja dizajnerima sistema. Najčešće se dodatno opisuju složeniji sistemi. Opisan je SVAKI slučaj upotrebe u modelu.
+
+\subsubsection{Scenario}
+
+Da bi se kroz analizu zahtjeva lakše identifikovali slučajevi upotrebe, potrebno je razviti scenario.
+
+\textbf{SCENARIO} - niz koraka koji opisuje interakciju između učesnika i sistema.
+
+\textbf{Primjer scenarija: Web shop}
+
+Kupac pretražuje web katalog proizvoda i dodaje željene proizvode u košaricu. Prilikom kupovine kupac odabire lokaciju dostave i daje podatke o kreditnoj kartici i potvrđuje kupovinu. Sistem zatim provjerava valjanost kreditne kartice, potvrđuje kupovinu i šalje e-mail kojim potvrđuje kupovinu.
+
+\textbf{Alternativni scenario:} Kreditna kartica odbijena! Kupovina proizvoda je obustavljena!
+
+\subsubsection{Veze između elemenata modela}
+
+U dijagramu slučaja upotrebe, definirane su četiri vrste veza:
+
+\begin{enumerate}
+    \item \textbf{Asocijacija (Association):} Predstavlja komunikacijsku putanju između aktera i slučaja upotrebe u kojem sudjeluje. U slučaju da se želi naglasiti koji akter inicira određeni obrazac upotrebe (inicijator) to se može napraviti dodatkom strelice na vezu asocijacije.
+    
+    \item \textbf{Proširene (Extend):} Relacijom proširenja se označava dodavanje dodatnih funkcionalnosti osnovnom slučaju upotrebe. Prošireni slučaj upotrebe predstavljaju izvršavanje dodatnih funkcionalnosti osnovnog slučaja upotrebe ili funkcionalnosti koje se izvršavaju samo ako su zadovoljeni prethodno definirani uslovi. Osnovni slučaj upotrebe mora moći funkcionirati samostalno bez upotrebe proširenog slučaja.
+    
+    \item \textbf{Poopćavanje (Generalization):} Relacija poopćavanja ili relacija nasljeđivanja se koristi kada postoji podslučaj upotrebe (dijete) koji koristi svojstva, operacije i odnose od višeg slučaja uporabe (roditelj). Poopćavanje se može primijeniti i između aktera sistema.
+    
+    \item \textbf{Obuhvaćanje/Sadržajne (Include):} Relacija obuhvaćanja se primjenjuje kada osnovni slučaj upotrebe izričito uključuje funkcionalnosti drugog slučaja upotrebe. Obuhvaćeni slučaj upotrebe ne postoji samostalno, već ovisi o jednom ili više osnovnih slučaja upotrebe. Njime se izdvajaju zajedničke funkcionalnosti više slučaja upotrebe.
+\end{enumerate}
+
+\textbf{Granice sistema:} Oni služe za jasno odvajanje učesnika (koji nisu dio sistema) od samog sistema. Nacrtani su na način da su svi slučajevi upotrebe stavljeni u jedan kvadrat. Kvadratu se najčešće daje ime samog sistema.
+
+\section{Tutorijal 7: Modeliranje podataka i procesa}
+
+\subsection{Uvod u modeliranje}
+
+\textbf{Model je aproksimacija stvarnosti.}
+
+\subsection{Modeliranje podataka}
+
+Modeliranje podataka je proces kreiranja modela podataka za podatke koji se pohranjuju u bazi podataka. Modeliranje podataka pomaže u vizualnom predstavljanju podataka i provodi poslovna pravila, regulatorne usklađenosti i politike o tim podacima. Modeli podataka osiguravaju dosljednost u imenovanju, zadanim vrijednostima, semantici, sigurnosti, istovremeno osiguravajući kvalitetu podataka.
+
+\subsubsection{Nivoi modeliranja podataka}
+
+Modeliranje podataka odvija se na tri nivoa: fizičkom, logičkom i konceptualnom.
+
+\begin{enumerate}
+    \item \textbf{Konceptualni nivo:} Ovaj model podataka definira šta sistem sadrži. Ovaj model obično kreiraju poslovni stakeholderi i arhitekti podataka. Namjena je organizirati, obuhvatiti i definirati poslovne koncepte i pravila.
+    \begin{itemize}
+        \item Najviši, apstraktni nivo modeliranja
+        \item Fokusira se na što bolje razumijevanje podataka i njihovih veza iz poslovne perspektive
+        \item Nema tehničkih detalja, poput vrsta podataka ili tehnologija
+        \item Koristi dijagrame entiteta i veza (ER dijagram)
+        \item Fokusiran je na potrebe korisnika
+    \end{itemize}
+    
+    \item \textbf{Logički nivo:} Definira kako sistem treba implementirati bez obzira na DBMS. Ovaj model obično kreiraju arhitekti podataka i poslovni analitičari. Namjena je razviti tehničku kartu pravila i strukture podataka.
+    \begin{itemize}
+        \item Prelazni nivo između apstraktnog konceptualnog modela i tehničkog fizičkog modela
+        \item Fokusira se na strukturiranje podataka u obliku koji baza podataka može obraditi, ali i dalje nezavisno od specifične tehnologije
+        \item Precizno definiše atribute entiteta (npr. ISBN za knjige, ID za člana)
+        \item Uključuje primarne i strane ključeve (identifikatori za relacije)
+        \item Normalizacija se koristi za smanjenje redundancije
+    \end{itemize}
+    
+    \item \textbf{Fizički nivo:} Ovaj model podataka opisuje kako će se sistem implementirati pomoću određenog DBMS sistema. Ovaj model obično kreiraju DBA i programeri. Svrha je stvarna implementacija baze podataka.
+    \begin{itemize}
+        \item Najdetaljniji i tehnički nivo modeliranja
+        \item Definiše kako će podaci biti stvarno skladišteni u bazi podataka
+        \item Fokusira se na implementaciju baze u konkretnom sistemu
+        \item Definiše konkretne tipove podataka (npr. VARCHAR, INT)
+        \item Određuje indekse, particije i pravila o pristupu
+        \item Fokusiran na performanse i tehničke detalje
+    \end{itemize}
+\end{enumerate}
+
+Podela omogućava postupno prelazak od apstraktnog razmišljanja (poslovni zahtevi) ka tehničkoj implementaciji, što olakšava komunikaciju između poslovnih analitičara, dizajnera baza podataka i inženjera.
+
+\subsubsection{Vrste modela podataka}
+
+\begin{itemize}
+    \item \textbf{Hijerarhijski model:} Koristi hijerarhiju za strukturiranje podataka u obliku poput stabla
+    
+    \item \textbf{Relacijski model:} Podaci predstavljeni u obliku tablica
+    
+    \item \textbf{Mrežni model:} Inspirisan hijerarhijskim modelom. Za razliku od hijerarhijskog modela, ovaj model olakšava prenošenje složenih odnosa, jer se svaki zapis može povezati s više matičnih zapisa
+    
+    \item \textbf{Objektno orijentiran model:} Sastoji se od kolekcije objekata, svaki sa svojim atributima i metodama. Ova vrsta modela baze podataka naziva se i post-relacijski model baze podataka
+    
+    \item \textbf{Entity Relationship model:} Predstavlja entitete i njihove odnose u grafičkom formatu. Entitet može biti bilo šta - koncept, podatak ili objekt
+\end{itemize}
+
+\subsection{ER model}
+
+\subsubsection{Entitet}
+
+\textbf{Entitet:} Objekt ili komponenta podataka; osnovni gradivni blok za model podataka. Može predstavljati osobu, mjesto, događaj ili objekat o kojem se prikupljaju podaci. Naziv entiteta treba biti u obliku \textbf{<<Imenica>>}.
+
+\textbf{Slabi entitet} je onaj koji ne posjeduje primarni kljuc.
+
+\subsubsection{Atributi}
+
+\textbf{Atributi:} Karakteristike ili svojstva entiteta.
+
+\textbf{Vrste atributa:}
+\begin{itemize}
+    \item \textbf{Key attribute:} Jedinstvena karakteristika entiteta (matični broj, broj lične karte, pasoša, ...)
+    
+    \item \textbf{Composite attribute:} Kombinacija drugih atributa poznata je kao složeni atribut. (adresa: ulica, broj, država)
+    
+    \item \textbf{Multivalued:} Atribut koji može sadržavati više vrijednosti (Osoba može imati više telefonskih brojeva)
+    
+    \item \textbf{Derived:} Izvedeni atribut je onaj čija je vrijednost dinamička i izvedena je iz drugog atributa. (Starost osobe je izvedeni atribut te se s vremenom mijenja i može se izvesti iz drugog atributa (Datum rođenja))
+\end{itemize}
+
+\subsubsection{Veze i kardinalnost}
+
+\textbf{Veza:} Ovisnost ili povezanost između dva entiteta. Veze se označavaju glagolima, koji trebaju pojasniti odnos između dva entiteta.
+
+\textbf{KARDINALNOST} je odnos broja instanci entiteta i broja instanci drugog entiteta.
+
+\textbf{Vrste kardinalnosti:}
+\begin{itemize}
+    \item \textbf{One to One (1:1):} Jedna instanca entiteta povezana s jednom instancom drugog entiteta
+    
+    \item \textbf{One to Many (1:N):} Jedna instanca entiteta povezana s više instanci drugog entiteta
+    
+    \item \textbf{Many to One (N:1):} Više instanci entiteta povezano s jednom instancom drugog entiteta
+    
+    \item \textbf{Many to Many (M:N):} Više od jedne instance entiteta povezano je s više instanci drugog entiteta
+\end{itemize}
+
+\subsection{Normalizacija}
+
+Normalizacija je tehnika koja organizuje atribute na način da formiraju neredudantne, stabilne, fleksibilne i prilagodljive entitete.
+
+\textbf{Model podataka treba biti:} fleksibilan, neredudantan, jednostavan
+
+Normalizacija uključuje tri koraka:
+\begin{enumerate}
+    \item Prva normalna forma (1NF)
+    \item Druga normalna forma (2NF)
+    \item Treća normalna forma (3NF)
+\end{enumerate}
+
+\subsubsection{Prva normalna forma (1NF)}
+
+\textbf{Cilj:} Postići da tablica sadrži samo atomske vrijednosti u svakoj ćeliji (tj. vrijednosti koje se ne mogu dalje podijeliti) i da svaki stupac ima jedinstven naziv.
+
+\textbf{Karakteristike:}
+\begin{itemize}
+    \item Svaka ćelija tabele treba sadržavati jednu vrijednost
+    \item Svaki zapis mora biti jedinstven
+\end{itemize}
+
+\textbf{Koraci za postizanje 1NF:}
+\begin{enumerate}
+    \item Ukloniti višestruke vrijednosti: Pobrinuti se da svaki stupac sadrži samo jednu vrijednost po retku
+    \item Osigurati jedinstvenost stupaca: Svaki stupac treba imati jedinstven naziv i jasno definiranu domenu (tip i format podataka)
+\end{enumerate}
+
+\subsubsection{Druga normalna forma (2NF)}
+
+\textbf{Cilj:} Ukloniti parcijalne zavisnosti, tj. zavisnosti gdje neki atributi zavise samo od dijela primarnog ključa u tablici sastavljenoj od više atributa.
+
+\textbf{Karakteristike:}
+\begin{itemize}
+    \item 1NF
+    \item Ako su svi atributi, koji nisu primarni kljuc, ovisni od cijelog primarnog ključa
+\end{itemize}
+
+\textbf{Koraci za postizanje 2NF:}
+\begin{enumerate}
+    \item Identificirati i ukloniti parcijalne zavisnosti: Ako tablica ima složeni primarni kljuc (sastavljen od više stupaca), svaki stupac koji nije dio ključa mora ovisiti o cijelom ključu, a ne samo o dijelu
+    \item Razdvajanje tablica: Ako neki atributi ne ovise o cijelom ključu, trebali bi biti izdvojeni u zasebnu tablicu gdje će formirati funkcionalnu cjelinu s dijelom ključa o kojem zavise
+\end{enumerate}
+
+\subsubsection{Treća normalna forma (3NF)}
+
+\textbf{Cilj:} Ukloniti tranzitivne zavisnosti, gdje atributi zavise od drugih atributa koji nisu kljuc.
+
+\textbf{Karakteristike:}
+\begin{itemize}
+    \item 2NF
+    \item Ako su vrijednosti njegovih atributa, koji nisu primarni kljuc, neovisne od drugih atributa, koji nisu primarni kljuc
+\end{itemize}
+
+\textbf{Koraci za postizanje 3NF:}
+\begin{enumerate}
+    \item Identificirati i ukloniti tranzitivne zavisnosti: Ako neki atribut zavisi od drugih neključnih atributa, te zavisnosti treba ukloniti
+    \item Razdvajanje tablica: Atributi koji imaju tranzitivne zavisnosti trebaju biti izdvojeni u zasebne tablice
+\end{enumerate}
+
+\subsubsection{Kako kreirati ERD?}
+
+\begin{enumerate}
+    \item Identifikacija entiteta
+    \item Identifikacija atributa za svaki entitet
+    \item Kreiranje veza između entiteta
+\end{enumerate}
+
+\subsubsection{Primjer: ERD za kompaniju za osiguranje automobila}
+
+Kreirati ERD za kompaniju za osiguranje automobila čiji klijent posjeduje po jedan ili više automobila. Svaki automobil može prouzrokovati 0 ili više nezgoda.
+
+\begin{itemize}
+    \item Automobil je opisan modelom, godinom proizvodnje, tablicama
+    \item Osoba opisana ID vozača, adresom i imenom
+    \item Nezgoda opisana brojem štete, lokacijom i datumom
+    \item Također, nezgoda će u odnosu na automobil opisati i iznos štete
+\end{itemize}
+
+\subsection{Modeliranje procesa}
+
+Model procesa je način prikazivanja kako bi poslovni sistem trebao raditi. On ilustruje procese ili aktivnosti, te kako se podaci razmjenjuju između njih.
+
+\subsection{Dijagrami aktivnosti}
+
+Dijagram aktivnosti je dijagram ponašanja, tj. prikazuje ponašanje sistema.
+
+\subsubsection{Elementi dijagrama aktivnosti}
+
+\begin{itemize}
+    \item \textbf{Inicijalno stanje:} Početak procesa
+    
+    \item \textbf{Akcija ili stanje aktivnosti:} Aktivnost predstavlja izvršavanje akcije na objektima. Predstavljamo aktivnost pomoću pravougaonika sa zaobljenim uglovima. U osnovi svaka radnja ili događaj koji se odvija predstavljen je pomoću aktivnosti.
+    
+    \item \textbf{Akcijski tok ili Kontrolni tokovi:} Akcijski tokovi ili Kontrolni tokovi također se nazivaju putanje i rubovi. Koriste se za prikazivanje prelaska iz jednog stanja u drugo.
+    
+    \item \textbf{Čvor odluke i grananje:} Kad moramo donijeti odluku prije nego što odlučimo o protoku, koristimo čvor odluke.
+    
+    \item \textbf{Čuvari:} Čuvar se odnosi na izjavu napisanu pored čvora odluke na strelici, unutar uglastih zagrada.
+    
+    \item \textbf{Fork:} Čvorovi Fork koriste se za podršku paralelnim aktivnostima. Odluka se ne dijeli prije podjele izvršavanja paralelnih aktivnosti. Oba dijela se moraju izvršiti u slučaju fork-a.
+    
+    \item \textbf{Join:} Čvorovi pridruživanja koriste se za podršku istodobnim aktivnostima konvergiranjem u jednu.
+    
+    \item \textbf{Spajanje ili spajanje događaja:} Scenariji nastaju kada aktivnosti koje se ne izvršavaju istovremeno moraju biti spojene. Za takve scenarije koristimo oznaku spajanja. Dvije ili više aktivnosti možemo spojiti u jednu ako kontrola prede na sljedeću aktivnost bez obzira na odabrani put.
+    
+    \item \textbf{Swimlanes:} Koristimo swimlanes za grupiranje povezanih aktivnosti u jednoj koloni. Swimlanes mogu biti vertikalni i horizontalni. Nije obavezna upotreba swimlanes-a. Obično daju više jasnoće dijagramu aktivnosti.
+    
+    \item \textbf{Vremenski signal:} Možemo imati scenario u kojem je nekom događaju potrebno određeno vrijeme.
+    
+    \item \textbf{Signali:} Signal ukazuje na to da aktivnost prima događaj iz spoljnog procesa.
+    
+    \item \textbf{Kraj toka:} Označava kraj određenog toka, ali ne i kraj kompletne aktivnosti.
+\end{itemize}
+
+\subsubsection{Primjeri dijagrama aktivnosti}
+
+\textbf{Primjer 1: Login akcija sistema}
+
+Nacrtati dijagram aktivnosti za login akciju sistema. Korisnik unosi username i password i kada su oni ispravni se uspješno loguje na sistem. U suprotnom mu se otvara prozor sa porukom o nevalidnosti kredencijala te ga se ponovo vraća na login stranicu. Kada se korisnik uspješno loguje prikazane su mu njegove postavke.
+
+\textbf{Primjer 2: Email komunikacija}
+
+Kreirati dijagram aktivnosti za email komunikaciju. Prvobitno se uspostavlja email komunikacija te se nakon toga paralelno izvrše radnje slanja emaila i primanja odgovora. Ukoliko je sadržaj privatan, šalje se enkriptovan email, u suprotnom sistem šalje standardan email. Nakon slanja bilo koje vrste emaila, sistem jednako nastavlja sa radom. Kada je riječ o primanju odgovora, sistem čeka 2 sata na odgovor te provjerava da li je odgovor validan ili ne. Ukoliko je odgovor nevalidan ili ne postoji prekida se izvršenje, u suprotnom izvršenje se nastavlja. Nakon završetka svih pomenutih paralelnih aktivnosti, sistem potvrđuje uspostavu email komunikacije.
+
+\end{document}

@@ -1,0 +1,755 @@
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+
+
+
+
+
+
+
+
+
+
+
+
+OSNOVE INFORMACIONIH SISTEMA
+Tutorijal 2
+
+
+
+
+
+
+
+
+
+
+
+
+22.10.2024.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+SDLC - faze
+
+
+
+
+> SDLC faza planiranja je prva faza u životnom ciklusu razvoja softvera (Software Development Life Cycle - SDLC).
+
+> Ova faza je kljucna jer postavlja temelje za cijeli projekt i definira njegove ciljeve, opseg, potrebne resurse i vremenski okvir.
+
+> Osnovni zadatak faze planiranja je osigurati da svi clanovi tima i zainteresirane strane (stakeholderi) razumiju što se želi postici i na koji nacin ce se to postici.
+
+
+
+1.
+Planiranje
+
+
+2.
+Analiza
+
+
+3.
+Dizajn
+
+
+4.
+Implementacija
+
+
+5.
+Održavanje
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+SDLC - faze
+
+
+
+
+
+1. Incijacija projekta : kakvu poslovnu vrijednost sistem isporucuje organizaciji.
+Izlazi ovog koraka su:
+- zahtjev za sistemom
+- analiza izvodljivosti.
+
+2. Upravljanje projektom: projekt menadžer kreira plan projekta, uspostavlja tim, dodjeljuje zadatke clanovima tima, te odreduje tehnike koje ce obezbjediti kontrolu nad projektom kroz SLDC.
+
+
+
+1.
+Planiranje
+
+
+2.
+Analiza
+
+
+3.
+Dizajn
+
+
+4.
+Implementacija
+
+
+
+5.
+Održavanje
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Zahtjev za sistemom / analiza izvodljivosti
+
+
+
+* Identifikacija zahtjeva za sistemom
+* Prikupljanje informacija: Ova aktivnost ukljucuje angažovanje sa kljucnim zainteresovanim stranama (korisnicima, menadžerima, tehnickim timovima) kako bi se prikupile informacije o njihovim potrebama i ocekivanjima. To može ukljucivati intervjue, ankete, fokus grupe, i radionice.
+
+* Definisanje zahtjeva: Na osnovu prikupljenih informacija, tim može poceti da definiše funkcionalne (šta sistem treba da radi) i nefunkcionalne zahtjeve (kako treba da se ponaša, performanse, sigurnost, itd.).
+
+* Analiza izvodljivosti
+* Tehnicka izvodljivost, Ekonomska izvodljivost, Operativna izvodljivost , Organizaciona izvodljivost, Zakonska izvodljivost, Rasporedna izvodivost
+
+* Dokumentovanje i validacija
+* Dokumentovanje zahtjeva: Sve prikupljene informacije i analize se dokumentuju u SRS (Software Requirements Specification) dokumentu, koji služi kao referenca za razvoj i testiranje.
+
+* Validacija: Nakon što su zahtjevi definisani, važno je da se oni validiraju sa kljucnim zainteresovanim stranama kako bi se osiguralo da svi zahtevi odražavaju stvarne potrebe i ocekivanja.
+
+
+
+
+
+1.
+Planiranje
+
+
+2.
+Analiza
+
+
+3.
+Dizajn
+
+
+4.
+Implementacija
+
+
+5.
+Održavanje
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Šta se radi u fazi planiranja SDLC-a? 1/3
+
+Identifikacija poslovnog problema ili prilike:
+U ovoj fazi se analizira i definiše poslovni problem koji softver treba riješiti ili prilika koju treba iskoristiti. To može ukljucivati izazove sa trenutnim sistemima ili prepoznavanje novih potreba tržišta.
+
+Primjer: Ako firma koristi zastarjeli sistem za pracenje zaliha, koji uzrokuje ceste
+greške i gubitke, identifikacija problema može biti neefikasno upravljanje zalihama.
+
+Definisanje ciljeva projekta:
+Ciljevi moraju biti jasni, mjerljivi, ostvarivi, relevantni i vremenski ograniceni (SMART ciljevi - akronim rijeci: Specific (specificni), Measurable (mjerljivi), Achievable (ostvarivi), Relevant (relevantni) i Time-bound (vremenski ograniceni)). Ovi ciljevi postavljaju šta softver treba postici.
+
+Primjer: Cilj projekta može biti smanjenje grešaka u zaliha za 30% u roku od šest mjeseci nakon uvodenja novog sistema za pracenje zaliha.
+
+Analiza zahtjeva zainteresiranih strana (Stakeholder analysis):
+Ovdje se identifikuju zahtjevi i ocekivanja razlicitih zainteresiranih strana,
+ukljucujuci krajnje korisnike, menadžment i druge kljucne aktere.
+
+Primjer: Menadžeri žele izvještaje o zalihama u realnom vremenu, dok korisnici u
+skladištu zahtijevaju intuitivno sucelje za unos podataka.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Šta se radi u fazi planiranja SDLC-a? 2/3
+
+Izrada poslovnog slucaja i studije izvodljivosti:
+Poslovni slucaj se bavi ekonomskim aspektima projekta, analizirajuci troškove i koristi, dok studija izvodljivosti procjenjuje tehnicke i vremenske mogucnosti realizacije projekta.
+
+Primjer: Studija izvodljivosti pokazuje da je moguce implementirati novi sistem u roku od šest mjeseci uz raspoložive resurse, a povrat investicije ocekuje se za 12 mjeseci.
+
+Definisanje opsega projekta (Scope definition):
+Definira se šta je tacno ukljuceno u projekt, kako bi se izbjeglo proširenje opsega
+(scope creep). Jasno se postavljaju granice onoga što ce softver obuhvatiti.
+
+Primjer: Novi sistem za pracenje zaliha ukljucuje upravljanje unosom zaliha,
+izvještavanje i pracenje nivoa, ali ne obuhvata automatizaciju procesa nabavke.
+
+Planiranje resursa i budžeta:
+Procjenjuju se potrebni resursi (ljudski, tehnicki, finansijski) i kreira se budžet za
+projekt.
+
+Primjer: Planira se da projektni tim cine pet programera, dva testera i jedan projekt
+menadžer, uz budžet od 200.000 dolara za razvoj softvera i kupovinu opreme.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Šta se radi u fazi planiranja SDLC-a? 3/3
+
+Izrada vremenskog rasporeda (Project Schedule):
+Kreira se detaljan raspored koji ukljucuje kljucne prekretnice (milestones) i rokove za svaki korak u procesu razvoja.
+
+Primjer: Faza razvoja planirana je za tri mjeseca, faza testiranja dva mjeseca, a ukupno vrijeme trajanja projekta šest mjeseci.
+
+Analiza rizika (Risk analysis):
+Identificiraju se potencijalni rizici koji mogu ugroziti projekt, te se razvijaju planovi
+za njihovo ublažavanje.
+
+Primjer: Kašnjenje u razvoju zbog tehnickih problema predstavlja rizik, pa se
+planira ukljucivanje dodatnih resursa ili rezervni vremenski plan.
+
+Izrada projektne povelje (Project Charter):
+Ovo je dokument koji formalizuje ciljeve, opseg, raspored, budžet i odgovornosti, te daje ovlaštenja projektnom menadžeru za vodenje projekta.
+
+Primjer: Projektna povelja obuhvata kljucne informacije o novom sistemu za upravljanje zalihama, ukljucujuci ciljeve, kljucne zadatke i odgovornosti clanova tima.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Projektni zadatak 1 - Planiranje
+
+
+
+
+- Identifikacija i iniciranje projekta
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Definicije problema
+
+
+Znacaj dobre definicije
+problema
+
+Kada su Ajnštajnu postavili pitanje šta ce uciniti ako dobije samo jedan sat da spasi svijet, rekao je da ce provesti 55 minuta da definira problem i 5 minuta da nade rješenje.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+Software Requirements Specification document
+(SRS)
+
+
+
+• Šta je dokument sa specifikacijama softverskih zahtjeva?
+• Dokument o specifikaciji softverskih zahtjeva opisuje namjenu, zahtjeve i prirodu softvera koji ce se razvijati.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Sadržaj dokumenta
+
+• UVOD:
+- Svrha/Cilj/Namjena
+- Konvencija dokumenta ( Standard izgleda dokumenta)
+- Predvideni korisnici i sugestije pri korištenju
+- Opseg projekta
+- Reference
+
+
+
+1. Introduction	1
+1.1 Purpose	1
+1.2 Document Conventions	1
+1.3 Intended Audience and Reading Suggestions	1
+1.4 Product Scope	1
+1.5 References
+Referenca:
+IEEE Software Requirements Specification Template
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Sadržaj dokumenta
+
+• Svrha: Navedite svrhu koja je primjenjiva na vaš projekt:
+- Svrha ovog projekta je izgraditi mrežni sistem za upravljanje letovima i putnicima kako bi se olakšalo upravljanje letom.
+
+- Konvencija dokumenta ( Standard izgleda dokumenta)
+• Ovaj dokument koristi sljedece konvencije:
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Sadržaj dokumenta
+
+- Predvideni korisnici i sugestije pri korištenju
+-	Ovaj je projekt prototip za sistem upravljanja letom i ogranicen je prostorijama univerziteta. Isti je namijenjen i timu za upravljanje letom kao i putnicima.
+- Opseg projekta
+• Obicno piše voda projekta, opisuje cjelokupni projekt, ukljucujuci sve isporuke i njihova svojstva i odlike, kao i popis sudionika na koje ce projekat imati utjecaj. Takoder ce ukljucivati sve glavne ciljeve projekta, rezultate i ciljeve koji pomažu u mjerenju uspjeha.
+• Svrha mrežnog sistema za upravljanje letom je olakšati upravljanje letom i stvoriti jednostavnu aplikaciju za putnike koji pokušavaju kupiti avionske karte. Sistem se temelji na relacijskoj bazi podataka s njegovim funkcijama upravljanja letom i rezervacijama. Server baze podataka ce podržavati stotine velikih gradova širom svijeta, kao i hiljade letova raznih aviokompanija. Prije svega, trudimo se pružiti ugodno korisnicko iskustvo, uz najbolju dostupnu cijenu.
+- Reference
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Historija Izmjena Dokumenta
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OBAVEZNO KORISTITI JEDAN OD SLUŽBENIH
+JEZIKA U BOSNI I HERCEGOVINI
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Upoznavanje sa organizacijom / kompanijom
+
+• Upoznati se sa organizacijom za koju gradite IS!
+- Koristiti razlicite izvore (web, direktni kontakt,
+promotivne materijale i sl.)
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Upoznavanje sa organizacijom / kompanijom
+
+
+• Navesti kratku historiju organizacije
+• Navesti glavne proizvode
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Misija organizacije / kompanije
+
+
+
+
+
+• Misija organizacije definira svrhu organizacije, osnovnu funkciju organizacije odnosno razlog zbog kojeg organizacija postoji.
+• MISIJA = RAZLOG POSTOJANJA ORGANIZACIJE
+
+
+• Najbolje izjave o misiji su jasne, sažete i
+korisne
+• Prosjecna dužina je samo 15,3 rijeci
+• Najkraca sadrži samo dvije rijeci (TED)
+• Najduže - 235 rijeci (UNHCR)
+
+
+
+https://topnonprofits.com/examples/nonprofit-mission- statements/ https://www.entrepreneur.com/article/241954
+
+Naša misija je razvoj savremenih proizvoda za prevenciju, dijagnostiku i terapiju, u cilju ocuvanja zdravlja i unapredenja kvaliteta života.
+Bosnalijek je internacionalna kompanija, koja uspješno posluje na tri kontinenta.
+Stvaranjem novih radnih mjesta i dodatnih vrijednosti za širu društvenu zajednicu potvrdujemo lidersku ulogu u pozitivnim društvenim procesima u Bosni i Hercegovini i regionu.
+
+BOSNALIJEK
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Vizija organizacije / kompanije
+
+
+
+
+
+
+
+• Vizija organizacije je poželjna slika buducnosti organizacije, odnosno ono što poduzece želi ostvariti.
+
+• Imati viziju znaci imati odgovore na
+pitanja:
+1. Kuda želimo ici?
+2. Šta želimo biti u
+buducnosti?
+
+
+
+
+
+Naša vizija je odvažno zakoraciti u podrucja novih oblasti i tehnologija te direktno kreirati trendove u farmaceutskoj industriji.
+Postat cemo vodeca kompanija u regiji, cija je svrha prevencija, lijecenje i zaštita zdravlja stanovništva.
+Slijedeci sopstvenu tradiciju poslovne izvrsnosti i održivog razvoja, dokazat cemo da najhrabrije vizije žive.
+
+BOSNALIJEK
+
+
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Ciljevi organizacije / kompanije
+
+
+
+
+
+
+
+• Ciljevi organizacije predstavljaju stanje, tip ili nivo poslovnih performansi kojima ce organizacija težiti u ostvarivanju svoje misije I vizije.
+
+• CILJ = KRANJA TACKA DO KOJE TREBA ICI; KRAJNJI REZULTAT KOJI TREBA POSTICI
+
+
+
+
+? Ciljevi se mogu podijeliti na:
+? Kratkorocne (period do 1 godine)
+? Srednjorocne (period
+izmedu 1 i 5 godina)
+? Dugorocne (period veci od
+5 godina)
+
+
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Stakeholderi
+
+• pojedinci i organizacije koji su aktivno ukljuceni u projekt ili na cije interese (rezultat) izvršenje projekta može (pozitivno ili negativno) uticati
+
+• Navesti stakeholder projekta
+- Sponzori projekta
+- Kupac koji ce primiti isporucene proizvode
+- Korisnici rezultata projekta
+- Voda projekta i projektni tim
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Zahtjev za sistemom
+
+• Dokument u kojem su navedeni razlozi za izgradnju sistema i vrijednost za koju se ocekuje da ce je sistem obezbijediti.
+• Odgovara na pitanje : Odakle dolazi ideja za novi projekat?
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Ciljevi projekta
+
+
+• Navesti ciljeve projekta te preciznije detalje istih (
+referentne tacke)
+
+• Navesti konkretne rezultate koje projekat donosi, preciznije detalje istih (koji ce to biti rezultati i ko je odgovoran za njihovu proizvodnju i primanje)
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analiza izvedivosti
+
+• Analiza izvodljivosti je proces odredivanja da li je poslovna ideja
+održiva.
+
+• Radi se o preliminarnoj evaluaciji poslovne ideje, provedenoj iz
+razloga da se utvrdi da li se isplati ideju sprovesti u djelo.
+
+• Najpogodnije vrijeme za sprovodenje analize izvodljivosti jeste rana faza promišljanja o planovima za novi biznis.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analiza izvedivosti
+
+Vrste analiza izvodivosti:
+• Tehnicka izvodljivost - Možemo li izgraditi sistem?
+• Ekonomska izvodljivost - Trebamo li izgraditi sistem?
+• Operativna izvodljivost - Ako izgradimo sistem, hoce li se
+koristiti?
+• Organizaciona izvodljivost - Da li menadžement razumije tržište?
+Koliko je menadžemnt strucan za pokretanje poduhvata?
+• Zakonska izvodljivost - Da li je predloženi sistem u sukobu sa
+zakonskim zahtjevima?
+• Rasporedna izvodivost - Da li je raspored projekta razuman?
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analiza izvedivosti
+
+
+
+
+
+• Tehnicka izvedivost :
+- Bliskost sa poslovnom oblasti
+- Bliskost sa tehnologijom
+- Kompatibilnost sa postojecom tehnologijom
+- Velicina projekta i resursi koje projekat zahtjeva ( trajanje, oprema, ljudski resursi, timovi)
+- Ekonomska izvedivost :
+• Identifikacija koristi i troškova
+• Dodjeljivanje vrijednosti koristima
+i troškovima
+• Odredivanje toka novca
+• Ocjenjivanje ekonomske vrijednosti projekta
+- 
+Organizaciona izvedivost :
+• Poklapanje ciljeva projekta sa
+poslovnim ciljevima
+• Komunikacija sa stakeholderima
+• Sposobnost menadžmenta
+
+
+- Zakonska izvedivost
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Ekonomska izvedivost
+
+• Return on Investment (ROI) pokazuje koliki je povrat neke investicije. Racuna se kao kolicnik neto koristi (ukupna korist - ukupan trošak) i ukupnog troška. Visok ROI pokazuje da su koristi projekta daleko vece od ulaganja.
+
+• Break-Even Point (BEP) ili tacka pokrica je ekonomski koncept koji oznacava nivo prodaje ili aktivnosti pri kojem su ukupni prihodi jednaki ukupnim troškovima. U ovoj tacki, preduzece ne ostvaruje ni profit ni gubitak; ono samo pokriva svoje troškove.
+
+• Diskontirani tok novca je tehnika koja se koristi za poredenje sadašnje
+vrijednosti svih priliva i odliva novca.
+-	Diskontirani novcani tokovi su novcani tokovi prilagodeni tako da ukljucuju vremensku
+vrijednost  novca;  https://www.progreso.hr/blog/vremenska-vrijednost-novca/
+
+• Neto sadašnja vrijednost (NPV) je razlika izmedu ukupne sadašnje vrijednosti koristi i ukupne sadašnje vrijednosti troškova. Projekat se smatra ekonomski isplativim ukoliko je NPV veci od nule.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Return on investment - ROI
+
+ROI (Return on Investment) ili povracaj ulaganja je finansijski pokazatelj koji mjeri efikasnost ulaganja ili profitabilnost u odnosu na troškove.
+U kontekstu ekonomske izvodljivosti (feasibility analysis), ROI se koristi za procenu potencijalne koristi od projekta ili investicije, pomažuci u odlucivanju da li je projekt ekonomski isplativ.
+
+• Formula za izracunavanje ROI:
+
+
+
+
+
+- Ukupna korist: Ukupni prihod koji se ocekuje od projekta ili
+investicije.
+- Ukupan trošak: Ukupni troškovi povezani s realizacijom
+projekta ili investicije
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Return on investment - ROI - primjeri
+
+• Ako investirate 5 KM i profitirate 5 KM - ROI je 0 odnosno 0%.
+• Ako investirate 5 KM i profitirate 7.50 KM - ROI je 0.5 odnosno 50%.
+• Ako pak investirate 5 KM i profitirate 10 KM - ROI je 1 odnosno 100%.
+• Visok ROI pokazuje da su koristi projekta daleko vece od ulaganja!
+• ROI se obicno racuna na svakih 5 godina. Na samom pocetku projekta
+cesto isti bude negativan.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Break-Even Point (BEP)
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Break-Even Point (BEP)
+
+• Varijabilni troškovi su troškovi kompanije koji su povezani s brojem robe ili usluga koje proizvodi. Varijabilni troškovi povecavaju se i smanjuju s opsegom proizvodnje.
+
+• Za razliku od varijabilnih troškova, fiksni troškovi kompanije ne variraju s opsegom proizvodnje. Fiksni troškovi ostaju isti bez obzira proizvode li se robe ili usluge.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Break-Even Point (BEP) - primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+PayBack period - neravnomjeran cash flow
+
+
+Payback period ili period povrata ulaganja je vreme potrebno da se povrati inicijalno ulaganje u neki projekat ili investiciju kroz novcane tokove (cash flow) generisane tim projektom.
+
+U kontekstu neravnomernog cash flow-a, period povrata se može izracunati uzimajuci u obzir varijacije u novcanim tokovima tokom vremena.
+
+Neravnomerni cash flow: U praksi, projekti cesto ne generišu iste
+novcane tokove svake godine.
+Na primer, jedan projekat može imati visoke novcane tokove u prvoj godini, a zatim niže u sledecim godinama.
+
+
+
+
+
+
+
+
+
+Refernca: IS 2014; https://xplaind.com/849768/payback-period
+broj godina potrebnih da poduzece primi neto novcane prilive koji se zbrajaju s iznosom pocetnog
+novcanog ulaganja.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+
+PayBack period - neravnomjeran cash flow - primjer
+
+
+
+
+Godina 0Godina 1Godina 2Godina 3UkupnoUkupna korist45 00050 00057 000152 000Ukupan trošak100 00010 00012 00016 000138 000Neto korist( Ukupna korist -
+ukupan trošak)-100 00035 00038 00041 00014 000Kumulativni tok novca (Kum. Tok novca za predhodnu godinu - neto korist)-100 000-65 000-27 00014 000
+
+
+
+
+
+
+
+
+
+ROI= (152000-138000)/138000=10.14%
+
+Refernca: IS 2014; https://xplaind.com/849768/payback-period
+broj godina potrebnih da poduzece primi neto novcane prilive koji se zbrajaju s iznosom pocetnog
+novcanog ulaganja.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+PB za even ( ravnomjeran) cash flow
+
+
+Izracunavanje Payback perioda kod konstantnih novcanih
+tokova je jednostavnije nego kod neravnomernih tokova.
+U ovom slucaju, svi novcani tokovi su isti svake godine, što olakšava procenu vremena potrebnog za povrat inicijalnog ulaganja.
+
+Formula za izracunavanje Payback perioda kod konstantnih
+novcanih tokova:
+
+Payback period = Investirani novac / neto godišnji novcani priliv
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+
+Zadatak - PB za even ( ravnomjeran) cash flow - primjer
+
+
+Zadatak:
+Kompanija Delta planira kupiti mašinu poznatu kao mašina X. Ista bi koštala 25.000 USD i imala bi vijek trajanja 10 godina s nultom vrijednošcu spašavanja. Ocekivani godišnji novcani priliv mašine je 10.000 USD.
+Izracunajte payback period mašine X i zakljucite hoce li se ista kupiti ako je maksimalno
+željeno razdoblje povrata kompanije Delta 3 godine.
+
+Formula za izracun:
+Payback period=Investirani novac / neto godišnji novcani priliv
+
+Rezultat:
+Payback period = $25,000/$10,000 = 2.5 godine
+
+Komentar rezultata:
+Prema analizi razdoblja povrata, kupovina mašine X je poželjna jer je razdoblje povrata
+2,5 godine što je krace od maksimalnog razdoblja povrata kompanije.
+
+• https://www.accountingformanagement.org/payback-method/
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+
+Present Value (PV) i Neto Present Value (NPV)
+
+
+• Present value (PV) predstavlja trenutnu vrijednost buduce suma novca ili tok novcanog toka s obzirom na odredenu stopu povrata.
+• Present Value ili sadašnja vrednost predstavlja vrijednost novca koji cete primiti u buducnosti, ali izražena u današnjim vrijednostima. Zbog vremenske vrijednosti novca, novac koji dobijete danas ima vecu vrijednost nego novac koji cete primiti sutra, jer možete investirati taj novac i zaraditi.
+
+
+• Neto Present Value (NPV) je razlika izmedu sadašnje vrijednosti novcanih priliva i sadašnje vrijednosti odliva novca tokom
+odredenog vremenskog razdoblja.
+• Ako je NPV pozitivan, to znaci da ce investicija donijeti više
+novca nego što ste uložili
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+
+Present Value (PV) i Neto Present Value (NPV) - primjer
+
+
+
+
+Godina 0Godina 1Godina 2Godina 3UkupnoUkupna korist45 00050 00057 000152 000PV
+ukupne koriste40 90941 32242 825125 056Ukupan trošak100 00010 00012 00016 000138 000PV
+ukupnog
+troška100 0009091991712 021131 029
+45000/(1+0.1) =40 909 (PV ukupne koristi) 50000/(1+0.1)2 =50000/1.21=41322
+Kako je NPV = -5973 < 0, slijedi zakljucak da
+projekat nije ekonomski isplativ.
+
+• Present value (PV) predstavlja trenutnu vrijednost buduce suma novca ili tok novcanog toka s
+obzirom na odredenu stopu povrata.
+• (NPV) je razlika izmedu sadašnje vrijednosti novcanih priliva i sadašnje vrijednosti odliva
+novca tokom odredenog vremenskog razdoblja
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Zadatak
+
+• Ocekuje se da ce ulaganje od 200 000 americkih dolara za šest godina
+generirati sljedece novcane prilive:
+• 1. godina: 70.000 USD
+• 2. godina: 60.000 USD
+• 3. godina: 55.000 USD
+• 4. godina: 40.000 USD
+• 5. godina: 30.000 USD
+• 6. godina: 25.000 USD
+• Izracunati razdoblje povrata investicije. Treba li ulagati ako uprava želi povratiti pocetno ulaganje za 3 godine ili manje?
+
+01234-200 00070 00060 00055 00040 000-200 000-130 000-70 000-15 00025 000
+• Rezultat: 3+(40 000-25 000)/40 000 =3.375
+• https://www.accountingformanagement.org/payback-method/
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analiza izvedivosti - primjer
+
+Tehnicka izvodljivost
+• Projekat je tehnicki izvodljiv , iako su prisutni odredeni rizici:
+- Bliskost sa poslovnom oblasti - srednji rizik
+• IT tim za razvoj nije do sada imao priliku da razvija sistem za državnu službu, a nekim clanovima tima takoder su nepoznati administrativni poslovi
+• Postoji odredeni rizik u nacinu povezivanja dvije strane, korisnika
+sa jedne i lica koja pružaju pomoc sa druge strane
+- Bliskost sa tehnologijom - nizak rizik
+• 	IT tim za razvoj rada posjeduje veliko znanje iz oblasti baza podataka, kao i sa nacinom obrade i procesiranja tih podataka
+- Velicina projekta - srednji rizik
+• Velicina tima: 8 clanova
+• Zahtjeva se aktivno ucešce stakeholder-a
+• Projekat se mora završiti u relativno kratkom roku
+- Kompatibilnost sa postojecom tehnologijom - srednji rizik
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Analiza izvedivosti - primjer
+
+Ekonomska izvodljivost
+• Analizom koristi i troškova projekta ustanovljeno je da je projekat ekonomski isplativ:
+- ROI kroz 3 godine: 4.56%
+- NPV nakon 3 godine: 2101 KM
+- BEP: 2.8427 godina
+
+
+Organizacijska izvodljivost
+-	Projekat ima srednji rizik. Služba za socijalnu pomoc opcine Ilidža, kao i samo rukovodstvo opcine, su zainteresirani za ovakav projekat te vjeruju da ce pomoci njihovim zaposlenicima da efikasnije i bolje obavljaju svoj posao. Samu korist ce osjetiti i korisnici pri bržem i lakšem podnošenju zahtjeva. Sa druge strane, potencijalni rizik projekta je konceptualna promjena nacina rada zaposlenih u Službi, te njihovo navikavanje na rad u sistemu.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Projektni zadatak 1
+
+• UVOD
+• HISTORIJA DOKUMENTA
+• Upoznavanje sa organizacijom
+• Misija, vizija, ciljevi organizacije
+• Stakeholderi
+• Zahtjev za sistemom
+• Ciljevi projekta
+• Analize izvedivosti
+• Izvještaj ( Voda tima)
+• Uraden projektni zadatak 1 poslati do 27.10.2024 ( 23:59 ) na
+email:	amer.koric@etf.unsa.ba
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Pitanja i odgovori
+
+
+
+Pitanja i odgovori ???

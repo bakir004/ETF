@@ -1,0 +1,557 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[bosnian]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{float}
+
+\geometry{margin=2.5cm}
+
+% Definisanje stila za Julia kod
+\lstdefinestyle{julia}{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{white},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    escapeinside={\%*}{*)},
+    morekeywords={function,end,if,else,elseif,for,while,return,using,println,error}
+}
+
+\title{\textbf{Izvještaj - Laboratorijska vježba 3} \\ 
+\large Simplex - standardni oblik LP uz korištenje AI alata}
+\author{Bakir Činjarević 19705 \& Amar Handanagić 19089}
+\date{04.11.2025.}
+
+\begin{document}
+
+\maketitle
+
+\section{Uvod}
+
+Cilj ove laboratorijske vježbe je razumijevanje i implementacija Simplex metode za rješavanje standardnog oblika problema linearnog programiranja u programskom jeziku Julia. Vježba uključuje korištenje AI alata (Claude) za pomoć u pisanju, testiranju i razumijevanju koda.
+
+Standardni oblik linearnog programiranja glasi:
+\begin{equation}
+\begin{aligned}
+\max \quad & Z(x) = c^T x \\
+\text{p.o.} \quad & Ax \leq b \\
+& x \geq 0
+\end{aligned}
+\end{equation}
+
+\section{Prompt korišten za AI alat}
+
+Za implementaciju Simplex metode u Juliji korišten je sljedeći prompt:
+
+\begin{quote}
+\textit{``Implementiraj Simplex metodu u programskom jeziku Julia za rješavanje standardnog oblika problema linearnog programiranja. Funkcija treba da se zove \texttt{rijesi\_simplex(A, b, c)} i prima matricu A (koeficijenti ograničenja), vektor b (desne strane), i vektor c (koeficijenti funkcije cilja). Funkcija treba da:}
+
+\begin{itemize}
+\item \textit{Kreira proširenu Simplex tabelu sa slack varijablama}
+\item \textit{Implementira Dantzigovo pravilo pivotiranja (odabir najnegativnijeg koeficijenta)}
+\item \textit{Provjerava optimalnost rješenja}
+\item \textit{Detektuje beskonačna rješenja (kad su svi elementi u pivot koloni $\leq 0$)}
+\item \textit{Detektuje degeneraciju}
+\item \textit{Ispisuje svaku iteraciju tabele}
+\item \textit{Vraća optimalno rješenje x, vrijednost funkcije cilja Z, i status}
+\end{itemize}
+
+\textit{Koristi pravilo pravougaonika za pivot operacije: $a_{ij}' = a_{ij} - \frac{a_{iq} \cdot a_{pj}}{pivot}$''}
+\end{quote}
+
+\section{Generisani kod}
+
+Kompletan Julia kod za implementaciju Simplex metode nalazi se u priloženom \texttt{.jl} fajlu. Ključni dijelovi implementacije su:
+
+\begin{lstlisting}[style=julia, caption={Glavna funkcija rijesi\_simplex}]
+# Implementacija Simplex metode za rješavanje standardnog oblik LP problema
+# Standardni oblik: max Z(x) = c^T x, p.o. Ax ≤ b, x ≥ 0
+
+using Printf
+using LinearAlgebra
+
+function rijesi_simplex(A, b, c; verbose=true)
+    """
+    Rješava standardni oblik LP problema koristeći Simplex metodu.
+    
+    Parametri:
+    - A: matrica koeficijenata ograničenja (m × n)
+    - b: vektor desnih strana (m × 1)
+    - c: vektor koeficijenata funkcije cilja (n × 1)
+    - verbose: da li ispisivati iteracije (default: true)
+    
+    Povratna vrijednost:
+    - x: optimalno rješenje (vektor)
+    - Z: optimalna vrijednost funkcije cilja
+    - status: "OPTIMAL", "UNBOUNDED", "DEGENERATE", ili "INFEASIBLE"
+    """
+    
+    m, n = size(A)
+    
+    # Provjera da li su dimenzije kompatibilne
+    if length(b) != m
+        error("Dimenzije A i b nisu kompatibilne")
+    end
+    if length(c) != n
+        error("Dimenzije A i c nisu kompatibilne")
+    end
+    
+    # Provjera da li su svi elementi b nenegativni
+    if any(b .< 0)
+        error("Svi elementi b moraju biti nenegativni za standardni oblik")
+    end
+    
+    # Kreiranje proširene tabele (dodavanje slack varijabli)
+    tableau = zeros(m + 1, n + m + 1)
+    
+    # Kopiranje A u tabelu
+    tableau[1:m, 1:n] = A
+    
+    # Dodavanje jedinične matrice za slack varijable
+    tableau[1:m, (n+1):(n+m)] = Matrix{Float64}(I, m, m)
+    
+    # Dodavanje b u posljednju kolonu
+    tableau[1:m, end] = b
+    
+    # Dodavanje funkcije cilja (negativni znak jer je maksimizacija)
+    tableau[end, 1:n] = -c
+    tableau[end, (n+1):(n+m)] = zeros(m)
+    tableau[end, end] = 0.0
+    
+    # Lista baznih varijabli (indeksi slack varijabli u početnoj bazi)
+    basic_vars = collect(n+1:n+m)
+    
+    iteration = 0
+    
+    if verbose
+        println("="^80)
+        println("POČETNA SIMPLEX TABELA")
+        println("="^80)
+        print_tableau(tableau, basic_vars, n, m, iteration)
+    end
+    
+    max_iterations = 1000  # Zaštita od beskonačne petlje
+    
+    while iteration < max_iterations
+        iteration += 1
+        
+        # Provjera optimalnosti
+        reduced_costs = tableau[end, 1:(n+m)]
+        
+        if all(reduced_costs .>= -1e-10)
+            # Optimalno rješenje pronađeno
+            x = zeros(n)
+            
+            # Izdvajanje vrijednosti originalnih varijabli
+            for i in 1:m
+                if basic_vars[i] <= n
+                    x[basic_vars[i]] = tableau[i, end]
+                end
+            end
+            
+            Z = tableau[end, end]
+            
+            # Provjera degeneracije
+            degenerate = false
+            for i in 1:m
+                if abs(tableau[i, end]) < 1e-10
+                    degenerate = true
+                    break
+                end
+            end
+            
+            if verbose
+                println("\n" * "="^80)
+                println("OPTIMALNO RJEŠENJE PRONAĐENO nakon $iteration iteracija")
+                if degenerate
+                    println("NAPOMENA: Rješenje je DEGENERISANO")
+                end
+                println("="^80)
+            end
+            
+            status = degenerate ? "DEGENERATE" : "OPTIMAL"
+            return x, Z, status
+        end
+        
+        # Određivanje ulazne varijable (najnegativniji koeficijent)
+        entering_idx = argmin(reduced_costs)
+        
+        if reduced_costs[entering_idx] >= -1e-10
+            continue
+        end
+        
+        # Provjera da li je problem neograničen
+        pivot_col = tableau[1:m, entering_idx]
+        
+        if all(pivot_col .<= 1e-10)
+            if verbose
+                println("\n" * "="^80)
+                println("PROBLEM JE NEOGRANIČEN - beskonačno rješenje")
+                println("="^80)
+            end
+            return zeros(n), Inf, "UNBOUNDED"
+        end
+        
+        # Određivanje izlazne varijable (minimum ratio test)
+        ratios = zeros(m)
+        for i in 1:m
+            if pivot_col[i] > 1e-10
+                ratios[i] = tableau[i, end] / pivot_col[i]
+            else
+                ratios[i] = Inf
+            end
+        end
+        
+        # Provjera za degeneraciju (više minimuma)
+        min_ratio = minimum(ratios)
+        leaving_candidates = findall(x -> abs(x - min_ratio) < 1e-10, ratios)
+        
+        leaving_row = leaving_candidates[1]
+        
+        # Ažuriranje baznih varijabli
+        basic_vars[leaving_row] = entering_idx
+        
+        # Pivot operacija
+        pivot_element = tableau[leaving_row, entering_idx]
+        
+        # Normalizacija pivot reda
+        tableau[leaving_row, :] ./= pivot_element
+        
+        # Eliminacija u ostalim redovima
+        for i in 1:(m+1)
+            if i != leaving_row
+                multiplier = tableau[i, entering_idx]
+                tableau[i, :] .-= multiplier .* tableau[leaving_row, :]
+            end
+        end
+        
+        if verbose
+            println("\n" * "-"^80)
+            println("ITERACIJA $iteration")
+            println("-"^80)
+            println("Ulazna varijabla: x$(entering_idx <= n ? entering_idx : "s$(entering_idx-n)")")
+            println("Izlazna varijabla: x$(basic_vars[leaving_row] <= n ? basic_vars[leaving_row] : "s$(basic_vars[leaving_row]-n)")")
+            print_tableau(tableau, basic_vars, n, m, iteration)
+        end
+    end
+    
+    if verbose
+        println("\nMaksimalni broj iteracija dostignut!")
+    end
+    
+    return zeros(n), 0.0, "MAX_ITERATIONS"
+end
+\end{lstlisting}
+
+Pomoćna funkcija za ispis tabele:
+
+\begin{lstlisting}[style=julia, caption={Pomoćna funkcija print\_tableau}]
+function print_tableau(tableau, basic_vars, n, m, iteration)
+    """Pomoćna funkcija za ispis Simplex tabele"""
+    
+    rows, cols = size(tableau)
+    
+    # Header
+    print("\nBazna var | ")
+    for j in 1:(n+m)
+        if j <= n
+            print("x$j")
+        else
+            print("s$(j-n)")
+        end
+        print(" | ")
+    end
+    println("RHS")
+    println("-"^80)
+    
+    # Redovi ograničenja
+    for i in 1:m
+        if basic_vars[i] <= n
+            print("x$(basic_vars[i])       | ")
+        else
+            print("s$(basic_vars[i]-n)       | ")
+        end
+        
+        for j in 1:(n+m+1)
+            val = tableau[i, j]
+            if abs(val) < 1e-10
+                print("0.0     ")
+            else
+                print(@sprintf("%8.4f", val))
+            end
+            print(" | ")
+        end
+        println()
+    end
+    
+    # Red funkcije cilja
+    println("-"^80)
+    print("Z         | ")
+    for j in 1:(n+m+1)
+        val = tableau[end, j]
+        if abs(val) < 1e-10
+            print("0.0     ")
+        else
+            print(@sprintf("%8.4f", val))
+        end
+        print(" | ")
+    end
+    println()
+    println()
+end
+\end{lstlisting}
+
+\section{Test primjeri}
+
+\subsection{Test primjer 1: Standardni LP problem}
+
+\textbf{Formulacija problema:}
+\begin{equation}
+\begin{aligned}
+\max \quad & Z = 3x_1 + 2x_2 \\
+\text{p.o.} \quad & x_1 + x_2 \leq 4 \\
+& 2x_1 + x_2 \leq 6 \\
+& x_1, x_2 \geq 0
+\end{aligned}
+\end{equation}
+
+\textbf{Ulazni parametri:}
+\begin{lstlisting}[style=julia]
+A1 = [1.0 1.0; 2.0 1.0]
+b1 = [4.0, 6.0]
+c1 = [3.0, 2.0]
+\end{lstlisting}
+
+\textbf{Ručno rješavanje - Iteracija po iteracija:}
+
+\textit{Početna Simplex tabela:}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|cccc|c|}
+\hline
+Bazna var & $x_1$ & $x_2$ & $s_1$ & $s_2$ & RHS \\
+\hline
+$s_1$ & 1 & 1 & 1 & 0 & 4 \\
+$s_2$ & 2 & 1 & 0 & 1 & 6 \\
+\hline
+$Z$ & -3 & -2 & 0 & 0 & 0 \\
+\hline
+\end{tabular}
+\caption{Početna tabela - Test primjer 1}
+\end{table}
+
+Ulazna varijabla: $x_1$ (najnegativniji koeficijent: -3)\\
+Ratio test: $\min\{4/1, 6/2\} = \min\{4, 3\} = 3$\\
+Izlazna varijabla: $s_2$ (red 2)
+
+\textit{Iteracija 1:}
+
+Nakon pivot operacije sa pivot elementom $a_{2,1} = 2$:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|cccc|c|}
+\hline
+Bazna var & $x_1$ & $x_2$ & $s_1$ & $s_2$ & RHS \\
+\hline
+$s_1$ & 0 & 0.5 & 1 & -0.5 & 1 \\
+$x_1$ & 1 & 0.5 & 0 & 0.5 & 3 \\
+\hline
+$Z$ & 0 & -0.5 & 0 & 1.5 & 9 \\
+\hline
+\end{tabular}
+\caption{Tabela nakon iteracije 1}
+\end{table}
+
+Ulazna varijabla: $x_2$ (najnegativniji koeficijent: -0.5)\\
+Ratio test: $\min\{1/0.5, 3/0.5\} = \min\{2, 6\} = 2$\\
+Izlazna varijabla: $s_1$ (red 1)
+
+\textit{Iteracija 2 (finalna):}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|cccc|c|}
+\hline
+Bazna var & $x_1$ & $x_2$ & $s_1$ & $s_2$ & RHS \\
+\hline
+$x_2$ & 0 & 1 & 2 & -1 & 2 \\
+$x_1$ & 1 & 0 & -1 & 1 & 2 \\
+\hline
+$Z$ & 0 & 0 & 1 & 1 & 10 \\
+\hline
+\end{tabular}
+\caption{Finalna optimalna tabela}
+\end{table}
+
+Svi koeficijenti u Z redu su nenegativni $\Rightarrow$ optimalno rješenje!
+
+\textbf{Rješenje:}
+\begin{itemize}
+\item $x_1 = 2$, $x_2 = 2$
+\item $Z = 10$
+\item Status: OPTIMAL
+\end{itemize}
+
+\textbf{Poređenje sa izlazom programa:}
+
+Izlaz programa se u potpunosti podudara sa ručnim proračunom. Program je prošao kroz 2 iteracije i došao do istog rješenja: $x = [2.0, 2.0]$, $Z = 10.0$.
+
+\subsection{Test primjer 2: Problem sa degeneracijom}
+
+\textbf{Formulacija problema:}
+\begin{equation}
+\begin{aligned}
+\max \quad & Z = x_1 + x_2 \\
+\text{p.o.} \quad & x_1 + x_2 \leq 2 \\
+& 2x_1 + x_2 \leq 4 \\
+& x_1 \leq 2 \\
+& x_1, x_2 \geq 0
+\end{aligned}
+\end{equation}
+
+\textbf{Ulazni parametri:}
+\begin{lstlisting}[style=julia]
+A2 = [1.0 1.0; 2.0 1.0; 1.0 0.0]
+b2 = [2.0, 4.0, 2.0]
+c2 = [1.0, 1.0]
+\end{lstlisting}
+
+\textbf{Rješenje:}
+\begin{itemize}
+\item $x_1 = 2$, $x_2 = 0$
+\item $Z = 2$
+\item Status: \textbf{DEGENERATE}
+\end{itemize}
+
+\textbf{Objašnjenje degeneracije:}
+
+Degeneracija se javlja kada ekstremna tačka (optimalno rješenje) zadovoljava više ograničenja sa jednakosti nego što je potrebno za njeno definisanje. U 2D prostoru, normalno bi ekstremna tačka trebala biti definisana sa tačno 2 aktivna ograničenja (koja se sijeku), ali ovdje imamo situaciju gdje se \textbf{3 ograničenja sijeku u istoj tački} $(2, 0)$.
+
+\textbf{Geometrijska analiza:}
+
+Provjerimo tačku $(2, 0)$:
+\begin{itemize}
+\item $x_1 + x_2 = 2$: $2 + 0 = 2$ ✓ (aktivno ograničenje)
+\item $2x_1 + x_2 = 4$: $2 \cdot 2 + 0 = 4$ ✓ (aktivno ograničenje)
+\item $x_1 = 2$: $2 = 2$ ✓ (aktivno ograničenje)
+\end{itemize}
+
+Sva tri ograničenja su aktivna u optimalnoj tački $(2, 0)$, što znači da je jedno od ograničenja \textbf{redundantno} u definisanju ove ekstremne tačke.
+
+\textbf{Algebarska manifestacija u Simplex tabeli:}
+
+U Simplex tabeli, degeneracija se manifestuje tako što je \textbf{neka bazna varijabla jednaka nuli} u optimalnom rješenju. U ovom slučaju, $x_2 = 0$ je bazna varijabla, što znači da se u optimalnoj tabeli nalazi u bazi sa vrijednošću 0.
+
+\textbf{Zašto je ovo problem?}
+
+Degeneracija može dovesti do:
+\begin{itemize}
+\item \textbf{Cikličnosti}: Simplex metoda može ući u ciklus, ponavljajući iste bazne rješenje bez napretka
+\item \textbf{Spore konvergencije}: Potrebno je više iteracija da se nađe optimalno rješenje
+\item \textbf{Nejedinstvenosti}: Može postojati više baznih rješenja koja daju istu vrijednost funkcije cilja
+\end{itemize}
+
+U našoj implementaciji, program je uspješno detektovao degeneraciju provjeravajući da li je neka bazna varijabla manja od $10^{-10}$ u optimalnoj tabeli.
+
+\subsection{Test primjer 3: Beskonačno rješenje (neograničen problem)}
+
+\textbf{Formulacija problema:}
+\begin{equation}
+\begin{aligned}
+\max \quad & Z = x_1 + x_2 \\
+\text{p.o.} \quad & -x_1 + x_2 \leq 1 \\
+& x_1 - x_2 \leq 1 \\
+& x_1, x_2 \geq 0
+\end{aligned}
+\end{equation}
+
+\textbf{Ulazni parametri:}
+\begin{lstlisting}[style=julia]
+A3 = [-1.0 1.0; 1.0 -1.0]
+b3 = [1.0, 1.0]
+c3 = [1.0, 1.0]
+\end{lstlisting}
+
+\textbf{Rješenje:}
+\begin{itemize}
+\item $x = [0, 0]$ (nije definisano)
+\item $Z = \infty$
+\item Status: \textbf{UNBOUNDED}
+\end{itemize}
+
+\textbf{Objašnjenje beskonačnog rješenja:}
+
+Problem je neograničen jer funkcija cilja može rasti u beskonačnost bez narušavanja ograničenja. Kod detektuje ovu situaciju kada su svi koeficijenti u pivot koloni (koloni ulazne varijable) nenegativni ili jednaki nuli. To znači da povećanje ulazne varijable neće narušiti nijedno ograničenje, pa funkcija cilja može rasti neograničeno.
+
+U ovom primjeru, ograničenja ne ograničavaju dovoljno prostor rješenja u smjeru kojim funkcija cilja raste, što rezultira beskonačnim rješenjem.
+
+\section{Diskusija o korištenju AI alata}
+
+\subsection{Pozitivne strane}
+
+\begin{enumerate}
+\item \textbf{Brza početna implementacija}: AI alat (Claude) je generisao funkcionalan kod u vrlo kratkom vremenu, što je omogućilo fokus na testiranje i razumijevanje algoritma umjesto na sintaksu.
+
+\item \textbf{Dobro strukturiran kod}: Kod je bio čitljiv, dobro komentarisan i organizovan u logične cjeline (inicijalizacija, pivot operacije, provjera optimalnosti).
+
+\item \textbf{Podrška za edge cases}: AI je automatski uključio provjere za beskonačna rješenja i degeneraciju, što bi možda bilo zaboravljeno pri ručnoj implementaciji.
+
+\item \textbf{Pomoć u razumijevanju}: Objašnjenja u komentarima koda su pomogla u boljem razumijevanju svakog koraka Simplex metode.
+
+\item \textbf{Funkcija za ispis tabele}: Generisana je i pomocna funkcija \texttt{print\_tableau} koja omogućava pregledan prikaz svake iteracije, što olakšava praćenje algoritma.
+\end{enumerate}
+
+\subsection{Negativne strane}
+
+\begin{enumerate}
+\item \textbf{Potreba za verifikacijom}: Kod je morao biti pažljivo testiran i upoređen sa ručnim proračunima. AI ne garantuje tačnost implementacije.
+
+\item \textbf{Razumijevanje koda}: Postoji opasnost da student kopira kod bez potpunog razumijevanja svake linije. Potrebno je dodatno vrijeme za analizu.
+
+\item \textbf{Terminološke razlike}: AI ponekad koristi različitu terminologiju od one koja se koristi na predavanjima (npr. "reduced costs" umjesto "koeficijenti funkcije cilja").
+
+\item \textbf{Potencijalne greške u edge cases}: Mora se voditi računa o numeričkoj stabilnosti i graničnim slučajevima koje AI možda nije adekvatno pokrio.
+
+\item \textbf{Ograničeno prilagođavanje}: Kod je morao biti dodatno modifikovan da odgovara tačno specifikacijama zadatka i pseudokodu sa vježbe.
+\end{enumerate}
+
+\subsection{Da li je AI pomogao u razumijevanju algoritma?}
+
+\textbf{Da}, ali sa rezervom. AI alat je omogućio brzu implementaciju koja se mogla testirati i analizirati, što je olakšalo razumijevanje kako Simplex metoda radi u praksi. Međutim, pravo razumijevanje je došlo tek nakon ručnog rješavanja primjera i poređenja sa izlazom programa iteracija po iteracija.
+
+AI alat je najbolje koristiti kao pomoćno sredstvo koje ubrzava proces, ali ne kao zamjenu za teorijsko razumijevanje i ručno vježbanje algoritma. Kombinacija AI alata za implementaciju i vlastitog ručnog rada za verifikaciju pokazala se kao najefikasniji pristup.
+
+\section{Zaključak}
+
+Laboratorijska vježba je uspješno demonstrirala implementaciju Simplex metode u Juliji uz pomoć AI alata. Sva tri test primjera su dala očekivane rezultate:
+\begin{itemize}
+\item Primjer 1: Optimalno rješenje ($x_1=2, x_2=2, Z=10$)
+\item Primjer 2: Degenerisano rješenje ($x_1=2, x_2=0, Z=2$)
+\item Primjer 3: Beskonačno rješenje (status: UNBOUNDED)
+\end{itemize}
+
+Poređenje ručnih proračuna sa izlazom programa je pokazalo potpunu saglasnost, što potvrđuje ispravnost implementacije. Korištenje AI alata je olakšalo proces, ali je bilo neophodno kritičko razumijevanje i verifikacija rezultata.
+
+\end{document}

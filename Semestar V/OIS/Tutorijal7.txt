@@ -1,0 +1,758 @@
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+
+
+
+
+
+
+
+
+
+
+
+
+OSNOVE INFORMACIONIH SISTEMA
+Tutorijal 7
+
+
+
+
+
+
+
+
+
+
+
+
+10.12.2024.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Modeliranje podataka i procesa
+
+
+
+
+
+Model je aproksimacija stvarnosti.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Modeliranje podataka
+• Modeliranje podataka je proces kreiranja modela podataka za
+podatke koji se pohranjuju u bazi podataka.
+• Modeliranje podataka pomaže u vizualnom predstavljanju podataka i provodi poslovna pravila, regulatorne uskladenosti I politike o tim podacima.
+• Modeli podataka osiguravaju dosljednost u imenovanju, zadanim vrijednostima, semantici, sigurnosti, istovremeno osiguravajuci kvalitetu podataka.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Modeliranje podataka
+
+
+
+
+
+
+
+
+
+
+
+Modeliranje podataka odvija se na tri nivoa: fizickom, logickom i konceptualnom.
+
+Konceptualni: Ovaj model podataka definira šta sistem sadrži. Ovaj model obicno kreiraju poslovni stakeholderi i arhitekti podataka. Namjena je organizirati, obuhvatiti i definirati poslovne koncepte i pravila.
+
+
+
+
+
+Logicki: definira kako sistem treba implementirati bez obzira na DBMS. Ovaj model obicno kreiraju arhitekti podataka i poslovni analiticari.
+Namjena je razviti
+tehnicku kartu pravila i strukture podataka.
+
+
+Fizicki: Ovaj model podataka opisuje kako ce se sistem implementirati pomocu odredenog DBMS sistema. Ovaj model obicno kreiraju DBA i programeri. Svrha je stvarna implementacija baze podataka.
+
+
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Modeliranje podataka
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Podela omogucava postupno prelazak od apstraktnog razmišljanja (poslovni zahtevi) ka tehnickoj implementaciji, što olakšava komunikaciju izmedu poslovnih analiticara, dizajnera baza podataka i inženjera.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Konceptualni nivo modeliranja
+
+Šta je? Ovo je najviši, apstraktni nivo modeliranja. Fokusira se na što bolje razumevanje podataka i njihovih veza iz poslovne perspektive, a ne na tehnicke detalje.
+
+Cilj: Definisati osnovne entitete i njihove veze, kao i kljucne
+karakteristike koje su relevantne za poslovanje.
+
+Karakteristike:
+• Nema tehnickih detalja, poput vrsta podataka ili
+tehnologija.
+• Koristi dijagrame entiteta i veza (ER dijagram).
+• Fokusiran je na potrebe korisnika.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Logicki nivo modeliranja
+
+Šta je? Prelazni nivo izmedu apstraktnog konceptualnog modela i tehnickog fizickog modela. Fokusira se na strukturiranje podataka u obliku koji baza podataka može obraditi, ali i dalje nezavisno od specificne tehnologije.
+
+Cilj: Definisati kako ce podaci biti organizovani, sa fokusom
+na relacije, kljuceve i tipove podataka.
+
+Karakteristike:
+• Precizno definiše atribute entiteta (npr. ISBN za knjige, ID
+za clana).
+• Ukljucuje primarne i strane kljuceve (identifikatori za relacije).
+• Normalizacija se koristi za smanjenje redundancije.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Fizicki nivo modeliranja
+
+
+Šta je? Najdetaljniji i tehnicki nivo modeliranja, koji definiše kako ce podaci biti stvarno skladišteni u bazi podataka. Fokusira se na implementaciju baze u konkretnom sistemu.
+
+Cilj: Optimizovati skladištenje podataka i njihov pristup u skladu
+s tehnologijom koja se koristi.
+
+Karakteristike:
+• Definiše konkretne tipove podataka (npr. VARCHAR, INT).
+• Odreduje indekse, particije i pravila o pristupu.
+• Fokusiran na performanse i tehnicke detalje.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Modeliranje podataka
+Konceptualni nivo:
+* Na konceptualnom nivou modeliranja podataka, fokus je na razumijevanju poslovnih
+entiteta, njihovih odnosa i pravila koja definiraju organizaciju podataka.
+* Ovdje se koriste konceptualni modeli podataka poput entitetsko-relacijskih dijagrama
+(ERD) kako bi se predstavili entiteti (objekti) i njihovi odnosi.
+* Cilj je stvoriti apstraktnu predstavu podataka neovisnu o bilo kojem konkretnom sistemu ili tehnologiji.
+Logicki nivo:
+* Na logickom nivou, konceptualni model se transformira u specifican oblik prilagoden
+odredenom sistemu upravljanja bazama podataka (DBMS).
+* Ovdje se koriste entitetsko-relacijski modeli prilagodeni za odabrani DBMS, kao i dodatne informacije o atributima, kljucevima i vezama izmedu entiteta.
+* Cilj je stvoriti model koji može poslužiti kao temelj za implementaciju baze podataka,
+uzimajuci u obzir specificnosti sistema upravljanja bazama podataka.
+Fizicki nivo:
+* Fizicki nivo modeliranja podataka fokusira se na detalje implementacije na razini sklopovlja i tehnologije.
+* Ovdje se definiraju tehnicki detalji, poput tipova podataka, indeksa, particioniranja i
+performansi.
+* Cilj je optimizirati strukturu podataka za konkretnu platformu ili tehnologiju na kojoj
+ce baza podataka biti izvršena.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Modeliranje podataka
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Modeliranje podataka
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Modeliranje podataka
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Vrste modela podataka
+
+Hijerahijski model
+- koristi hijerarhiju za strukturiranje podataka u obliku poput stabla.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Vrste modela podataka
+
+
+
+
+Relacijski model
+- podaci predstavljeni u obliku tablica
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Vrste modela podataka
+
+
+Mrežni model
+Mrežni model je inspirisan hijerarhijskim modelom. No, za razliku od hijerarhijskog modela, ovaj model olakšava prenošenje složenih odnosa, jer se svaki zapis može povezati s više maticnih zapisa.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Vrste modela podataka
+
+Objektno orijentiran model
+• Sastoji se od kolekcije objekata, svaki sa svojim atributima i metodama. Ova vrsta modela baze podataka naziva se i post-relacijski model baze podataka.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Vrste modela podataka
+
+
+
+
+
+Entity Relationship model
+predstavlja entitete i njihove odnose u grafickom formatu. Entitet može biti bilo što - koncept, podatak ili objekt.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+ER model
+
+
+* Entitet: objekt ili komponenta podataka; osnovni gradivni blok za model podataka.
+* Može predstavljati osobu, mjesto, dogadaj ili objekat o kojem se prikupljaju podaci.
+* Naziv entiteta treba biti u obliku <<Imenica>>.
+* Slabi entitet je onaj koji ne posjeduje primarni kljuc.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+ER model
+
+
+
+
+
+• Atributi: Karakteristike ili svojstva
+entiteta
+• Key attribute: jedinstvena karakteristika entiteta ( maticni broj,broj licne karte, pasoša,..)
+• Composite attribute: kombinacija drugih atributa poznata je kao složeni atribut. ( adresa: ulica,broj,država)
+• Multivalued: Atribut koji može sadržavati više vrijednosti (Osoba može imati više telefonskih brojeva)
+• Derived: izvedeni atribut je onaj cija je vrijednost dinamicka i izveden je iz drugog atributa. (Starost osobe je izvedeni atribut te se s vremenom mijenja i može se izvesti iz drugog atributa (Datum rodenja)).
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+ER model
+
+
+
+
+
+
+
+• Veza: Ovisnost ili povezanost izmedu dva entiteta
+• Veze se oznacavaju glagolima, koji trebaju
+pojasniti odnos izmedu dva entiteta.
+• KARDINALNOST: je odnos broja instanci
+entiteta i broja instanci drugog entiteta.
+• One to One : jedna instanca entiteta povezana s jednom instancom drugog entiteta
+• One to Many : jedna instanca entiteta povezana s više instanci drugog entiteta
+• Many to One: više instanci entiteta
+povezano s jednom instancom drugog
+entiteta
+• Many to Many: više od jedne instance entiteta povezano je s više instanci drugog entiteta
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Kardinalnost
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1:1 veza
+
+
+
+
+
+
+
+
+M:N veza
+
+
+1:N veza
+
+
+
+
+
+
+
+
+N:1 veza
+
+
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Many to Many veza
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Many to Many veza
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://support.airtable.com/hc/en-us/articles/218734758-A-beginner-s-guide-to-many-to-many-relationships
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Normalizacija
+
+
+
+
+
+
+
+Model podataka : fleksibilan, neredudantan, jednostavan
+
+
+
+
+
+
+
+
+
+
+
+
+
+Normalizacija je tehnika koja organizuje atribute na nacin da formiraju neredudantne, stabilne, fleksibilne i prilagodljive entitete. Normalizacija ukljucuje tri koraka:Prva normalna forma 1NFDruga normalna forma 2NFTreca normalna forma 3NF
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+1 NF
+
+
+
+• Svaka celija tabele treba sadržavati jednu vrijednost .
+• Svaki zapis mora biti jedinstven.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+http://www.gitta.info/LogicModelin/en/html/DataConsiten_Norm1NF.html
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+1 NF - primjer 2
+
+
+
+
+
+Cilj: Postici da tablica sadrži samo atomske vrijednosti u svakoj celiji (tj. vrijednosti koje se ne mogu dalje podijeliti) i da svaki stupac ima jedinstven naziv.
+
+Koraci za postizanje 1NF:
+1. Ukloniti višestruke vrijednosti: Pobrinite se da svaki stupac sadrži samo jednu vrijednost po retku. Ako postoje više vrijednosti (npr., lista telefona ili hobija), trebate ih razdvojiti u zasebne redove ili napraviti zasebne stupce.
+2. Osigurati jedinstvenost stupaca: Svaki stupac treba imati jedinstven naziv i jasno definiranu domenu (tip i format podataka).
+
+
+
+
+
+
+
+
+http://www.gitta.info/LogicModelin/en/html/DataConsiten_Norm1NF.html
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+1 NF - primjer 2
+
+
+
+
+
+
+
+
+
+
+http://www.gitta.info/LogicModelin/en/html/DataConsiten_Norm1NF.html
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+2 NF
+
+• 1NF
+• ako su svi atributi, koji nisu primarni kljuc, ovisni od
+citavog primarnog kljuca
+• Primary keys: IDSt, IDProf
+
+
+
+
+
+
+
+
+
+
+
+
+
+http://www.gitta.info/LogicModelin/en/html/DataConsiten_Norm2NF.html
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+2 NF - primjer 2
+
+
+
+
+
+
+Cilj: Ukloniti parcijalne zavisnosti, tj. zavisnosti gdje neki atributi zavise samo od dijela primarnog kljuca u tablici sastavljenoj od više atributa.
+
+Koraci za postizanje 2NF:
+1. Identificirati i ukloniti parcijalne zavisnosti: Ako tablica ima složeni primarni kljuc (sastavljen od više stupaca), svaki stupac koji nije dio kljuca mora ovisiti o cijelom kljucu, a ne samo o dijelu.
+2. Razdvajanje tablica: Ako neki atributi ne ovisi o cijelom kljucu, trebali bi biti izdvojeni u zasebnu tablicu gdje ce formirati funkcionalnu cjelinu s dijelom kljuca o kojem zavise.
+
+
+
+
+
+
+http://www.gitta.info/LogicModelin/en/html/DataConsiten_Norm2NF.html
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+2 NF - primjer 2
+
+
+
+
+
+
+
+
+
+
+http://www.gitta.info/LogicModelin/en/html/DataConsiten_Norm2NF.html
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+3 NF
+
+
+
+
+• 2NF
+• i ako su vrijednosti njegovih atributa, koji nisu primarni
+kljuc, neovisne od drugih atributa, koji nisu primarni kljuc.
+• Primary Key: ID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+http://www.gitta.info/LogicModelin/en/html/DataConsiten_Norm3NF.html
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+3 NF - primjer 2
+
+
+
+
+
+Cilj: Ukloniti tranzitivne zavisnosti, gdje atributi zavise od
+drugih atributa koji nisu kljuc.
+
+Koraci za postizanje 3NF:
+1. Identificirati i ukloniti tranzitivne zavisnosti: Ako neki atribut zavisi od drugih nekljucnih atributa, te zavisnosti treba ukloniti.
+2. Razdvajanje tablica: Atributi koji imaju tranzitivne
+zavisnosti trebaju biti izdvojeni u zasebne tablice.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+http://www.gitta.info/LogicModelin/en/html/DataConsiten_Norm3NF.html
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+3 NF - primjer 2
+
+
+
+
+
+
+
+
+
+
+http://www.gitta.info/LogicModelin/en/html/DataConsiten_Norm3NF.html
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Kako kreirati ERD?
+
+1. Identifikacija entiteta
+2. Identifikacija atributa za svaki entitet
+3. Kreiranje veza izmedu entiteta
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Primjer
+
+• Kreirati ERD za kompaniju za osiguranje automobila ciji klijent posjeduje po jedan ili više automobila. Svaki automobil može prouzrokovati 0 ili više nezgoda.
+
+• Automobil je opisan modelom,godinom proizvodnje, tablicama.
+• Osoba opisana ID vozaca, adresom i imenom.
+
+• Nezgoda opisana brojem štete, lokacijom i datumom.
+
+• Takoder, nezgoda ce u odnosu na automobil opisati i iznos štete.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Modeliranje procesa
+
+
+Model procesa je nacin prikazivanja kako bi poslovni sistem trebao raditi. On ilustruje procese ili aktivnosti, te kako se podaci razmjenjuju izmedu njih.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti
+
+Dijagram aktivnosti je dijagram ponašanja, tj. prikazuje ponašanje sistema.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Inicijalno stanje
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Akcija ili stanje aktivnosti
+
+• aktivnost predstavlja izvršavanje akcije na objektima. Predstavljamo aktivnost pomocu pravougaonika sa zaobljenim uglovima. U osnovi svaka radnja ili dogadaj koji se odvija predstavljen je pomocu aktivnosti.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Akcijski tok ili Kontrolni tokovi
+
+• Akcijski tokovi ili Kontrolni tokovi takoder se nazivaju putanje i rubovi. Koriste se za prikazivanje prelaska iz jednog stanja u drugo.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Cvor odluke i grananje
+
+• Kad moramo donijeti odluku prije nego što odlucimo o protoku ,
+koristimo cvor odluke.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Cuvari
+
+Cuvar se odnosi na izjavu napisanu pored cvora odluke na strelici,
+unutar uglastih zagrada.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Fork
+
+• Cvorovi Fork koriste se za podršku paralelnim aktivnostima.
+• Odluka se ne dijeli prije podjele izvršavanja paralelnih
+aktivnosti. Oba dijela se moraju izvršiti u slucaju fork-a.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Join
+
+• Cvorovi pridruživanja koriste se za podršku istodobnim
+aktivnostima konvergiranjem u jednu.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Spajanje ili spajanje dogadaja
+
+• scenariji nastaju kada aktivnosti koje se ne izvršavaju istovremeno moraju biti spojene. Za takve scenarije koristimo oznaku spajanja. Dvije ili više aktivnosti možemo spojiti u jednu ako kontrola prede na sljedecu aktivnost bez obzira na odabrani put.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Swimlanes
+
+• Koristimo swimlanes za grupiranje povezanih aktivnosti u jednoj koloni. Swimlanes mogu biti vertikalni i horizontalni. Nije obavezna upotreba swmilanes-a. Obicno daju više jasnoce dijagramu aktivnosti.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Swimlanes
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Vremenski signal
+
+
+
+Možemo imati scenarij u kojem je nekom dogadaju
+potrebno odredeno vrijeme.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Signali
+
+Signal ukazuje na to da aktivnost prima dogadaj iz
+spoljnog procesa.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Kraj toka
+
+Oznacava kraj odredenog toka, ali ne i kraj kompletne
+aktivnosti.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Primjer
+
+• Nacrtati dijagram aktivnosti za login akciju Sistema. Korisnik unosi username I password i kada su oni ispravni se uspješno loguje na sistem.
+• U suprotnom mu se otvara prozor sa porukom o nevalidnosti
+kredencijala te ga se ponovo vraca na login stranicu.
+• Kada se korisnik uspješno loguje prikazane su mu njegove postavke.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Primjer
+
+
+• Kreirati dijagram aktivnosti za email komunikaciju. Prvobitno se uspostavlja email komunikacija te se nakon toga paralelno izvrše radnje slanja emaila i primanja odgovora.
+• Ukoliko je sadržaj privatan, šalje se enkriptovan email, u suprotnom sistem šalje standardan email. Nakon slanja bilo koje vrste emaila, sistem jednako nastavlja sa radom.
+• Kada je rijec o primanju odgovora, sistem ceka 2 sata na odgovor te provjerava da li je odgovor validan ili ne. Ukoliko je odgovor nevalidan ili ne postoji prekida se izvršenje, u suprotnom izvršenje se nastavlja.
+• Nakon završetka svih pomenutih paralelnih aktivnosti, sistem
+potvrdjuje uspostavu email komunikacije.
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Dijagrami Aktivnosti - Primjer
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Pitanja i odgovori
+
+
+
+Pitanja i odgovori ???
+
+Elektrotehnicki fakultet Sarajevo	Univerzitet u Sarajevu
+
+Projektni zadatak
+
+• Modeliranje procesa za vaš IS:
+- Activity dijagrami
+
+- Modeliranje podataka za vaš IS :
+-	ER dijagram
+- Izvještaj
+- Projektni zadatak poslati do 16.12.2024. 23:59 na email:
+amer.koric@etf.unsa.ba
