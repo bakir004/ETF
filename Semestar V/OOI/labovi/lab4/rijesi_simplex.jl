@@ -268,7 +268,19 @@ function ispisi_simplex_tabelu(tabela, bazniIndeksi)
 	end
 	
 	# Pronalaženje maksimalne širine za svaku kolonu
-	kolona_sirine = [10]  # Za 'b' kolonu (bazna varijabla)
+	# Prva kolona: bazna varijabla
+	# Druga kolona: b vrijednosti (slobodna kolona)
+	# Ostale kolone: koeficijenti varijabli
+	kolona_sirine = [10]  # Za baznu varijablu
+	kolona_sirine_b = [10]  # Za b kolonu (slobodni članovi)
+	
+	# Izračunaj širinu za b kolonu
+	for i in 1:m
+		str = format_broj(tabela[i, 1])
+		kolona_sirine_b[1] = max(kolona_sirine_b[1], length(str) + 2)
+	end
+	kolona_sirine_b[1] = max(kolona_sirine_b[1], 10)  # Minimum za "    b    "
+	
 	for j in 2:n
 		max_sirina = 10
 		# Provjeri sve redove
@@ -284,17 +296,23 @@ function ispisi_simplex_tabelu(tabela, bazniIndeksi)
 	
 	# Ispis zaglavlja
 	print("┌")
-	for (idx, sirina) in enumerate(kolona_sirine)
+	# Bazna varijabla kolona
+	print(repeat("─", kolona_sirine[1]))
+	print("┬")
+	# b kolona
+	print(repeat("─", kolona_sirine_b[1]))
+	# Ostale kolone
+	for (idx, sirina) in enumerate(kolona_sirine[2:end])
+		print("┬")
 		print(repeat("─", sirina))
-		if idx < length(kolona_sirine)
-			print("┬")
-		end
 	end
 	println("┐")
 	
 	# Ispis naziva kolona
 	print("│")
-	print(lpad("   b   ", kolona_sirine[1]))
+	print(lpad("Bazna", kolona_sirine[1]))
+	print("│")
+	print(lpad("    b    ", kolona_sirine_b[1]))
 	for j in 2:n
 		print("│", lpad("x$(j-1)", kolona_sirine[j]))
 	end
@@ -302,24 +320,28 @@ function ispisi_simplex_tabelu(tabela, bazniIndeksi)
 	
 	# Linija ispod zaglavlja
 	print("├")
-	for (idx, sirina) in enumerate(kolona_sirine)
+	print(repeat("─", kolona_sirine[1]))
+	print("┼")
+	print(repeat("─", kolona_sirine_b[1]))
+	for (idx, sirina) in enumerate(kolona_sirine[2:end])
+		print("┼")
 		print(repeat("─", sirina))
-		if idx < length(kolona_sirine)
-			print("┼")
-		end
 	end
 	println("┤")
 	
 	# Ispis redova (osim zadnja dva - M red i Z red)
 	for i in 1:(m-2)
 		print("│")
-		# Ispis bazne varijable ili vrijednosti b
+		# Ispis bazne varijable
 		if i <= length(bazniIndeksi) && bazniIndeksi[i] > 0
 			baznaVar = Int(round(bazniIndeksi[i]))
 			print(lpad("x$baznaVar", kolona_sirine[1]))
 		else
-			print(lpad(format_broj(tabela[i, 1]), kolona_sirine[1]))
+			print(lpad("", kolona_sirine[1]))
 		end
+		print("│")
+		# Ispis b vrijednosti (slobodne kolone)
+		print(lpad(format_broj(tabela[i, 1]), kolona_sirine_b[1]))
 		
 		# Ispis koeficijenata
 		for j in 2:n
@@ -330,17 +352,20 @@ function ispisi_simplex_tabelu(tabela, bazniIndeksi)
 	
 	# Linija iznad M reda
 	print("├")
-	for (idx, sirina) in enumerate(kolona_sirine)
+	print(repeat("─", kolona_sirine[1]))
+	print("┼")
+	print(repeat("─", kolona_sirine_b[1]))
+	for (idx, sirina) in enumerate(kolona_sirine[2:end])
+		print("┼")
 		print(repeat("─", sirina))
-		if idx < length(kolona_sirine)
-			print("┼")
-		end
 	end
 	println("┤")
 	
 	# M red
 	print("│")
 	print(lpad("  M   ", kolona_sirine[1]))
+	print("│")
+	print(lpad(format_broj(tabela[m-1, 1]), kolona_sirine_b[1]))
 	for j in 2:n
 		print("│", lpad(format_broj(tabela[m-1, j]), kolona_sirine[j]))
 	end
@@ -349,6 +374,8 @@ function ispisi_simplex_tabelu(tabela, bazniIndeksi)
 	# Ciljni red (Z)
 	print("│")
 	print(lpad("  Z   ", kolona_sirine[1]))
+	print("│")
+	print(lpad(format_broj(tabela[m, 1]), kolona_sirine_b[1]))
 	for j in 2:n
 		print("│", lpad(format_broj(tabela[m, j]), kolona_sirine[j]))
 	end
@@ -356,11 +383,12 @@ function ispisi_simplex_tabelu(tabela, bazniIndeksi)
 	
 	# Donja linija
 	print("└")
-	for (idx, sirina) in enumerate(kolona_sirine)
+	print(repeat("─", kolona_sirine[1]))
+	print("┴")
+	print(repeat("─", kolona_sirine_b[1]))
+	for (idx, sirina) in enumerate(kolona_sirine[2:end])
+		print("┴")
 		print(repeat("─", sirina))
-		if idx < length(kolona_sirine)
-			print("┴")
-		end
 	end
 	println("┘")
 end
