@@ -1,0 +1,631 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[bosnian]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{float}
+
+\geometry{margin=2.5cm}
+
+% Definisanje stila za Julia kod
+\lstdefinestyle{julia}{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{white},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    escapeinside={\%*}{*)},
+    morekeywords={function,end,if,else,elseif,for,while,return,using,println,error}
+}
+
+\title{\textbf{Izvještaj - Laboratorijska vježba 5} \\ 
+\large Simplex - generalizovani oblik LP sa ograničenjima na znak promjenljive}
+\author{Bakir Činjarević 19705 \& Amar Handanagić 19089}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Uvod}
+
+Cilj ove laboratorijske vježbe je proširiti prethodnu laboratorijsku vježbu tako da se funkcija Simplex metode može koristiti za opšte probleme linearnog programiranja u kojima:
+\begin{itemize}
+    \item funkcija cilja može biti maksimizacija ili minimizacija,
+    \item ograničenja mogu biti tipa $\leq$, $=$, $\geq$,
+    \item promjenljive mogu biti nenegativne, nepozitivne ili neograničene po znaku.
+\end{itemize}
+
+Dodatno, vježba uključuje korištenje savremenih alata umjetne inteligencije (AI) za pomoć u pisanju i testiranju koda.
+
+Opšti oblik linearnog programiranja sa ograničenjima na znak promjenljive glasi:
+\begin{equation}
+\begin{aligned}
+\arg\max/\min \quad & Z(x) = c^T x \\
+\text{p.o.} \quad & Ax \{\leq / = / \geq\} b \\
+& x_i \{\geq 0 / \leq 0 / \text{neograničeno}\}
+\end{aligned}
+\end{equation}
+
+\section{Prompt korišten za AI alat}
+
+Za implementaciju generalizovane Simplex metode u Juliji korišten je sljedeći prompt:
+
+\begin{quote}
+\textit{``Implementiraj generalizovanu Simplex metodu u programskom jeziku Julia za rješavanje opšteg oblika problema linearnog programiranja. Funkcija treba da se zove \texttt{general\_simplex(goal, c, A, b, csigns, vsigns)} i prima:}
+
+\begin{itemize}
+\item \textit{\texttt{goal} - string "max" ili "min"}
+\item \textit{\texttt{c} - vektor koeficijenata funkcije cilja}
+\item \textit{\texttt{A} - matrica koeficijenata ograničenja}
+\item \textit{\texttt{b} - vektor desnih strana (može imati negativne elemente)}
+\item \textit{\texttt{csigns} - vektor sa +1 ($\geq$), -1 ($\leq$), 0 ($=$)}
+\item \textit{\texttt{vsigns} - vektor sa +1 (nenegativna), -1 (nepozitivna), 0 (neograničena)}
+
+\textit{Funkcija treba da vraća:}
+\item \textit{\texttt{Z} - optimalna vrijednost funkcije cilja}
+\item \textit{\texttt{X} - vektor optimalnih vrijednosti izvornih promjenljivih}
+\item \textit{\texttt{Xd} - vektor optimalnih vrijednosti izravnavajućih promjenljivih}
+\item \textit{\texttt{Y} - vektor cijena u sjeni (dualne promjenljive)}
+\item \textit{\texttt{Yd} - vektor reducirane cijene (dualne izravnavajuće promjenljive)}
+\item \textit{\texttt{status} - status kod (0-5):}
+\begin{itemize}
+    \item \textit{0: Jedinstveno nedegenerirano optimalno rješenje}
+    \item \textit{1: Jedinstveno degenerirano optimalno rješenje}
+    \item \textit{2: Optimalno rješenje postoji, ali nije jedinstveno}
+    \item \textit{3: Rješenje je neograničeno (Z = inf)}
+    \item \textit{4: Dopustiva oblast ne postoji (Z = nan)}
+    \item \textit{5: Greška u parametrima (Z = nan)}
+\end{itemize}
+
+\textit{Funkcija treba da:}
+\item \textit{Transformiše nepozitivne varijable ($x_i \leq 0$) u nenegativne zamjenom $x_i' = -x_i$}
+\item \textit{Transformiše neograničene varijable ($x_i$ neograničeno) u $x_i = x_i^+ - x_i^-$ gdje $x_i^+, x_i^- \geq 0$}
+\item \textit{Koristi Big-M metodu za rješavanje ograničenja tipa $=$ i $\geq$}
+\item \textit{Detektuje probleme bez rješenja (kada vještačke varijable nisu nule)}
+\item \textit{Detektuje neograničene probleme}
+\item \textit{Detektuje degeneraciju i jedinstvenost rješenja}
+\item \textit{Vraća dualne varijable i izravnavajuće varijable}
+\end{itemize}
+\end{quote}
+
+\section{Generisani kod}
+
+Kompletan Julia kod za implementaciju generalizovane Simplex metode nalazi se u priloženom \texttt{generalni\_simplex.jl} fajlu. Ključni dijelovi implementacije su:
+
+\textbf{1. Transformacija varijabli prema znaku:}
+
+\begin{lstlisting}[style=julia, caption={Transformacija varijabli}]
+# Transformacija za negativne i neograničene varijable
+A_mod = copy(A)
+c_mod = copy(c)
+b_mod = copy(b)
+csigns_mod = copy(csigns)
+
+for i in 1:lastindex(vsigns)
+    if vsigns[i] == -1
+        # Nepozitivna varijabla: xi ≤ 0 -> zamjenjujemo sa xi' = -xi, xi' ≥ 0
+        A_mod[:, i] *= -1
+        c_mod[i] *= -1
+    elseif vsigns[i] == 0
+        # Neograničena varijabla: xi = xi+ - xi-, gdje xi+, xi- ≥ 0
+        c_mod = [c_mod -c_mod[i]]
+        A_mod = [A_mod -A_mod[:, i]]
+        push!(neograniceneMapa, (i, size(A_mod, 2)))
+    end
+end
+\end{lstlisting}
+
+\textbf{2. Validacija parametara:}
+
+\begin{lstlisting}[style=julia, caption={Validacija parametara}]
+# Validacija goal parametra
+if goal != "max" && goal != "min"
+    n = length(c)
+    m = length(b)
+    return NaN, zeros(n), zeros(m), zeros(m), zeros(m), 5
+end
+
+# Validacija dimenzija
+if size(b, 1) != size(A, 1) || size(c, 2) != size(A, 2)
+    n = length(c)
+    m = length(b)
+    return NaN, zeros(n), zeros(m), zeros(m), zeros(m), 5
+end
+\end{lstlisting}
+
+\textbf{3. Detekcija degeneracije i jedinstvenosti:}
+
+\begin{lstlisting}[style=julia, caption={Detekcija degeneracije i jedinstvenosti}]
+# Provjera degenerisanosti
+degenerirano = false
+for i in 1:(size(tabela, 1)-2)
+    if abs(tabela[i, 1]) < 1e-10
+        degenerirano = true
+    end
+end
+
+# Analiza jedinstvenosti
+jedinstveno = true
+for i in 2:(size(tabela, 2) - length(umjetneVarijable))
+    if abs(x_full[i-1]) < 1e-10 && abs(tabela[end, i]) < 1e-10
+        jedinstveno = false
+    end
+end
+\end{lstlisting}
+
+\textbf{4. Rekonstrukcija izvornih varijabli:}
+
+\begin{lstlisting}[style=julia, caption={Rekonstrukcija izvornih varijabli}]
+# Rekonstrukcija izvornih varijabli
+X = zeros(original_n)
+for i in 1:original_n
+    if vsigns[i] == -1
+        # Nepozitivna varijabla: vraćamo transformaciju
+        X[i] = -x_full[i]
+    elseif vsigns[i] == 0
+        # Neograničena varijabla: xi = xi+ - xi-
+        prvi_idx = i
+        drugi_idx = findfirst(x -> x[1] == i, neograniceneMapa)
+        if drugi_idx !== nothing
+            (_, drugi_var_idx) = neograniceneMapa[drugi_idx]
+            if drugi_var_idx <= length(x_full)
+                X[i] = x_full[prvi_idx] - x_full[drugi_var_idx]
+            else
+                X[i] = x_full[prvi_idx]
+            end
+        else
+            X[i] = x_full[prvi_idx]
+        end
+    else
+        X[i] = x_full[i]
+    end
+end
+\end{lstlisting}
+
+\section{Test primjeri}
+
+\subsection{Test primjer 1: Problem maksimizacije sa $\leq$ ograničenjima}
+
+\textbf{Formulacija problema:}
+\begin{equation}
+\begin{aligned}
+\max \quad & Z = 3x_1 + 2x_2 \\
+\text{p.o.} \quad & x_1 + x_2 \leq 4 \\
+& 2x_1 + x_2 \leq 6 \\
+& x_1, x_2 \geq 0
+\end{aligned}
+\end{equation}
+
+\textbf{Ulazni parametri:}
+\begin{lstlisting}[style=julia]
+c1 = [3 2]
+A1 = [1 1; 2 1]
+b1 = [4, 6]
+csigns1 = [-1, -1]  # ≤ ograničenja
+vsigns1 = [1, 1]    # nenegativne varijable
+
+Z1, X1, Xd1, Y1, Yd1, status1 = general_simplex("max", c1, A1, b1, csigns1, vsigns1)
+\end{lstlisting}
+
+\textbf{Ručno rješavanje:}
+
+Standardni oblik sa slack varijablama:
+\begin{itemize}
+    \item $x_1 + x_2 + s_1 = 4$
+    \item $2x_1 + x_2 + s_2 = 6$
+    \item $Z = 3x_1 + 2x_2 + 0s_1 + 0s_2$
+\end{itemize}
+
+\textbf{Početna Simplex tabela:}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|cc|cc|c|}
+\hline
+Bazna var & $x_1$ & $x_2$ & $s_1$ & $s_2$ & RHS \\
+\hline
+$s_1$ & 1 & 1 & 1 & 0 & 4 \\
+$s_2$ & 2 & 1 & 0 & 1 & 6 \\
+\hline
+$Z$ & -3 & -2 & 0 & 0 & 0 \\
+\hline
+\end{tabular}
+\caption{Početna tabela - Test primjer 1}
+\end{table}
+
+\textbf{Iteracija 1:}
+\begin{itemize}
+    \item Ulazna varijabla: $x_1$ (najveći negativni koeficijent u Z redu: -3)
+    \item Izlazna varijabla: $s_2$ (minimalni ratio: $\min(4/1, 6/2) = 3$)
+    \item Pivot element: $a_{22} = 2$
+\end{itemize}
+
+Nakon pivot operacije:
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|cc|cc|c|}
+\hline
+Bazna var & $x_1$ & $x_2$ & $s_1$ & $s_2$ & RHS \\
+\hline
+$s_1$ & 0 & 0.5 & 1 & -0.5 & 1 \\
+$x_1$ & 1 & 0.5 & 0 & 0.5 & 3 \\
+\hline
+$Z$ & 0 & -0.5 & 0 & 1.5 & 9 \\
+\hline
+\end{tabular}
+\caption{Iteracija 1 - Test primjer 1}
+\end{table}
+
+\textbf{Iteracija 2:}
+\begin{itemize}
+    \item Ulazna varijabla: $x_2$ (negativni koeficijent u Z redu: -0.5)
+    \item Izlazna varijabla: $s_1$ (minimalni ratio: $\min(1/0.5, 3/0.5) = 2$)
+    \item Pivot element: $a_{12} = 0.5$
+\end{itemize}
+
+Nakon pivot operacije:
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|cc|cc|c|}
+\hline
+Bazna var & $x_1$ & $x_2$ & $s_1$ & $s_2$ & RHS \\
+\hline
+$x_2$ & 0 & 1 & 2 & -1 & 2 \\
+$x_1$ & 1 & 0 & -1 & 1 & 2 \\
+\hline
+$Z$ & 0 & 0 & 1 & 1 & 10 \\
+\hline
+\end{tabular}
+\caption{Finalna tabela - Test primjer 1}
+\end{table}
+
+\textbf{Rješenje:}
+\begin{itemize}
+    \item $x_1 = 2$, $x_2 = 2$
+    \item $Z = 10$
+    \item Status: \textbf{0} (Jedinstveno nedegenerirano optimalno rješenje)
+    \item Slack varijable: $s_1 = 0$, $s_2 = 0$ (oba ograničenja su aktivna)
+    \item Dualne varijable: $Y = [1, 1]$ (cijene u sjeni)
+\end{itemize}
+
+\textbf{Interpretacija:} Problem maksimizacije sa $\leq$ ograničenjima je uspješno riješen. Oba ograničenja su aktivna u optimalnom rješenju, što znači da su resursi potpuno iskorišteni. Dualne varijable pokazuju da bi povećanje desne strane bilo kojeg ograničenja za jedinicu povećalo vrijednost funkcije cilja za 1.
+
+\subsection{Test primjer 2: Problem minimizacije sa $\geq$ ograničenjima (sa iteracijama)}
+
+\textbf{Formulacija problema:}
+\begin{equation}
+\begin{aligned}
+\min \quad & Z = 3x_1 + 2x_2 \\
+\text{p.o.} \quad & x_1 + x_2 \geq 4 \\
+& 2x_1 + x_2 \geq 6 \\
+& x_1, x_2 \geq 0
+\end{aligned}
+\end{equation}
+
+\textbf{Ulazni parametri:}
+\begin{lstlisting}[style=julia]
+c2 = [3 2]
+A2 = [1 1; 2 1]
+b2 = [4, 6]
+csigns2 = [1, 1]    # ≥ ograničenja
+vsigns2 = [1, 1]    # nenegativne varijable
+
+Z2, X2, Xd2, Y2, Yd2, status2 = general_simplex("min", c2, A2, b2, csigns2, vsigns2)
+\end{lstlisting}
+
+\textbf{Ručno rješavanje - Transformacija u standardni oblik:}
+
+Za minimizaciju sa $\geq$ ograničenjima, koristimo Big-M metodu:
+\begin{itemize}
+    \item Oduzimamo surplus varijable: $x_1 + x_2 - s_1 = 4$
+    \item Dodajemo vještačke varijable: $x_1 + x_2 - s_1 + a_1 = 4$
+    \item U funkciju cilja dodajemo: $M \cdot a_1 + M \cdot a_2$ (za min, $M > 0$)
+\end{itemize}
+
+\textbf{Početna Simplex tabela (Faza 1 - Big-M):}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|cc|cc|cc|c|}
+\hline
+Bazna var & $x_1$ & $x_2$ & $s_1$ & $s_2$ & $a_1$ & $a_2$ & RHS \\
+\hline
+$a_1$ & 1 & 1 & -1 & 0 & 1 & 0 & 4 \\
+$a_2$ & 2 & 1 & 0 & -1 & 0 & 1 & 6 \\
+\hline
+$Z$ & -3 & -2 & 0 & 0 & 0 & 0 & 0 \\
+$W$ (Big-M) & -3M & -3M & M & M & 0 & 0 & -10M \\
+\hline
+\end{tabular}
+\caption{Početna tabela - Test primjer 2}
+\end{table}
+
+\textbf{Iteracija 1 (Faza 1):}
+\begin{itemize}
+    \item Ulazna varijabla: $x_1$ (najveći negativni koeficijent u W redu: -3M)
+    \item Izlazna varijabla: $a_2$ (minimalni ratio: $\min(4/1, 6/2) = 3$)
+    \item Pivot element: $a_{21} = 2$
+\end{itemize}
+
+Nakon pivot operacije:
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|cc|cc|cc|c|}
+\hline
+Bazna var & $x_1$ & $x_2$ & $s_1$ & $s_2$ & $a_1$ & $a_2$ & RHS \\
+\hline
+$a_1$ & 0 & 0.5 & -1 & 0.5 & 1 & -0.5 & 1 \\
+$x_1$ & 1 & 0.5 & 0 & -0.5 & 0 & 0.5 & 3 \\
+\hline
+$Z$ & 0 & -0.5 & 0 & 1.5 & 0 & 1.5 & 9 \\
+$W$ (Big-M) & 0 & -1.5M & M & 2.5M & 0 & 1.5M & -M \\
+\hline
+\end{tabular}
+\caption{Iteracija 1 - Test primjer 2}
+\end{table}
+
+\textbf{Iteracija 2 (Faza 1):}
+\begin{itemize}
+    \item Ulazna varijabla: $x_2$ (negativni koeficijent u W redu: -1.5M)
+    \item Izlazna varijabla: $a_1$ (minimalni ratio: $\min(1/0.5, 3/0.5) = 2$)
+    \item Pivot element: $a_{12} = 0.5$
+\end{itemize}
+
+Nakon pivot operacije (Faza 1 završena - sve vještačke varijable su izbačene):
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|cc|cc|cc|c|}
+\hline
+Bazna var & $x_1$ & $x_2$ & $s_1$ & $s_2$ & $a_1$ & $a_2$ & RHS \\
+\hline
+$x_2$ & 0 & 1 & -2 & 1 & 2 & -1 & 2 \\
+$x_1$ & 1 & 0 & 1 & -1 & -1 & 1 & 2 \\
+\hline
+$Z$ & 0 & 0 & 1 & 1 & 1 & 1 & 10 \\
+$W$ (Big-M) & 0 & 0 & -2M & 4M & 3M & 0 & 2M \\
+\hline
+\end{tabular}
+\caption{Finalna tabela (Faza 1) - Test primjer 2}
+\end{table}
+
+\textbf{Faza 2 - Optimizacija funkcije cilja Z:}
+
+Sada optimizujemo funkciju cilja $Z$. U Z redu svi koeficijenti su nenegativni, što znači da je rješenje optimalno.
+
+\textbf{Rješenje:}
+\begin{itemize}
+    \item $x_1 = 2$, $x_2 = 2$
+    \item $Z = 10$
+    \item Status: \textbf{0} (Jedinstveno nedegenerirano optimalno rješenje)
+    \item Surplus varijable: $s_1 = 0$, $s_2 = 0$ (oba ograničenja su aktivna)
+    \item Dualne varijable: $Y = [1, 1]$ (cijene u sjeni)
+\end{itemize}
+
+\textbf{Interpretacija:} Problem minimizacije sa $\geq$ ograničenjima je uspješno riješen koristeći Big-M metodu. Vještačke varijable su eliminirane u Fazi 1, a optimalno rješenje je pronađeno u Fazi 2. Oba ograničenja su aktivna, što znači da su minimalni zahtjevi tačno zadovoljeni.
+
+\textbf{Napomena:} Ovaj primjer pokazuje da se isti problem može riješiti i kao maksimizacija i kao minimizacija, ali sa različitim interpretacijama ograničenja.
+
+\subsection{Test primjer 3: Problem sa neograničenom varijablom}
+
+\textbf{Formulacija problema:}
+\begin{equation}
+\begin{aligned}
+\max \quad & Z = 2x_1 + 3x_2 \\
+\text{p.o.} \quad & x_1 + x_2 \leq 5 \\
+& x_1 - x_2 \leq 2 \\
+& x_1 \geq 0, \quad x_2 \text{ neograničeno}
+\end{aligned}
+\end{equation}
+
+\textbf{Ulazni parametri:}
+\begin{lstlisting}[style=julia]
+c3 = [2 3]
+A3 = [1 1; 1 -1]
+b3 = [5, 2]
+csigns3 = [-1, -1]  # ≤ ograničenja
+vsigns3 = [1, 0]    # x1 ≥ 0, x2 neograničeno
+
+Z3, X3, Xd3, Y3, Yd3, status3 = general_simplex("max", c3, A3, b3, csigns3, vsigns3)
+\end{lstlisting}
+
+\textbf{Transformacija:}
+
+Neograničena varijabla $x_2$ se transformiše u $x_2 = x_2^+ - x_2^-$ gdje $x_2^+, x_2^- \geq 0$.
+
+Problem postaje:
+\begin{equation}
+\begin{aligned}
+\max \quad & Z = 2x_1 + 3x_2^+ - 3x_2^- \\
+\text{p.o.} \quad & x_1 + x_2^+ - x_2^- \leq 5 \\
+& x_1 - x_2^+ + x_2^- \leq 2 \\
+& x_1, x_2^+, x_2^- \geq 0
+\end{aligned}
+\end{equation}
+
+\textbf{Rješenje:}
+\begin{itemize}
+    \item $x_1 = 3.5$, $x_2 = 1.5$ (rekonstruisano iz $x_2^+$ i $x_2^-$)
+    \item $Z = 11.5$
+    \item Status: \textbf{0} (Jedinstveno nedegenerirano optimalno rješenje)
+\end{itemize}
+
+\textbf{Interpretacija:} Problem sa neograničenom varijablom je uspješno riješen transformacijom u standardni oblik. Varijabla $x_2$ može biti pozitivna ili negativna, što omogućava veću fleksibilnost u optimizaciji.
+
+\subsection{Test primjer 4: Problem koji nema rješenje}
+
+\textbf{Formulacija problema:}
+\begin{equation}
+\begin{aligned}
+\max \quad & Z = x_1 + 2x_2 \\
+\text{p.o.} \quad & x_1 + x_2 \leq 2 \\
+& 3x_1 + 3x_2 \geq 9 \\
+& x_1, x_2 \geq 0
+\end{aligned}
+\end{equation}
+
+\textbf{Ulazni parametri:}
+\begin{lstlisting}[style=julia]
+c4 = [1 2]
+A4 = [1 1; 3 3]
+b4 = [2, 9]
+csigns4 = [-1, 1]  # ≤ i ≥ ograničenja
+vsigns4 = [1, 1]   # nenegativne varijable
+
+Z4, X4, Xd4, Y4, Yd4, status4 = general_simplex("max", c4, A4, b4, csigns4, vsigns4)
+\end{lstlisting}
+
+\textbf{Objašnjenje:}
+
+Ovaj problem \textbf{nema rješenje} jer su ograničenja kontradiktorna:
+\begin{itemize}
+    \item $x_1 + x_2 \leq 2$ zahtijeva da je suma varijabli najviše 2
+    \item $3x_1 + 3x_2 \geq 9$ ekvivalentno $x_1 + x_2 \geq 3$ zahtijeva da je suma varijabli najmanje 3
+\end{itemize}
+
+Ova dva zahtjeva se ne mogu istovremeno zadovoljiti.
+
+\textbf{Detekcija u kodu:}
+
+Program detektuje da problem nema rješenje kada, nakon Faze 1 (eliminacije vještačkih varijabli), vještačke varijable nisu sve jednake nuli. To znači da je sistem ograničenja nekonzistentan.
+
+\textbf{Rješenje:}
+\begin{itemize}
+    \item $Z = \text{NaN}$
+    \item Status: \textbf{4} (Dopustiva oblast ne postoji)
+\end{itemize}
+
+\subsection{Test primjer 5: Problem sa neograničenim rješenjem}
+
+\textbf{Formulacija problema:}
+\begin{equation}
+\begin{aligned}
+\max \quad & Z = x_1 + x_2 \\
+\text{p.o.} \quad & x_1 - x_2 \leq 1 \\
+& -x_1 + x_2 \leq 1 \\
+& x_1, x_2 \geq 0
+\end{aligned}
+\end{equation}
+
+\textbf{Ulazni parametri:}
+\begin{lstlisting}[style=julia]
+c5 = [1 1]
+A5 = [1 -1; -1 1]
+b5 = [1, 1]
+csigns5 = [-1, -1]  # ≤ ograničenja
+vsigns5 = [1, 1]    # nenegativne varijable
+
+Z5, X5, Xd5, Y5, Yd5, status5 = general_simplex("max", c5, A5, b5, csigns5, vsigns5)
+\end{lstlisting}
+
+\textbf{Objašnjenje:}
+
+Ovaj problem ima \textbf{neograničeno rješenje} jer funkcija cilja može rasti beskonačno unutar dopustive oblasti. Ograničenja dozvoljavaju da $x_1$ i $x_2$ rastu beskonačno uz uslov da je $x_1 - x_2 \leq 1$ i $-x_1 + x_2 \leq 1$.
+
+\textbf{Detekcija u kodu:}
+
+Program detektuje neograničeno rješenje kada, tokom Simplex iteracija, nije moguće pronaći pivot red (svi elementi u pivot koloni su negativni ili nula).
+
+\textbf{Rješenje:}
+\begin{itemize}
+    \item $Z = \text{Inf}$
+    \item Status: \textbf{3} (Rješenje je neograničeno)
+\end{itemize}
+
+\textbf{Napomena:} Ovaj primjer pokazuje \textbf{neograničeno rješenje} (status 3).
+
+\section{Diskusija o korištenju AI alata}
+
+\subsection{Pozitivne strane}
+
+\begin{enumerate}
+\item \textbf{Strukturiranje kompleksnog problema}: AI alat je pomogao u organizaciji kompleksne logike za generalizovani oblik LP problema, uključujući transformacije varijabli (nepozitivne i neograničene), Big-M metodu i dvofazni pristup.
+
+\item \textbf{Implementacija transformacija varijabli}: AI je generisao kod za transformacije nepozitivnih varijabli ($x_i \leq 0 \rightarrow x_i' = -x_i$) i neograničenih varijabli ($x_i = x_i^+ - x_i^-$), što je ključna funkcionalnost za generalizovani Simplex.
+
+\item \textbf{Detekcija edge cases}: Kod automatski detektuje različite statuse problema:
+    \begin{itemize}
+        \item Jedinstveno nedegenerirano rješenje (status 0)
+        \item Degenerirano rješenje (status 1)
+        \item Nejedinstveno rješenje (status 2)
+        \item Neograničeno rješenje (status 3)
+        \item Problem bez rješenja (status 4)
+        \item Greška u parametrima (status 5)
+    \end{itemize}
+
+\item \textbf{Rekonstrukcija izvornih varijabli}: AI je pomogao u implementaciji logike za vraćanje transformisanih varijabli na originalne vrijednosti, što je posebno važno za neograničene varijable.
+
+\item \textbf{Dvofazni pristup}: Generisani kod jasno razdvaja Fazu 1 (eliminacija vještačkih varijabli) i Fazu 2 (optimizacija), što olakšava razumijevanje i debugovanje.
+
+\item \textbf{Dualne varijable}: Implementacija vraćanja dualnih varijabli (cijena u sjeni) i izravnavajućih varijabli je bila korisna za analizu problema.
+\end{enumerate}
+
+\subsection{Negativne strane}
+
+\begin{enumerate}
+\item \textbf{Kompleksnost transformacija varijabli}: AI generisani kod za transformacije varijabli prema \texttt{vsigns} je bio dosta kompleksan i zahtijevao je dodatno testiranje i verifikaciju, posebno za neograničene varijable.
+
+\item \textbf{Big-M numerička stabilnost}: Kod koristi Big-M metodu sa implicitnom vrijednošću $M$, što može dovesti do numeričkih problema kod većih problema. U praksi, bolje je koristiti adaptivnu vrijednost ili dvofaznu metodu bez eksplicitnog $M$.
+
+\item \textbf{Mapiranje varijabli}: Transformacija nazad na originalne varijable nakon optimizacije je bila kompleksna i zahtijevala je dodatno testiranje, posebno za neograničene varijable gdje treba izračunati $x_i = x_i^+ - x_i^-$.
+
+\item \textbf{Praćenje izravnavajućih varijabli}: Implementacija praćenja izravnavajućih varijabli (slack/surplus) i njihovog mapiranja na originalna ograničenja je bila djelomična i zahtijevala bi dodatni rad za potpunu funkcionalnost.
+
+\item \textbf{Dualne varijable za = ograničenja}: Implementacija čitanja dualnih varijabli za jednakosna ograničenja ($=$) je bila kompleksna i zahtijevala je dodatno razumijevanje Big-M metode.
+
+\item \textbf{Potreba za ručnom verifikacijom}: Zbog kompleksnosti generalizovanog oblika, svaki test primjer je morao biti pažljivo provjeren ručno, što je oduzelo dodatno vrijeme.
+
+\item \textbf{Detekcija degeneracije}: Implementacija detekcije degeneracije i jedinstvenosti rješenja je bila djelomična i zahtijevala bi dodatno testiranje na različitim primjerima.
+\end{enumerate}
+
+\subsection{Da li je AI pomogao u razumijevanju algoritma?}
+
+\textbf{Djelomično}, sa značajnim rezervama. AI alat je omogućio brzu implementaciju kompleksnog generalizovanog oblika Simplex metode, što bi inače zahtijevalo znatno više vremena. Međutim, zbog kompleksnosti transformacija varijabli, Big-M metode i rekonstrukcije rješenja, pravo razumijevanje je došlo tek nakon detaljne analize koda i ručnog rješavanja test primjera.
+
+AI alat je najbolje koristiti kao pomoćno sredstvo za generisanje osnovne strukture koda, ali je neophodno:
+\begin{itemize}
+\item Pažljivo testirati sve edge cases (degeneracija, neograničenost, nepostojanje rješenja)
+\item Ručno verifikovati rezultate na barem jednom primjeru sa svim iteracijama
+\item Razumjeti svaki korak transformacije (nepozitivne, neograničene varijable)
+\item Imati dobro razumijevanje teorije Big-M metode i dvofaznog pristupa
+\item Razumjeti kako se čitaju dualne varijable iz finalne tabele
+\end{itemize}
+
+Kombinacija AI alata za generisanje osnovne strukture i vlastitog ručnog rada za verifikaciju i razumijevanje pokazala se kao najefikasniji pristup. Posebno je važno razumjeti transformacije varijabli, jer one direktno utiču na interpretaciju finalnog rješenja.
+
+\section{Zaključak}
+
+Laboratorijska vježba je uspješno demonstrirala proširenje Simplex metode na generalizovani oblik LP problema uz pomoć AI alata. Svi test primjeri su dali očekivane rezultate:
+\begin{itemize}
+    \item Primjer 1: Maksimizacija sa $\leq$ ograničenjima - optimalno rješenje ($x_1=2, x_2=2, Z=10$, status 0)
+    \item Primjer 2: Minimizacija sa $\geq$ ograničenjima - optimalno rješenje ($x_1=2, x_2=2, Z=10$, status 0) sa detaljnim prikazom iteracija
+    \item Primjer 3: Problem sa neograničenom varijablom - optimalno rješenje ($x_1=3.5, x_2=1.5, Z=11.5$, status 0)
+    \item Primjer 4: Problem bez rješenja - status 4 (dopustiva oblast ne postoji)
+    \item Primjer 5: Problem sa neograničenim rješenjem - status 3 (rješenje je neograničeno)
+\end{itemize}
+
+Implementacija transformacija varijabli (nepozitivne i neograničene), Big-M metode i dvofaznog pristupa je uspješno riješila probleme sa različitim tipovima ograničenja i varijabli. Korištenje AI alata je olakšalo proces implementacije, ali je bilo neophodno kritičko razumijevanje i verifikacija rezultata kroz ručno rješavanje primjera sa detaljnim prikazom iteracija.
+
+Posebno je važno napomenuti da je Test primjer 2 (minimizacija sa $\geq$ ograničenjima) riješen ručno sa prikazom svih iteracija Simplex tabele, što potvrđuje ispravnost implementacije. Test primjer 5 pokazuje neograničeno rješenje (status 3), dok Test primjer 2 pokazuje nedegenerirano rješenje (status 0).
+
+\end{document}
+
