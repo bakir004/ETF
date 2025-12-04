@@ -1,0 +1,165 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[bosnian]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\geometry{margin=2cm}
+
+\date{}
+
+\begin{document}
+
+\section*{Bulletproof uputa za Simplex algoritam}
+
+Problem linearnog programiranja (LP) se zadaje u jednoj od dvije forme: \textbf{standardna} ili \textbf{opća}. Standardni LP problem se rješava običnim simplex algoritmom, dok se opći rješava simplex algoritmom sa \textbf{Big M metodom} (kazneni koeficijenti).
+
+U \textit{općoj formi} može biti problem maksimizacije/minimizacije, bilo koji znak poređenja za ograničenja, i promjenjive bilo kojeg znaka:
+
+\begin{equation}
+\begin{aligned}
+\arg\max/\min \quad & Z(x) = \textbf{c}^T \textbf{x} \\
+\text{p.o.} \quad & \textbf{Ax} \{\leq / = / \geq\} \textbf{b} \\
+& x_i \{\geq 0 / \leq 0 / \,\text{neograničeno}\}
+\end{aligned}
+\end{equation}
+
+U \textit{standardnoj formi} je problem maksimizacije, znak "$\leq$" na ograničenjima, i promjenjive nenegativne:
+
+\begin{equation}
+\begin{aligned}
+\arg\max \quad & Z(x) = \textbf{c}^T \textbf{x} \\
+\text{p.o.} \quad & \textbf{Ax} \leq \textbf{b} \\
+& x_i \geq 0
+\end{aligned}
+\end{equation}
+
+\section{Pripremne radnje}
+
+Moramo svesti problem LP na formu pogodnu za simplex algoritam, a to je \textbf{normalna forma}, gdje se traži maksimizacija, ograničenja tipa jednakosti, i promjenjive nenegativne.
+
+\subsection{Minimizacija $\rightarrow$ Maksimizacija}
+
+Treba problem minimizacije svesti na maksimizaciju.
+
+\begin{equation}
+\min Z(x) \Leftrightarrow \max Z'(x)=-Z(x)
+\end{equation}
+
+Npr. ako se traži minimum funkcije $Z(x)=2x_1+3x_2$, on je jednak maksimumu funkcije $Z'(x)=-2x_1-3x_2$.
+
+\subsection{Ograničenja}
+
+Prvo treba ograničenja sa negativnim $b_i$ (desnom stranom nejednakosti) pomnožit sa -1.
+
+\noindent Zatim treba svesti ograničenja na jednakosti.
+
+\begin{enumerate}
+    \item Ograničenjima tipa $\leq$ dodajemo \textbf{dopunsku promjenjivu} s lijeve strane jednakosti.
+    \item Ograničenjima tipa $\geq$ \textbf{oduzimamo} jednu dopunsku promjenjivu i dodajemo jednu \textbf{vještačku promjenjivu} s lijeve strane nejednakosti.
+    \item Ograničenjima tipa $=$ dodajemo jednu vještačku promjenjivu sa lijeve strane jednakosti.
+\end{enumerate}
+
+Primjeri:
+
+\begin{equation}
+\begin{aligned}
+    2x_1+3x_2\leq5 &\Longrightarrow2x_1+3x_2+\textcolor{red}{x_3} = 5\\
+    5x_1-2x_2\geq5 &\Longrightarrow5x_1-2x_2-\textcolor{red}{x_3}+\textcolor{blue}{x_4} = 5\\
+    2x_1+2x_2=5 &\Longrightarrow2x_1+2x_2+\textcolor{blue}{x_3} = 5\\
+    5x_1-2x_2\leq-5 &\Longrightarrow-5x_1+2x_2\geq5\Longrightarrow-5x_1+2x_2-\textcolor{red}{x_3}+\textcolor{blue}{x_4}=5\\
+\end{aligned}
+\end{equation}
+\textcolor{red}{Crvene} promjenjive su dopunske, dok su \textcolor{blue}{plave} vještačke. 
+
+\subsection{Domeni promjenjivih}
+
+Za simplex algoritam, promjenjive moraju biti nenegativne.
+
+\begin{enumerate}
+    \item Ako je neka promjenjiva $x_i\geq0$, dont dirat.
+    \item Ako je $x_i\leq0$, onda uradimo smjenu $x_i'=-x_i$, pa će ta nova promjenjiva biti $x_i'\geq0$.
+    \item Ako je $x_i$ neograničena, tj. bilo koji realni broj, onda uradimo smjenu $x_i=x_i'-x_i''$ gdje su $x_i'\geq0$ i $ x_i''\geq0$.
+\end{enumerate}
+
+
+\section{Odabir metode rješavanja}
+
+Ako vaša ograničenja \textit{imaju} vještačkih promjenjivih, onda je vaš problem LP u općoj formi i rješavate ga Big M metodom - u suprotnom, vaš problem je u standardnoj formi i rješavate ga običnim simplex algoritmom.
+
+\textbf{Kada se u Big M metodi eliminiše red M u simplex tabeli, onda se ostatak postupka vrši kao obični simplex algoritam. Zato ćemo prvo objasniti korake Big M metode, pa onda običnu simplex tabelu.}
+
+\section{Big M metoda}
+
+Nakon što ste sveli problem na normalnu formu, pratite slijedeće korake. 
+
+\subsection{Kazneni koeficijent M}
+
+Treba na funkciju cilja dodati $-M(\textcolor{blue}{zbir\,vjestackih})$. Npr. ako su $\textcolor{blue}{x_4}$ i $\textcolor{blue}{x_5}$ vještačke: $Z(x)=2x_1+3x_2 \Longrightarrow Z(x)=2x_1+3x_2-M(\textcolor{blue}{x_4+x_5})$.
+
+Zatim iz ograničenja koji su sada tipa jednakosti izrazimo vještačke promjenjive i uvrstimo u funkciju cilja. Recimo da je dat LP problem maksimizacije u normalnoj formi:
+
+\begin{equation}
+\begin{aligned}
+    &\arg\max Z(x)=2x_1+3x_2\\
+    &p.o.\\
+    &x_1+4x_2-\textcolor{red}{x_3}+\textcolor{blue}{x_4}=3 \Longrightarrow&\textcolor{blue}{x_4}=\textcolor{orange}{3-x_1-4x_2+x_3}\\
+    &2x_1-3x_2+\textcolor{blue}{x_5}=2 \Longrightarrow&\textcolor{blue}{x_5}=\textcolor{orange}{2-2x_1+3x_2}\\
+    &x_1,x_2\geq0
+\end{aligned}
+\end{equation}
+
+\begin{equation}
+\begin{aligned}
+    Z(x)&=2x_1+3x_2-M(\textcolor{blue}{x_4+x_5})\\&=2x_1+3x_2-M(\textcolor{orange}{3-x_1-4x_2+x_3}+\textcolor{orange}{2-2x_1+3x_2})\\&=
+    2x_1+3x_2-M(-3x_1-x_2+x_3+5)\\&=
+    2x_1+3x_2+M(3x_1+x_2-x_3-5)\\&
+\end{aligned}
+\end{equation}
+
+Sada imamo sve što nam je potrebno za formiranje simplex tabele.
+
+\subsection{Formiranje simplex tabele}
+
+Na osnovu prethodnog primjera ćemo formirati tabelu koja izgleda ovako:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Bazna var & RHS & $x_1$ & $x_2$ & \textcolor{red}{$x_3$} & \textcolor{blue}{$x_4$} & \textcolor{blue}{$x_5$} \\
+\hline
+\textcolor{blue}{$x_4$} & 3 & 1 & 4 & -1 & 1 & 0 \\
+\hline
+\textcolor{blue}{$x_5$} & 2 & 2 & -3 & 0 & 0 & 1 \\
+\hline
+$Z$ & 0 & 2 & 3 & 0 & 0 & 0 \\
+\hline
+$W$ (Big-M) & -5M & 3M & M & -M & 0 & 0 \\
+\hline
+\end{tabular}
+\caption{Početna Simplex tabela za Big M metodu}
+\end{table}
+
+\textbf{Objašnjenje:}
+\begin{itemize}
+    \item \textcolor{red}{Crvena} varijabla $x_3$ je \textbf{surplus} varijabla (dodana za $\geq$ ograničenje)
+    \item \textcolor{blue}{Plave} varijable $x_4$ i $x_5$ su \textbf{vještačke} varijable
+    \item Red $Z$ predstavlja originalnu funkciju cilja: $Z = 2x_1 + 3x_2$
+    \item Red $W$ predstavlja Big-M funkciju: $W = M(3x_1 + x_2 - x_3 - 5)$
+    \item Početna baza se sastoji od vještačkih varijabli $x_4$ i $x_5$
+\end{itemize}
+
+\textbf{Postupak:}
+\begin{enumerate}
+    \item \textbf{Faza 1:} Eliminisati vještačke varijable iz baze koristeći red $W$ (Big-M)
+    \item \textbf{Faza 2:} Nakon eliminacije vještačkih varijabli, optimizovati funkciju cilja $Z$ kao u običnom Simplex algoritmu
+\end{enumerate}
+
+\end{document}
+

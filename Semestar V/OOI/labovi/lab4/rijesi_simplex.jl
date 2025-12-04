@@ -107,21 +107,41 @@ function rijesi_simplex(goal, A, b, c, csigns, vsigns)
 		tabela[end-1, 1] = abs(tabela[end-1, 1])
 	end
 
-	# Pronalaženje maksimalnog koeficijenta u M redu
+	# Pronalaženje maksimalnog koeficijenta u M redu (sa nasumičnim izborom ako postoji više opcija)
 	M_red = deepcopy(tabela[end-1, :])
 	popfirst!(M_red)
 	(max_M, kolona_M) = findmax(M_red)
 	kolona_M += 1
+	
+	# Pronađi sve kolone sa maksimalnim M koeficijentom
+	if max_M > 0
+		M_kandidati = Int[]
+		for i in 2:lastindex(tabela[end-1, :])
+			if abs(tabela[end-1, i] - max_M) < 1e-10
+				push!(M_kandidati, i)
+			end
+		end
+		if length(M_kandidati) > 1
+			kolona_M = M_kandidati[rand(1:length(M_kandidati))]
+		end
+	end
 
 	kolonaIndeks = 0
 	M_red_puni = tabela[end-1, :]
 	ciljniRed = tabela[end, :]
 	max_koef = -Inf
+	kandidati = Int[]
 	for i in 2:lastindex(ciljniRed)
 		if ciljniRed[i] > max_koef && (M_red_puni[i] >= 0 || M_red_puni[i] == -0)
 			max_koef = ciljniRed[i]
-			kolonaIndeks = i
+			empty!(kandidati)
+			push!(kandidati, i)
+		elseif abs(ciljniRed[i] - max_koef) < 1e-10 && (M_red_puni[i] >= 0 || M_red_puni[i] == -0)
+			push!(kandidati, i)
 		end
+	end
+	if length(kandidati) > 0
+		kolonaIndeks = kandidati[rand(1:length(kandidati))]
 	end
 
 	while max_koef > 0 || max_M > 0
@@ -131,17 +151,28 @@ function rijesi_simplex(goal, A, b, c, csigns, vsigns)
 			pivotKolona = kolonaIndeks
 		end
 
+		# Pronađi sve redove sa minimalnim ratio (sa nasumičnim izborom ako postoji više opcija)
 		min_ratio = Inf
-		pivotRed = -1
+		ratio_kandidati = Int[]
 		for i in 1:size(tabela, 1)-2
 			if tabela[i, pivotKolona] > 0
 				ratio = tabela[i, 1] / tabela[i, pivotKolona]
-				if (ratio < min_ratio || (ratio == min_ratio && rand() > 0.5))
+				if ratio < min_ratio
 					min_ratio = ratio
-					pivotRed = i
+					empty!(ratio_kandidati)
+					push!(ratio_kandidati, i)
+				elseif abs(ratio - min_ratio) < 1e-10
+					push!(ratio_kandidati, i)
 				end
 			end
 		end
+		
+		if length(ratio_kandidati) == 0
+			throw("Rjesenje je neograniceno")
+		end
+		
+		# Nasumično odaberi između kandidata sa minimalnim ratio
+		pivotRed = ratio_kandidati[rand(1:length(ratio_kandidati))]
 
 		if min_ratio == Inf
 			throw("Rjesenje je neograniceno");
@@ -165,6 +196,19 @@ function rijesi_simplex(goal, A, b, c, csigns, vsigns)
 		popfirst!(M_red)
 		(max_M, kolona_M) = findmax(M_red)
 		kolona_M += 1
+		
+		# Pronađi sve kolone sa maksimalnim M koeficijentom (sa nasumičnim izborom ako postoji više opcija)
+		if max_M > 0
+			M_kandidati = Int[]
+			for i in 2:lastindex(tabela[end-1, :])
+				if abs(tabela[end-1, i] - max_M) < 1e-10
+					push!(M_kandidati, i)
+				end
+			end
+			if length(M_kandidati) > 1
+				kolona_M = M_kandidati[rand(1:length(M_kandidati))]
+			end
+		end
 
 		if max_M <= 1e-8
 			max_M = 0
@@ -174,11 +218,18 @@ function rijesi_simplex(goal, A, b, c, csigns, vsigns)
 			M_red_puni = tabela[end-1, :]
 			ciljniRed = tabela[end, :]
 			max_koef = -Inf
+			kandidati = Int[]
 			for i in 2:lastindex(ciljniRed)
 				if ciljniRed[i] > max_koef && (M_red_puni[i] >= 0 || M_red_puni[i] == -0)
 					max_koef = ciljniRed[i]
-					kolonaIndeks = i
+					empty!(kandidati)
+					push!(kandidati, i)
+				elseif abs(ciljniRed[i] - max_koef) < 1e-10 && (M_red_puni[i] >= 0 || M_red_puni[i] == -0)
+					push!(kandidati, i)
 				end
+			end
+			if length(kandidati) > 0
+				kolonaIndeks = kandidati[rand(1:length(kandidati))]
 			end
 		end
 	end
@@ -429,21 +480,41 @@ function rijesi_simplex_sa_iteracijama(goal, A, b, c, csigns, vsigns)
 	ispisi_simplex_tabelu(tabela, bazniIndeksi)
 	println()
 
-	# Pronalaženje maksimalnog koeficijenta u M redu
+	# Pronalaženje maksimalnog koeficijenta u M redu (sa nasumičnim izborom ako postoji više opcija)
 	M_red = deepcopy(tabela[end-1, :])
 	popfirst!(M_red)
 	(max_M, kolona_M) = findmax(M_red)
 	kolona_M += 1
+	
+	# Pronađi sve kolone sa maksimalnim M koeficijentom
+	if max_M > 0
+		M_kandidati = Int[]
+		for i in 2:lastindex(tabela[end-1, :])
+			if abs(tabela[end-1, i] - max_M) < 1e-10
+				push!(M_kandidati, i)
+			end
+		end
+		if length(M_kandidati) > 1
+			kolona_M = M_kandidati[rand(1:length(M_kandidati))]
+		end
+	end
 
 	kolonaIndeks = 0
 	M_red_puni = tabela[end-1, :]
 	ciljniRed = tabela[end, :]
 	max_koef = -Inf
+	kandidati = Int[]
 	for i in 2:lastindex(ciljniRed)
 		if ciljniRed[i] > max_koef && (M_red_puni[i] >= 0 || M_red_puni[i] == -0)
 			max_koef = ciljniRed[i]
-			kolonaIndeks = i
+			empty!(kandidati)
+			push!(kandidati, i)
+		elseif abs(ciljniRed[i] - max_koef) < 1e-10 && (M_red_puni[i] >= 0 || M_red_puni[i] == -0)
+			push!(kandidati, i)
 		end
+	end
+	if length(kandidati) > 0
+		kolonaIndeks = kandidati[rand(1:length(kandidati))]
 	end
 
 	while max_koef > 0 || max_M > 0
@@ -454,21 +525,28 @@ function rijesi_simplex_sa_iteracijama(goal, A, b, c, csigns, vsigns)
 			pivotKolona = kolonaIndeks
 		end
 
+		# Pronađi sve redove sa minimalnim ratio (sa nasumičnim izborom ako postoji više opcija)
 		min_ratio = Inf
-		pivotRed = -1
+		ratio_kandidati = Int[]
 		for i in 1:size(tabela, 1)-2
 			if tabela[i, pivotKolona] > 0
 				ratio = tabela[i, 1] / tabela[i, pivotKolona]
-				if (ratio < min_ratio || (ratio == min_ratio && rand() > 0.5))
+				if ratio < min_ratio
 					min_ratio = ratio
-					pivotRed = i
+					empty!(ratio_kandidati)
+					push!(ratio_kandidati, i)
+				elseif abs(ratio - min_ratio) < 1e-10
+					push!(ratio_kandidati, i)
 				end
 			end
 		end
-
-		if min_ratio == Inf
-			throw("Rjesenje je neograniceno");
+		
+		if length(ratio_kandidati) == 0
+			throw("Rjesenje je neograniceno")
 		end
+		
+		# Nasumično odaberi između kandidata sa minimalnim ratio
+		pivotRed = ratio_kandidati[rand(1:length(ratio_kandidati))]
 		
 		bazniIndeksi[pivotRed] = pivotKolona - 1
 		pivot = tabela[pivotRed, pivotKolona]
@@ -499,6 +577,19 @@ function rijesi_simplex_sa_iteracijama(goal, A, b, c, csigns, vsigns)
 		popfirst!(M_red)
 		(max_M, kolona_M) = findmax(M_red)
 		kolona_M += 1
+		
+		# Pronađi sve kolone sa maksimalnim M koeficijentom (sa nasumičnim izborom ako postoji više opcija)
+		if max_M > 0
+			M_kandidati = Int[]
+			for i in 2:lastindex(tabela[end-1, :])
+				if abs(tabela[end-1, i] - max_M) < 1e-10
+					push!(M_kandidati, i)
+				end
+			end
+			if length(M_kandidati) > 1
+				kolona_M = M_kandidati[rand(1:length(M_kandidati))]
+			end
+		end
 
 		if max_M <= 1e-8
 			max_M = 0
@@ -508,11 +599,18 @@ function rijesi_simplex_sa_iteracijama(goal, A, b, c, csigns, vsigns)
 			M_red_puni = tabela[end-1, :]
 			ciljniRed = tabela[end, :]
 			max_koef = -Inf
+			kandidati = Int[]
 			for i in 2:lastindex(ciljniRed)
 				if ciljniRed[i] > max_koef && (M_red_puni[i] >= 0 || M_red_puni[i] == -0)
 					max_koef = ciljniRed[i]
-					kolonaIndeks = i
+					empty!(kandidati)
+					push!(kandidati, i)
+				elseif abs(ciljniRed[i] - max_koef) < 1e-10 && (M_red_puni[i] >= 0 || M_red_puni[i] == -0)
+					push!(kandidati, i)
 				end
+			end
+			if length(kandidati) > 0
+				kolonaIndeks = kandidati[rand(1:length(kandidati))]
 			end
 		end
 	end
@@ -593,99 +691,287 @@ end
 #   x1 + x2 ≥ 4
 #   2x1 + x2 ≥ 6
 #   x1, x2 ≥ 0
+# println("=" ^ 80)
+# println("PRIMJER 1: PROBLEM MINIMIZACIJE sa ograničenjima tipa ≥")
+# println("=" ^ 80)
+# println("Minimizirati: Z = 3x1 + 2x2")
+# println("Ograničenja:")
+# println("  x1 + x2 ≥ 4")
+# println("  2x1 + x2 ≥ 6")
+# println("  x1, x2 ≥ 0")
+# println()
+
+# b1 = [4, 6]
+# A1 = [1 1; 2 1]
+# c1 = [3 2]
+# goal1 = "min"
+# csigns1 = [1, 1]  # ≥ ograničenja
+# vsigns1 = [1, 1]  # nenegativne varijable
+
+# try
+# 	Z1, X1, jedinstveno1, degenerirano1 = rijesi_simplex(goal1, A1, b1, c1, csigns1, vsigns1)
+# 	println("Optimalna vrijednost: Z = ", Z1)
+# 	println("Optimalno rješenje: x1 = ", X1[1], ", x2 = ", X1[2])
+# 	println(jedinstveno1)
+# 	println(degenerirano1)
+# catch e
+# 	println("Greška: ", e)
+# end
+# println("\n" * "=" ^ 80 * "\n")
+
+# # PRIMJER 2: PROBLEM KOJI NEMA RJEŠENJE (nepostojanje dopustive oblasti)
+# # Maksimizirati: Z = x1 + 2x2
+# # Ograničenja:
+# #   x1 + x2 ≤ 2
+# #   3x1 + 3x2 ≥ 4
+# #   x1, x2 ≥ 0
+# println("=" ^ 80)
+# println("PRIMJER 2: PROBLEM KOJI NEMA RJEŠENJE (nepostojanje dopustive oblasti)")
+# println("=" ^ 80)
+# println("Maksimizirati: Z = x1 + 2x2")
+# println("Ograničenja:")
+# println("  x1 + x2 ≤ 2")
+# println("  3x1 + 2x2 ≥ 2")
+# println("  x1, x2 ≥ 0")
+# println()
+
+# b2 = [2, 2]
+# A2 = [1 1; 3 2]
+# c2 = [1 2]
+# goal2 = "max"
+# csigns2 = [-1, 0]  # ≤ i ≥ ograničenja
+# vsigns2 = [1, 1]   # nenegativne varijable
+
+# try
+# 	Z2, X2, jedinstveno2, degenerirano2 = rijesi_simplex_sa_iteracijama(goal2, A2, b2, c2, csigns2, vsigns2)
+# 	println("Optimalna vrijednost: Z = ", Z2)
+# 	println("Optimalno rješenje: x1 = ", X2[1], ", x2 = ", X2[2])
+# 	println(jedinstveno2)
+# 	println(degenerirano2)
+# catch e
+# 	println("GREŠKA: ", e)
+# 	println("Ovo je očekivano - problem nema dopustivu oblast!")
+# end
+# println("\n" * "=" ^ 80 * "\n")
+
+# # PRIMJER 3: PROBLEM SA OGRANIČENJIMA TIPA ≥ I NEGATIVNIM bi (sa ispisom iteracija)
+# # Maksimizirati: Z = 2x1 + 3x2
+# # Ograničenja:
+# #   x1 + 2x2 ≥ 8
+# #   3x1 + 2x2 ≥ 12
+# #   x1, x2 ≥ 0
+# println("=" ^ 80)
+# println("PRIMJER 3: PROBLEM SA OGRANIČENJIMA TIPA ≥ (sa ispisom iteracija)")
+# println("=" ^ 80)
+# println("Maksimizirati: Z = 2x1 + 3x2")
+# println("Ograničenja:")
+# println("  x1 + 2x2 ≥ 8")
+# println("  3x1 + 2x2 ≥ 12")
+# println("  x1, x2 ≥ 0")
+# println()
+
+# b3 = [8, 12]
+# A3 = [1 2; 3 2]
+# c3 = [2 3]
+# goal3 = "max"
+# csigns3 = [1, 1]  # ≥ ograničenja
+# vsigns3 = [1, 1]  # nenegativne varijable
+
+# try
+# 	Z3, X3, jedinstveno3, degenerirano3 = rijesi_simplex_sa_iteracijama(goal3, A3, b3, c3, csigns3, vsigns3)
+# 	println("\n=== KONAČNO RJEŠENJE ===")
+# 	println("Optimalna vrijednost: Z = ", Z3)
+# 	println("Optimalno rješenje: x1 = ", X3[1], ", x2 = ", X3[2])
+# 	println(jedinstveno3)
+# 	println(degenerirano3)
+# catch e
+# 	println("Greška: ", e)
+# end
+# println("\n" * "=" ^ 80 * "\n")
+
+# # PRIMJER 4: STANDARDNI PROBLEM MAKSIMIZACIJE SA ≤ OGRANIČENJIMA
+# # Maksimizirati: Z = 3x1 + 5x2
+# # Ograničenja:
+# #   2x1 + 3x2 ≤ 25
+# #   x1 + 2x2 ≤ 15
+# #   x1, x2 ≥ 0
+# println("=" ^ 80)
+# println("PRIMJER 4: STANDARDNI PROBLEM MAKSIMIZACIJE SA ≤ OGRANIČENJIMA")
+# println("=" ^ 80)
+# println("Maksimizirati: Z = 3x1 + 5x2")
+# println("Ograničenja:")
+# println("  2x1 + 3x2 ≤ 25")
+# println("  x1 + 2x2 ≤ 15")
+# println("  x1, x2 ≥ 0")
+# println()
+
+# b4 = [25, 15]
+# A4 = [2 3; 1 2]
+# c4 = [3 5]
+# goal4 = "max"
+# csigns4 = [-1, -1]  # ≤ ograničenja
+# vsigns4 = [1, 1]    # nenegativne varijable
+
+# try
+# 	Z4, X4, jedinstveno4, degenerirano4 = rijesi_simplex_sa_iteracijama(goal4, A4, b4, c4, csigns4, vsigns4)
+# 	println("Optimalna vrijednost: Z = ", Z4)
+# 	println("Optimalno rješenje: x1 = ", X4[1], ", x2 = ", X4[2])
+# 	println(jedinstveno4)
+# 	println(degenerirano4)
+# catch e
+# 	println("Greška: ", e)
+# end
+# println("\n" * "=" ^ 80 * "\n")
+
+# PRIMJER 5: PRIMALNI PROBLEM
+# Minimizirati: Z = 5*x1 - 10*x2 + 16*x3
+# Ograničenja:
+#   -3*x1 + 0*x2 - 4*x3 <= -4
+#   3*x1 - 6*x2 + 2*x3 = 11
+#   x1 ≥ 0, x2 ≤ 0, x3 ≥ 0
 println("=" ^ 80)
-println("PRIMJER 1: PROBLEM MINIMIZACIJE sa ograničenjima tipa ≥")
+println("PRIMJER 5: PRIMALNI PROBLEM")
 println("=" ^ 80)
-println("Minimizirati: Z = 3x1 + 2x2")
+println("Minimizirati: Z = 5*x1 - 10*x2 + 16*x3")
 println("Ograničenja:")
-println("  x1 + x2 ≥ 4")
-println("  2x1 + x2 ≥ 6")
-println("  x1, x2 ≥ 0")
+println("  -3*x1 + 0*x2 - 4*x3 <= -4")
+println("  3*x1 - 6*x2 + 2*x3 = 11")
+println("  x1 ≥ 0, x2 ≤ 0, x3 ≥ 0")
 println()
 
-b1 = [4, 6]
-A1 = [1 1; 2 1]
-c1 = [3 2]
-goal1 = "min"
-csigns1 = [1, 1]  # ≥ ograničenja
-vsigns1 = [1, 1]  # nenegativne varijable
+b5_primal = [-4, 11]
+A5_primal = [-3 0 -4; 3 -6 2]
+c5_primal = [5 -10 16]
+goal5_primal = "min"
+csigns5_primal = [-1, 0]  # <=, = ograničenja
+vsigns5_primal = [1, -1, 1]  # x1 ≥ 0, x2 ≤ 0, x3 ≥ 0
 
 try
-	Z1, X1, jedinstveno1, degenerirano1 = rijesi_simplex(goal1, A1, b1, c1, csigns1, vsigns1)
-	println("Optimalna vrijednost: Z = ", Z1)
-	println("Optimalno rješenje: x1 = ", X1[1], ", x2 = ", X1[2])
-	println(jedinstveno1)
-	println(degenerirano1)
+	Z5_primal, X5_primal, jedinstveno5_primal, degenerirano5_primal = rijesi_simplex_sa_iteracijama(
+		goal5_primal, A5_primal, b5_primal, c5_primal, csigns5_primal, vsigns5_primal
+	)
+	println("\n=== KONAČNO RJEŠENJE PRIMALNOG PROBLEMA ===")
+	println("Optimalna vrijednost: Z = ", Z5_primal)
+	println("Optimalno rješenje: x1 = ", X5_primal[1], ", x2 = ", X5_primal[2], ", x3 = ", X5_primal[3])
+	println(jedinstveno5_primal)
+	println(degenerirano5_primal)
 catch e
 	println("Greška: ", e)
 end
 println("\n" * "=" ^ 80 * "\n")
 
-# PRIMJER 2: PROBLEM KOJI NEMA RJEŠENJE (nepostojanje dopustive oblasti)
-# Maksimizirati: Z = x1 + 2x2
+# PRIMJER 6: DUALNI PROBLEM SA NEPOZITIVNOM I NEOGRANIČENOM VARIJABLOM
+# Maksimizirati: W = -4*y1 + 11*y2
 # Ograničenja:
-#   x1 + x2 ≤ 2
-#   3x1 + 3x2 ≥ 4
-#   x1, x2 ≥ 0
+#   -3*y1 + 3*y2 <= 5
+#   0*y1 - 6*y2 >= -10
+#   -4*y1 + 2*y2 = 16
+#   y1 ≤ 0, y2 neograničeno
 println("=" ^ 80)
-println("PRIMJER 2: PROBLEM KOJI NEMA RJEŠENJE (nepostojanje dopustive oblasti)")
+println("PRIMJER 6: DUALNI PROBLEM (dual od Primjera 5)")
 println("=" ^ 80)
-println("Maksimizirati: Z = x1 + 2x2")
+println("Maksimizirati: W = -4*y1 + 11*y2")
 println("Ograničenja:")
-println("  x1 + x2 ≤ 2")
-println("  3x1 + 3x2 ≥ 9")
-println("  x1, x2 ≥ 0")
+println("  -3*y1 + 3*y2 <= 5")
+println("  0*y1 - 6*y2 >= -10")
+println("  -4*y1 + 2*y2 <= 16")
+println("  y1 ≤ 0, y2 neograničeno")
 println()
 
-b2 = [2, 9]
-A2 = [1 1; 3 3]
-c2 = [1 2]
-goal2 = "max"
-csigns2 = [-1, 1]  # ≤ i ≥ ograničenja
-vsigns2 = [1, 1]   # nenegativne varijable
+b6 = [5, 10, 16]
+A6 = [-3 3; 0 6; -4 2]
+c6 = [-4 11]
+goal6 = "max"
+csigns6 = [-1, -1, -1]  # <=, >=, <= ograničenja
+vsigns6 = [-1, 0]     # y1 ≤ 0 (nepozitivna), y2 neograničeno
 
 try
-	Z2, X2, jedinstveno2, degenerirano2 = rijesi_simplex(goal2, A2, b2, c2, csigns2, vsigns2)
-	println("Optimalna vrijednost: Z = ", Z2)
-	println("Optimalno rješenje: x1 = ", X2[1], ", x2 = ", X2[2])
-	println(jedinstveno2)
-	println(degenerirano2)
+	Z6, X6, jedinstveno6, degenerirano6 = rijesi_simplex_sa_iteracijama(goal6, A6, b6, c6, csigns6, vsigns6)
+	println("\n=== KONAČNO RJEŠENJE DUALNOG PROBLEMA ===")
+	println("Optimalna vrijednost: W = ", Z6)
+	println("Optimalno rješenje: y1 = ", X6[1], ", y2 = ", X6[2])
+	println(jedinstveno6)
+	println(degenerirano6)
+	println("\nNAPOMENA: Optimalna vrijednost dualnog problema W treba biti jednaka")
+	println("optimalnoj vrijednosti primalnog problema Z (slabost dualnosti).")
 catch e
-	println("GREŠKA: ", e)
-	println("Ovo je očekivano - problem nema dopustivu oblast!")
+	println("Greška: ", e)
 end
 println("\n" * "=" ^ 80 * "\n")
 
-# PRIMJER 3: PROBLEM SA OGRANIČENJIMA TIPA ≥ I NEGATIVNIM bi (sa ispisom iteracija)
-# Maksimizirati: Z = 2x1 + 3x2
+# PRIMJER 7: PRIMALNI PROBLEM
+# Maksimizirati: Z = 10x1 + 25x2
 # Ograničenja:
-#   x1 + 2x2 ≥ 8
-#   3x1 + 2x2 ≥ 12
-#   x1, x2 ≥ 0
+#   x1 ≤ 100
+#   x1 + 2x2 ≤ 120
+#   -2x1 + 8x2 ≤ 0
+#   x1 ≥ 0, x2 ≥ 0
 println("=" ^ 80)
-println("PRIMJER 3: PROBLEM SA OGRANIČENJIMA TIPA ≥ (sa ispisom iteracija)")
+println("PRIMJER 7: PRIMALNI PROBLEM")
 println("=" ^ 80)
-println("Maksimizirati: Z = 2x1 + 3x2")
+println("Maksimizirati: Z = 10x1 + 25x2")
 println("Ograničenja:")
-println("  x1 + 2x2 ≥ 8")
-println("  3x1 + 2x2 ≥ 12")
-println("  x1, x2 ≥ 0")
+println("  x1 ≤ 100")
+println("  x1 + 2x2 ≤ 120")
+println("  -2x1 + 8x2 ≤ 0")
+println("  x1 ≥ 0, x2 ≥ 0")
 println()
 
-b3 = [8, 12]
-A3 = [1 2; 3 2]
-c3 = [2 3]
-goal3 = "max"
-csigns3 = [1, 1]  # ≥ ograničenja
-vsigns3 = [1, 1]  # nenegativne varijable
+b7_primal = [100, 120, 0]
+A7_primal = [1 0; 1 2; -2 8]
+c7_primal = [10 25]
+goal7_primal = "max"
+csigns7_primal = [-1, -1, -1]  # ≤ ograničenja
+vsigns7_primal = [1, 1]  # nenegativne varijable
 
 try
-	Z3, X3, jedinstveno3, degenerirano3 = rijesi_simplex_sa_iteracijama(goal3, A3, b3, c3, csigns3, vsigns3)
-	println("\n=== KONAČNO RJEŠENJE ===")
-	println("Optimalna vrijednost: Z = ", Z3)
-	println("Optimalno rješenje: x1 = ", X3[1], ", x2 = ", X3[2])
-	println(jedinstveno3)
-	println(degenerirano3)
+	Z7_primal, X7_primal, jedinstveno7_primal, degenerirano7_primal = rijesi_simplex_sa_iteracijama(
+		goal7_primal, A7_primal, b7_primal, c7_primal, csigns7_primal, vsigns7_primal
+	)
+	println("\n=== KONAČNO RJEŠENJE PRIMALNOG PROBLEMA ===")
+	println("Optimalna vrijednost: Z = ", Z7_primal)
+	println("Optimalno rješenje: x1 = ", X7_primal[1], ", x2 = ", X7_primal[2])
+	println(jedinstveno7_primal)
+	println(degenerirano7_primal)
+catch e
+	println("Greška: ", e)
+end
+println("\n" * "=" ^ 80 * "\n")
+
+# PRIMJER 8: DUALNI PROBLEM (dual od Primjera 7)
+# Minimizirati: W = 100y1 + 120y2 + 0y3
+# Ograničenja:
+#   y1 + y2 - 2y3 ≥ 10
+#   2y2 + 8y3 ≥ 25
+#   y1, y2, y3 ≥ 0
+println("=" ^ 80)
+println("PRIMJER 8: DUALNI PROBLEM (dual od Primjera 7)")
+println("=" ^ 80)
+println("Minimizirati: W = 100y1 + 120y2 + 0y3")
+println("Ograničenja:")
+println("  y1 + y2 - 2y3 ≥ 10")
+println("  2y2 + 8y3 ≥ 25")
+println("  y1, y2, y3 ≥ 0")
+println()
+
+b8_dual = [10, 25]
+A8_dual = [1 1 -2; 0 2 8]
+c8_dual = [100 120 0]
+goal8_dual = "min"
+csigns8_dual = [1, 1]  # ≥ ograničenja
+vsigns8_dual = [1, 1, 1]  # nenegativne varijable
+
+try
+	Z8_dual, X8_dual, jedinstveno8_dual, degenerirano8_dual = rijesi_simplex_sa_iteracijama(
+		goal8_dual, A8_dual, b8_dual, c8_dual, csigns8_dual, vsigns8_dual
+	)
+	println("\n=== KONAČNO RJEŠENJE DUALNOG PROBLEMA ===")
+	println("Optimalna vrijednost: W = ", Z8_dual)
+	println("Optimalno rješenje: y1 = ", X8_dual[1], ", y2 = ", X8_dual[2], ", y3 = ", X8_dual[3])
+	println(jedinstveno8_dual)
+	println(degenerirano8_dual)
+	println("\nNAPOMENA: Optimalna vrijednost dualnog problema W treba biti jednaka")
+	println("optimalnoj vrijednosti primalnog problema Z (slabost dualnosti).")
 catch e
 	println("Greška: ", e)
 end

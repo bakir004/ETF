@@ -1,0 +1,91 @@
+OPSEG VARIJABLI U COBOL-U - INFORMACIJE IZ KNJIGE
+==================================================
+
+GLAVNE LOKACIJE U KNJIGI:
+--------------------------
+
+1. POGLAVLJE 5: "IMENA, VEZANJA I OPSEZI" (stranice 68-73)
+   - Općenito objašnjenje opsega varijabli
+   - COBOL nije eksplicitno spomenut u ovom poglavlju
+   - Objašnjeni su statički i dinamički opseg općenito
+
+2. PRIMJER COBOL KODA (stranica 15):
+   - Prikazuje strukturu COBOL programa:
+     * IDENTIFICATION DIVISION
+     * ENVIRONMENT DIVISION
+     * DATA DIVISION
+       - FILE SECTION
+       - WORKING-STORAGE SECTION (stranica 87)
+     * PROCEDURE DIVISION
+
+3. COBOL I SLOGOVI (stranica 87-88):
+   - COBOL koristi brojeve nivoa za hijerarhiju
+   - Primjer strukture:
+     01 EMP-REC.
+     02 EMP-NAME.
+     05 FIRST PIC X(20).
+     05 MID PIC X(10).
+     05 LAST PIC X(20).
+     02 HOURLY-RATE PIC 99V99.
+
+4. COBOL I POTPROGRAMI (stranica 125):
+   - COBOL potprograme definiše u PROCEDURE DIVISION:
+     PROCEDURE DIVISION USING GROSS,DEARNESS.
+   - Pozivaju se sa:
+     CALL "MYSUB" USING G1,D-A.
+
+5. COBOL I NIZOVI (stranica 87):
+   - Nizovi u COBOL se zovu tabele
+   - Isključivo su statički
+   - Dimenzija se deklariše ključnom riječju OCCURS
+   - Primjer:
+     DATA DIVISION.
+     WORKING-STORAGE SECTION.
+     01 WS-TABLE.
+     05 WS-A OCCURS 3 TIMES.
+     10 WS-B PIC A(2).
+     10 WS-C OCCURS 2 TIMES.
+     15 WS-D PIC X(3).
+
+ZAKLJUČCI O OPSEGU VARIJABLI U COBOL-U:
+---------------------------------------
+
+Na osnovu strukture COBOL programa i primjera u knjizi:
+
+1. DATA DIVISION - GLOBALNI OPSEG:
+   - Varijable deklarisane u DATA DIVISION su globalne
+   - Dostupne su kroz cijeli PROGRAM-ID
+   - FILE SECTION - varijable za datoteke
+   - WORKING-STORAGE SECTION - globalne radne varijable
+
+2. PROCEDURE DIVISION - LOKALNI OPSEG:
+   - Potprogrami definisani u PROCEDURE DIVISION
+   - Parametri se prosljeđuju kroz USING klauzulu
+   - Lokalne varijable se mogu deklarisati u potprogramima
+
+3. HIJERARHIJSKA STRUKTURA:
+   - COBOL koristi brojeve nivoa (01, 02, 05, 10, 15, itd.)
+   - Varijable unutar slogova su dostupne kroz punu ili skraćenu referencu
+   - Primjer: FIRST, FIRST OF EMP-NAME, FIRST OF EMP-NAME OF EMP-REC
+
+4. STATIČKI OPSEG:
+   - COBOL koristi statički opseg (opseg se određuje prije izvršavanja)
+   - Varijable su vidljive kroz strukturu programa, ne kroz lanac poziva
+
+NAPOMENA:
+---------
+Knjiga ne daje eksplicitno detaljno objašnjenje opsega varijabli u COBOL-u,
+ali iz strukture programa i primjera može se zaključiti:
+- Globalne varijable su u DATA DIVISION
+- Lokalne varijable mogu biti u potprogramima PROCEDURE DIVISION
+- Hijerarhijska struktura omogućava pristup varijablama kroz punu ili skraćenu referencu
+
+PREPORUKE ZA ANALIZU COBOL KODA:
+---------------------------------
+1. Pronađi IDENTIFICATION DIVISION - ime programa
+2. Pronađi DATA DIVISION - sve globalne varijable
+3. Pronađi PROCEDURE DIVISION - potprograme i njihove parametre
+4. Analiziraj hijerarhiju nivoa (01, 02, 05, 10, 15...)
+5. Provjeri WHERE/WHEN klauzule koje mogu ograničiti opseg
+6. Potprogrami imaju svoje parametre kroz USING klauzulu
+

@@ -1,0 +1,606 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[serbian]{babel}
+\usepackage{geometry}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{adjustbox}
+\geometry{left=0.3cm,right=0.3cm,top=1cm,bottom=1cm}
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  frame=none,
+  numbers=none,
+  showstringspaces=false
+}
+
+\title{Tabela programskih jezika - Analiza povezivanja varijabli}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{longtable}{|p{2cm}|p{5cm}|p{8cm}|}
+\hline
+\textbf{Jezik} & \textbf{Primjer koda (petlje, nizovi, grananja)} & 
+\textbf{Analiza povezivanja varijabli} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Jezik} & \textbf{Primjer koda (petlje, nizovi, grananja)} & 
+\textbf{Analiza povezivanja varijabli} \\
+\hline
+\endhead
+
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+\textbf{C} & 
+\begin{lstlisting}[language=C]
+int arr[10];
+int i, sum = 0;
+for (i = 0; i < 10; i++) {
+    if (arr[i] > 0) {
+        sum += arr[i];
+    }
+}
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{i, sum, arr} - \texttt{int}, stek-dinamičke. \textit{Globalne:} statičke.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Statičko povezivanje tipova (eksplicitna deklaracija). Statički opseg.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Primitivni tipovi (\texttt{int, float, char}). Nizovi su statički. Pointeri za dinamičku alokaciju. \\
+\hline
+
+\textbf{Java} & 
+\begin{lstlisting}[language=Java]
+int[] arr = new int[10];
+int sum = 0;
+for (int i = 0; i < arr.length; i++) {
+    if (arr[i] > 0) {
+        sum += arr[i];
+    }
+}
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{i, sum} - \texttt{int}, stek-dinamičke. \textit{Instance:} \texttt{arr} - referenca na niz, heap-dinamička.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Statičko povezivanje tipova. Statički opseg (bez ugniježdenih potprograma). Nema implicitnog povezivanja.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Primitivni tipovi i objekti. Nizovi su objekti na heap-u. Automatko upravljanje memorijom (GC). \\
+\hline
+
+\textbf{C++} & 
+\begin{lstlisting}[language=C++]
+int arr[10];
+int sum = 0;
+for (int i = 0; i < 10; i++) {
+    if (arr[i] > 0) {
+        sum += arr[i];
+    }
+}
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{i, sum, arr} - \texttt{int}, stek-dinamičke. Varijabla \texttt{i} opseg samo u for petlji.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Statičko povezivanje tipova. Statički opseg. Blokovi mogu imati lokalne varijable.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Primitivni tipovi, klase, template. Nizovi statički ili dinamički (new/delete). RAII za upravljanje resursima. \\
+\hline
+
+\textbf{C\#} & 
+\begin{lstlisting}[language=CSharp]
+int[] arr = new int[10];
+int sum = 0;
+for (int i = 0; i < arr.Length; i++) {
+    if (arr[i] > 0) {
+        sum += arr[i];
+    }
+}
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{i, sum} - \texttt{int}, stek-dinamičke. \textit{Instance:} \texttt{arr} - referenca, heap-dinamička. Moguće \texttt{var} za zaključivanje tipa.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Statičko povezivanje tipova (eksplicitno ili \texttt{var}). Statički opseg. Moguće \texttt{dynamic} za dinamičko povezivanje.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Primitivni tipovi i objekti. Nizovi su objekti. Automatko upravljanje memorijom. \\
+\hline
+
+\textbf{Python} & 
+\begin{lstlisting}[language=Python]
+arr = [1, 2, 3, 4, 5]
+sum = 0
+for i in range(len(arr)):
+    if arr[i] > 0:
+        sum += arr[i]
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{i, sum, arr} - implicitno deklarisane, heap-dinamičke. Varijable nemaju tipove, objekti imaju.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Dinamičko povezivanje tipova. Statički opseg (dopušta ugniježdene potprograme). Implicitna deklaracija pri dodjeli.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Sve je objekat. Dinamički tipovi. Heap-dinamička alokacija. Duck typing. \\
+\hline
+
+\textbf{JavaScript} & 
+\begin{lstlisting}[language=JavaScript]
+var arr = [1, 2, 3, 4, 5];
+var sum = 0;
+for (var i = 0; i < arr.length; i++) {
+    if (arr[i] > 0) {
+        sum += arr[i];
+    }
+}
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{i, sum, arr} - dinamički tipovi, heap-dinamičke. Varijable mogu mijenjati tip.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Dinamičko povezivanje tipova. Statički opseg (dopušta ugniježdene potprograme). Implicitna deklaracija sa \texttt{var}.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Sve je objekat ili primitivni tip. Dinamički tipovi. Automatko upravljanje memorijom. \\
+\hline
+
+\textbf{PHP} & 
+\begin{lstlisting}[language=PHP]
+$arr = array(1, 2, 3, 4, 5);
+$sum = 0;
+for ($i = 0; $i < count($arr); $i++) {
+    if ($arr[$i] > 0) {
+        $sum += $arr[$i];
+    }
+}
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{\$i, \$sum, \$arr} - dinamički tipovi, heap-dinamičke. Globalne varijable nisu direktno vidljive u funkcijama.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Dinamičko povezivanje tipova. Statički opseg. Implicitna deklaracija (sve varijable počinju sa \$).
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Dinamički tipovi. Nizovi su asocijativni. Automatko upravljanje memorijom. \\
+\hline
+
+\textbf{Perl} & 
+\begin{lstlisting}[language=Perl]
+my @arr = (1, 2, 3, 4, 5);
+my $sum = 0;
+for (my $i = 0; $i < @arr; $i++) {
+    if ($arr[$i] > 0) {
+        $sum += $arr[$i];
+    }
+}
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{\$i, \$sum, @arr} - dinamički tipovi, heap-dinamičke. Implicitna deklaracija po prefiksu (\$, @, \%).
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Dinamičko povezivanje tipova. Statički opseg. Implicitna deklaracija po prefiksu.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Skalarni, nizovi, hash. Dinamički tipovi. Kontekstno određivanje tipa. \\
+\hline
+
+\textbf{Ruby} & 
+\begin{lstlisting}[language=Ruby]
+arr = [1, 2, 3, 4, 5]
+sum = 0
+arr.each do |i|
+    if i > 0
+        sum += i
+    end
+end
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{i, sum, arr} - reference na objekte, heap-dinamičke. Sve varijable su reference.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Dinamičko povezivanje tipova. Statički opseg. Implicitna deklaracija.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Sve je objekat. Dinamički tipovi. Duck typing. Automatko upravljanje memorijom. \\
+\hline
+
+\textbf{Pascal} & 
+\begin{lstlisting}[language=Pascal]
+var
+    arr: array[1..10] of integer;
+    i, sum: integer;
+begin
+    sum := 0;
+    for i := 1 to 10 do
+        if arr[i] > 0 then
+            sum := sum + arr[i];
+end.
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{i, sum, arr} - \texttt{integer}, stek-dinamičke. Opseg od deklaracije do kraja bloka.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Statičko povezivanje tipova (eksplicitna deklaracija). Statički opseg (dopušta ugniježdene potprograme). Nema implicitnog povezivanja.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Strogo tipizirani. Nizovi statički. Enumeracijski tipovi. \\
+\hline
+
+\textbf{Ada} & 
+\begin{lstlisting}[language=Ada]
+declare
+    type Int_Array is array (1..10) of Integer;
+    arr : Int_Array;
+    sum : Integer := 0;
+begin
+    for I in 1..10 loop
+        if arr(I) > 0 then
+            sum := sum + arr(I);
+        end if;
+    end loop;
+end;
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{I, sum, arr} - \texttt{Integer}, stek-dinamičke. Varijabla \texttt{I} opseg samo u petlji.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Statičko povezivanje tipova. Statički opseg (dopušta ugniježdene potprograme). Nema implicitnog povezivanja.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Strogo tipizirani. Nizovi sa eksplicitnim opsegom indeksa. Tipovi podintervala. \\
+\hline
+
+\textbf{FORTRAN} & 
+\begin{lstlisting}[language=Fortran]
+INTEGER :: arr(10)
+INTEGER :: i, sum
+sum = 0
+DO i = 1, 10
+    IF (arr(i) > 0) THEN
+        sum = sum + arr(i)
+    END IF
+END DO
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{i, sum, arr} - \texttt{INTEGER}, statičke ili stek-dinamičke. Implicitna deklaracija (I-N su INTEGER).
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Statičko povezivanje tipova. Statički opseg. Implicitna deklaracija po prvom slovu.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Numerički tipovi (INTEGER, REAL). Nizovi statički. Kompleksni brojevi. \\
+\hline
+
+\textbf{BASIC} & 
+\begin{lstlisting}[language=Basic]
+DIM arr(10)
+sum = 0
+FOR i = 1 TO 10
+    IF arr(i) > 0 THEN
+        sum = sum + arr(i)
+    END IF
+NEXT i
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{i, sum, arr} - implicitno deklarisane, statičke ili stek-dinamičke. Varijable se deklarišu po prefiksu (\$ za string, \% za integer).
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Statičko povezivanje tipova. Statički opseg. Implicitna deklaracija po prefiksu ili DIM naredbom.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Numerički tipovi i stringovi. Nizovi statički (DIM). Stringovi fiksne ili dinamičke dužine. \\
+\hline
+
+\textbf{COBOL} & 
+\begin{lstlisting}[language=Cobol]
+DATA DIVISION.
+WORKING-STORAGE SECTION.
+01 arr OCCURS 10 TIMES PIC 9(5).
+01 i PIC 9(2).
+01 sum PIC 9(8).
+PROCEDURE DIVISION.
+MOVE 0 TO sum.
+PERFORM VARYING i FROM 1 BY 1
+    UNTIL i > 10
+    IF arr(i) > 0
+        ADD arr(i) TO sum
+    END-IF
+END-PERFORM.
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Globalne:} \texttt{arr, i, sum} - deklarisane u DATA DIVISION, statičke. Varijable su globalne za cijeli PROGRAM-ID.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Statičko povezivanje tipova (eksplicitna deklaracija u DATA DIVISION). Statički opseg. Nema implicitnog povezivanja.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Numerički tipovi (PIC 9), alfanumerički (PIC X). Nizovi (tabele) statički sa OCCURS. Decimalni brojevi s fiksnom tačkom. \\
+\hline
+
+\textbf{ALGOL 60} & 
+\begin{lstlisting}[language=Algol]
+begin
+    integer array arr[1:10];
+    integer i, sum;
+    sum := 0;
+    for i := 1 step 1 until 10 do
+    begin
+        if arr[i] > 0 then
+            sum := sum + arr[i]
+    end
+end
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{i, sum, arr} - \texttt{integer}, stek-dinamičke. Blokovi stvaraju novi opseg.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Statičko povezivanje tipova (eksplicitna deklaracija). Statički opseg (ALGOL 60 je uveo statički opseg). Nema implicitnog povezivanja.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Numerički tipovi (integer, real). Nizovi statički sa eksplicitnim opsegom indeksa. Strogo tipizirani. \\
+\hline
+
+\textbf{Scheme} & 
+\begin{lstlisting}[language=Lisp]
+(define (process-array arr)
+  (let ((sum 0))
+    (do ((i 0 (+ i 1)))
+        ((>= i (vector-length arr)))
+      (if (> (vector-ref arr i) 0)
+          (set! sum (+ sum (vector-ref arr i)))))
+    sum))
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{sum, i} - dinamički tipovi, heap-dinamičke. Varijable u \texttt{let} bloku su lokalne.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Dinamičko povezivanje tipova. Statički opseg (dopušta ugniježdene potprograme). Implicitna deklaracija.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Sve je objekat. Dinamički tipovi. Vektori (nizovi) i liste. Automatko upravljanje memorijom. \\
+\hline
+
+\textbf{Haskell} & 
+\begin{lstlisting}[language=Haskell]
+processArray arr = 
+    sum [x | x <- arr, x > 0]
+    
+-- ili sa eksplicitnom petljom
+processArray arr = 
+    let sum = 0
+        loop i = if i >= length arr
+                 then sum
+                 else if arr !! i > 0
+                      then loop (i+1) (sum + arr !! i)
+                      else loop (i+1) sum
+    in loop 0
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{sum, i} - implicitno tipizirane, heap-dinamičke. Funkcionalni jezik - varijable su nepromjenjive.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Statičko povezivanje tipova (zaključivanje tipa). Statički opseg. Implicitno zaključivanje tipa.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Strogo tipizirani. Lista je osnovna struktura. Lijena evaluacija. Tipovi klase. \\
+\hline
+
+\textbf{ML} & 
+\begin{lstlisting}[language=ML]
+fun processArray arr =
+    let
+        val sum = ref 0
+        fun loop i =
+            if i >= Array.length arr
+            then !sum
+            else (
+                if Array.sub(arr, i) > 0
+                then sum := !sum + Array.sub(arr, i)
+                else ();
+                loop (i + 1)
+            )
+    in
+        loop 0
+    end
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{sum, i} - zaključeni tipovi, heap-dinamičke. \texttt{ref} za promjenjive varijable.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Statičko povezivanje tipova (zaključivanje tipa). Statički opseg. Implicitno zaključivanje tipa.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Strogo tipizirani. Zaključivanje tipa. Liste i nizovi. Funkcionalni sa bočnim efektima. \\
+\hline
+
+\textbf{Lisp} & 
+\begin{lstlisting}[language=Lisp]
+(defun process-array (arr)
+  (let ((sum 0))
+    (dotimes (i (length arr))
+      (if (> (aref arr i) 0)
+          (setf sum (+ sum (aref arr i)))))
+    sum))
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{sum, i} - dinamički tipovi, heap-dinamičke. Varijable u \texttt{let} bloku su lokalne.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Dinamičko povezivanje tipova. Dinamički opseg (raniji Lisp) ili statički opseg (Common Lisp). Implicitna deklaracija.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Dinamički tipovi. Liste i nizovi. Sve je objekat. Automatko upravljanje memorijom. \\
+\hline
+
+\textbf{Modula 2} & 
+\begin{lstlisting}[language=Modula2]
+MODULE Example;
+VAR
+    arr: ARRAY [1..10] OF INTEGER;
+    i, sum: INTEGER;
+BEGIN
+    sum := 0;
+    FOR i := 1 TO 10 DO
+        IF arr[i] > 0 THEN
+            sum := sum + arr[i]
+        END
+    END
+END Example.
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{i, sum, arr} - \texttt{INTEGER}, stek-dinamičke. Opseg od deklaracije do kraja modula.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Statičko povezivanje tipova (eksplicitna deklaracija). Statički opseg. Nema implicitnog povezivanja.
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Strogo tipizirani. Nizovi statički. Moduli za enkapsulaciju. \\
+\hline
+
+\textbf{Lua} & 
+\begin{lstlisting}[language=Lua]
+local arr = {1, 2, 3, 4, 5}
+local sum = 0
+for i = 1, #arr do
+    if arr[i] > 0 then
+        sum = sum + arr[i]
+    end
+end
+\end{lstlisting} & 
+\textbf{(a) Vidljive varijable, tipovi, vreme života:}
+
+\textit{Lokalne:} \texttt{i, sum, arr} - dinamički tipovi, heap-dinamičke. \texttt{local} za lokalne varijable.
+
+\vspace{0.2cm}
+\textbf{(b) Statičko/dinamičko povezivanje:}
+
+Dinamičko povezivanje tipova. Statički opseg. Implicitna deklaracija (bez \texttt{local} su globalne).
+
+\vspace{0.2cm}
+\textbf{(c) Karakteristike tipova podataka:}
+
+Dinamički tipovi. Tabele (nizovi i asocijativni nizovi). Sve vrijednosti su objekti prve klase. \\
+\hline
+
+\end{longtable}
+
+\end{document}
+

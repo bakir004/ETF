@@ -23,10 +23,13 @@ int main() {
     for(int j = 0; j < n; j++) {
       if(vanGranica(i-1, j, m, n)) ukupnaPovrsina += ploca[i][j];
       else if(ploca[i-1][j] < ploca[i][j]) ukupnaPovrsina += ploca[i][j]-ploca[i-1][j];
+
       if(vanGranica(i+1, j, m, n)) ukupnaPovrsina += ploca[i][j];
       else if(ploca[i+1][j] < ploca[i][j]) ukupnaPovrsina += ploca[i][j]-ploca[i+1][j];
+
       if(vanGranica(i, j-1, m, n)) ukupnaPovrsina += ploca[i][j];
       else if(ploca[i][j-1] < ploca[i][j]) ukupnaPovrsina += ploca[i][j]-ploca[i][j-1];
+
       if(vanGranica(i, j+1, m, n)) ukupnaPovrsina += ploca[i][j];
       else if(ploca[i][j+1] < ploca[i][j]) ukupnaPovrsina += ploca[i][j]-ploca[i][j+1];
     }

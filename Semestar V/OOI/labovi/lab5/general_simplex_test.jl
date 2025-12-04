@@ -202,6 +202,148 @@ elseif status5 == 0
 end
 println()
 
+# ============================================================================
+# PRIMJER 6: Problem sa nepozitivnom i neograničenom varijablom (sa iteracijama)
+# ============================================================================
+println("PRIMJER 6: Problem sa nepozitivnom i neograničenom varijablom")
+println("-" ^ 80)
+println("Maksimizirati: W = -4y1 + 11y2")
+println("Ograničenja:")
+println("  -3y1 + 3y2 <= 5")
+println("  0y1 - 6y2 >= -10")
+println("  -4y1 + 2y2 = 16")
+println("  y1 ≤ 0, y2 neograničeno")
+println()
+println("Ovaj primjer će biti riješen sa ispisom iteracija.")
+println()
+
+c6 = [-4, 11]
+A6 = [-3 3; 0 -6; -4 2]
+b6 = [5, -10, 16]
+csigns6 = [-1, 1, 0]  # <=, >=, = ograničenja
+vsigns6 = [-1, 0]     # y1 ≤ 0 (nepozitivna), y2 neograničeno
+
+# Rješavanje sa iteracijama
+println("Rješavanje pomoću rijesi_simplex_sa_iteracijama:")
+println()
+try
+    Z6_iter, X6_iter, jedinstveno6, degenerirano6 = rijesi_simplex_sa_iteracijama(
+        "max", A6, b6, c6, csigns6, vsigns6
+    )
+    println("\n=== REZULTAT SA ITERACIJAMA ===")
+    println("Optimalna vrijednost: W = $Z6_iter")
+    println("Optimalno rješenje: y1 = $(X6_iter[1]), y2 = $(X6_iter[2])")
+    println(jedinstveno6)
+    println(degenerirano6)
+catch e
+    println("Greška: $e")
+end
+println()
+
+# Rješavanje pomoću general_simplex
+Z6, X6, Xd6, Y6, Yd6, status6 = general_simplex("max", c6, A6, b6, csigns6, vsigns6)
+
+println("=== REZULTAT SA GENERAL_SIMPLEX ===")
+println("Status: $status6")
+if status6 == 0
+    println("  → Jedinstveno nedegenerirano optimalno rješenje")
+elseif status6 == 1
+    println("  → Jedinstveno degenerirano optimalno rješenje")
+elseif status6 == 2
+    println("  → Optimalno rješenje postoji, ali nije jedinstveno")
+elseif status6 == 3
+    println("  → Rješenje je neograničeno")
+elseif status6 == 4
+    println("  → Dopustiva oblast ne postoji")
+end
+println("Optimalna vrijednost: W = $Z6")
+println("Optimalno rješenje: y1 = $(X6[1]), y2 = $(X6[2])")
+println("Izravnavajuće varijable: Xd = $Xd6")
+println("Dualne varijable (cijene u sjeni): Y = $Y6")
+println("Reducirane cijene: Yd = $Yd6")
+println()
+
+# ============================================================================
+# PRIMJER 7: Dualni problem
+# ============================================================================
+println("PRIMJER 7: Dualni problem")
+println("-" ^ 80)
+println("PRIMALNI PROBLEM:")
+println("Minimizirati: Z = 5*x1 - 10*x2 + 16*x3")
+println("Ograničenja:")
+println("  -3*x1 + 0*x2 - 4*x3 <= -4")
+println("  3*x1 - 6*x2 + 2*x3 = 11")
+println("  x1 ≥ 0, x2 ≤ 0, x3 ≥ 0")
+println()
+println("DUALNI PROBLEM:")
+println("Maksimizirati: W = -4*y1 + 11*y2")
+println("Ograničenja:")
+println("  -3*y1 + 3*y2 <= 5")
+println("  0*y1 - 6*y2 >= -10")
+println("  -4*y1 + 2*y2 = 16")
+println("  y1 ≥ 0, y2 neograničeno")
+println()
+println("Objašnjenje formiranja duala:")
+println("  - Primal je min, dual je max")
+println("  - Koeficijenti funkcije cilja u primalu -> desne strane u dualu")
+println("  - Desne strane u primalu -> koeficijenti funkcije cilja u dualu")
+println("  - Matrica A se transponuje")
+println("  - x1 ≥ 0 -> prvo ograničenje u dualu je <= 5")
+println("  - x2 ≤ 0 -> drugo ograničenje u dualu je >= -10")
+println("  - x3 ≥ 0 -> treće ograničenje u dualu je = 16")
+println("  - Prvo ograničenje <= -> y1 ≥ 0")
+println("  - Drugo ograničenje = -> y2 neograničeno")
+println()
+
+c7 = [-4 11]
+A7 = [-3 3; 0 -6; -4 2]
+b7 = [5, -10, 16]
+csigns7 = [-1, 1, 0]  # <=, >=, = ograničenja
+vsigns7 = [-1, 0]      # y1 ≥ 0, y2 neograničeno
+
+# Rješavanje dualnog problema sa iteracijama
+println("Rješavanje dualnog problema pomoću rijesi_simplex_sa_iteracijama:")
+println()
+try
+    Z7_iter, X7_iter, jedinstveno7, degenerirano7 = rijesi_simplex_sa_iteracijama(
+        "max", A7, b7, c7, csigns7, vsigns7
+    )
+    println("\n=== REZULTAT SA ITERACIJAMA ===")
+    println("Optimalna vrijednost dualnog problema: W = $Z7_iter")
+    println("Optimalno rješenje: y1 = $(X7_iter[1]), y2 = $(X7_iter[2])")
+    println(jedinstveno7)
+    println(degenerirano7)
+catch e
+    println("Greška: $e")
+end
+println()
+
+# Rješavanje pomoću general_simplex
+Z7, X7, Xd7, Y7, Yd7, status7 = general_simplex("max", c7, A7, b7, csigns7, vsigns7)
+
+println("=== REZULTAT SA GENERAL_SIMPLEX ===")
+println("Status: $status7")
+if status7 == 0
+    println("  → Jedinstveno nedegenerirano optimalno rješenje")
+elseif status7 == 1
+    println("  → Jedinstveno degenerirano optimalno rješenje")
+elseif status7 == 2
+    println("  → Optimalno rješenje postoji, ali nije jedinstveno")
+elseif status7 == 3
+    println("  → Rješenje je neograničeno")
+elseif status7 == 4
+    println("  → Dopustiva oblast ne postoji")
+end
+println("Optimalna vrijednost dualnog problema: W = $Z7")
+println("Optimalno rješenje: y1 = $(X7[1]), y2 = $(X7[2])")
+println("Izravnavajuće varijable: Xd = $Xd7")
+println("Dualne varijable (cijene u sjeni): Y = $Y7")
+println("Reducirane cijene: Yd = $Yd7")
+println()
+println("NAPOMENA: Optimalna vrijednost dualnog problema W treba biti jednaka")
+println("optimalnoj vrijednosti primalnog problema Z (slabost dualnosti).")
+println()
+
 println("=" ^ 80)
 println("ZAVRŠETAK TESTIRANJA")
 println("=" ^ 80)

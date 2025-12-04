@@ -1,0 +1,60 @@
+JEZICI BEZ PRIMJERA KODA U KNJIGI
+==================================
+
+Ukupno jezika spomenuto: 104
+Jezika sa primjerima koda: ~58
+Jezika bez primjera koda: ~46
+
+LISTA JEZIKA BEZ PRIMJERA KODA:
+--------------------------------
+
+1. Awk (1977)
+3. BASH (1989)
+4. BAT (1981)
+5. Beta (1975)
+6. BlitzMax (2004)
+7. Boo (2003)
+8. BourneShell (1977)
+9. Dart (2011)
+10. Dylan (1992)
+11. Eiffel (1986)
+12. Erlang (1986)
+13. F# (2002)
+14. Groovy (2003)
+15. IDL (1977)
+16. Io (2002)
+17. J# (2002)
+18. Korn shell (1986)
+19. LOGO (1967)
+20. LabVIEW (1986)
+21. Lingo (1988)
+22. Lisp (1958) - spomenut ali nema primjer koda
+23. Lua (1993) - spomenut ali nema primjer koda
+24. MUMPS (1966)
+25. Matlab (1978)
+26. Max/MSP (1988)
+27. Modula 2 (1978) - spomenut ali nema primjer koda
+28. Modula 3 (1988)
+29. NATURAL (1979)
+30. NET (2003)
+31. NXT-G (2006)
+32. Oberon-2 (1988)
+33. OpenEdge ABL (1984)
+34. PL/I (1964)
+35. Paradox (1985)
+36. Pilot (1962)
+37. PowerShell (2006)
+38. Prolog (1972)
+39. RPG (1959)
+40. Revolution (1993)
+41. Sed (1973)
+42. Simula (1967)
+43. TOM (2001)
+44. VHDL (1987)
+45. X-BASE (1979)
+46. X10 (2004)
+46. XSLT (1997)
+
+NAPOMENA: Neki jezici mogu imati primjere koda koji nisu eksplicitno označeni sa 
+"primjer u jeziku X", već su prikazani u kontekstu objašnjenja sintakse ili semantike.
+
