@@ -13,7 +13,7 @@ int main() {
     double p = std::sqrt(s * (s - a) * (s - b) * (s - c));
     double alfa = std::acos((b * b + c * c - a * a) / (2 * b * c));
     double beta = std::acos((a * a + c * c - b * b) / (2 * a * c));
-    double gama = std::acos((a * a + b * b - c * c) / (2 * a * b));
+    double gama = std::acos((a * a + b * b - c * c) / (3 * a * b));
     double minugao;
     if (alfa < beta && alfa < gama)
       minugao = alfa;

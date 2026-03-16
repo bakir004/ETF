@@ -1,0 +1,51 @@
+BUFFER OVERFLOW DEMONSTRATION
+==============================
+
+HOW TO COMPILE:
+--------------
+For Linux:
+gcc -o buffer_overflow_demo buffer_overflow_demo.c -fno-stack-protector -z execstack
+
+For macOS:
+gcc -o buffer_overflow_demo buffer_overflow_demo.c -fno-stack-protector -Wno-deprecated-declarations
+
+Note: The flag -fno-stack-protector disables stack canaries to make the
+vulnerability easier to demonstrate. In real programs, these protections
+are enabled by default. The program may crash with segmentation fault when
+overflow occurs, which is expected behavior.
+
+HOW TO TRIGGER THE BUFFER OVERFLOW:
+-----------------------------------
+
+1. Normal input (safe):
+   echo "Hello" | ./buffer_overflow_demo
+   
+   Output: Buffer contains "Hello", Secret remains unchanged
+
+2. Buffer overflow (16+ characters):
+   echo "AAAAAAAAAAAAAAAAAAAAAAAAAAAA" | ./buffer_overflow_demo
+   
+   Output: Buffer overflows into the 'secret' array, overwriting it
+
+3. Using printf to generate long strings:
+   python3 -c "print('A' * 50)" | ./buffer_overflow_demo
+
+4. Interactive mode:
+   ./buffer_overflow_demo
+   Then type: AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+   (Press Enter)
+
+WHAT HAPPENS:
+------------
+- The buffer is only 16 bytes (can hold 15 chars + null terminator)
+- gets() doesn't check bounds, so it writes beyond the buffer
+- This overwrites adjacent memory, including the 'secret' array
+- You'll see the secret data being corrupted/overwritten
+
+SECURITY NOTES:
+--------------
+- gets() is deprecated and dangerous - never use it in production
+- Always use fgets() or scanf() with proper bounds checking
+- Modern compilers add stack canaries and other protections
+- This is for educational purposes only
+

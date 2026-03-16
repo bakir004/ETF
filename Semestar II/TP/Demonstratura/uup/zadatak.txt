@@ -1,0 +1,39 @@
+ZADATAK
+
+Napisati program koji upravlja dinamičkom memorijom i spremanjem podataka u binarnom formatu.
+Program treba da sadrži sljedeće komponente:
+
+1. Funkcija: void SpasiNiz(int* niz, int n, char* naziv)
+   - Funkcija prima pokazivač na niz cijelih brojeva, broj elemenata 'n' 
+     i naziv binarne datoteke.
+   - U binarnu datoteku prvo upisuje broj elemenata (n), a zatim cijeli sadržaj 
+     niza u binarnom obliku.
+   - Obavezno zatvoriti datoteku nakon pisanja.
+
+2. Funkcija: int* UcitajNiz(char* naziv, int* n)
+   - Funkcija otvara binarnu datoteku za čitanje.
+   - Prvo učitava broj elemenata koji je zapisan na početku datoteke 
+     i tu vrijednost sprema na adresu pokazivača 'n'.
+   - Na osnovu pročitanog broja elemenata, vrši dinamičku alokaciju 
+     memorije (malloc/calloc) za niz.
+   - Učitava ostatak datoteke (elemente niza) u novu alociranu memoriju.
+   - Vraća pokazivač na taj niz.
+
+   int n;
+   int* niz = UcitajNiz("datoteka.dat", &n);
+
+3. Glavni program (main):
+   - Od korisnika traži unos broja 'n', a zatim dinamički alocira prostor 
+     za 'n' cijelih brojeva.
+   - Korisnik unosi elemente niza sa tastature.
+   - Poziva se funkcija 'SpasiNiz'.
+   - Oslobađa se memorija prvobitnog niza (free).
+
+   - Poziva se funkcija 'UcitajNiz' koja vraća novi pokazivač i učitanu 
+     veličinu.
+   - Ispisuje se učitani niz na ekranu kako bi se potvrdila ispravnost.
+   - Na kraju programa osloboditi svu preostalu dinamičku memoriju.
+
+NAPOMENA: 
+Obavezno koristiti dinamičku alokaciju.
+Obratiti pažnju na provjeru uspješnosti otvaranja datoteka.

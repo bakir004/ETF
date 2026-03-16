@@ -1,0 +1,300 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[bosnian]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{float}
+
+\geometry{margin=2.5cm}
+
+% Definisanje stila za Julia kod
+\lstdefinestyle{julia}{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{white},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    escapeinside={\%*}{*)},
+    morekeywords={function,end,if,else,elseif,for,while,return,using,println,error}
+}
+
+\title{\textbf{Zadaća 7 - Minimalno povezujuće stablo} \\ 
+\large Rješavanje pomoću linearnog programiranja}
+\author{Bakir Činjarević 19705 \& Amar Handanagić 19089}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Uvod}
+
+Cilj ovog zadatka je implementacija funkcije \texttt{min\_tree(W)} koja pronalazi minimalno povezujuće stablo (MST - Minimum Spanning Tree) pomoću linearnog programiranja u programskom jeziku Julia, koristeći pakete JuMP i GLPK.
+
+\section{Matematički model}
+
+Problem minimalnog povezujućeg stabla se može formulirati kao problem linearnog programiranja na sljedeći način:
+
+\subsection{Varijable odlučivanja}
+
+Za svaku granu $(i,j)$ u grafu (gdje $i < j$), definišemo binarnu varijablu:
+\begin{equation}
+x_{ij} \in \{0, 1\}
+\end{equation}
+
+gdje $x_{ij} = 1$ ako je grana $(i,j)$ uključena u minimalno stablo, a $x_{ij} = 0$ inače.
+
+\subsection{Funkcija cilja}
+
+Cilj je minimizirati ukupnu težinu stabla:
+\begin{equation}
+\min \sum_{i=1}^{n} \sum_{j=i+1}^{n} w_{ij} \cdot x_{ij}
+\end{equation}
+
+gdje je $w_{ij}$ težina grane između čvorova $i$ i $j$.
+
+\subsection{Ograničenja}
+
+Problem ima dva tipa ograničenja:
+
+\subsubsection{Ograničenje broja grana}
+
+Stablo sa $n$ čvorova mora imati tačno $n-1$ grana:
+\begin{equation}
+\sum_{i=1}^{n} \sum_{j=i+1}^{n} x_{ij} = n - 1
+\end{equation}
+
+\subsubsection{Ograničenja povezanosti (eliminacija ciklusa)}
+
+Za svaki neprazan podskup $S$ čvorova (osim punog skupa), broj grana između $S$ i komplementa $S$ mora biti najmanje 1. Ovo osigurava povezanost grafa i eliminiše cikluse:
+\begin{equation}
+\sum_{i \in S, j \notin S} x_{ij} \geq 1 \quad \forall S \subset \{1, 2, \ldots, n\}, S \neq \emptyset, S \neq \{1, 2, \ldots, n\}
+\end{equation}
+
+\section{Implementacija}
+
+Funkcija \texttt{min\_tree(W)} je implementirana u programskom jeziku Julia koristeći pakete JuMP i GLPK. Ključni dijelovi implementacije su:
+
+\subsection{Kreiranje modela i varijabli}
+
+Varijable su definisane kao cjelobrojne (Int) kako bi se osiguralo da algoritam vraća cjelobrojno rješenje, što je važno jer algoritmi unutrašnje tačke mogu dati necjelobrojno optimalno rješenje čak i kada postoji cjelobrojno optimalno rješenje:
+
+\begin{lstlisting}[style=julia]
+@variable(model, x[i=1:n, j=1:n; i < j && W[i,j] < Inf], Int, lower_bound=0, upper_bound=1)
+\end{lstlisting}
+
+\subsection{Generisanje ograničenja povezanosti}
+
+Ograničenja povezanosti se generišu za sve neprazne podskupove čvorova (osim punog skupa). Za graf sa $n$ čvorova, postoji $2^n - 2$ takvih podskupova. Za mali broj čvorova (npr. $n \leq 8$), ovo je izvodljivo.
+
+\subsection{Optimizacija i ekstrakcija rješenja}
+
+Nakon optimizacije, izvuku se grane za koje je $x_{ij} = 1$, sortiraju se po prvom pa po drugom čvoru za konzistentan prikaz, i formira se matrica $T$ gdje svaki red predstavlja jednu granu.
+
+\section{Rezultati testiranja}
+
+Funkcija je testirana na četiri različita primjera:
+
+\subsection{Testni primjer 1 - Primjer iz zadatka}
+
+Ulazna težinska matrica:
+\begin{equation}
+W = \begin{bmatrix}
+0 & 2 & 3 & \infty & 8 & \infty & \infty & \infty \\
+2 & 0 & 4 & \infty & 9 & \infty & \infty & \infty \\
+3 & 4 & 0 & 7 & \infty & \infty & \infty & \infty \\
+\infty & \infty & 7 & 0 & 4 & 3 & \infty & \infty \\
+8 & \infty & \infty & 4 & 0 & 5 & 5 & \infty \\
+\infty & 9 & \infty & 3 & 5 & 0 & 7 & 6 \\
+\infty & \infty & \infty & \infty & 5 & 7 & 0 & 1 \\
+\infty & \infty & \infty & \infty & \infty & 6 & 1 & 0
+\end{bmatrix}
+\end{equation}
+
+Rezultat:
+\begin{itemize}
+\item $T = \begin{bmatrix} 1 & 2 \\ 1 & 3 \\ 3 & 4 \\ 4 & 5 \\ 4 & 6 \\ 5 & 7 \\ 7 & 8 \end{bmatrix}$
+\item $V = 25$
+\end{itemize}
+
+Očekivano rješenje: $V = 25$
+
+\subsection{Testni primjer 2 - Graf sa 4 čvora}
+
+Ulazna težinska matrica:
+\begin{equation}
+W = \begin{bmatrix}
+0 & 1 & 3 & 4 \\
+1 & 0 & 2 & \infty \\
+3 & 2 & 0 & 5 \\
+4 & \infty & 5 & 0
+\end{bmatrix}
+\end{equation}
+
+Rezultat:
+\begin{itemize}
+\item $T = \begin{bmatrix} 1 & 2 \\ 1 & 4 \\ 2 & 3 \end{bmatrix}$
+\item $V = 7$
+\end{itemize}
+
+Ovo je optimalno rješenje (grane: 1-2, 1-4, 2-3 sa ukupnom težinom $1 + 4 + 2 = 7$).
+
+\subsection{Testni primjer 3 - Kompletan graf sa 3 čvora}
+
+Ulazna težinska matrica:
+\begin{equation}
+W = \begin{bmatrix}
+0 & 5 & 3 \\
+5 & 0 & 2 \\
+3 & 2 & 0
+\end{bmatrix}
+\end{equation}
+
+Rezultat:
+\begin{itemize}
+\item $T = \begin{bmatrix} 1 & 3 \\ 2 & 3 \end{bmatrix}$
+\item $V = 5$
+\end{itemize}
+
+Optimalno rješenje (grane: 1-3, 2-3 sa ukupnom težinom $3 + 2 = 5$).
+
+\subsection{Testni primjer 4 - Graf sa 5 čvorova}
+
+Ulazna težinska matrica:
+\begin{equation}
+W = \begin{bmatrix}
+0 & 2 & 3 & \infty & \infty \\
+2 & 0 & 1 & 4 & \infty \\
+3 & 1 & 0 & 5 & 6 \\
+\infty & 4 & 5 & 0 & 7 \\
+\infty & \infty & 6 & 7 & 0
+\end{bmatrix}
+\end{equation}
+
+Rezultat:
+\begin{itemize}
+\item $T = \begin{bmatrix} 1 & 2 \\ 2 & 3 \\ 2 & 4 \\ 3 & 5 \end{bmatrix}$
+\item $V = 13$
+\end{itemize}
+
+Optimalno rješenje (grane: 1-2, 2-3, 2-4, 3-5 sa ukupnom težinom $2 + 1 + 4 + 6 = 13$).
+
+\section{Programski kod sa objašnjenjima}
+
+U nastavku je dat kompletan programski kod sa detaljnim objašnjenjima svakog koraka:
+
+\begin{lstlisting}[style=julia, caption={Kompletan Julia kod za minimalno povezujuće stablo}]
+using JuMP
+using GLPK
+
+function min_tree(W)
+    n = size(W, 1)
+    
+    model = Model(GLPK.Optimizer)
+    
+    @variable(model, x[i=1:n, j=1:n; i < j && W[i,j] < Inf], 
+              Int, lower_bound=0, upper_bound=1)
+    
+    @objective(model, Min, 
+               sum(W[i,j] * x[i,j] for i in 1:n for j in (i+1):n if W[i,j] < Inf))
+    
+    @constraint(model, 
+                sum(x[i,j] for i in 1:n for j in (i+1):n if W[i,j] < Inf) == n - 1)
+    
+    svi_podskupovi = []
+    for mask in 1:(2^n - 2)
+        podskup = [i for i in 1:n if (mask & (1 << (i-1))) != 0]
+        if length(podskup) > 0 && length(podskup) < n
+            push!(svi_podskupovi, podskup)
+        end
+    end
+    
+    for S in svi_podskupovi
+        komplement_S = [i for i in 1:n if !(i in S)]
+        
+        grane_izmedju = []
+        for i in S
+            for j in komplement_S
+                if i < j && W[i,j] < Inf
+                    push!(grane_izmedju, x[i,j])
+                elseif j < i && W[j,i] < Inf
+                    push!(grane_izmedju, x[j,i])
+                end
+            end
+        end
+        
+        if length(grane_izmedju) > 0
+            @constraint(model, sum(grane_izmedju) >= 1)
+        end
+    end
+    
+    optimize!(model)
+    
+    if termination_status(model) != MOI.OPTIMAL
+        error("Problem nije optimalno rijesen! Status: ", termination_status(model))
+    end
+    
+    grane = []
+    for i in 1:n
+        for j in (i+1):n
+            if W[i,j] < Inf
+                if value(x[i,j]) > 0.5
+                    push!(grane, [i, j])
+                end
+            end
+        end
+    end
+    
+    sort!(grane, by = g -> (g[1], g[2]))
+    
+    if length(grane) > 0
+        T = hcat([g[1] for g in grane], [g[2] for g in grane])
+    else
+        T = zeros(Int, 0, 2)
+    end
+    
+    V = objective_value(model)
+    
+    return T, V
+end
+\end{lstlisting}
+
+\subsection{Objašnjenje ključnih koraka}
+
+\textbf{Korak 1-2:} Inicijalizacija modela - određujemo broj čvorova i kreiramo optimizacioni model koristeći GLPK solver.
+
+\textbf{Korak 3:} Definisanje varijabli - svaka grana $(i,j)$ ima binarnu varijablu $x_{ij}$ koja označava da li je grana uključena u stablo. Varijable su cjelobrojne (Int) kako bi se osiguralo cjelobrojno rješenje.
+
+\textbf{Korak 4:} Funkcija cilja - minimizujemo ukupnu težinu grana koje su uključene u stablo.
+
+\textbf{Korak 5:} Ograničenje broja grana - osigurava da stablo ima tačno $n-1$ grana.
+
+\textbf{Korak 6-7:} Generisanje ograničenja povezanosti - za svaki podskup čvorova $S$, osiguravamo da postoji najmanje jedna grana između $S$ i komplementa $S$. Ovo eliminiše cikluse i osigurava povezanost.
+
+\textbf{Korak 8-9:} Rješavanje problema i provjera statusa.
+
+\textbf{Korak 10-12:} Ekstrakcija rješenja - pronalazimo sve grane za koje je $x_{ij} = 1$, sortiramo ih i formiramo matricu $T$.
+
+\textbf{Korak 13:} Izračunavanje ukupne težine stabla iz optimalne vrijednosti funkcije cilja.
+
+\end{document}
+

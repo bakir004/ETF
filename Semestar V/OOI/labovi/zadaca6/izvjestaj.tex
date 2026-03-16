@@ -1,0 +1,716 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[bosnian]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{float}
+
+\geometry{margin=2.5cm}
+
+% Definisanje stila za Julia kod
+\lstdefinestyle{julia}{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{white},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    escapeinside={\%*}{*)},
+    morekeywords={function,end,if,else,elseif,for,while,return,using,println,error}
+}
+
+\title{\textbf{Zadatak 6 - Postoptimalna analiza} \\ 
+\large Promjena koeficijenata sa desne strane ograničenja}
+\author{Bakir Činjarević 19705 \& Amar Handanagić 19089}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Postavka zadatka}
+
+Fabrika proizvodi 2 različita tipa radija. Jedini kritični resurs potreban za proizvodnju su radnici. Kompanija ima dva radnika. Radnik 1 može raditi maksimalno 40 sati tokom sedmice i plaćen je 5 KM po satu. Radnik 2 može raditi maksimalno 50 sati sedmično i plaćen je 6 KM po satu. Prodajna cijena i resursi potrebni za izradu svakog tipa radija dati su u tabeli ispod:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Proizvod & Radnik 1 (h) & Radnik 2 (h) & Cijena materijala (KM) & Prodajna cijena (KM) \\
+\hline
+Radio 1 & 1 & 2 & 5 & 25 \\
+\hline
+Radio 2 & 2 & 1 & 4 & 22 \\
+\hline
+\end{tabular}
+\caption{Podaci o proizvodnji radija}
+\end{table}
+
+Simpleks tabela koja odgovara optimalnom rješenju ovog zadatka (cilj je maksimizacija dobiti) je:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Baza & $b_i$ & $X_1$ & $X_2$ & $X_3$ & $X_4$ \\
+\hline
+$X_2$ & 10 & 0 & 1 & $\frac{2}{3}$ & $-\frac{1}{3}$ \\
+\hline
+$X_1$ & 20 & 1 & 0 & $-\frac{1}{3}$ & $\frac{2}{3}$ \\
+\hline
+$Z$ & -80 & 0 & 0 & $-\frac{1}{3}$ & $-\frac{4}{3}$ \\
+\hline
+\end{tabular}
+\caption{Optimalna simpleks tabela}
+\end{table}
+
+\section{Rješavanje zadatka}
+
+\subsection{a) Matematički model i dualni problem}
+
+\subsubsection{Primalni problem}
+
+Prvo je potrebno odrediti funkciju cilja. Dobit po radiju se računa kao:
+\begin{align}
+\text{Dobit} &= \text{Prodajna cijena} - \text{Cijena materijala} - \text{Cijena rada}
+\end{align}
+
+Za Radio 1:
+\begin{align}
+\text{Dobit}_1 &= 25 - 5 - (1 \cdot 5 + 2 \cdot 6) = 25 - 5 - 17 = 3 \text{ KM}
+\end{align}
+
+Za Radio 2:
+\begin{align}
+\text{Dobit}_2 &= 22 - 4 - (2 \cdot 5 + 1 \cdot 6) = 22 - 4 - 16 = 2 \text{ KM}
+\end{align}
+
+Neka su:
+\begin{itemize}
+\item $x_1$ = broj radija tipa 1
+\item $x_2$ = broj radija tipa 2
+\end{itemize}
+
+Matematički model primalnog problema:
+\begin{align}
+\max \quad & Z = 3x_1 + 2x_2 \\
+\text{p.o.} \quad & x_1 + 2x_2 \leq 40 \quad \text{(ograničenje radnika 1)} \\
+& 2x_1 + x_2 \leq 50 \quad \text{(ograničenje radnika 2)} \\
+& x_1, x_2 \geq 0
+\end{align}
+
+\subsubsection{Dualni problem}
+
+Prema pravilima dualnosti, dualni problem glasi:
+\begin{align}
+\min \quad & W = 40y_1 + 50y_2 \\
+\text{p.o.} \quad & y_1 + 2y_2 \geq 3 \\
+& 2y_1 + y_2 \geq 2 \\
+& y_1, y_2 \geq 0
+\end{align}
+
+gdje su $y_1$ i $y_2$ dualne promjenljive koje odgovaraju ograničenjima radnika 1 i radnika 2.
+
+\subsection{b) Novo optimalno rješenje za $b_1' = 28$}
+
+Kada se koeficijent sa desne strane prvog ograničenja promijeni sa $b_1 = 40$ na $b_1' = 28$, potrebno je odrediti novo optimalno rješenje bez rješavanja problema ispočetka.
+
+Iz optimalne simpleks tabele vidimo da su u optimalnom rješenju bazne varijable $X_1$ i $X_2$. Matrica $A_B^{-1}$ se može očitati iz optimalne tabele u kolonama koje odgovaraju početnim slack varijablama ($X_3$ i $X_4$):
+
+\begin{equation}
+A_B^{-1} = \begin{bmatrix}
+\frac{2}{3} & -\frac{1}{3} \\
+-\frac{1}{3} & \frac{2}{3}
+\end{bmatrix}
+\end{equation}
+
+Novi vektor desnih strana je:
+\begin{equation}
+b' = \begin{bmatrix} 28 \\ 50 \end{bmatrix}
+\end{equation}
+
+Novo bazno rješenje se računa po formuli:
+\begin{equation}
+x_B' = A_B^{-1} \cdot b'
+\end{equation}
+
+\begin{align}
+x_B' &= \begin{bmatrix}
+\frac{2}{3} & -\frac{1}{3} \\
+-\frac{1}{3} & \frac{2}{3}
+\end{bmatrix} \begin{bmatrix} 28 \\ 50 \end{bmatrix} \\
+&= \begin{bmatrix}
+\frac{2}{3} \cdot 28 - \frac{1}{3} \cdot 50 \\
+-\frac{1}{3} \cdot 28 + \frac{2}{3} \cdot 50
+\end{bmatrix} \\
+&= \begin{bmatrix}
+\frac{56 - 50}{3} \\
+\frac{-28 + 100}{3}
+\end{bmatrix} \\
+&= \begin{bmatrix} 2 \\ 24 \end{bmatrix}
+\end{align}
+
+Dakle, $x_2' = 2$ i $x_1' = 24$.
+
+Provjeravamo dopustivost: $x_B' = [2, 24]^T \geq 0$, što znači da je rješenje dopustivo i optimalna baza se nije promijenila.
+
+Nova vrijednost funkcije cilja se može izračunati na dva načina:
+\begin{enumerate}
+\item Direktno: $Z' = 3 \cdot 24 + 2 \cdot 2 = 72 + 4 = 76$ KM
+\item Koristeći formulu iz optimalne tabele:
+\begin{align}
+Z' &= Z_0 + y_1 \cdot \Delta b_1 + y_2 \cdot \Delta b_2 \\
+&= 80 + \frac{1}{3} \cdot (28 - 40) + \frac{4}{3} \cdot (50 - 50) \\
+&= 80 + \frac{1}{3} \cdot (-12) + 0 \\
+&= 80 - 4 = 76 \text{ KM}
+\end{align}
+\end{enumerate}
+
+Napomena: U optimalnoj tabeli vrijednost $Z = -80$ je negativna jer je to zapisano u standardnom obliku simpleks metode. Stvarna vrijednost funkcije cilja je $Z = 80$ KM. Dualne vrijednosti $y_1 = \frac{1}{3}$ i $y_2 = \frac{4}{3}$ se čitaju iz optimalne tabele (apsolutne vrijednosti koeficijenata u redu $Z$ za slack varijable).
+
+\subsection{c) Novo optimalno rješenje za $b_1' = 102$}
+
+Sada promijenimo $b_1$ sa 40 na 102 sata. Novi vektor desnih strana je:
+\begin{equation}
+b' = \begin{bmatrix} 102 \\ 50 \end{bmatrix}
+\end{equation}
+
+Računamo novo bazno rješenje:
+\begin{align}
+x_B' &= A_B^{-1} \cdot b' \\
+&= \begin{bmatrix}
+\frac{2}{3} & -\frac{1}{3} \\
+-\frac{1}{3} & \frac{2}{3}
+\end{bmatrix} \begin{bmatrix} 102 \\ 50 \end{bmatrix} \\
+&= \begin{bmatrix}
+\frac{2}{3} \cdot 102 - \frac{1}{3} \cdot 50 \\
+-\frac{1}{3} \cdot 102 + \frac{2}{3} \cdot 50
+\end{bmatrix} \\
+&= \begin{bmatrix}
+\frac{204 - 50}{3} \\
+\frac{-102 + 100}{3}
+\end{bmatrix} \\
+&= \begin{bmatrix} \frac{154}{3} \\ -\frac{2}{3} \end{bmatrix}
+\end{align}
+
+Dobijamo $x_2' = \frac{154}{3} \approx 51.33$ i $x_1' = -\frac{2}{3} < 0$.
+
+Pošto je $x_1' < 0$, rješenje nije dopustivo. Optimalna baza se promijenila i potrebno je primijeniti dualni simpleks metod.
+
+Prvo formiramo početnu tabelu sa novim vektorom desnih strana $b' = [102, 50]^T$. Nova vrijednost funkcije cilja se računa kao:
+\begin{align}
+Z' &= Z_0 + y_1 \cdot \Delta b_1 + y_2 \cdot \Delta b_2 \\
+&= -80 + \left(-\frac{1}{3}\right) \cdot (102 - 40) + \left(-\frac{4}{3}\right) \cdot (50 - 50) \\
+&= -80 - \frac{62}{3} = -\frac{302}{3}
+\end{align}
+
+Početna tabela (nedopustiva):
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Baza & $b_i$ & $X_1$ & $X_2$ & $X_3$ & $X_4$ \\
+\hline
+$X_2$ & $\frac{154}{3}$ & 0 & 1 & $\frac{2}{3}$ & $-\frac{1}{3}$ \\
+\hline
+$X_1$ & $-\frac{2}{3}$ & 1 & 0 & $-\frac{1}{3}$ & $\frac{2}{3}$ \\
+\hline
+$Z$ & $-\frac{302}{3}$ & 0 & 0 & $-\frac{1}{3}$ & $-\frac{4}{3}$ \\
+\hline
+\end{tabular}
+\caption{Početna tabela - nedopustivo rješenje}
+\end{table}
+
+Primjenjujemo dualni simpleks metod:
+
+\textbf{Korak 1:} Tabela je formirana. Svi koeficijenti u redu $Z$ su negativni ili nule, što je uslov za primjenu dualnog simpleks metoda.
+
+\textbf{Korak 2:} Provjeravamo da li su svi $b_i \geq 0$. Vidimo da je $b_2 = -\frac{2}{3} < 0$, pa prelazimo na korak 3.
+
+\textbf{Korak 3:} Odabiremo red sa negativnim $b_i$. Red sa $X_1$ ima $b_i = -\frac{2}{3} < 0$, pa ga proglašavamo za vodeći red (red $p = 2$). Varijabla $X_1$ napušta bazu.
+
+\textbf{Korak 4:} Provjeravamo da li su svi elementi vodećeg reda nenegativni. U redu $X_1$ imamo elemente: $[1, 0, -\frac{1}{3}, \frac{2}{3}]$. Element $-\frac{1}{3} < 0$ (u koloni $X_3$), pa problem ima dopustivo rješenje.
+
+\textbf{Korak 5:} Za negativne elemente vodećeg reda formiramo količnike $\frac{c_j}{a_{p,j}}$:
+\begin{itemize}
+\item Za $X_3$: $\frac{-\frac{1}{3}}{-\frac{1}{3}} = 1$
+\item Za $X_4$: $\frac{-\frac{4}{3}}{\frac{2}{3}} = -2$ (ne uzimamo u obzir jer je $a_{p,j} > 0$)
+\end{itemize}
+
+Najmanji količnik je 1, što odgovara koloni $X_3$. Varijabla $X_3$ ulazi u bazu (kolona $q = 3$).
+
+\textbf{Korak 6:} U bazi zamjenjujemo $X_1$ sa $X_3$.
+
+\textbf{Korak 7:} Vršimo Gaussovu eliminaciju. Vodeći element je $a_{2,3} = -\frac{1}{3}$. Prvo množimo vodeći red sa $-3$ da dobijemo jedinicu na mjestu vodećeg elementa:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Baza & $b_i$ & $X_1$ & $X_2$ & $X_3$ & $X_4$ \\
+\hline
+$X_2$ & $\frac{154}{3}$ & 0 & 1 & $\frac{2}{3}$ & $-\frac{1}{3}$ \\
+\hline
+$X_3$ & 2 & -3 & 0 & 1 & -2 \\
+\hline
+$Z$ & $-\frac{302}{3}$ & 0 & 0 & $-\frac{1}{3}$ & $-\frac{4}{3}$ \\
+\hline
+\end{tabular}
+\caption{Nakon množenja vodećeg reda sa -3}
+\end{table}
+
+Sada eliminišemo elemente u koloni $X_3$ iz ostalih redova. Prvo eliminišemo iz reda $X_2$:
+\begin{align}
+\text{Novi red } X_2 &= \text{Stari red } X_2 - \frac{2}{3} \cdot \text{Novi red } X_3 \\
+&= \left[\frac{154}{3}, 0, 1, \frac{2}{3}, -\frac{1}{3}\right] - \frac{2}{3} \cdot [2, -3, 0, 1, -2] \\
+&= \left[\frac{154}{3}, 0, 1, \frac{2}{3}, -\frac{1}{3}\right] - \left[\frac{4}{3}, -2, 0, \frac{2}{3}, -\frac{4}{3}\right] \\
+&= \left[50, 2, 1, 0, 1\right]
+\end{align}
+
+Zatim eliminišemo iz reda $Z$:
+\begin{align}
+\text{Novi red } Z &= \text{Stari red } Z - \left(-\frac{1}{3}\right) \cdot \text{Novi red } X_3 \\
+&= \left[-\frac{302}{3}, 0, 0, -\frac{1}{3}, -\frac{4}{3}\right] + \frac{1}{3} \cdot [2, -3, 0, 1, -2] \\
+&= \left[-\frac{302}{3}, 0, 0, -\frac{1}{3}, -\frac{4}{3}\right] + \left[\frac{2}{3}, -1, 0, \frac{1}{3}, -\frac{2}{3}\right] \\
+&= \left[-100, -1, 0, 0, -2\right]
+\end{align}
+
+Nova tabela nakon prve iteracije:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Baza & $b_i$ & $X_1$ & $X_2$ & $X_3$ & $X_4$ \\
+\hline
+$X_2$ & 50 & 2 & 1 & 0 & 1 \\
+\hline
+$X_3$ & 2 & -3 & 0 & 1 & -2 \\
+\hline
+$Z$ & -100 & -1 & 0 & 0 & -2 \\
+\hline
+\end{tabular}
+\caption{Tabela nakon prve iteracije dualnog simpleks metoda}
+\end{table}
+
+\textbf{Korak 8:} Vraćamo se na korak 2. Provjeravamo da li su svi $b_i \geq 0$:
+\begin{itemize}
+\item $b_1 = 50 \geq 0$ ✓
+\item $b_2 = 2 \geq 0$ ✓
+\end{itemize}
+
+Svi $b_i$ su nenegativni, pa prelazimo na korak 9.
+
+\textbf{Korak 9:} Optimalno rješenje je nađeno. Provjeravamo optimalnost:
+\begin{itemize}
+\item Svi $b_i \geq 0$ ✓ (rješenje je dopustivo)
+\item Svi koeficijenti u redu $Z$ za nebazne varijable su negativni ili nule: $c_1 = -1 < 0$, $c_4 = -2 < 0$ ✓ (rješenje je optimalno)
+\end{itemize}
+
+Iz tabele očitavamo optimalne vrijednosti:
+\begin{align}
+x_2 &= 50 \\
+x_3 &= 2 \quad \text{(slack varijabla za radnika 1)} \\
+x_1 &= 0 \quad \text{(nebazna varijabla)} \\
+x_4 &= 0 \quad \text{(nebazna varijabla, slack varijabla za radnika 2)} \\
+Z &= -100
+\end{align}
+
+Stvarna vrijednost funkcije cilja je $Z = 100$ KM (apsolutna vrijednost).
+
+Dakle, novo optimalno rješenje je:
+\begin{align}
+x_1' &= 0 \\
+x_2' &= 50 \\
+Z' &= 100 \text{ KM}
+\end{align}
+
+\subsection{d) Odgovori za rješenje pod c)}
+
+\subsubsection{Koliko radija 1 i radija 2 treba proizvesti?}
+
+Iz optimalnog rješenja:
+\begin{itemize}
+\item Radio 1: $x_1 = 0$ jedinica
+\item Radio 2: $x_2 = 50$ jedinica
+\end{itemize}
+
+\subsubsection{Koliko slobodnih sati će ostati na raspolaganju radniku 1 i radniku 2?}
+
+Slack varijable predstavljaju neiskorišćene resurse:
+\begin{align}
+s_1 &= 102 - (1 \cdot 0 + 2 \cdot 50) = 102 - 100 = 2 \text{ sata} \\
+s_2 &= 50 - (2 \cdot 0 + 1 \cdot 50) = 50 - 50 = 0 \text{ sati}
+\end{align}
+
+Dakle:
+\begin{itemize}
+\item Radnik 1 ima 2 slobodna sata
+\item Radnik 2 nema slobodnih sati (potpuno iskorišćen)
+\end{itemize}
+
+\subsubsection{Da li su oba radija isplativa za proizvodnju?}
+
+Rentabilnost radija se određuje kroz odgovarajuće dualne promjenljive. U dualnom problemu:
+\begin{itemize}
+\item Prvo ograničenje: $y_1 + 2y_2 \geq 3$ odgovara Radio 1 ($x_1$)
+\item Drugo ograničenje: $2y_1 + y_2 \geq 2$ odgovara Radio 2 ($x_2$)
+\end{itemize}
+
+Prema teoremi komplementarne slackness, radio je rentabilan (tj. $x > 0$) ako i samo ako je odgovarajuće dualno ograničenje aktivno (tj. jednakost vrijedi, a ne striktna nejednakost). To znači da je odgovarajuća dualna slack varijabla jednaka nuli.
+
+Iz optimalnog rješenja dualnog problema (iz nove optimalne tabele ili izračunato pomoću softvera):
+\begin{itemize}
+\item $y_1 = 0$ (ograničenje radnika 1 nije aktivno)
+\item $y_2 = 2$ (ograničenje radnika 2 je aktivno)
+\end{itemize}
+
+Provjeravamo aktivnost dualnih ograničenja:
+\begin{itemize}
+\item Za Radio 1: $y_1 + 2y_2 = 0 + 2 \cdot 2 = 4 > 3$. Ograničenje nije aktivno (slack $> 0$), što znači da Radio 1 \textbf{nije rentabilan} ($x_1 = 0$).
+\item Za Radio 2: $2y_1 + y_2 = 2 \cdot 0 + 2 = 2 = 2$. Ograničenje je aktivno (slack $= 0$), što znači da Radio 2 \textbf{je rentabilan} ($x_2 = 50 > 0$).
+\end{itemize}
+
+\subsubsection{Koliko će se povećati vrijednost funkcije cilja pri jediničnom povećanju raspoloživih vremena radnika 1 i 2?}
+
+Ovo odgovara optimalnim vrijednostima dualnih promjenljivih (cijenama u sjeni). Iz optimalne simpleks tabele ili iz rješenja dualnog problema:
+
+\begin{itemize}
+\item Za radnika 1: $y_1 = \frac{1}{3}$ KM/sat (ili 0 ako je ograničenje neaktivno u novom rješenju)
+\item Za radnika 2: $y_2 = \frac{4}{3}$ KM/sat
+\end{itemize}
+
+U novom optimalnom rješenju (kada je $b_1 = 102$), dualne vrijednosti se mogu očitati iz nove optimalne tabele ili izračunati pomoću softvera. Iz rješenja dobijamo:
+\begin{itemize}
+\item Za radnika 1: $y_1 = 0$ KM/sat (ograničenje nije aktivno jer ima slobodnih sati)
+\item Za radnika 2: $y_2 = 2$ KM/sat (ograničenje je aktivno)
+\end{itemize}
+
+\subsubsection{Koliko mora iznositi dobit po proizvedenom radiju da bi on postao isplativ?}
+
+Vrijednost koju radio mora imati da bi postao rentabilan se dobije preko spregnute dualne promjenljive za tu primalnu promjenljivu.
+
+Za Radio 1, spregnuto dualno ograničenje je:
+\begin{equation}
+y_1 + 2y_2 \geq c_1
+\end{equation}
+
+gdje je $c_1$ dobit po radiju 1. Trenutno je $c_1 = 3$ KM.
+
+Iz optimalnog rješenja dualnog problema imamo $y_1 = 0$ i $y_2 = 2$. Provjeravamo:
+\begin{align}
+y_1 + 2y_2 &= 0 + 2 \cdot 2 = 4 > 3 = c_1
+\end{align}
+
+Pošto je $y_1 + 2y_2 > c_1$, dualno ograničenje nije aktivno, što znači da Radio 1 nije rentabilan.
+
+Da bi Radio 1 postao rentabilan, potrebno je da dualno ograničenje postane aktivno, odnosno:
+\begin{align}
+y_1 + 2y_2 &= c_1' \\
+4 &= c_1'
+\end{align}
+
+Dakle, dobit po radiju 1 mora biti \textbf{jednaka 4 KM} da bi Radio 1 postao rentabilan (tj. da bi dualno ograničenje postalo aktivno i $x_1 > 0$). 
+
+Trenutna dobit je 3 KM, što je manje od potrebne vrijednosti 4 KM. Pošto je $y_1 + 2y_2 = 4 > 3 = c_1$, dualno ograničenje nije aktivno (slack $> 0$), što prema komplementarnoj slackness znači da je $x_1 = 0$ u optimalnom rješenju.
+
+\subsection{e) Provjera rješenja u Juliji}
+
+Rješenja pod b) i c) su provjerena pomoću JuMP paketa u programskom jeziku Julia. Rezultati se poklapaju sa teorijskim izračunima.
+
+Za slučaj b) ($b_1 = 28$):
+\begin{itemize}
+\item Ulazni podaci: $b_1 = 28$, $b_2 = 50$, funkcija cilja: $\max Z = 3x_1 + 2x_2$
+\item Dobijeno rješenje: $x_1 = 24$, $x_2 = 2$, $Z = 76$ KM
+\end{itemize}
+
+Za slučaj c) ($b_1 = 102$):
+\begin{itemize}
+\item Ulazni podaci: $b_1 = 102$, $b_2 = 50$, funkcija cilja: $\max Z = 3x_1 + 2x_2$
+\item Dobijeno rješenje: $x_1 = 0$, $x_2 = 50$, $Z = 100$ KM
+\end{itemize}
+
+Detaljni kod i rezultati izvršavanja su dati u priloženom Julia fajlu.
+
+\section{Zaključak}
+
+Zadatak je demonstrirao primjenu postoptimalne analize za promjenu koeficijenata sa desne strane ograničenja. Kada je promjena dovoljno mala da optimalna baza ostane ista ($b_1 = 28$), novo rješenje se može direktno izračunati pomoću formule $x_B' = A_B^{-1} \cdot b'$. Kada promjena dovede do nedopustivog rješenja ($b_1 = 102$), potrebno je primijeniti dualni simpleks metod ili riješiti problem ispočetka.
+
+\section{Julia kod}
+
+Kompletan Julia kod za rješavanje zadatka:
+
+\begin{lstlisting}[style=julia, caption={Julia kod za postoptimalnu analizu}]
+# Zadatak 6 - Postoptimalna analiza (promjena koeficijenata sa desne strane ograničenja)
+# Dualni simpleks metod
+
+using JuMP
+using GLPK
+using LinearAlgebra
+
+println("="^80)
+println("ZADATAK 6 - POSTOPTIMALNA ANALIZA")
+println("="^80)
+
+# ==================== PODACI IZ ZADATKA ====================
+# Radnik 1: max 40 sati, 5 KM/sat
+# Radnik 2: max 50 sati, 6 KM/sat
+# Radio 1: radnik 1 - 1h, radnik 2 - 2h, materijal 5 KM, prodajna cijena 25 KM
+# Radio 2: radnik 1 - 2h, radnik 2 - 1h, materijal 4 KM, prodajna cijena 22 KM
+
+# Funkcija cilja: maksimizacija dobiti
+# Dobit po radiju = prodajna cijena - cijena materijala - cijena rada
+# Radio 1: 25 - 5 - (1*5 + 2*6) = 25 - 5 - 17 = 3 KM
+# Radio 2: 22 - 4 - (2*5 + 1*6) = 22 - 4 - 16 = 2 KM
+
+# Varijable:
+# x1 = broj radija tipa 1
+# x2 = broj radija tipa 2
+
+# Ograničenja:
+# Radnik 1: 1*x1 + 2*x2 <= 40
+# Radnik 2: 2*x1 + 1*x2 <= 50
+
+# Funkcija cilja: max Z = 3*x1 + 2*x2
+
+# Optimalna simpleks tabela:
+# Baza | bi | X1 | X2 | X3 | X4
+# X2   | 10 |  0 |  1 | 2/3| -1/3
+# X1   | 20 |  1 |  0 | -1/3| 2/3
+# Z    |-80 |  0 |  0 | -1/3| -4/3
+# (X3 i X4 su slack varijable za radnika 1 i radnika 2)
+
+# Matrica AB^(-1) se čita iz optimalne tabele u kolonama koje odgovaraju
+# početnim slack varijablama (X3 i X4):
+# AB^(-1) = [2/3  -1/3]
+#            [-1/3  2/3]
+
+println("\n--- a) MATEMATIČKI MODEL I DUALNI PROBLEM ---\n")
+
+println("PRIMALNI PROBLEM:")
+println("max Z = 3*x1 + 2*x2")
+println("p.o.  x1 + 2*x2 <= 40   (radnik 1)")
+println("      2*x1 + x2 <= 50   (radnik 2)")
+println("      x1, x2 >= 0")
+
+println("\nDUALNI PROBLEM:")
+println("min W = 40*y1 + 50*y2")
+println("p.o.  y1 + 2*y2 >= 3")
+println("      2*y1 + y2 >= 2")
+println("      y1, y2 >= 0")
+
+# ==================== FUNKCIJA ZA RJEŠAVANJE POMOĆU JUMP ====================
+function rijesi_lp(b1, b2; verbose=true)
+    model = Model(GLPK.Optimizer)
+    
+    @variable(model, x1 >= 0)
+    @variable(model, x2 >= 0)
+    
+    @objective(model, Max, 3*x1 + 2*x2)
+    
+    @constraint(model, radnik1, 1*x1 + 2*x2 <= b1)
+    @constraint(model, radnik2, 2*x1 + 1*x2 <= b2)
+    
+    optimize!(model)
+    
+    if termination_status(model) == MOI.OPTIMAL
+        x1_val = value(x1)
+        x2_val = value(x2)
+        Z_val = objective_value(model)
+        
+        # Provjera: Z mora biti jednako 3*x1 + 2*x2
+        Z_provjera = 3*x1_val + 2*x2_val
+        if abs(Z_val - Z_provjera) > 1e-6
+            println("UPOZORENJE: Z ($Z_val) se ne poklapa sa 3*x1 + 2*x2 ($Z_provjera)")
+        end
+        
+        # Dobijanje dualnih vrijednosti (cijene u sjeni)
+        # JuMP vraća negativne vrijednosti za maksimizaciju, pa uzimamo apsolutnu vrijednost
+        y1_val = abs(dual(radnik1))
+        y2_val = abs(dual(radnik2))
+        
+        # Slack varijable
+        slack1 = b1 - (1*x1_val + 2*x2_val)
+        slack2 = b2 - (2*x1_val + 1*x2_val)
+        
+        if verbose
+            println("\nOptimalno rješenje:")
+            println("  x1 (Radio 1) = ", round(x1_val, digits=3))
+            println("  x2 (Radio 2) = ", round(x2_val, digits=3))
+            println("  Z (Dobit) = ", round(Z_val, digits=3), " KM")
+            println("  Provjera: 3*x1 + 2*x2 = ", round(Z_provjera, digits=3), " KM")
+            println("\nSlack varijable:")
+            println("  Slobodni sati radnika 1 = ", round(slack1, digits=3))
+            println("  Slobodni sati radnika 2 = ", round(slack2, digits=3))
+            println("\nDualne varijable (cijene u sjeni):")
+            println("  y1 (radnik 1) = ", round(y1_val, digits=3))
+            println("  y2 (radnik 2) = ", round(y2_val, digits=3))
+        end
+        
+        return x1_val, x2_val, Z_val, slack1, slack2, y1_val, y2_val
+    else
+        println("Rješenje nije pronađeno! Status: ", termination_status(model))
+        return nothing
+    end
+end
+
+# ==================== FUNKCIJA ZA POSTOPTIMALNU ANALIZU ====================
+function postoptimalna_analiza(b1_novo, b2_novo)
+    # Matrica AB^(-1) iz optimalne tabele
+    # Kolone X3 i X4 u optimalnoj tabeli daju AB^(-1)
+    AB_inv = [2/3  -1/3;
+              -1/3  2/3]
+    
+    # Novi vektor desnih strana
+    b_novo = [b1_novo, b2_novo]
+    
+    # Izračunavanje novog baznog rješenja
+    xB_novo = AB_inv * b_novo
+    
+    println("\nKorištenje formule xB' = AB^(-1) * b':")
+    println("AB^(-1) = ")
+    display(AB_inv)
+    println("b' = ", b_novo)
+    println("xB' = AB^(-1) * b' = ", round.(xB_novo, digits=3))
+    
+    # Provjera dopustivosti
+    if all(xB_novo .>= 0)
+        println("✓ Rješenje je dopustivo (xB' >= 0)")
+        println("  Novo optimalno rješenje:")
+        println("    x2 = ", round(xB_novo[1], digits=3))
+        println("    x1 = ", round(xB_novo[2], digits=3))
+        
+        # Izračunavanje nove vrijednosti funkcije cilja
+        # Iz optimalne tabele: Z = 80 + (1/3)*delta_b1 + (4/3)*delta_b2
+        # gdje su delta_b razlike između novog i starog b
+        b_staro = [40, 50]
+        delta_b = b_novo - b_staro
+        # Dualne vrijednosti iz optimalne tabele su -1/3 i -4/3, ali to je zbog načina zapisa
+        # Stvarna vrijednost funkcije cilja u optimalnoj tabeli je 80 (ne -80)
+        delta_Z = (1/3)*delta_b[1] + (4/3)*delta_b[2]
+        Z_novo = 80 + delta_Z
+        
+        println("    Z = ", round(Z_novo, digits=3), " KM")
+        
+        return true, xB_novo[2], xB_novo[1], Z_novo
+    else
+        println("✗ Rješenje NIJE dopustivo (neki elementi xB' < 0)")
+        println("  Potrebno je primijeniti dualni simpleks metod")
+        return false, nothing, nothing, nothing
+    end
+end
+
+# ==================== DIJELOVI ZADATKA ====================
+
+println("\n\n--- b) RADNIK 1 MOŽE RADITI MAKSIMALNO 28 SATI ---\n")
+println("Originalno: b1 = 40, b2 = 50")
+println("Novo: b1' = 28, b2' = 50")
+
+b1_novo_b = 28
+b2_novo_b = 50
+
+dopustivo_b, x1_b, x2_b, Z_b = postoptimalna_analiza(b1_novo_b, b2_novo_b)
+
+println("\nProvjera pomoću JuMP:")
+x1_jump_b, x2_jump_b, Z_jump_b, slack1_b, slack2_b, y1_b, y2_b = rijesi_lp(b1_novo_b, b2_novo_b)
+
+println("\n\n--- c) RADNIK 1 MOŽE RADITI MAKSIMALNO 102 SATA ---\n")
+println("Originalno: b1 = 40, b2 = 50")
+println("Novo: b1' = 102, b2' = 50")
+
+b1_novo_c = 102
+b2_novo_c = 50
+
+dopustivo_c, x1_c, x2_c, Z_c = postoptimalna_analiza(b1_novo_c, b2_novo_c)
+
+if !dopustivo_c
+    println("\nRješenje nije dopustivo, rješavamo pomoću JuMP (dualni simpleks):")
+end
+
+println("\nProvjera pomoću JuMP:")
+x1_jump_c, x2_jump_c, Z_jump_c, slack1_c, slack2_c, y1_c, y2_c = rijesi_lp(b1_novo_c, b2_novo_c)
+
+println("\n\n--- d) ODGOVORI ZA RJEŠENJE POD c) ---\n")
+println("Koliko radija 1 i radija 2 treba proizvesti?")
+println("  Radio 1: ", round(x1_jump_c, digits=3), " jedinica")
+println("  Radio 2: ", round(x2_jump_c, digits=3), " jedinica")
+
+println("\nKoliko slobodnih sati će ostati na raspolaganju radniku 1 i radniku 2?")
+println("  Radnik 1: ", round(slack1_c, digits=3), " sati")
+println("  Radnik 2: ", round(slack2_c, digits=3), " sati")
+
+println("\nDa li su oba radija isplativa za proizvodnju?")
+println("  Radio 1: ", x1_jump_c > 0 ? "DA (x1 > 0)" : "NE (x1 = 0)")
+println("  Radio 2: ", x2_jump_c > 0 ? "DA (x2 > 0)" : "NE (x2 = 0)")
+
+println("\nKoliko će se povećati vrijednost funkcije cilja pri jediničnom povećanju raspoloživih vremena radnika 1 i 2?")
+println("  Radnik 1 (y1 - cijena u sjeni): ", round(y1_c, digits=3), " KM/sat")
+println("  Radnik 2 (y2 - cijena u sjeni): ", round(y2_c, digits=3), " KM/sat")
+println("  (Ovo znači da bi povećanje kapaciteta radnika 1 za 1 sat povećalo dobit za ", round(y1_c, digits=3), " KM)")
+
+println("\nUkoliko neki od radija nije isplativ za proizvodnju, koliko mora iznositi dobit po proizvedenom radiju da bi on postao isplativ?")
+# Reducirane cijene iz optimalne tabele: -1/3 za X3, -4/3 za X4
+# Ali ovo su za slack varijable. Za sami proizvod, trebamo provjeriti reduciranu cijenu.
+# U optimalnoj tabeli, koeficijenti u redu Z za X1 i X2 su 0 (jer su bazne varijable).
+# Reducirana cijena za neku varijablu pokazuje za koliko se funkcija cilja smanji povećanjem te varijable za 1.
+
+# Ako je x1 > 0 i x2 > 0, oba su isplativa
+if x1_jump_c > 0 && x2_jump_c > 0
+    println("  Oba radija su isplativa za proizvodnju.")
+else
+    if x1_jump_c == 0
+        println("  Radio 1 nije isplativ. Da bi postao isplativ, dobit po radiju 1 mora biti veća.")
+        println("  Trenutna dobit po radiju 1: 3 KM")
+        println("  (Za tačnu vrijednost potrebno je izračunati reduciranu cijenu iz simpleks tabele)")
+    end
+    if x2_jump_c == 0
+        println("  Radio 2 nije isplativ. Da bi postao isplativ, dobit po radiju 2 mora biti veća.")
+        println("  Trenutna dobit po radiju 2: 2 KM")
+        println("  (Za tačnu vrijednost potrebno je izračunati reduciranu cijenu iz simpleks tabele)")
+    end
+end
+
+println("\n\n--- e) PROVJERA RJEŠENJA U JULIJI ---\n")
+
+println("=== POD b) - Radnik 1: 28 sati ===")
+println("Ulazni podaci:")
+println("  b1 = ", b1_novo_b)
+println("  b2 = ", b2_novo_b)
+println("  Funkcija cilja: max Z = 3*x1 + 2*x2")
+println("  Ograničenja: x1 + 2*x2 <= ", b1_novo_b, ", 2*x1 + x2 <= ", b2_novo_b)
+x1_b, x2_b, Z_b, slack1_b, slack2_b, y1_b, y2_b = rijesi_lp(b1_novo_b, b2_novo_b)
+
+println("\n=== POD c) - Radnik 1: 102 sata ===")
+println("Ulazni podaci:")
+println("  b1 = ", b1_novo_c)
+println("  b2 = ", b2_novo_c)
+println("  Funkcija cilja: max Z = 3*x1 + 2*x2")
+println("  Ograničenja: x1 + 2*x2 <= ", b1_novo_c, ", 2*x1 + x2 <= ", b2_novo_c)
+x1_c, x2_c, Z_c, slack1_c, slack2_c, y1_c, y2_c = rijesi_lp(b1_novo_c, b2_novo_c)
+
+println("\n" * "="^80)
+println("ZADATAK ZAVRŠEN")
+println("="^80)
+\end{lstlisting}
+
+\end{document}
+
