@@ -31,6 +31,11 @@ struct Timer {
     }
 };
 
+// Ovaj primjer pokazuje prostornu lokalnost, gdje pristup
+// elementima matrice po redovima bude brze, jer se
+// blokovi iz memorije upisuju u kes i time daje
+// vise kes hitova, dok po kolonama ima vise promasaja
+
 int main() {
     const int N = 10000;
     Matrix mat(N);

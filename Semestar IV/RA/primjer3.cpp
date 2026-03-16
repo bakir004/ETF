@@ -26,6 +26,12 @@ struct StudentSoA {
     StudentSoA(size_t n) : scores(n, 0.0f) {}
 };
 
+// Structure of Arrays vs. Array of Structures
+// Racunanje prosjeka studenata se brze radi ako
+// su ocjene u posebnom nizu radi prostorne lokalnosti
+// Kada su u strukturi, onda u kesu zauzimaju
+// vecinu prostora nebitni podaci
+
 int main() {
     const size_t N = 50000000;
 

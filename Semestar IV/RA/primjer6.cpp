@@ -17,6 +17,10 @@ struct Timer {
     }
 };
 
+// Sporo racunanje korijena je bottleneck u jednoj
+// iteraciji petlje, pa dodavanje nekih jednostavnih
+// naredbi nece utjecati na brzinu programa
+
 int main() {
     const int N = 50000000;
     vector<double> data(N, 1.0);

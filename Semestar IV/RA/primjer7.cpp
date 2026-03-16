@@ -16,6 +16,10 @@ struct Timer {
     }
 };
 
+// Ovaj primjer je slican primjeru 6, samo sto ovdje
+// ALU u procesoru nema posla, pa se moze dodati racunanje
+// bez utjecaja na brzinu programa
+
 int main() {
     const int N = 100000000;
     vector<int> dataA(N, 1);

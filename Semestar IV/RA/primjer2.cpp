@@ -28,6 +28,11 @@ void run_experiment(const vector<int>& data, string label) {
                 sum += data[i];
 }
 
+// Ovaj primjer pokazuje zagrijanost branch prediktora
+// Kada su podaci random, onda prediktor ne zna sta ce
+// a kada su sortirani onda je jasno nakon par pokusaja
+// koji od dva branch puta je cesci
+
 int main() {
     const int SIZE = 32768;
     vector<int> data(SIZE);

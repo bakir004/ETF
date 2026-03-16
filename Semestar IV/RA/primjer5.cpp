@@ -4,6 +4,12 @@
 
 using namespace std;
 
+// Odmotavanje petlji dozvoljava procesoru da paralelizira neke instrukcije
+// koje inace ni bi mogao.
+//
+// PS. U ovom primjeru na mom racunaru nema razlike u brzini,
+// vjerovatno kompajler vec odmotava.
+
 int main() {
     const int N = 100000000;
     vector<float> data(N, 1.1f);

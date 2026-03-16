@@ -30,6 +30,14 @@ void work(volatile long long& counter) {
     for (int i = 0; i < 100000000; ++i) counter++;
 }
 
+// U multithreaded kodu, ako dva thread-a pristupaju varijablama koje su blizu u memoriji
+// onda mogu se nalaziti u istoj cache liniji. 
+// Kada jedan thread mijenja tu liniju, drugi thread mora da je ponovo ucita,
+// sto dovodi do velikog broja cache miss-ova i usporava program. 
+// Ovo se naziva "false sharing".
+// Ako se doda padding takav da se dvije promjenjive nalaze
+// na odvojenim cache linijama, onda se izbjegava false sharing i program radi brze.
+
 int main() {
     Contended bad;
     {
