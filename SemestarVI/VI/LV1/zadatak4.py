@@ -35,4 +35,4 @@ fig.tight_layout()
 plt.savefig('sin_cos_subplots.png', dpi=300)
 plt.close()
 
-print("Slike su sacuvane!")
+print("Slike su sacuvane")
