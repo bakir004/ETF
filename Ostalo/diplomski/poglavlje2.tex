@@ -1,0 +1,852 @@
+
+\chapter{Teoretske osnove}
+
+Kako se spektralna teorija grafova bavi proučavanjem svojstvenih vrijednosti matrica susjedstva grafova, u nastavku su navedene potrebne definicije osnovnih pojmova teorije grafova i linearne algebre.
+
+\section{Osnove linearne algebre}
+
+\begin{definition}
+Vektor je uređena lista elemenata iz nekog skupa, najčešće skupa realnih ili kompleksnih brojeva. 
+Ako vektor ima \(n\) komponenti, tada se može zapisati kao
+\begin{equation}
+    \mathbf{x} = (x_1, x_2, \ldots, x_n).
+\end{equation}
+\end{definition}
+\begin{definition}
+Matrica je pravougaona tabela elemenata raspoređenih u redove i kolone. 
+Matrica sa \(m\) redova i \(n\) kolona naziva se matrica dimenzije \(m \times n\) i zapisuje se kao
+\begin{equation}
+    \mathbf{A} =
+    \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & a_{m2} & \cdots & a_{mn}
+    \end{bmatrix}.
+\end{equation}
+\end{definition}
+
+\begin{definition}
+Kvadratna matrica \(\mathbf{A}=[a_{ij}]_{n \times n}\) naziva se dijagonalna matrica ako su svi njeni elementi van glavne dijagonale jednaki nuli, odnosno ako vrijedi
+\begin{equation}
+    a_{ij}=0, \quad \text{za } i \neq j.
+\end{equation} \cite{chung1997spectral}
+\end{definition}
+
+\begin{definition}
+Svojstveni vektor matrice \(\mathbf{A} \in \mathbb{R}^{n \times n}\) je nenulti vektor \(\mathbf{x}\) za koji postoji skalar \(\lambda\) takav da vrijedi
+\begin{equation}
+    \mathbf{A}\mathbf{x} = \lambda \mathbf{x}.
+\end{equation}
+Skalar \(\lambda\) naziva se svojstvena vrijednost matrice \(\mathbf{A}\) ako postoji netrivijalno rješenje \(\mathbf{x} \neq \mathbf{0}\) jednačine
+\begin{equation}
+    \mathbf{A}\mathbf{x} = \lambda \mathbf{x}.
+\end{equation}
+Ekvivalentno, svojstvene vrijednosti matrice \(\mathbf{A}\) dobijaju se kao rješenja karakteristične jednačine
+\begin{equation}
+    \det(\mathbf{A} - \lambda \mathbf{I}) = 0,
+\end{equation}
+gdje je \(\mathbf{I}\) jedinična matrica reda \(n\). Takav vektor \(\mathbf{x}\) naziva se svojstveni vektor koji odgovara svojstvenoj vrijednosti \(\lambda\). \cite{lay2016linear}
+\end{definition}
+
+\begin{definition}
+Neka je \(\mathbf{A} \in \mathbb{R}^{n \times n}\) simetrična matrica. Matrica \(\mathbf{A}\) naziva se pozitivno definitna ako za svaki nenulti vektor \(\mathbf{x} \in \mathbb{R}^{n}\) vrijedi
+\begin{equation}
+    \mathbf{x}^{T}\mathbf{A}\mathbf{x} > 0.
+\end{equation}
+Matrica \(\mathbf{A}\) naziva se pozitivno semidefinitna ako za svaki vektor \(\mathbf{x} \in \mathbb{R}^{n}\) vrijedi
+\begin{equation}
+    \mathbf{x}^{T}\mathbf{A}\mathbf{x} \geq 0.
+\end{equation}
+\end{definition}
+
+\begin{definition}
+Spektar matrice \(\mathbf{A}\), u oznaci \(\sigma(\mathbf{A})\), je skup svih svojstvenih vrijednosti matrice \(\mathbf{A}\), odnosno
+\begin{equation}
+    \sigma(\mathbf{A}) = \{\lambda \in \mathbb{C} \mid \det(\mathbf{A} - \lambda \mathbf{I}) = 0\}.
+\end{equation}
+Ako matrica \(\mathbf{A}\) ima svojstvene vrijednosti \(\lambda_1,\lambda_2,\ldots,\lambda_n\), tada se njen spektar može zapisati kao
+\begin{equation}
+    \sigma(\mathbf{A}) = \{\lambda_1,\lambda_2,\ldots,\lambda_n\}.
+\end{equation} \cite{brouwer2011spectra}
+\end{definition}
+
+\begin{theorem}[Spektralni teorem za simetrične matrice]\label{th:spektralni-teorem}
+Za svaku simetričnu matricu \(\mathbf{A}\) reda \(n\) vrijede sljedeće osobine:
+\begin{enumerate}
+    \item Matrica \(\mathbf{A}\) ima \(n\) realnih svojstvenih vrijednosti, računajući njihove višestrukosti.
+    
+    \item Dimenzija svojstvenog prostora za svaku svojstvenu vrijednost \(\lambda\) jednaka je višestrukosti vrijednosti \(\lambda\) kao korijena karakteristične jednačine.
+    
+    \item Svojstveni prostori koji odgovaraju različitim svojstvenim vrijednostima međusobno su ortogonalni, tj. svojstveni vektori koji odgovaraju različitim svojstvenim vrijednostima su ortogonalni.
+    
+    \item Matrica \(\mathbf{A}\) je ortogonalno dijagonalizabilna. \cite{lay2016linear}
+\end{enumerate}
+\end{theorem}
+
+
+ 
+\section{Elementi teorije grafova}
+
+\begin{definition}
+Graf je uređeni par
+\begin{equation}
+    G = (V, E),
+\end{equation}
+gdje je \(V \neq \emptyset\) skup čvorova, a \(E\) skup grana grafa. Za usmjerene grafove grane posmatramo kao uređene parove čvorova, odnosno
+\begin{equation}
+    E \subseteq V \times V.
+\end{equation}
+Elementi skupa \(V\) nazivaju se čvorovi ili vrhovi grafa, dok se elementi skupa \(E\) nazivaju grane grafa. \cite{juric2019elementi}
+\end{definition}
+\begin{definition}
+Graf \(G=(V,E)\) naziva se neusmjeren ili neorijentiran graf ako za sve \(u,v \in V\) vrijedi
+\begin{equation}
+    (u,v) \in E \Rightarrow (v,u) \in E.
+\end{equation}
+Kod neusmjerenog grafa veza između dva čvora nema određen smjer, pa se grane obično prikazuju linijama bez strelica. \cite{juric2019elementi}
+\end{definition}
+\begin{definition}
+Graf \(G=(V,E)\) naziva se usmjeren ili orijentiran graf ako je relacija određena skupom \(E\) antisimetrična, odnosno ako za sve \(u,v \in V\) vrijedi
+\begin{equation}
+    (u,v) \in E \land (v,u) \in E \Rightarrow u=v.
+\end{equation}
+Kod usmjerenog grafa veza između dva čvora ima određen smjer. Grane usmjerenog grafa nazivaju se usmjerene grane ili lukovi. \cite{juric2019elementi}
+\end{definition}
+
+\begin{definition}
+Neka je \(G=(V,E)\) graf i neka je \(i \in V\) proizvoljan čvor. 
+Kod usmjerenog grafa ulazni stepen čvora \(i\), u oznaci \(d_G^-(i)\), definiše se kao broj grana koje ulaze u čvor \(i\), odnosno
+\begin{equation}
+    d_G^-(i) = \#\{(j,i) \mid (j,i) \in E\}.
+\end{equation}
+Izlazni stepen čvora \(i\), u oznaci \(d_G^+(i)\), definiše se kao broj grana koje izlaze iz čvora \(i\), odnosno
+\begin{equation}
+    d_G^+(i) = \#\{(i,j) \mid (i,j) \in E\}.
+\end{equation}
+Kod neusmjerenog grafa ne razlikuju se ulazni i izlazni stepen čvora. \cite{juric2019elementi}
+\end{definition}
+\begin{definition}
+    
+Za neusmjerene grafove, stepen čvora \(i\), u oznaci \(d_G(i)\), predstavlja broj grana koje su incidentne sa čvorom \(i\), odnosno broj grana koje se stiču u tom čvoru.
+Ako u grafu postoje petlje, svaka petlja se pri računanju stepena čvora broji dvostruko. \cite{juric2019elementi}
+\end{definition}
+
+\begin{definition}
+Put u grafu \(G=(V,E)\) je niz grana
+\begin{equation}
+    g_1,g_2,\ldots,g_k,
+\end{equation}
+pri čemu svaka naredna grana počinje u čvoru u kojem se prethodna završava. Čvor u kojem počinje prva grana naziva se početak puta, a čvor u kojem završava posljednja grana naziva se kraj puta. \cite{juric2019elementi}
+\end{definition}
+\begin{definition}
+Put je zatvoren ako mu se početak i kraj poklapaju. Ako se početak i kraj ne poklapaju, put je otvoren. \cite{juric2019elementi}
+\end{definition}
+\begin{definition}
+Staza je put koji ne sadrži više puta istu granu. \cite{juric2019elementi}
+\end{definition}
+\begin{definition}
+Ciklus je zatvorena staza. \cite{juric2019elementi}
+\end{definition}
+
+\begin{definition}
+Graf \(H=(U,F)\) naziva se podgraf grafa \(G=(V,E)\) ako vrijedi
+\begin{equation}
+    U \subseteq V
+\end{equation}
+i
+\begin{equation}
+    F \subseteq E,
+\end{equation}
+pri čemu svaka grana iz \(F\) povezuje čvorove iz skupa \(U\). \cite{juric2019elementi}
+\end{definition}
+
+\begin{definition}
+Graf \(G=(V,E)\) naziva se povezan ako za svaka dva čvora \(i,j\in V\) postoji put koji ih povezuje. \cite{juric2019elementi}
+\end{definition}
+\begin{definition}
+Komponenta povezanosti grafa \(G\) je maksimalan povezan podgraf grafa \(G\). Drugim riječima, to je podgraf u kojem su svaka dva čvora povezana putem, a koji se ne može proširiti dodavanjem drugih čvorova ili grana iz grafa \(G\) tako da i dalje ostane povezan. \cite{juric2019elementi}
+\end{definition}
+
+
+
+\section{Matrice vezane za grafove}
+
+U nastavku čvorove grafa označavamo indeksima \(i\in V\), pri čemu je
+\(V=\{1,2,\ldots,n\}\). Funkciju na čvorovima grafa posmatramo kao preslikavanje
+\(f:V\to\mathbb{R}\), gdje \(f(i)\) označava vrijednost funkcije u čvoru \(i\).
+Takva funkcija se može zapisati i kao vektor
+\(\mathbf{f}=(f(1),f(2),\ldots,f(n))^T\in\mathbb{R}^n\). Svojstvene vektore
+Laplasijana označavamo sa \(\psi_k\), a njihovu vrijednost u čvoru \(i\) sa
+\(\psi_k(i)\).
+
+\begin{definition}
+Neka je \(G=(V,E)\) graf, gdje je \(V=\{1,2,\ldots,n\}\). 
+Matrica susjedstva ili matrica adjacencije grafa \(G\) je matrica
+\begin{equation}
+    \mathbf{A} = [A_{ij}]_{n \times n},
+\end{equation}
+čiji su elementi definisani sa
+\begin{equation}
+    A_{ij} =
+    \begin{cases}
+        1, & \text{ako su čvorovi } i \text{ i } j \text{ spojeni granom},\\
+        0, & \text{inače}.
+    \end{cases}
+\end{equation}
+Drugim riječima, vrijedi \(A_{ij}=1\) ako i samo ako postoji grana između čvorova \(i\) i \(j\), dok je \(A_{ij}=0\) u suprotnom slučaju. \cite{juric2019elementi}
+\end{definition}
+
+\begin{definition} 
+Neka je \(G=(V,E)\) graf sa skupom čvorova \(V=\{1,2,\ldots,n\}\). 
+Matrica stepena čvorova grafa \(G\), u oznaci \(\mathbf{D}=[D_{ij}]_{n \times n}\), je dijagonalna matrica čiji su elementi definisani sa
+\begin{equation}
+    D_{ij} =
+    \begin{cases}
+        d_G(i), & \text{ako je } i=j,\\
+        0, & \text{ako je } i \neq j.
+    \end{cases}
+\end{equation}
+\cite{chung1997spectral}
+\end{definition}
+
+\begin{definition}
+   Neka je \(G=(V,E)\) neusmjeren graf bez petlji, gdje je
+   \(V=\{1,2,\ldots,n\}\) skup čvorova, a
+   \(E=\{e_1,e_2,\ldots,e_m\}\) skup grana. Proizvoljno orijentišimo svaku granu grafa.
+   Matrica incidencije grafa \(G\), u oznaci \(\mathbf{B}=[B_{ij}]_{n\times m}\), je matrica čiji su
+  elementi definisani sa
+   \begin{equation}
+       B_{ij} =
+       \begin{cases}
+           1, & \text{ako je čvor } i \text{ početni čvor grane } e_j,\\
+           -1, & \text{ako je čvor } i \text{ krajnji čvor grane } e_j,\\
+           0, & \text{ako čvor } i \text{ nije incidentan sa granom } e_j.
+       \end{cases}
+   \end{equation}
+   Iako se za neusmjeren graf grane orijentišu proizvoljno, izbor orijentacije ne mijenja Laplasijan
+ koji se dobija iz matrice incidencije. \cite{juric2019elementi}
+   \end{definition}
+
+   \begin{definition}
+   Neka je \(G=(V,E)\) neusmjeren graf bez petlji sa skupom čvorova \linebreak\(V=\{1,2,\ldots,n\}\),
+ matricom susjedstva \(\mathbf{A}\), matricom stepena čvorova \(\mathbf{D}\) i matricom incidencije
+  \(\mathbf{B}\).
+   Laplasijan grafa \(G\) definiše se kao matrica
+   \begin{equation}
+       \mathbf{L} = \mathbf{D} - \mathbf{A}.
+   \end{equation}
+   Ekvivalentno, Laplasijan se može dobiti kao proizvod matrice incidencije i njene transponovane
+ matrice:
+   \begin{equation}
+       \mathbf{L}=\mathbf{B}\mathbf{B}^T.
+   \end{equation}
+    Njeni elementi dati su sa
+   \begin{equation}
+       L_{ij} =
+       \begin{cases}
+           d_G(i), & \text{ako je } i=j,\\
+           -A_{ij}, & \text{ako je } i \neq j.
+       \end{cases}
+   \end{equation}
+   Laplasijan djeluje na funkciju \(f:V\to\mathbb{R}\) po čvorovima kao
+   \begin{equation}\label{laplasijan:djelovanje-na-funkciju}
+       (\mathbf{L}f)(i)
+       =
+       \sum_{j:\{i,j\}\in E}\left(f(i)-f(j)\right).
+   \end{equation}
+    \end{definition}
+
+
+\section{Osobine Laplasijana i njegovog spektra}
+Neka je \(G=(V,E)\) neusmjeren graf bez petlji sa Laplasijanom \(\mathbf{L}=\mathbf{D}-\mathbf{A}\). 
+Tada vrijede sljedeće osobine:
+\begin{enumerate}
+    \item Matrica \(\mathbf{L}\) je simetrična, tj.
+    \begin{equation}
+        \mathbf{L}^{T}=\mathbf{L}.
+    \end{equation}
+    \item Sve svojstvene vrijednosti matrice \(\mathbf{L}\) su realne.
+    \item Svojstveni vektori matrice \(\mathbf{L}\) mogu se izabrati tako da čine ortonormalnu bazu prostora \(\mathbb{R}^{n}\). Drugim riječima, za odgovarajuće svojstvene vektore \(\psi_1,\psi_2,\ldots,\psi_n\) vrijedi
+    \begin{equation}\label{laplasijan:L-ima-ortogonalne-eigenvektore}
+        \psi_i^{T}\psi_j =
+        \begin{cases}
+            1, & \text{ako je } i=j,\\
+            0, & \text{ako je } i \neq j.
+        \end{cases}
+    \end{equation}
+\end{enumerate}
+
+Simetričnost Laplasijana slijedi iz činjenice da su matrice \(\mathbf{D}\) i \(\mathbf{A}\) simetrične; \(\mathbf{D}\) je simetrična jer je dijagonalna, a \(\mathbf{A}\) je simetrična jer je u pitanju matrica susjedstva neusmjerenog grafa. Budući da je \(\mathbf{L}\) realna simetrična matrica, iz spektralnog teorema ~\ref{th:spektralni-teorem} slijedi da \(\mathbf{L}\) ima realne svojstvene vrijednosti i da je ortogonalno dijagonalizabilna.
+
+Još jedna važna osobina Laplasijana neusmjerenog grafa jeste da je pozitivno semidefinitna matrica  \cite{chung1997spectral}. To znači da za svaku funkciju \(f:V\to\mathbb{R}\), odnosno za njen vektorski zapis \(\mathbf{f}\in\mathbb{R}^{n}\), vrijedi
+\begin{equation}
+    \mathbf{f}^{T}\mathbf{L}\mathbf{f} \geq 0.
+\end{equation}
+Za neusmjeren jednostavan graf sa Laplasijanom \(\mathbf{L}=\mathbf{D}-\mathbf{A}\), ova osobina slijedi iz sljedećeg identiteta:
+\begin{equation}\label{laplasijan:kvadratna-forma-identitet}
+    \mathbf{f}^{T}\mathbf{L}\mathbf{f}
+    =
+    \sum_{\{i,j\}\in E}(f(i)-f(j))^2.
+\end{equation}
+Zaista, za proizvoljnu funkciju \(f:V\to\mathbb{R}\) imamo
+\begin{align}
+\mathbf{f}^{T}\mathbf{L}\mathbf{f}
+&= \mathbf{f}^{T}(\mathbf{D}-\mathbf{A})\mathbf{f} \\
+&= \mathbf{f}^{T}\mathbf{D}\mathbf{f} - \mathbf{f}^{T}\mathbf{A}\mathbf{f} \\
+&= \sum_{i=1}^{n} d_G(i)f(i)^2 - \sum_{i=1}^{n}\sum_{j=1}^{n} A_{ij}f(i)f(j).
+\end{align}
+Pošto je graf neusmjeren, svaka grana \(\{i,j\}\in E\) u dvostrukoj sumi pojavljuje se dva puta, pa vrijedi
+\begin{equation}
+    \sum_{i=1}^{n}\sum_{j=1}^{n} A_{ij}f(i)f(j)
+    =
+    2\sum_{\{i,j\}\in E} f(i)f(j).
+\end{equation}
+Također, član \(f(i)^2\) pojavljuje se jednom za svaku granu incidentnu sa čvorom \(i\), pa je
+\begin{equation}
+    \sum_{i=1}^{n} d_G(i)f(i)^2
+    =
+    \sum_{\{i,j\}\in E} \left(f(i)^2+f(j)^2\right).
+\end{equation}
+Prema tome,
+\begin{align}
+\mathbf{f}^{T}\mathbf{L}\mathbf{f}
+&= \sum_{\{i,j\}\in E} \left(f(i)^2+f(j)^2\right)
+   - 2\sum_{\{i,j\}\in E} f(i)f(j) \\
+&= \sum_{\{i,j\}\in E} \left(f(i)^2 - 2f(i)f(j) + f(j)^2\right) \\
+&= \sum_{\{i,j\}\in E}(f(i)-f(j))^2.
+\end{align}
+Budući da je svaki sabirak \((f(i)-f(j))^2\) nenegativan, slijedi
+\begin{equation}
+    \mathbf{f}^{T}\mathbf{L}\mathbf{f} \geq 0.
+\end{equation}
+Dakle, Laplasijan \(\mathbf{L}\) je pozitivno semidefinitna matrica. Posljedica pozitivne semidefinitnosti je da su sve svojstvene vrijednosti nenegativne \cite{chung1997spectral}, dakle vrijedi 
+
+\begin{equation}\label{laplasijan:eigenvrijednosti-poredane}
+0\leq\lambda_1\leq\lambda_2\leq\cdots\leq\lambda_n.
+\end{equation}
+
+Kako bismo izračunali svojstvene vrijednosti Laplasijana, korisno je biti upoznat sa Rayleighevim količnikom i Courant-Fischerovom teoremom.
+
+\begin{definition}[Rayleighev količnik]\label{def:rayleighov-kolicnik}
+      Neka je \(\mathbf{A}\in\mathbb{R}^{n\times n}\) simetrična matrica i neka je
+      \(\mathbf{x}\in\mathbb{R}^n\), \(\mathbf{x}\neq \mathbf{0}\). Rayleighev količnik
+      matrice \(\mathbf{A}\) u vektoru \(\mathbf{x}\) definiše se kao
+      \begin{equation}
+          R_{\mathbf{A}}(\mathbf{x})
+          =
+          \frac{\mathbf{x}^T\mathbf{A}\mathbf{x}}{\mathbf{x}^T\mathbf{x}}.
+      \end{equation}
+
+      Posebno, ako je \(\psi\) svojstveni vektor matrice
+       \(\mathbf{A}\) koji odgovara svojstvenoj vrijednosti \(\lambda\), odnosno ako
+       vrijedi
+       \begin{equation}
+          \mathbf{A}\psi=\lambda\psi,
+       \end{equation}
+       tada je Rayleighev količnik jednak toj svojstvenoj vrijednosti:
+       \begin{equation}
+          R_{\mathbf{A}}(\psi)
+           =
+          \frac{\psi^T\mathbf{A}\psi}
+          {\psi^T\psi}
+           =
+          \frac{\psi^T\lambda\psi}
+          {\psi^T\psi}
+           =
+          \lambda.
+       \end{equation}
+      Dakle, Rayleighev količnik nekog svojstvenog vektora odgovara njegovoj odgovarajućoj svojstvenoj vrijednosti. \cite{chung1997spectral}
+   \end{definition}
+
+Ovo je neophodan korak za razumijevanje Courant-Fischerove teoreme.
+
+ \begin{theorem}[Courant-Fischerova teorema]\label{thm:courant-fischer}
+   Neka je \(\mathbf{A}\in\mathbb{R}^{n\times n}\) simetrična matrica. Njene
+   svojstvene vrijednosti sortiramo po veličini u neopadajućem poretku, tj.
+   \[
+       \lambda_1 \leq \lambda_2 \leq \cdots \leq \lambda_n.
+   \]
+   Tada se \(k\)-ta svojstvena vrijednost matrice \(\mathbf{A}\) može opisati
+   pomoću Rayleighevog količnika \cite{spielman2025spectral} na slijedeći način:
+   \begin{equation}\label{courant:minmax}
+       \lambda_k
+       =
+       \min_{\substack{S\subseteq \mathbb{R}^n\\ \dim(S)=k}}
+       \;
+       \max_{\substack{\mathbf{x}\in S\\ \mathbf{x}\neq \mathbf{0}}}
+       \frac{\mathbf{x}^T\mathbf{A}\mathbf{x}}{\mathbf{x}^T\mathbf{x}}.
+   \end{equation}
+   Ekvivalentno, vrijedi i dualni oblik
+   \begin{equation}\label{courant:maxmin}
+       \lambda_k
+       =
+       \max_{\substack{S\subseteq \mathbb{R}^n\\ \dim(S)=n-k+1}}
+       \;
+       \min_{\substack{\mathbf{x}\in S\\ \mathbf{x}\neq \mathbf{0}}}
+       \frac{\mathbf{x}^T\mathbf{A}\mathbf{x}}{\mathbf{x}^T\mathbf{x}}.
+   \end{equation}
+
+    Nije očigledno kako Courant-Fischerova teorema radi. Zbog toga, u nastavku je navedena alternativna forma iste ideje, koja je intuitivnija. Ekvivalentno, ako su
+    \(\psi_1,\psi_2,\ldots,\psi_{k-1}\)
+    ortonormirani svojstveni vektori koji odgovaraju svojstvenim vrijednostima
+   \(\lambda_1,\lambda_2,\ldots,\lambda_{k-1}\), tada se \(k\)-ta svojstvena
+   vrijednost može zapisati kao
+   \begin{equation}\label{courant:ortogonalno}
+       \lambda_k
+       =
+       \min_{\substack{\mathbf{x}\neq \mathbf{0}\\
+        \mathbf{x}\perp \psi_1,\ldots,\psi_{k-1}}}
+       \frac{\mathbf{x}^T\mathbf{A}\mathbf{x}}{\mathbf{x}^T\mathbf{x}}.
+   \end{equation}
+    Posebno, za \(k=1\) nema uslova ortogonalnosti na prethodne svojstvene
+      vektore, pa dobijamo
+      \begin{equation}\label{courant:najmanja-lambda}
+          \lambda_1
+          =
+          \min_{\mathbf{x}\neq \mathbf{0}}
+          \frac{\mathbf{x}^T\mathbf{A}\mathbf{x}}{\mathbf{x}^T\mathbf{x}}.
+      \end{equation}
+      Analogno ovome se može pronaći najveća svojstvena vrijednost
+      \begin{equation}\label{courant:najveca-lambda}
+          \lambda_n
+          =
+          \max_{\mathbf{x}\neq \mathbf{0}}
+          \frac{\mathbf{x}^T\mathbf{A}\mathbf{x}}{\mathbf{x}^T\mathbf{x}}.
+      \end{equation}
+   \end{theorem}
+
+Iz činjenice da Laplasijan ima ortogonalne svojstvene vektore (\ref{laplasijan:L-ima-ortogonalne-eigenvektore}) možemo razumjeti jednakost \ref{courant:ortogonalno}. Svojstveni vektor poslije prvog pronalazimo u podprostoru \(\mathbb{R}^{n}\) ortogonalnom prvom svojstvenom vektoru, i to biramo onaj vektor koji minimizira Rayleighev količnik. Sljedeći svojstveni vektor pronalazimo tako što pretražimo podprostor ortogonalan prethodnim dvjema svojstvenim vektorima; i tako sve dok ne popunimo čitav prostor \(\mathbb{R}^{n}\). 
+% Drugim riječima, nakon pronalaska prvog svojstvenog vektora, sljedeći tražimo u svim dvodimenzionalnim podprostorima \(\mathbb{R}^{n}\) ortogonalnim prvom, zatim sljedeći u svim trodimenzionalnim podprostorima \(\mathbb{R}^{n}\) ortogonalnim prvim dvjema, itd.
+
+Na sličan način je to opisano u jednakostima \ref{courant:minmax} i \ref{courant:maxmin}, gdje nije eksplicitno navedeno to da se traže vektori ortogonalni prethodnim svojstvenim vektorima, ali se podrazumijevalo. Konkretno, u \ref{courant:minmax} se traže vektori \(\mathbf{x}\) iz podprostora \(\mathbb{R}^n\) dimenzionalnosti \(k\) čiji je Rayleighev količnik najveći za taj podprostor, i nakon toga bira se najmanji reprezentativni maksimalni \(\mathbf{x}\) iz svih takvih podprostora (ovdje su navedeni podprostori okomiti na dosad pronađene svojstvene vektore, samo što to eksplicitno nije navedeno).
+
+Treba spomenuti da svojstvenu vrijednost \(\lambda_k\) koju dobijemo sa Courant-Fischerovom teoremom neće nužno biti \(k\)-ta najmanja svojstvena vrijednost. Radi konvencije, mi ćemo nakon računanja poredati svojstvene vrijednosti u neopadajućem poretku, tako da je \(\lambda_1\) najmanja, \(\lambda_2\) druga najmanja, i tako do najveće svojstvene vrijednosti \(\lambda_n\).
+
+\subsection{Prva svojstvena vrijednost \(\lambda_1\)}
+
+Prodiskutujmo \(\lambda_1\) koju dobijamo kada uvrstimo \(k=1\) u jednačinu \ref{courant:ortogonalno}. Tada se minimizira Rayleighev količnik. Primjećujemo da se brojnik može napisati kao suma kvadrata razlika vrijednosti čvorova u grafu po identitetu \ref{laplasijan:kvadratna-forma-identitet}:
+
+\begin{equation}
+       \lambda_1
+       =
+       \min_{\mathbf{f}\neq\mathbf{0}}
+       \frac{\sum_{\{i,j\}\in E}(f(i)-f(j))^2}{\sum_{i\in V} f(i)^2}.
+   \end{equation}
+
+Ova jednakost nam nalaže da je za povezan graf minimum ovog izraza dosegnut kada je \(f(i)=f(j)\) za svaku granu \(\{i,j\}\in E\), i da je njegova vrijednost jednaka nuli. Funkcija \(f\) koja uvijek daje minimalnu vrijednost nula je konstantna funkcija\footnote{Postoji još funkcija koje daju minimalnu vrijednost; spomenute su u nastavku.}, odnosno njen vektorski zapis je konstantni vektor čije su sve komponente isti broj. Najčešće se za takav slučaj uzima vektor svih jedinica, dakle $\psi_1=\mathbf{1}$. Svojstvena vrijednost koja korespondira $\psi_1$, prema jednačini \(\mathbf{L}\psi_1=\lambda_1\psi_1\), ima vrijednost \(\lambda_1=0\). Ovo je ujedno i najmanja moguća svojstvena vrijednost, po nejednakosti \ref{laplasijan:eigenvrijednosti-poredane}.
+   
+Razlog zašto se traži prvo maksimum pa minimum u \ref{courant:minmax} je baš zbog ove najmanje svojstvene vrijednosti \(\lambda_1\). Ako prvo ne potražimo maksimum za neki podprostor \(S\), automatski se dobije trivijalna najmanja svojstvena vrijednost \(\lambda_1\). Analogno, u izrazu \ref{courant:maxmin}, ako prvo ne pronađemo minimum za neki podprostor \(S\), automatski ćemo dobiti najveću trivijalnu svojstvenu vrijednost \(\lambda_n\).
+
+Međutim, svojstvenu vrijednost \(\lambda_1=0\) možemo dobiti na još načina. Naime, ako je graf nepovezan, onda za brojnik ne mora vrijediti \(f(i)=f(j)\) za sve čvorove grafa, nego samo za one čvorove koji su članovi iste povezane komponente i povezani putem. To znači da vrijednosti funkcije moraju biti konstantne na svakoj povezanoj komponenti grafa. Iz ovog slijedi da svojstveni vektori, posmatrani kao funkcije na čvorovima, moraju biti konstantni na svakoj povezanoj komponenti grafa i da takvi svojstveni vektori imaju odgovarajuću svojstvenu vrijednost jednaku nuli. Izvodimo teorem:
+
+\begin{theorem}\label{thm:nula-komponente}
+Neka je \(G\) neusmjeren graf sa Laplasijanom \(\mathbf{L}\). 
+Tada je multiplicitet svojstvene vrijednosti \(0\) matrice \(\mathbf{L}\) jednak broju povezanih komponenti grafa \(G\). Posebno, graf \(G\) je povezan ako i samo ako je \(0\) jednostavna svojstvena vrijednost Laplasijana, odnosno ako vrijedi
+\begin{equation}
+    \lambda_1 = 0 < \lambda_2.
+\end{equation}
+Samim tim, ako je graf povezan, onda je druga najmanja svojstvena vrijednost pozitivna. \cite{pan2025introduction}
+\end{theorem}
+
+Ortogonalni svojstveni vektori lahki za posmatranje povezanih komponenti grafa su vektori sa jedinicama na pozicijama čvorova koji su u povezanoj komponenti, sa nulama na preostalim pozicijama. To je vektor povezane komponente \(C_r\) definisan sa
+\begin{equation}
+    \mathbf{1}_{C_r}(i) =
+    \begin{cases}
+        1, & \text{ako } i\in C_r,\\
+        0, & \text{ako } i\notin C_r.
+    \end{cases}
+\end{equation}
+Vektori
+\begin{equation}
+    \mathbf{1}_{C_1},\mathbf{1}_{C_2},\ldots,\mathbf{1}_{C_k}
+\end{equation}
+su linearno nezavisni i obrazuju nulprostor matrice \(\mathbf{L}\).
+
+Možemo rigoroznije dokazati ovu činjenicu. Prvo pokažimo da broj povezanih komponenti grafa ne može biti manji od multipliciteta svojstvene vrijednosti jednake nuli. Neka graf \(G\) ima \(k\) povezanih komponenti
+   \begin{equation}
+      C_1,C_2,\ldots,C_k.
+   \end{equation}
+   Ako čvorove grafa poredamo tako da se prvo nalaze svi čvorovi iz komponente \(C_1\), zatim svi
+   čvorovi iz komponente \(C_2\), i tako dalje, tada matrica susjedstva ima blok-dijagonalni oblik
+   \begin{equation}
+   \mathbf{A} =
+   \begin{pmatrix}
+   \mathbf{A}_1 & 0 & \cdots & 0 \\
+   0 & \mathbf{A}_2 & \cdots & 0 \\
+   \vdots & \vdots & \ddots & \vdots \\
+   0 & 0 & \cdots & \mathbf{A}_k
+   \end{pmatrix},
+   \end{equation}
+   gdje je \(\mathbf{A}_r\) matrica susjedstva podgrafa induciranog komponentom \(C_r\). Ovo smijemo
+ raditi jer samo preraspoređujemo oznake čvorova, a ne samu strukturu grafa.
+
+   Razlog za ovakav oblik je jednostavan: između različitih povezanih komponenti ne postoje grane. Zato
+ su svi elementi matrice susjedstva koji bi povezivali čvorove iz različitih komponenti jednaki nuli.
+
+   Isto važi i za matricu stepeni \(\mathbf{D}\), jer je stepen svakog čvora određen samo vezama unutar
+ njegove povezane komponente. Zato i Laplasijan ima blok-dijagonalni oblik
+   \begin{equation}
+   \mathbf{L} =
+   \begin{pmatrix}
+   \mathbf{L}_1 & 0 & \cdots & 0 \\
+   0 & \mathbf{L}_2 & \cdots & 0 \\
+   \vdots & \vdots & \ddots & \vdots \\
+   0 & 0 & \cdots & \mathbf{L}_k
+   \end{pmatrix},
+   \end{equation}
+   gdje je \(\mathbf{L}_r\) Laplasijan komponente \(C_r\).
+
+   Sada posmatrajmo jedan blok \(\mathbf{L}_r\). Pošto je \(\mathbf{L}_r\) Laplasijan grafa na
+ komponenti \(C_r\), dosadašnje izlaganje o povezanim komponentama važi za njeg, te i on posjeduje svojstveni konstantni vektor koji odgovara svojstvenoj vrijednosti \(\lambda_1=0\). Zbog toga vrijedi
+   \begin{equation}
+   \mathbf{L}_r \mathbf{1} = 0,
+   \end{equation}
+   gdje je \(\mathbf{1}\) vektor čije su sve komponente jednake \(1\), dimenzije jednake broju čvorova
+ u komponenti \(C_r\).
+
+   Ako taj vektor proširimo na cijeli graf tako da ima jedinice na pozicijama čvorova iz komponente
+ \(C_r\), a nule na svim ostalim pozicijama, dobijamo vektor \(\mathbf{1}_{C_r}\). Zbog
+ blok-dijagonalne strukture Laplasijana, množenje matrice \(\mathbf{L}\) ovim vektorom djeluje samo na
+ odgovarajući blok:
+   \begin{equation}
+   \mathbf{L}\mathbf{1}_{C_r} = 0.
+   \end{equation}
+   Dakle, za svaku povezanu komponentu \(C_r\) postoji jedan svojstveni vektor Laplasijana koji pripada
+ svojstvenoj vrijednosti \(0\).
+
+   Ovo pokazuje da svojstvena vrijednost \(0\) ima multiplicitet barem \(k\), jer imamo \(k\) takvih
+ vektora:
+   \begin{equation}
+   \mathbf{1}_{C_1}, \mathbf{1}_{C_2}, \ldots, \mathbf{1}_{C_k}.
+   \end{equation}
+   Oni su linearno nezavisni, jer imaju disjunktne konstantne dijelove. Zato nijedna netrivijalna linearna kombinacija ovih vektora ne može dati nulti vektor.
+
+Sada pokažimo da ne može postojati više povezanih komponenti nego multipliciteta svojstvene vrijednosti jednake nuli. Kako svojstveni vektori \(\psi\) moraju biti konstantni na povezanim komponentama grafa, postoje skalari
+   \begin{equation}
+       \alpha_1,\alpha_2,\ldots,\alpha_k
+   \end{equation}
+   takvi da je
+   \begin{equation}
+       \psi(i)=\alpha_r,
+        \quad \text{za svaki } i\in C_r.
+   \end{equation}
+   Zato se vektor \(\psi\) može zapisati kao
+   \begin{equation}
+       \psi
+       =
+       \alpha_1\mathbf{1}_{C_1}
+       +
+       \alpha_2\mathbf{1}_{C_2}
+       +
+       \cdots
+       +
+       \alpha_k\mathbf{1}_{C_k}.
+   \end{equation}
+
+Dakle, svaki svojstveni vektor koji odgovara svojstvenoj vrijednosti \(0\) mora biti linearna kombinacija vektora.
+
+Po prirodi linearne algebre, svi svojstveni vektori svojstvene vrijednosti \(0\) pripadaju
+ nulprostoru. To znači da je ovdje
+   \begin{equation}
+       N(\mathbf{L})
+       =
+       \{\psi : \mathbf{L}\psi=0\}
+   \end{equation}
+   upravo svojstveni prostor koji odgovara svojstvenoj vrijednosti \(0\). Zaista, ako je \(\psi\)
+ svojstveni vektor za svojstvenu vrijednost \(0\), tada vrijedi
+   \begin{equation}
+       \mathbf{L}\psi=0\psi=0,
+   \end{equation}
+   pa \(\psi\in N(\mathbf{L})\). Obrnuto, svaki nenulti vektor \(\psi\in N(\mathbf{L})\) zadovoljava
+   \begin{equation}
+       \mathbf{L}\psi=0=0\psi,
+   \end{equation}
+   pa je svojstveni vektor za svojstvenu vrijednost \(0\). Dakle, nulprostor Laplasijana jednak je
+ svojstvenom prostoru za svojstvenu vrijednost \(0\).
+
+ Po prethodnim činjenicama, možemo biti sigurni da ne postoji još baznih vektora nulprostora, jer bi to značilo da postoji još svojstvenih vektora za svojstvenu vrijednost 0.
+
+
+\begin{example}
+   Posmatrajmo graf \(G\) sa pet čvorova koji ima dvije povezane komponente:
+   \(C_1=\{1,2,3\}\) i \(C_2=\{4,5\}\).
+   Neka su u prvoj komponenti čvorovi povezani u put \(1 - 2 - 3\),
+   a u drugoj komponenti postoji jedna grana \(4 - 5\).
+   Dakle, graf ima tačno dvije povezane komponente.
+
+   Ako čvorove poredamo redom \(1,2,3,4,5\), Laplasijan grafa ima blok-dijagonalni oblik
+   \begin{equation}
+   \mathbf{L}
+   =
+   \begin{pmatrix}
+   1 & -1 & 0 & 0 & 0 \\
+   -1 & 2 & -1 & 0 & 0 \\
+   0 & -1 & 1 & 0 & 0 \\
+   0 & 0 & 0 & 1 & -1 \\
+   0 & 0 & 0 & -1 & 1
+   \end{pmatrix}.
+   \end{equation}
+   Prvi blok odgovara komponenti \(C_1\), a drugi blok komponenti \(C_2\).
+
+   Za prvu komponentu imamo vektor
+   \(\mathbf{1}_{C_1}=(1,1,1,0,0)^T\), a za drugu komponentu imamo vektor
+   \(\mathbf{1}_{C_2}=(0,0,0,1,1)^T\). Direktnim množenjem dobijamo
+   \(\mathbf{L}\mathbf{1}_{C_1}=0\) i \(\mathbf{L}\mathbf{1}_{C_2}=0\).
+   Dakle, oba vektora su svojstveni vektori Laplasijana za svojstvenu vrijednost \(0\).
+
+   Osim toga, svaki vektor \(\psi\in N(\mathbf{L})\) mora biti konstantan na svakoj povezanoj
+ komponenti.
+   Zato mora imati oblik
+   \(\psi=\alpha_1\mathbf{1}_{C_1}+\alpha_2\mathbf{1}_{C_2}\), odnosno
+   \(\psi=(\alpha_1,\alpha_1,\alpha_1,\alpha_2,\alpha_2)^T\).
+
+   Prema tome, nulprostor matrice \(\mathbf{L}\) je razapet sa dva linearno nezavisna vektora
+   \(\mathbf{1}_{C_1}\) i \(\mathbf{1}_{C_2}\). Zato je \(\dim N(\mathbf{L})=2\).
+
+   Pošto je dimenzija nulprostora jednaka broju linearno nezavisnih svojstvenih vektora koji odgovaraju
+   svojstvenoj vrijednosti \(0\), zaključujemo da svojstvena vrijednost \(0\) ima multiplicitet \(2\).
+ To
+   je upravo broj povezanih komponenti grafa.
+   \end{example}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Druga svojstvena vrijednost \(\lambda_2\)}
+
+Poseban značaj imaju druga najmanja svojstvena vrijednosti \(\lambda_2\) i odgovarajući svojstveni vektor \(\psi_2\) Laplasijana do te mjere da ima svoje ime. Druga najmanja svojstvena vrijednost se naziva Fiedlerova vrijednost, a odgovarajući svojstveni vektor Fiedlerov vektor. Dobili su ime po Miroslavu Fiedleru, koji je pokazao značaj druge najmanje svojstvene vrijednosti Laplasijana u proučavanju povezanosti grafa. U ovom dijelu stavljamo fokus na povezane grafove, gdje je multiplicitet svojstvene vrijednosti 0 jednak 1.
+
+Fiedlerova vrijednost mjeri koliko je graf snažno povezan. Ako je \(\lambda_2\) mala, onda je graf slabo povezan, odnosno postoji mogućnost da se graf relativno lako podijeli na dva dijela uklanjanjem malog broja grana. S druge strane, veća vrijednost \(\lambda_2\) ukazuje na to da je graf bolje povezan i otporniji na razdvajanje.
+
+Dakle, pozitivnost Fiedlerove vrijednosti govori da je graf povezan, a sama vrijednost govori "koliko" je povezan.
+
+Kako je Fiedlerov vektor jedan od svojstvenih vektora Laplasijana koji se mogu izabrati ortogonalno, to znači da je Fiedlerov vektor ortogonalan na prvi svojstveni vektor, tj. konstantni vektor svih jedinica
+
+\begin{equation}
+    \psi_2^T\mathbf{1}=0 \quad\Rightarrow\quad \sum_{i\in V}\psi_2(i)=0.
+\end{equation}
+
+Ovo je vrlo važna osobina za particionisanje grafa. Komponente Fiedlerovog vektora se mogu posmatrati kao jednodimenzionalna reprezentacija čvorova grafa. Čvorovi čije su komponente Fiedlerovog vektora slične vrijednosti smatraju se međusobno bliskim u spektralnom smislu. Ako se sjetimo načina na koji dobijamo drugu najmanju svojstvenu vrijednost
+
+\begin{equation}
+    \lambda_2
+    =
+    \min_{\mathbf{f}\perp \mathbf{1},\ \mathbf{f}\neq \mathbf{0}}
+    \frac{\mathbf{f}^T\mathbf{L}\mathbf{f}}{\mathbf{f}^T\mathbf{f}}
+    =
+    \min_{\mathbf{f}\perp \mathbf{1},\ \mathbf{f}\neq \mathbf{0}}
+    \frac{\sum_{\{i,j\}\in E}(f(i)-f(j))^2}{\sum_{i\in V} f(i)^2},
+\end{equation}
+
+vidimo da je cilj minimizacija razlika između susjednih čvorova uz ograničenje da je zbir komponenti Fiedlerovog vektora jednak nuli.
+
+Intuicija je slijedeća: 1. Fiedlerov vektor ne smije biti trivijalan poput konstantnog vektora, 2. komponente Fiedlerovog vektora moraju sumarno dati nulu, to znači da za svaku pozitivnu komponentu, u prosjeku će morati postojati negativna komponenta slična po apsolutnoj vrijednosti pozitivnoj, i 3. razlika između povezanih čvorova mora biti minimalna.
+
+Jedan način kako se ovo postiže je tako da se pozitivne komponente vektora (koje odgovaraju jednom skupu čvorova grafa) vežu za jedan dio grafa, a negativne za drugi dio. Na tim dijelovima je idealno da budu dodijeljene slične pozitivne odnosno negativne vrijednosti. Na poveznici između ta dva dijela grafa susjede pozitivne i negativne komponente (čvorovi), pa će i to biti minimizirano. Na ovaj način će biti "grupisane" pozitivne i negativne komponente:
+
+\begin{equation}
+V^{+} = \{\, i \in V \mid \psi_2(i) \geq 0 \,\}, 
+\qquad
+V^{-} = \{\, i \in V \mid \psi_2(i) < 0 \,\},
+\end{equation}
+
+Ova intuicija nalaže da Fiedlerov vektor particioniše graf tako da su pozitivne komponente (koje odgovaraju čvorovima grafa) u jednoj polovici, a negativne komponente u drugoj polovici grafa. Kako je još neophodno minimizirati razlike čvorova na poveznicama između ove dvije polovice, tako će Fiedlerov vektor pronaći najbolje mjesto da to uradi i time proizvesti dobru aproksimaciju minimalnog reza.
+
+Umjesto da se direktno rješava kombinatorno
+težak problem optimalne podjele grafa, koristi se relaksacija problema preko svojstvenih vrijednosti i svojstvenih vektora Laplasijana. Fiedlerov vektor tada služi kao alat za približno određivanje dobre podjele grafa.
+
+U kontekstu klasterisanja podataka, čvorovi grafa predstavljaju podatkovne tačke, a grane predstavljaju mjeru sličnosti između njih. Tada Fiedlerov vektor omogućava razdvajanje podataka u dvije grupe na osnovu strukture grafa sličnosti. Za više od dvije grupe koriste se dodatni svojstveni vektori koji odgovaraju najmanjim nenultim svojstvenim vrijednostima Laplasijana. Na taj način se dolazi do metode poznate kao spektralno klasterisanje.
+
+
+
+
+\section{Spektralno particionisanje grafa}
+U prethodnoj sekciji pokazano je da Fiedlerova vrijednost \(\lambda_2\) daje mjeru povezanosti grafa, dok Fiedlerov vektor sadrži informaciju o načinu na koji se graf može podijeliti na dva dijela. Ova ideja vodi do spektralnog particionisanja grafa, gdje se svojstveni vektori Laplasijana koriste za određivanje dobre podjele skupa čvorova.
+Problem particionisanja grafa sastoji se u tome da se skup čvorova \(V\) podijeli na dva neprazna i disjunktna podskupa \(A\) i \(B\), tako da vrijedi
+\[
+    A \cup B = V, \qquad A \cap B = \emptyset.
+\]
+Pri tome se najčešće želi da broj grana koje povezuju ova dva skupa bude što manji, dok sami skupovi trebaju ostati dovoljno veliki i smisleni.
+Broj grana koje povezuju skupove \(A\) i \(B\) naziva se rez grafa i označava se sa
+\[
+    \operatorname{cut}(A,B).
+\]
+Za neusmjeren težinski graf ovaj izraz se može zapisati kao
+\[
+    \operatorname{cut}(A,B)
+    =
+    \sum_{i\in A,\,j\in B} w_{ij},
+\]
+gdje je \(w_{ij}\) težina grane između čvorova \(i\) i \(j\). U netežinskom grafu težine su jednake \(0\) ili \(1\), pa \(\operatorname{cut}(A,B)\) predstavlja broj grana koje prelaze iz jednog skupa u drugi.
+Na prvi pogled, prirodno je tražiti podjelu koja minimizira vrijednost \(\operatorname{cut}(A,B)\). Međutim, takav pristup često vodi do trivijalnih rješenja. Na primjer, moguće je izdvojiti samo jedan slabo povezan čvor i time dobiti mali rez, ali takva podjela ne mora predstavljati korisnu strukturu grafa.
+Zbog toga se uvode kriteriji koji pored veličine reza uzimaju u obzir i veličinu samih dijelova grafa. Dva česta kriterija su \textit{RatioCut} i \textit{Normalized Cut}.
+Zatim uvedi RatioCut, jer je najbliži nenormalizovanom Laplasijanu:
+\subsection{RatioCut kriterij}
+Za podjelu grafa na dva skupa \(A\) i \(B\), RatioCut kriterij definiše se kao
+\[
+    \operatorname{RatioCut}(A,B)
+    =
+    \operatorname{cut}(A,B)
+    \left(
+        \frac{1}{|A|}
+        +
+        \frac{1}{|B|}
+    \right).
+\]
+Ovaj kriterij ne posmatra samo broj grana koje se presijecaju, nego kažnjava i jako nebalansirane podjele. Na taj način se izbjegava situacija u kojoj se iz grafa izdvoji samo jedan čvor.
+Problem minimizacije RatioCut kriterija može se povezati sa Laplasijanom grafa. Za odgovarajuću indikatorsku funkciju \(f:V\to\mathbb{R}\), koja razlikuje čvorove iz skupova \(A\) i \(B\), vrijednost izraza
+\[
+    \mathbf{f}^T \mathbf{L} \mathbf{f}
+\]
+može se povezati sa težinom reza između ta dva skupa. Međutim, direktna minimizacija nad svim mogućim podjelama čvorova je kombinatorno težak problem, jer zahtijeva pretraživanje velikog broja mogućih particija.
+Ključna ideja spektralnog particionisanja jeste da se ovaj diskretni problem zamijeni njegovom kontinuiranom relaksacijom. Umjesto da funkcija \(f\) može uzimati samo dvije diskretne vrijednosti, dozvoljava se da njene vrijednosti budu realni brojevi. Tada se problem svodi na minimizaciju Rayleighovog količnika
+\[
+    \min_{\mathbf{f}\perp \mathbf{1},\, \mathbf{f}\neq \mathbf{0}}
+    \frac{\mathbf{f}^T\mathbf{L}\mathbf{f}}{\mathbf{f}^T\mathbf{f}}.
+\]
+Rješenje ovog problema je upravo svojstveni vektor koji odgovara drugoj najmanjoj svojstvenoj vrijednosti Laplasijana, tj. Fiedlerov vektor.
+Zbog toga se Fiedlerov vektor može koristiti za približno rješavanje problema particionisanja grafa. Nakon što se izračuna Fiedlerov vektor, čvorovi se mogu podijeliti prema predznaku njegovih komponenti:
+\[
+    A = \{i \in V : \psi_2(i) \geq 0\},
+    \qquad
+    B = \{i \in V : \psi_2(i) < 0\}.
+\]
+Druga mogućnost je da se čvorovi podijele prema medijani komponenti Fiedlerovog vektora, čime se često dobija balansiranija podjela.
+
+\section{Od particionisanja grafa do klasterisanja podataka}
+Spektralno particionisanje grafa prirodno vodi do spektralnog klasterisanja podataka. Osnovna ideja je da se skup podataka predstavi grafom, a zatim se nad tim grafom primijene metode zasnovane na Laplasijanu.
+Neka je dat skup podataka
+\[
+    X = \{\mathbf{x}_1,\mathbf{x}_2,\ldots,\mathbf{x}_n\}.
+\]
+Svaka podatkovna tačka \(\mathbf{x}_i\) može se posmatrati kao čvor grafa. Grane između čvorova se uvode na osnovu sličnosti između odgovarajućih podataka. Ako su dvije tačke bliske u prostoru podataka, tada se između njih postavlja grana sa većom težinom. Ako su udaljene, težina grane je mala ili grana uopšte ne postoji.
+Na taj način dobija se težinski graf sličnosti. Klasterisanje podataka tada postaje problem particionisanja grafa: želimo podijeliti čvorove grafa tako da čvorovi unutar istog klastera budu jako povezani, dok veze između različitih klastera budu slabe.
+Ova interpretacija je posebno korisna kod podataka koji nisu linearno separabilni. Klasične metode, poput metode \(k\)-sredina, često pretpostavljaju da su klasteri približno konveksnog oblika. Spektralno klasterisanje, s druge strane, koristi lokalnu strukturu podataka preko grafa sličnosti, zbog čega može uspješno razdvojiti i složenije oblike klastera, kao što su koncentrične kružnice ili skup podataka poznat kao \textit{two moons}.
+
+\section{Konstrukcija grafa sličnosti}
+Jedan od najvažnijih koraka u spektralnom klasterisanju jeste konstrukcija grafa sličnosti. Izbor grafa direktno utiče na Laplasijan, njegove svojstvene vektore i konačan rezultat klasterisanja.
+Postoji više načina za konstrukciju grafa sličnosti. Najčešće korišteni pristupi su:
+\begin{itemize}
+    \item graf \(\varepsilon\)-susjedstva,
+    \item graf \(k\)-najbližih susjeda,
+    \item potpuno povezani graf sa Gaussovom funkcijom sličnosti.
+\end{itemize}
+Kod grafa \(\varepsilon\)-susjedstva, dva čvora \(i\) i \(j\) povezuju se ako je udaljenost između odgovarajućih podataka manja od unaprijed zadatog praga \(\varepsilon\), tj.
+\[
+    \|\mathbf{x}_i-\mathbf{x}_j\| < \varepsilon.
+\]
+Ovaj pristup je jednostavan, ali izbor parametra \(\varepsilon\) može biti osjetljiv. Ako je \(\varepsilon\) premalo, graf može postati nepovezan. Ako je preveliko, graf može sadržavati previše grana i izgubiti lokalnu strukturu podataka.
+Kod grafa \(k\)-najbližih susjeda, svaki čvor se povezuje sa svojih \(k\) najbližih susjeda. Ovaj pristup često bolje kontroliše lokalnu strukturu grafa, jer svaki čvor ima ograničen broj veza. Međutim, izbor parametra \(k\) također utiče na rezultat: premala vrijednost može dovesti do nepovezanog grafa, dok prevelika vrijednost može povezati tačke koje pripadaju različitim klasterima.
+Treći pristup koristi potpuno povezani graf, gdje je svaki par čvorova povezan težinom koja zavisi od njihove udaljenosti. Često se koristi Gaussova funkcija sličnosti
+\[
+    w_{ij}
+    =
+    \exp\left(
+        -\frac{\|\mathbf{x}_i-\mathbf{x}_j\|^2}{2\sigma^2}
+    \right).
+\]
+Parametar \(\sigma\) određuje koliko brzo sličnost opada sa udaljenošću. Mala vrijednost \(\sigma\) naglašava samo vrlo bliske tačke, dok velika vrijednost \(\sigma\) čini da i udaljene tačke imaju značajnu sličnost.
+
+\section{Algoritam spektralnog klasterisanja}
+Nakon konstrukcije grafa sličnosti, formira se matrica težina \(\mathbf{W}\), matrica stepena \(\mathbf{D}\) i odgovarajući Laplasijan grafa. U zavisnosti od izbora metode, može se koristiti nenormalizovani Laplasijan
+\[
+    \mathbf{L} = \mathbf{D} - \mathbf{W},
+\]
+ili jedna od normalizovanih verzija Laplasijana:
+\[
+    \mathbf{L}_{sym}
+    =
+    \mathbf{I} - \mathbf{D}^{-1/2}\mathbf{W}\mathbf{D}^{-1/2},
+\]
+odnosno
+\[
+    \mathbf{L}_{rw}
+    =
+    \mathbf{I} - \mathbf{D}^{-1}\mathbf{W}.
+\]
+Za klasterisanje u \(k\) grupa koriste se svojstveni vektori koji odgovaraju najmanjim svojstvenim vrijednostima izabranog Laplasijana. Umjesto da se podaci klasterišu direktno u originalnom prostoru, oni se najprije preslikavaju u novi prostor određen ovim svojstvenim vektorima. Zatim se nad tako dobijenom reprezentacijom primjenjuje standardni algoritam, najčešće metoda \(k\)-sredina.
+Osnovni koraci spektralnog klasterisanja mogu se zapisati na sljedeći način:
+\begin{enumerate}
+    \item Od datog skupa podataka konstruisati graf sličnosti.
+    \item Formirati matricu težina \(\mathbf{W}\) i matricu stepena \(\mathbf{D}\).
+    \item Izračunati Laplasijan grafa.
+    \item Odrediti prvih \(k\) svojstvenih vektora koji odgovaraju najmanjim svojstvenim vrijednostima Laplasijana.
+    \item Formirati novu matricu čiji redovi predstavljaju podatke u spektralnom prostoru.
+    \item Primijeniti metodu \(k\)-sredina na redove te matrice.
+\end{enumerate}
+Na ovaj način spektralno klasterisanje koristi strukturu grafa da bi pronašlo reprezentaciju podataka u kojoj su klasteri lakše razdvojivi.
+
+\section{Normalizovano spektralno klasterisanje}
+U prethodnom dijelu opisan je osnovni oblik spektralnog klasterisanja koji koristi nenormalizovani Laplasijan grafa. Međutim, u praktičnim primjenama često se koriste normalizovane verzije Laplasijana, jer one bolje uzimaju u obzir različite stepene čvorova u grafu.
+Kod podataka koji nisu ravnomjerno raspoređeni, neki čvorovi mogu imati veliki broj susjeda, dok drugi mogu biti slabo povezani. U takvim slučajevima nenormalizovani Laplasijan može dati rezultate koji su previše zavisni od lokalne gustine podataka. Zbog toga se uvode normalizovani Laplasijani
+\[
+    \mathbf{L}_{sym}
+    =
+    \mathbf{I} - \mathbf{D}^{-1/2}\mathbf{W}\mathbf{D}^{-1/2}
+\]
+i
+\[
+    \mathbf{L}_{rw}
+    =
+    \mathbf{I} - \mathbf{D}^{-1}\mathbf{W}.
+\]
+Matrica \(\mathbf{L}_{sym}\) naziva se simetrično normalizovani Laplasijan. Ona je pogodna za teorijsku analizu jer je simetrična matrica, pa se na nju mogu primijeniti rezultati spektralnog teorema. Sa druge strane, matrica \(\mathbf{L}_{rw}\) naziva se random walk Laplasijan, jer se može interpretirati preko slučajne šetnje na grafu. Matrica
+\[
+    \mathbf{P} = \mathbf{D}^{-1}\mathbf{W}
+\]
+predstavlja matricu prelaza Markovljevog lanca na grafu, gdje element \(p_{ij}\) opisuje vjerovatnoću prelaska iz čvora \(i\) u čvor \(j\).
+Normalizovani pristupi su posebno važni kada graf ima čvorove različitih stepena. U tom slučaju, cilj nije samo pronaći podjelu sa malim brojem presječenih grana, nego i izbjeći podjele koje izdvajaju male ili slabo povezane dijelove grafa.
+\subsection{Normalized Cut kriterij}
+Jedan od najpoznatijih kriterija za particionisanje grafa je \textit{Normalized Cut}. Za podjelu grafa na dva skupa \(A\) i \(B\), ovaj kriterij definiše se kao
+\[
+    \operatorname{Ncut}(A,B)
+    =
+    \frac{\operatorname{cut}(A,B)}{\operatorname{vol}(A)}
+    +
+    \frac{\operatorname{cut}(A,B)}{\operatorname{vol}(B)}.
+\]
+Ovdje je
+\[
+    \operatorname{vol}(A)=\sum_{i\in A} d_i
+\]
+volumen skupa \(A\), odnosno suma stepena svih čvorova koji pripadaju skupu \(A\). Analogno se definiše \(\operatorname{vol}(B)\).
+
+Za razliku od običnog reza, Normalized Cut uzima u obzir ne samo broj grana između različitih dijelova grafa, nego i ukupnu povezanost svakog dijela. Na taj način se kažnjavaju nebalansirane podjele u kojima se izdvaja mali broj čvorova.
+
+Minimizacija Normalized Cut kriterija također vodi do spektralne relaksacije problema. Umjesto direktnog rješavanja diskretnog problema particionisanja, koristi se svojstveni problem povezan sa normalizovanim Laplasijanom. Na taj način se dobija algoritam spektralnog klasterisanja koji je često stabilniji u praktičnim primjenama.
+
+\section{Veza sa učenjem mnogostrukosti}
+Spektralno klasterisanje ima prirodnu vezu sa metodama učenja mnogostrukosti. U mnogim problemima podaci se nalaze u visokodimenzionalnom prostoru, ali njihova stvarna struktura može biti mnogo nižedimenzionalna. Na primjer, slike, zvukovi ili biometrijski podaci često imaju veliki broj koordinata, ali se njihove bitne varijacije mogu opisati manjim brojem parametara.
+
+Ideja učenja mnogostrukosti jeste da se otkrije geometrijska struktura na kojoj podaci približno leže. U spektralnim metodama, ta struktura se aproksimira grafom sličnosti. Čvorovi grafa predstavljaju podatkovne tačke, dok težine grana predstavljaju lokalnu sličnost između njih.
+
+Laplasijan grafa tada se može posmatrati kao diskretna analogija Laplasovog operatora na mnogostrukosti. Zbog toga svojstveni vektori Laplasijana ne daju samo algebarsku informaciju o grafu, nego mogu otkriti i geometrijsku strukturu podataka. Ova ideja se pojavljuje u metodama kao što su Laplacian Eigenmaps i Diffusion Maps, koje su blisko povezane sa spektralnim klasterisanjem.
+
+Za potrebe ovog rada, veza sa učenjem mnogostrukosti biće korištena kao dodatna interpretacija spektralnog klasterisanja. Posebno je korisna kod primjera kao što su \textit{two moons} i koncentrične kružnice, gdje se klasteri ne mogu dobro razdvojiti linearnim granicama u originalnom prostoru, ali se njihova lokalna geometrijska struktura može uspješno opisati pomoću grafa sličnosti.
+
+\begin{center}
+\vspace{0.5cm}
+*\hspace{2cm}*\hspace{2cm}*
+\vspace{0.3cm}
+\end{center}
+
+U ovom poglavlju uvedeni su osnovni pojmovi linearne algebre, teorije grafova i matrica povezanih sa grafovima. Posebna pažnja posvećena je Laplasijanu grafa, njegovim osnovnim osobinama i spektru. Pokazano je da je Laplasijan neusmjerenog grafa simetrična i pozitivno semidefinitna matrica, zbog čega su njegove svojstvene vrijednosti realne i nenegativne.
+Jedan od najvažnijih rezultata jeste veza između nulte svojstvene vrijednosti Laplasijana i povezanosti grafa. Multiplicitet svojstvene vrijednosti \(0\) jednak je broju povezanih komponenti grafa. Posebno, graf je povezan ako i samo ako je druga najmanja svojstvena vrijednost Laplasijana pozitivna.
+
+U nastavku je uvedena Fiedlerova vrijednost, odnosno druga najmanja svojstvena vrijednost Laplasijana, kao mjera algebraičke povezanosti grafa. Odgovarajući Fiedlerov vektor omogućava spektralno particionisanje grafa, što predstavlja osnovu za spektralno klasterisanje.
+Na kraju poglavlja objašnjeno je kako se skup podataka može predstaviti grafom sličnosti, te kako se klasterisanje podataka može posmatrati kao problem particionisanja grafa. Time je uspostavljena veza između teorijskih rezultata spektralne teorije grafova i praktičnih algoritama za klasterisanje, koji će biti analizirani u narednom poglavlju.
